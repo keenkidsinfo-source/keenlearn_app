@@ -1,0 +1,299 @@
+import { redirect } from 'next/navigation'
+import { getSession } from '@/lib/auth/jwt'
+import { db } from '@/lib/db'
+import {
+  users, classrooms, schools, studentSessions,
+  classroomCurriculum, curriculum, curriculumDays, curriculumContent, contentItems,
+} from '@/lib/db/schema'
+import { eq, and, isNull, inArray } from 'drizzle-orm'
+import Link from 'next/link'
+import { SUBJECT_EMOJI, SUBJECT_LABEL } from '@/lib/utils'
+import type { Subject } from '@/lib/db/schema'
+import { StudentManager } from './StudentManager'
+
+function getMondayStr(): string {
+  const today = new Date()
+  const day = today.getDay()
+  const diff = day === 0 ? -6 : 1 - day
+  const monday = new Date(today)
+  monday.setDate(today.getDate() + diff)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${monday.getFullYear()}-${pad(monday.getMonth() + 1)}-${pad(monday.getDate())}`
+}
+
+const AVATARS = ['🦊','🐼','🦁','🐸','🦋','🐬','🦄','🐉']
+
+export default async function TeacherDashboardPage() {
+  const session = await getSession()
+  if (!session) redirect('/login')
+  if (session.role === 'student') redirect('/dashboard')
+
+  // Load classroom
+  const [classroom] = await db
+    .select()
+    .from(classrooms)
+    .where(eq(classrooms.teacherId, session.sub))
+    .limit(1)
+
+  const [school] = classroom?.schoolId
+    ? await db.select().from(schools).where(eq(schools.id, classroom.schoolId)).limit(1)
+    : [undefined]
+
+  // Load students (non-deleted)
+  const students = classroom
+    ? await db
+        .select({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId, lastActiveAt: users.lastActiveAt })
+        .from(users)
+        .where(and(eq(users.classroomId, classroom.id), eq(users.role, 'student'), isNull(users.deletedAt)))
+        .orderBy(users.name)
+    : []
+
+  // Load this week's curriculum assignment
+  const mondayStr = getMondayStr()
+  const [thisWeek] = classroom
+    ? await db
+        .select({ weekTitle: curriculum.title, theme: curriculum.theme, curriculumId: classroomCurriculum.curriculumId })
+        .from(classroomCurriculum)
+        .innerJoin(curriculum, eq(classroomCurriculum.curriculumId, curriculum.id))
+        .where(and(
+          eq(classroomCurriculum.classroomId, classroom.id),
+          eq(classroomCurriculum.weekStartDate, mondayStr),
+        ))
+        .limit(1)
+    : [undefined]
+
+  // Build per-subject per-student progress for this week
+  type SubjectProgress = { subject: Subject; contentItemId: string }
+  let weekSubjects: SubjectProgress[] = []
+  // sessionMap: studentId → Set of completed contentItemIds
+  const sessionMap = new Map<string, Set<string>>()
+  // inProgressMap: studentId → Set of started (not completed) contentItemIds
+  const inProgressMap = new Map<string, Set<string>>()
+
+  if (thisWeek && students.length > 0) {
+    // Get all curriculum days + content items for this week
+    const dayItems = await db
+      .select({ subject: curriculumDays.subject, contentItemId: curriculumContent.contentItemId })
+      .from(curriculumDays)
+      .innerJoin(curriculumContent, eq(curriculumContent.curriculumDayId, curriculumDays.id))
+      .where(eq(curriculumDays.curriculumId, thisWeek.curriculumId))
+
+    weekSubjects = dayItems as SubjectProgress[]
+
+    if (weekSubjects.length > 0) {
+      const contentItemIds = weekSubjects.map(d => d.contentItemId)
+      const studentIds     = students.map(s => s.id)
+
+      const sessions = await db
+        .select({
+          studentId:     studentSessions.studentId,
+          contentItemId: studentSessions.contentItemId,
+          completed:     studentSessions.completed,
+        })
+        .from(studentSessions)
+        .where(and(
+          inArray(studentSessions.studentId, studentIds),
+          inArray(studentSessions.contentItemId, contentItemIds),
+        ))
+
+      for (const s of sessions) {
+        if (s.completed) {
+          if (!sessionMap.has(s.studentId)) sessionMap.set(s.studentId, new Set())
+          sessionMap.get(s.studentId)!.add(s.contentItemId)
+        } else {
+          if (!inProgressMap.has(s.studentId)) inProgressMap.set(s.studentId, new Set())
+          inProgressMap.get(s.studentId)!.add(s.contentItemId)
+        }
+      }
+    }
+  }
+
+  const totalThisWeek = weekSubjects.length
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-keen-700 text-white px-6 py-5">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-black">KeenKids Teacher</h1>
+            <p className="text-keen-200 text-sm mt-0.5">
+              {school?.name ?? ''}{classroom ? ` · ${classroom.name}` : ''}
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href="/teacher/curriculum" className="bg-keen-600 hover:bg-keen-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all">
+              📚 Curriculum
+            </Link>
+            <form action="/api/v1/auth/logout" method="POST">
+              <button type="submit" className="text-keen-200 hover:text-white text-sm font-semibold">Sign out</button>
+            </form>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-3xl mx-auto px-4 py-6 space-y-5">
+
+        {/* ── Access Code ── */}
+        <div className="bg-white rounded-2xl shadow-sm border-2 border-keen-100 p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-bold text-keen-600 uppercase tracking-widest mb-1">Class Access Code</p>
+            <p className="text-5xl font-black text-keen-800 tracking-[0.2em]">{classroom?.accessCode ?? '—'}</p>
+            <p className="text-xs text-gray-400 mt-1">Students enter this code on the login screen</p>
+          </div>
+          <div className="text-5xl">🔑</div>
+        </div>
+
+        {/* ── This Week ── */}
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-bold text-gray-800">This Week</h2>
+            <Link href="/teacher/curriculum" className="text-keen-600 font-semibold text-sm hover:underline">
+              {thisWeek ? 'Change →' : 'Assign →'}
+            </Link>
+          </div>
+          {thisWeek ? (
+            <div className="bg-keen-50 rounded-xl p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-3xl">📅</span>
+                <div>
+                  <p className="font-black text-gray-800">{thisWeek.weekTitle}</p>
+                  {thisWeek.theme && <p className="text-sm text-gray-500">{thisWeek.theme}</p>}
+                </div>
+              </div>
+              {weekSubjects.length > 0 && (
+                <div className="flex gap-2 flex-wrap">
+                  {weekSubjects.map(ws => (
+                    <span key={ws.contentItemId} className="text-xs bg-white border border-keen-200 text-keen-700 font-bold px-2 py-1 rounded-lg">
+                      {SUBJECT_EMOJI[ws.subject as Subject]} {SUBJECT_LABEL[ws.subject as Subject]}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-6 text-gray-400">
+              <p className="mb-2">No curriculum assigned for this week yet.</p>
+              <Link href="/teacher/curriculum" className="text-keen-600 font-bold hover:underline">Assign now →</Link>
+            </div>
+          )}
+        </div>
+
+        {/* ── Student Progress ── */}
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">
+            This Week's Progress
+            {totalThisWeek > 0 && (
+              <span className="ml-2 text-sm font-normal text-gray-400">({totalThisWeek} activities)</span>
+            )}
+          </h2>
+
+          {students.length === 0 ? (
+            <p className="text-gray-400 text-center py-4 text-sm">No students yet.</p>
+          ) : !thisWeek ? (
+            <p className="text-gray-400 text-center py-4 text-sm">Assign a curriculum week to see progress.</p>
+          ) : (
+            <>
+              {/* Subject header row */}
+              {weekSubjects.length > 0 && (
+                <div className="flex items-center gap-2 mb-2 pl-[52px]">
+                  {weekSubjects.map(ws => (
+                    <div key={ws.contentItemId} className="w-9 text-center" title={SUBJECT_LABEL[ws.subject as Subject]}>
+                      <span className="text-xl">{SUBJECT_EMOJI[ws.subject as Subject]}</span>
+                    </div>
+                  ))}
+                  <div className="ml-auto text-xs text-gray-400 font-semibold pr-1">Done</div>
+                </div>
+              )}
+
+              <div className="flex flex-col gap-2">
+                {students.map(student => {
+                  const completedIds   = sessionMap.get(student.id) ?? new Set<string>()
+                  const inProgressIds  = inProgressMap.get(student.id) ?? new Set<string>()
+                  const doneCount      = completedIds.size
+                  const pct            = totalThisWeek > 0 ? Math.round((doneCount / totalThisWeek) * 100) : 0
+
+                  const daysAgo = student.lastActiveAt
+                    ? Math.floor((Date.now() - new Date(student.lastActiveAt).getTime()) / 86400000)
+                    : null
+
+                  return (
+                    <div key={student.id} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+                      {/* Avatar */}
+                      <div className="w-9 h-9 rounded-full bg-keen-100 flex items-center justify-center text-xl flex-shrink-0">
+                        {AVATARS[((student.avatarId ?? 1) - 1) % 8]}
+                      </div>
+
+                      {/* Name + activity dots */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="font-bold text-gray-800 text-sm truncate">{student.displayName ?? student.name}</p>
+                          {daysAgo === 0 && <span className="text-xs text-green-600 font-bold shrink-0">Today ✓</span>}
+                          {daysAgo === 1 && <span className="text-xs text-gray-400 shrink-0">Yesterday</span>}
+                          {daysAgo !== null && daysAgo > 1 && <span className="text-xs text-red-400 shrink-0">{daysAgo}d ago</span>}
+                          {daysAgo === null && <span className="text-xs text-gray-300 shrink-0">Never</span>}
+                        </div>
+                        {weekSubjects.length > 0 ? (
+                          <div className="flex items-center gap-2">
+                            {weekSubjects.map(ws => {
+                              const done  = completedIds.has(ws.contentItemId)
+                              const going = inProgressIds.has(ws.contentItemId)
+                              return (
+                                <div
+                                  key={ws.contentItemId}
+                                  className="w-9 h-6 rounded-lg flex items-center justify-center text-sm"
+                                  title={`${SUBJECT_LABEL[ws.subject as Subject]}: ${done ? 'Done' : going ? 'In Progress' : 'Not started'}`}
+                                >
+                                  {done ? '✅' : going ? '🟡' : '⬜'}
+                                </div>
+                              )
+                            })}
+                          </div>
+                        ) : (
+                          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div className="h-2 bg-keen-500 rounded-full" style={{ width: `${pct}%` }} />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Count */}
+                      <div className="text-right flex-shrink-0 w-10">
+                        <span className={`text-sm font-black ${doneCount === totalThisWeek && totalThisWeek > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+                          {doneCount}/{totalThisWeek || '?'}
+                        </span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Legend */}
+              <div className="flex gap-4 mt-3 text-xs text-gray-400">
+                <span>✅ Completed</span>
+                <span>🟡 In progress</span>
+                <span>⬜ Not started</span>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* ── Manage Students ── */}
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h2 className="text-lg font-bold text-gray-800 mb-4">
+            Students
+            <span className="ml-2 text-sm font-normal text-gray-400">({students.length})</span>
+          </h2>
+          <StudentManager
+            initialStudents={students.map(s => ({
+              id: s.id,
+              name: s.name,
+              displayName: s.displayName,
+              avatarId: s.avatarId,
+            }))}
+          />
+        </div>
+
+      </main>
+    </div>
+  )
+}

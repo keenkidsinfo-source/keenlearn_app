@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 1rem;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Nunito', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Prevent pull-to-refresh on mobile for app feel */
+  body {
+    overscroll-behavior: none;
+  }
+}
+
+@layer components {
+  /* Large touch targets for young learners */
+  .btn-primary {
+    @apply min-h-[48px] px-6 py-3 rounded-2xl font-bold text-lg
+           bg-keen-600 text-white
+           active:scale-95 transition-transform
+           focus:outline-none focus:ring-4 focus:ring-keen-300;
+  }
+
+  .btn-subject {
+    @apply min-h-[56px] px-6 py-4 rounded-3xl font-bold text-lg
+           active:scale-95 transition-all duration-150
+           focus:outline-none focus:ring-4;
+  }
+
+  /* Subject card used on dashboard */
+  .subject-card {
+    @apply rounded-3xl p-6 flex flex-col items-center justify-center gap-3
+           cursor-pointer select-none
+           active:scale-95 transition-all duration-150
+           shadow-md hover:shadow-lg;
+  }
+
+  /* Step image container in build/science modules */
+  .step-image {
+    @apply w-full aspect-[4/3] rounded-2xl object-cover bg-gray-100;
+  }
+}
