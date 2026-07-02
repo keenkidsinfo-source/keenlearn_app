@@ -137,7 +137,8 @@ export const codingProjects = pgTable('coding_projects', {
   curriculumContentId:  uuid('curriculum_content_id').references(() => curriculumContent.id),
   title:                text('title').default('My Project'),
   language:             text('language').notNull(), // 'scratch' | 'python' | 'blocks'
-  r2Key:                text('r2_key').unique(),    // path in R2
+  r2Key:                text('r2_key').unique(),    // path in R2 (optional, used in prod)
+  projectData:          text('project_data'),       // raw project JSON stored in DB
   thumbnailR2Key:       text('thumbnail_r2_key'),
   lastSavedAt:          timestamp('last_saved_at').defaultNow().notNull(),
   createdAt:            timestamp('created_at').defaultNow().notNull(),

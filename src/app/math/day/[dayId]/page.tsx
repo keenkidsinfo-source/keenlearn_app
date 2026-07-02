@@ -41,7 +41,7 @@ export default async function MathDayPage({ params }: Props) {
       title={item.title}
       description={item.description ?? ''}
       theme={day.theme ?? ''}
-      gradeBand={session.gradeBand}
+      gradeBand={session.gradeBand ?? null}
       completed={sessionData?.completed ?? false}
       existingSession={existing}
       questions={questions}

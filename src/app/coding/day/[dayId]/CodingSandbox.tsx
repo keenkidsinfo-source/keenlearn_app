@@ -11,29 +11,26 @@ interface Props {
   language: 'scratch' | 'python'
   projectId: string | null
   projectUrl: string | null
+  savedCode: string | null
   gradeBand: GradeBand | null
-  turbowarpUrl: string
 }
 
 export function CodingSandbox({
-  contentItemId, title, theme, language, projectId, projectUrl, gradeBand, turbowarpUrl
+  contentItemId, title, theme, language, projectId, projectUrl, savedCode, gradeBand
 }: Props) {
   const router          = useRouter()
   const iframeRef       = useRef<HTMLIFrameElement>(null)
   const [saving, setSaving]   = useState(false)
   const [saved, setSaved]     = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
   const currentProjectId      = useRef(projectId)
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
   const pyCode                = useRef('')
 
-  // ── Scratch / TurboWarp save ──
-  const saveScratch = useCallback(async () => {
-    if (!iframeRef.current) return
-    iframeRef.current.contentWindow?.postMessage({ type: 'KEENKIDS_REQUEST_SAVE' }, '*')
-  }, [])
-
-  const uploadScratch = useCallback(async (projectJson: string) => {
+  // ── Upload helper (used by both Scratch and Python) ──
+  const uploadProject = useCallback(async (projectJson: string, lang: 'scratch' | 'python') => {
     setSaving(true)
+    setSaveError(null)
     try {
       const method = currentProjectId.current ? 'PUT' : 'POST'
       const url    = currentProjectId.current
@@ -41,120 +38,138 @@ export function CodingSandbox({
         : '/api/v1/coding'
 
       const body = currentProjectId.current
-        ? { projectJson }
-        : { contentItemId, title, language: 'scratch', projectJson }
+        ? { projectJson, curriculumContentId: contentItemId }
+        : { curriculumContentId: contentItemId, title, language: lang, projectJson }
 
       const res  = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-      const json = await res.json()
+      const text = await res.text()
+      console.log('[save]', res.status, text.slice(0, 500))
+      if (!res.ok) {
+        let msg = `${res.status}`
+        try { msg = `${res.status}: ${JSON.parse(text)?.error ?? text.slice(0, 80)}` } catch {}
+        setSaveError(msg)
+        return
+      }
+      const json = JSON.parse(text)
       if (!currentProjectId.current && json.data?.id) {
         currentProjectId.current = json.data.id
       }
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
-    } catch (e) {
+    } catch (e: any) {
       console.error('Save failed', e)
+      setSaveError(e?.message ?? 'Save failed')
     } finally {
       setSaving(false)
     }
   }, [contentItemId, title])
 
-  // Listen for TurboWarp postMessage responses
-  useEffect(() => {
-    function onMessage(event: MessageEvent) {
-      if (event.data?.type === 'KEENKIDS_PROJECT_JSON') {
-        uploadScratch(event.data.json)
+  // ── Scratch / TurboWarp save ──
+  // iframe is same-origin so we can access window.vm directly — no postMessage needed
+  const saveScratch = useCallback(async () => {
+    if (!iframeRef.current) { setSaveError('no iframe'); return }
+    try {
+      const iframeWin = iframeRef.current.contentWindow as any
+      const vm = iframeWin?.vm
+      if (!vm) { setSaveError('VM not ready — wait a moment and try again'); return }
+      let projectJson: string
+      try {
+        projectJson = vm.toJSON()
+      } catch (e: any) {
+        setSaveError('toJSON failed: ' + e?.message); return
       }
+      if (!projectJson) { setSaveError('empty project'); return }
+      await uploadProject(projectJson, 'scratch')
+      // Tell TurboWarp the project is saved so it stops showing "Leave site?" dialog
+      iframeWin.ReduxStore?.dispatch({
+        type: 'scratch-gui/project-changed/SET_PROJECT_CHANGED',
+        changed: false,
+      })
+    } catch (err: any) {
+      console.error('saveScratch error', err)
+      setSaveError(err?.message ?? 'save error')
     }
-    window.addEventListener('message', onMessage)
-    return () => window.removeEventListener('message', onMessage)
-  }, [uploadScratch])
+  }, [uploadProject])
 
-  // Auto-save every 30s
+  // ── Python save ──
+  const savePython = useCallback(async () => {
+    await uploadProject(pyCode.current, 'python')
+  }, [uploadProject])
+
   useEffect(() => {
     if (language === 'scratch') {
       autoSaveTimer.current = setInterval(saveScratch, 30_000)
     } else {
-      autoSaveTimer.current = setInterval(() => savePython(), 30_000)
+      autoSaveTimer.current = setInterval(savePython, 30_000)
     }
     return () => {
       if (autoSaveTimer.current) clearInterval(autoSaveTimer.current)
     }
-  }, [language, saveScratch])
+  }, [language, saveScratch, savePython])
 
-  // ── Python save ──
-  const savePython = useCallback(async () => {
-    setSaving(true)
-    try {
-      const method = currentProjectId.current ? 'PUT' : 'POST'
-      const url    = currentProjectId.current
-        ? `/api/v1/coding/${currentProjectId.current}`
-        : '/api/v1/coding'
-
-      const body = currentProjectId.current
-        ? { projectJson: pyCode.current }
-        : { contentItemId, title, language: 'python', projectJson: pyCode.current }
-
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      const json = await res.json()
-      if (!currentProjectId.current && json.data?.id) {
-        currentProjectId.current = json.data.id
+  // After iframe loads, inject saved project directly via vm.loadProject()
+  const onIframeLoad = useCallback(() => {
+    console.log('[KK] onIframeLoad, projectUrl=', projectUrl)
+    if (!projectUrl) return
+    let cancelled = false
+    const tryInject = async () => {
+      const res = await fetch(projectUrl)
+      console.log('[KK] /data fetch status:', res.status)
+      if (!res.ok || cancelled) return
+      const json = await res.text()
+      console.log('[KK] project data length:', json.length)
+      for (let i = 0; i < 40; i++) {
+        await new Promise(r => setTimeout(r, 250))
+        if (cancelled) return
+        const vm = (iframeRef.current?.contentWindow as any)?.vm
+        if (vm) {
+          console.log('[KK] VM ready, calling loadProject')
+          await vm.loadProject(json)
+          console.log('[KK] loadProject done')
+          return
+        }
       }
-      setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
-    } catch (e) {
-      console.error('Save failed', e)
-    } finally {
-      setSaving(false)
+      console.warn('[KK] VM never became ready after 10s')
     }
-  }, [contentItemId, title])
+    tryInject().catch(e => console.error('[KK] tryInject error:', e))
+  }, [projectUrl])
 
-  // TurboWarp doesn't allow embedding the editor in an iframe — open in new tab instead
   if (language === 'scratch') {
     return (
-      <div className="flex flex-col min-h-screen bg-purple-50">
-        <header className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3">
+      <div className="flex flex-col h-screen bg-purple-50">
+        <header className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3 shrink-0">
           <button onClick={() => router.push('/dashboard')} className="text-purple-200 text-2xl">←</button>
           <div className="flex-1 min-w-0">
             <h1 className="font-black text-lg truncate">💻 {title}</h1>
             {theme && <p className="text-purple-200 text-xs">{theme}</p>}
           </div>
+          <div className="flex items-center gap-2">
+            {saving    && <span className="text-purple-200 text-sm">Saving…</span>}
+            {saved     && <span className="text-green-300 text-sm font-bold">✓ Saved</span>}
+            {saveError && <span className="text-red-300 text-sm">{saveError}</span>}
+            <button
+              onClick={saveScratch}
+              className="bg-purple-500 hover:bg-purple-400 text-white font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all"
+            >
+              Save
+            </button>
+            <form action="/api/v1/auth/logout" method="POST">
+              <button type="submit" className="text-purple-300 hover:text-white text-xs font-semibold ml-1">Sign out</button>
+            </form>
+          </div>
         </header>
-
-        <main className="flex-1 flex flex-col items-center justify-center px-6 py-12 gap-8 max-w-lg mx-auto w-full text-center">
-          <div className="text-8xl">🐱</div>
-          <div>
-            <h2 className="text-2xl font-black text-purple-700 mb-2">{theme}</h2>
-            <p className="text-gray-500 text-sm">Use Scratch to bring your story to life!</p>
-          </div>
-
-          <div className="bg-white rounded-3xl border-2 border-purple-100 p-6 w-full text-left space-y-3">
-            <p className="font-bold text-gray-700 text-sm uppercase tracking-wide">What to make:</p>
-            <div className="space-y-2 text-gray-600 text-sm">
-              <p>🎭 Pick a character (sprite)</p>
-              <p>🌄 Choose a background</p>
-              <p>💬 Make your character say something</p>
-              <p>▶️ Press the green flag to run it!</p>
-            </div>
-          </div>
-
-          <a
-            href={`${turbowarpUrl}/editor`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-purple-600 hover:bg-purple-700 text-white font-black text-lg px-8 py-4 rounded-2xl shadow-lg active:scale-95 transition-all w-full text-center block"
-          >
-            Open Scratch Editor →
-          </a>
-          <p className="text-xs text-gray-400">Opens in a new tab. Come back here when you&apos;re done!</p>
-        </main>
+        <iframe
+          ref={iframeRef}
+          src="/scratch/editor.html"
+          onLoad={onIframeLoad}
+          className="flex-1 w-full border-0"
+          allow="microphone; camera"
+          title="Scratch Editor"
+        />
       </div>
     )
   }
@@ -176,12 +191,14 @@ export function CodingSandbox({
           >
             Save
           </button>
+          <form action="/api/v1/auth/logout" method="POST">
+            <button type="submit" className="text-purple-300 hover:text-white text-xs font-semibold ml-1">Sign out</button>
+          </form>
         </div>
       </header>
-
       <main className="flex-1 overflow-hidden">
         <PythonEditor
-          initialCode={projectUrl ? '' : '# Write your Python code here\nprint("Hello, World!")'}
+          initialCode={savedCode ?? '# Write your Python code here\nprint("Hello, World!")'}
           onCodeChange={code => { pyCode.current = code }}
         />
       </main>
@@ -189,14 +206,12 @@ export function CodingSandbox({
   )
 }
 
-// ── Inline Python editor (Monaco via CDN loaded lazily) ──
 function PythonEditor({ initialCode, onCodeChange }: { initialCode: string; onCodeChange: (c: string) => void }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [output, setOutput] = useState<string[]>([])
   const [running, setRunning] = useState(false)
   const [code, setCode] = useState(initialCode)
 
-  // Load Pyodide once (dynamically inject CDN script then init)
   const pyodideRef = useRef<any>(null)
   useEffect(() => {
     let cancelled = false

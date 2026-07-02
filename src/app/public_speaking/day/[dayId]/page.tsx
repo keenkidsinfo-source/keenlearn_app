@@ -44,7 +44,7 @@ export default async function PublicSpeakingDayPage({ params }: Props) {
       stepUrls={stepUrls}
       initialStep={sessionData?.lastStepIndex ?? 0}
       completed={sessionData?.completed ?? false}
-      gradeBand={session.gradeBand}
+      gradeBand={session.gradeBand ?? null}
     />
   )
 }

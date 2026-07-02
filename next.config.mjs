@@ -12,20 +12,6 @@ const nextConfig = {
       },
     ],
   },
-  // Allow TurboWarp iframe embedding
-  async headers() {
-    return [
-      {
-        source: '/coding/:path*',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: "frame-src 'self' https://turbowarp.org https://coding.keenkidsenrichment.com;",
-          },
-        ],
-      },
-    ]
-  },
 }
 
 export default nextConfig

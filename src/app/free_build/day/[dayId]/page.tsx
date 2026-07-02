@@ -43,7 +43,7 @@ export default async function FreeBuildDayPage({ params }: Props) {
       stepUrls={stepUrls}
       initialStep={sessionData?.lastStepIndex ?? 0}
       completed={sessionData?.completed ?? false}
-      gradeBand={session.gradeBand}
+      gradeBand={session.gradeBand ?? null}
     />
   )
 }

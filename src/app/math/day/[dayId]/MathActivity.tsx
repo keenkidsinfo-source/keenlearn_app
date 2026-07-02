@@ -68,7 +68,7 @@ export function MathActivity({ contentItemId, title, description, theme, gradeBa
   function check() {
     if (selected === null) return
     setChecked(true)
-    if (selected === current.answer) setScore(s => s + 1)
+    if (selected === current.answer) setScore((s: number) => s + 1)
   }
 
   async function next() {

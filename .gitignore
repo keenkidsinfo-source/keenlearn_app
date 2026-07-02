@@ -30,3 +30,7 @@ drizzle/meta/
 *.tsbuildinfo
 next-env.d.ts
 coding-keenkids/
+.vercel
+
+# TurboWarp source maps (large, not needed in production)
+public/scratch/js/*.map
