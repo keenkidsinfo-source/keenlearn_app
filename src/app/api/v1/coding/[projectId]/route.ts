@@ -1,8 +1,28 @@
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
-import { codingProjects } from '@/lib/db/schema'
-import { eq, and } from 'drizzle-orm'
+import { codingProjects, curriculumContent, studentSessions } from '@/lib/db/schema'
+import { eq, and, sql } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
+
+async function upsertCodingSession(studentId: string, curriculumContentId: string) {
+  try {
+    const [cc] = await db.select({ contentItemId: curriculumContent.contentItemId })
+      .from(curriculumContent).where(eq(curriculumContent.id, curriculumContentId)).limit(1)
+    if (!cc) return
+    await db.insert(studentSessions).values({
+      studentId,
+      contentItemId: cc.contentItemId,
+      progressPct: 50,
+      lastActiveAt: new Date(),
+      completed: false,
+    }).onConflictDoUpdate({
+      target: [studentSessions.studentId, studentSessions.contentItemId],
+      set: { lastActiveAt: new Date(), progressPct: sql`GREATEST(student_sessions.progress_pct, 50)` },
+    })
+  } catch (e) {
+    console.warn('[upsertCodingSession] failed:', e)
+  }
+}
 
 // GET /api/v1/coding/:projectId — load a coding project
 export async function GET(req: NextRequest, { params }: { params: Promise<{ projectId: string }> }) {
@@ -56,6 +76,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ proj
       .update(codingProjects)
       .set(updates as any)
       .where(eq(codingProjects.id, projectId))
+
+    // Upsert student_sessions so teacher dashboard shows coding progress
+    const ccId = (updates.curriculumContentId ?? project.curriculumContentId) as string | null
+    if (ccId) await upsertCodingSession(studentId, ccId)
 
     return apiOk({ saved: true, lastSavedAt: new Date().toISOString() })
   } catch (err: any) {

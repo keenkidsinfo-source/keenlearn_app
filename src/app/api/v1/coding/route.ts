@@ -1,9 +1,29 @@
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/lib/db'
-import { codingProjects } from '@/lib/db/schema'
-import { eq } from 'drizzle-orm'
+import { codingProjects, curriculumContent, studentSessions } from '@/lib/db/schema'
+import { eq, sql } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
+
+async function upsertCodingSession(studentId: string, curriculumContentId: string) {
+  try {
+    const [cc] = await db.select({ contentItemId: curriculumContent.contentItemId })
+      .from(curriculumContent).where(eq(curriculumContent.id, curriculumContentId)).limit(1)
+    if (!cc) return
+    await db.insert(studentSessions).values({
+      studentId,
+      contentItemId: cc.contentItemId,
+      progressPct: 50,
+      lastActiveAt: new Date(),
+      completed: false,
+    }).onConflictDoUpdate({
+      target: [studentSessions.studentId, studentSessions.contentItemId],
+      set: { lastActiveAt: new Date(), progressPct: sql`GREATEST(student_sessions.progress_pct, 50)` },
+    })
+  } catch (e) {
+    console.warn('[upsertCodingSession] failed:', e)
+  }
+}
 
 // GET /api/v1/coding — list all coding projects for the current student
 export async function GET(req: NextRequest) {
@@ -53,6 +73,7 @@ export async function POST(req: NextRequest) {
       })
       .returning()
 
+    if (curriculumContentId) await upsertCodingSession(studentId, curriculumContentId)
     return apiOk(project, 201)
   } catch (err: any) {
     const msg = err?.cause?.message ?? err?.message ?? 'Internal error'
