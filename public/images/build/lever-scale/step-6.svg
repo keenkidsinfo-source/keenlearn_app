@@ -1,0 +1,27 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#fff7ed" rx="20"/>
+  <!-- Tilted scale showing heavier side -->
+  <!-- Pencil fulcrum -->
+  <rect x="183" y="162" width="28" height="45" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <rect x="183" y="162" width="28" height="10" rx="3" fill="#fca5a5"/>
+  <!-- Tilted ruler (heavy on left) -->
+  <rect x="55" y="148" width="290" height="17" rx="4" fill="#fbbf24" stroke="#d97706" stroke-width="2" transform="rotate(-8,200,156)"/>
+  <!-- Left cup lower (heavier) -->
+  <line x1="80" y1="162" x2="68" y2="195" stroke="#374151" stroke-width="2.5"/>
+  <path d="M46 195 L42 232 Q42 240 58 240 L78 240 Q94 240 94 232 L90 195 Z" fill="white" stroke="#ef4444" stroke-width="2.5"/>
+  <rect x="44" y="191" width="48" height="7" rx="3" fill="#fecaca" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="68" y="222" text-anchor="middle" font-family="Arial" font-size="18">✏️</text>
+  <text x="68" y="252" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#ef4444">HEAVIER</text>
+  <!-- Right cup higher (lighter) -->
+  <line x1="322" y1="148" x2="334" y2="172" stroke="#374151" stroke-width="2.5"/>
+  <path d="M316 172 L312 208 Q312 216 328 216 L348 216 Q364 216 364 208 L360 172 Z" fill="white" stroke="#16a34a" stroke-width="2.5"/>
+  <rect x="314" y="168" width="48" height="7" rx="3" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="340" y="200" text-anchor="middle" font-family="Arial" font-size="18">🖍️</text>
+  <text x="340" y="230" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#16a34a">lighter</text>
+  <!-- Surprise badge -->
+  <circle cx="200" cy="78" r="35" fill="#fef3c7" stroke="#f97316" stroke-width="2.5"/>
+  <text x="200" y="70" text-anchor="middle" font-family="Arial" font-size="26">😮</text>
+  <text x="200" y="90" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#92400e">Surprised?</text>
+  <text x="200" y="265" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="13" fill="#92400e">Weigh all 4 pairs — were you right? ⚖️</text>
+  <text x="200" y="282" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#b45309">Which result surprised you the most?</text>
+</svg>

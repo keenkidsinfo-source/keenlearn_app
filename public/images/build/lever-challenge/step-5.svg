@@ -1,0 +1,28 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f0fdf4" rx="20"/>
+  <text x="200" y="28" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="14" fill="#15803d">Measure: Force vs Distance 📏</text>
+  <!-- Graph axes -->
+  <line x1="60" y1="200" x2="360" y2="200" stroke="#6b7280" stroke-width="2"/>
+  <line x1="60" y1="60" x2="60" y2="200" stroke="#6b7280" stroke-width="2"/>
+  <text x="210" y="225" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Distance from fulcrum →</text>
+  <text x="25" y="130" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151" transform="rotate(-90,25,130)">Force needed ↑</text>
+  <!-- Class 1 line (decreasing - more distance = less force) -->
+  <polyline points="80,180 160,140 240,110 320,85" stroke="#16a34a" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+  <circle cx="80" cy="180" r="5" fill="#16a34a"/>
+  <circle cx="160" cy="140" r="5" fill="#16a34a"/>
+  <circle cx="240" cy="110" r="5" fill="#16a34a"/>
+  <circle cx="320" cy="85" r="5" fill="#16a34a"/>
+  <text x="328" y="82" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#16a34a">C1</text>
+  <!-- Class 2 line (less force needed overall) -->
+  <polyline points="80,170 160,125 240,95 320,75" stroke="#7c3aed" stroke-width="2.5" fill="none" stroke-linejoin="round" stroke-dasharray="6 3"/>
+  <text x="328" y="72" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#7c3aed">C2</text>
+  <!-- Data points to measure -->
+  <rect x="65" y="60" width="20" height="20" rx="3" fill="white" stroke="#d1d5db" stroke-width="1"/>
+  <text x="75" y="75" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">?</text>
+  <!-- Instruction boxes -->
+  <rect x="30" y="215" width="340" height="65" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="200" y="232" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#15803d">Measure with rubber bands!</text>
+  <text x="200" y="248" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Stretch = more force. Count cm of stretch for each lever.</text>
+  <text x="200" y="263" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Which class took the MOST / LEAST stretch (force)?</text>
+  <text x="200" y="278" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Record in your data table. Does it match the graph?</text>
+</svg>

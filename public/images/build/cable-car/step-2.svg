@@ -1,0 +1,30 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#fff7ed" rx="20"/>
+  <!-- Paper cup -->
+  <path d="M120 60 L100 220 Q100 230 140 230 L260 230 Q300 230 300 220 L280 60 Z" fill="white" stroke="#d1d5db" stroke-width="2"/>
+  <rect x="118" y="58" width="164" height="18" rx="4" fill="#e5e7eb" stroke="#d1d5db" stroke-width="2"/>
+  <!-- Left hole marker -->
+  <circle cx="130" cy="90" r="12" fill="#fef3c7" stroke="#f97316" stroke-width="3" stroke-dasharray="4 2"/>
+  <line x1="124" y1="84" x2="136" y2="96" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="136" y1="84" x2="124" y2="96" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <!-- Right hole marker -->
+  <circle cx="270" cy="90" r="12" fill="#fef3c7" stroke="#f97316" stroke-width="3" stroke-dasharray="4 2"/>
+  <line x1="264" y1="84" x2="276" y2="96" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <line x1="276" y1="84" x2="264" y2="96" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <!-- Pencil pointing at left hole -->
+  <g transform="rotate(-45,80,120)">
+    <rect x="55" y="115" width="50" height="10" rx="2" fill="#fbbf24"/>
+    <polygon points="55,115 55,125 40,120" fill="#f97316"/>
+    <rect x="105" y="115" width="10" height="10" rx="1" fill="#fca5a5"/>
+  </g>
+  <!-- Arrow from pencil to hole -->
+  <path d="M82 98 Q95 88 116 88" stroke="#f97316" stroke-width="2.5" fill="none" stroke-dasharray="4 2" marker-end="url(#arr)"/>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f97316"/>
+    </marker>
+  </defs>
+  <!-- Label -->
+  <text x="200" y="265" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="14" fill="#92400e">Punch one hole on EACH side ✂️</text>
+  <text x="200" y="283" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="12" fill="#b45309">Directly opposite each other!</text>
+</svg>

@@ -14,7 +14,7 @@ out/
 
 # build output
 dist/
-build/
+/build/
 
 # misc
 .DS_Store

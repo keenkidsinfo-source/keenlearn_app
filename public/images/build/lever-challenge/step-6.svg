@@ -1,0 +1,59 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f0fdf4" rx="20"/>
+  <text x="200" y="28" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="14" fill="#15803d">Cargo Challenge: Max Load! 🏋️</text>
+  <!-- 3 levers side by side with loads -->
+  <!-- Class 1 -->
+  <rect x="20" y="55" width="110" height="160" rx="12" fill="white" stroke="#16a34a" stroke-width="2"/>
+  <text x="75" y="73" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#15803d">Class 1</text>
+  <rect x="30" y="85" width="90" height="8" rx="3" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <polygon points="75,93 68,105 82,105" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  <!-- coins stacked on right of C1 -->
+  <g transform="translate(95,58)">
+    <ellipse cx="0" cy="40" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="34" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="28" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="22" rx="10" ry="3" fill="#fde68a"/>
+  </g>
+  <text x="75" y="125" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#374151">4 coins</text>
+  <!-- Score box C1 -->
+  <rect x="30" y="135" width="90" height="32" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="75" y="150" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#374151">Max load</text>
+  <text x="75" y="163" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="16" fill="#15803d">__</text>
+  <text x="75" y="198" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#9ca3af">coins</text>
+  <!-- Class 2 -->
+  <rect x="145" y="55" width="110" height="160" rx="12" fill="white" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="73" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7c3aed">Class 2</text>
+  <rect x="155" y="85" width="90" height="8" rx="3" fill="#c4b5fd" stroke="#7c3aed" stroke-width="1.5"/>
+  <polygon points="238,93 231,105 245,105" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  <g transform="translate(180,58)">
+    <ellipse cx="0" cy="40" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="34" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="28" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="22" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="16" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="10" rx="10" ry="3" fill="#fde68a"/>
+  </g>
+  <text x="200" y="125" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#374151">6 coins</text>
+  <rect x="155" y="135" width="90" height="32" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="200" y="150" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#374151">Max load</text>
+  <text x="200" y="163" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="16" fill="#7c3aed">__</text>
+  <text x="200" y="198" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#9ca3af">coins</text>
+  <!-- Class 3 -->
+  <rect x="270" y="55" width="110" height="160" rx="12" fill="white" stroke="#0891b2" stroke-width="2"/>
+  <text x="325" y="73" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#0891b2">Class 3</text>
+  <rect x="280" y="85" width="90" height="8" rx="3" fill="#a5f3fc" stroke="#0891b2" stroke-width="1.5"/>
+  <polygon points="287,93 280,105 294,105" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  <g transform="translate(340,58)">
+    <ellipse cx="0" cy="28" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="22" rx="10" ry="3" fill="#fbbf24"/>
+    <ellipse cx="0" cy="16" rx="10" ry="3" fill="#fde68a"/>
+  </g>
+  <text x="325" y="125" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#374151">3 coins</text>
+  <rect x="280" y="135" width="90" height="32" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="325" y="150" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#374151">Max load</text>
+  <text x="325" y="163" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="16" fill="#0891b2">__</text>
+  <text x="325" y="198" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#9ca3af">coins</text>
+  <text x="200" y="240" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="12" fill="#15803d">Which class carries the most? 🏆</text>
+  <text x="200" y="258" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Add pennies/coins one at a time until the lever tips. Record!</text>
+  <text x="200" y="276" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Predict first — then test! 🔮</text>
+</svg>

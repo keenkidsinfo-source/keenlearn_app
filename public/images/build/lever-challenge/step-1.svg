@@ -1,0 +1,75 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f0fdf4" rx="20"/>
+  <!-- Title -->
+  <text x="200" y="30" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="15" fill="#15803d" font-weight="bold">3 Classes of Levers 🔬</text>
+  <!-- Class 1 diagram -->
+  <rect x="25" y="50" width="105" height="95" rx="10" fill="white" stroke="#16a34a" stroke-width="2"/>
+  <text x="77" y="68" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#15803d">Class 1</text>
+  <!-- lever bar -->
+  <rect x="35" y="80" width="85" height="8" rx="3" fill="#86efac" stroke="#16a34a" stroke-width="1.5"/>
+  <!-- fulcrum in MIDDLE -->
+  <polygon points="77,88 70,102 84,102" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  <rect x="66" y="102" width="22" height="5" rx="2" fill="#f97316"/>
+  <!-- effort left -->
+  <line x1="45" y1="80" x2="45" y2="70" stroke="#3b82f6" stroke-width="2" marker-end="url(#blarr)"/>
+  <text x="45" y="67" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#3b82f6">E</text>
+  <!-- load right -->
+  <line x1="110" y1="88" x2="110" y2="100" stroke="#ef4444" stroke-width="2" marker-end="url(#redarr)"/>
+  <text x="110" y="110" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#ef4444">L</text>
+  <!-- fulcrum label -->
+  <text x="77" y="118" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#f97316">F in middle</text>
+  <text x="77" y="134" text-anchor="middle" font-family="Arial" font-size="9" fill="#374151">eg: seesaw ⚖️</text>
+  <defs>
+    <marker id="blarr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="redarr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="grnarr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+  <!-- Class 2 diagram -->
+  <rect x="147" y="50" width="105" height="95" rx="10" fill="white" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="68" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7c3aed">Class 2</text>
+  <rect x="158" y="80" width="85" height="8" rx="3" fill="#c4b5fd" stroke="#7c3aed" stroke-width="1.5"/>
+  <!-- fulcrum at RIGHT end -->
+  <polygon points="235,88 228,102 242,102" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  <rect x="224" y="102" width="22" height="5" rx="2" fill="#f97316"/>
+  <!-- effort at LEFT end up -->
+  <line x1="165" y1="80" x2="165" y2="70" stroke="#3b82f6" stroke-width="2" marker-end="url(#blarr)"/>
+  <text x="165" y="67" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#3b82f6">E</text>
+  <!-- load in MIDDLE -->
+  <line x1="200" y1="88" x2="200" y2="100" stroke="#ef4444" stroke-width="2" marker-end="url(#redarr)"/>
+  <text x="200" y="110" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#ef4444">L</text>
+  <text x="200" y="118" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#f97316">F at end</text>
+  <text x="200" y="134" text-anchor="middle" font-family="Arial" font-size="9" fill="#374151">eg: wheelbarrow 🛻</text>
+  <!-- Class 3 diagram -->
+  <rect x="270" y="50" width="105" height="95" rx="10" fill="white" stroke="#0891b2" stroke-width="2"/>
+  <text x="322" y="68" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#0891b2">Class 3</text>
+  <rect x="280" y="80" width="85" height="8" rx="3" fill="#a5f3fc" stroke="#0891b2" stroke-width="1.5"/>
+  <!-- fulcrum at LEFT end -->
+  <polygon points="287,88 280,102 294,102" fill="#f97316" stroke="#ea580c" stroke-width="1.5"/>
+  <rect x="276" y="102" width="22" height="5" rx="2" fill="#f97316"/>
+  <!-- effort in MIDDLE up -->
+  <line x1="322" y1="80" x2="322" y2="70" stroke="#3b82f6" stroke-width="2" marker-end="url(#blarr)"/>
+  <text x="322" y="67" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#3b82f6">E</text>
+  <!-- load at RIGHT end -->
+  <line x1="355" y1="80" x2="355" y2="95" stroke="#ef4444" stroke-width="2" marker-end="url(#redarr)"/>
+  <text x="355" y="107" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#ef4444">L</text>
+  <text x="322" y="118" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#f97316">F at end</text>
+  <text x="322" y="134" text-anchor="middle" font-family="Arial" font-size="9" fill="#374151">eg: tweezers 🥢</text>
+  <!-- Key legend -->
+  <rect x="25" y="158" width="350" height="42" rx="10" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="40" y="174" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#92400e">KEY:  </text>
+  <rect x="78" y="163" width="12" height="12" rx="2" fill="#3b82f6"/>
+  <text x="94" y="174" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">E = Effort</text>
+  <rect x="175" y="163" width="12" height="12" rx="2" fill="#f97316"/>
+  <text x="191" y="174" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">F = Fulcrum</text>
+  <rect x="282" y="163" width="12" height="12" rx="2" fill="#ef4444"/>
+  <text x="298" y="174" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">L = Load</text>
+  <text x="200" y="193" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#92400e">The ORDER of E, F, L decides the class!</text>
+  <text x="200" y="260" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="13" fill="#15803d">Study the 3 classes — draw them in your notes 📓</text>
+  <text x="200" y="280" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#166534">You'll be building ALL THREE today!</text>
+</svg>

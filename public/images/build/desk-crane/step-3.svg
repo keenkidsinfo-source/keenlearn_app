@@ -1,0 +1,29 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#fdf4ff" rx="20"/>
+  <!-- Mast -->
+  <rect x="148" y="80" width="28" height="150" rx="5" fill="#d97706"/>
+  <!-- Boom -->
+  <rect x="172" y="82" width="140" height="16" rx="5" fill="#92400e"/>
+  <!-- Spool at end of boom (fixed pulley) -->
+  <circle cx="312" cy="90" r="22" fill="#e5e7eb" stroke="#6b7280" stroke-width="3"/>
+  <circle cx="312" cy="90" r="10" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2"/>
+  <!-- Spin arrow around spool -->
+  <path d="M295 75 Q280 90 295 105" stroke="#7c3aed" stroke-width="2.5" fill="none" stroke-dasharray="4 2" marker-end="url(#spinArr)"/>
+  <defs>
+    <marker id="spinArr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+  <text x="265" y="75" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7c3aed">must spin</text>
+  <text x="265" y="87" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7c3aed">freely!</text>
+  <!-- Tape on spool edges not centre -->
+  <rect x="292" y="78" width="8" height="24" rx="2" fill="#9ca3af" opacity="0.7"/>
+  <rect x="324" y="78" width="8" height="24" rx="2" fill="#9ca3af" opacity="0.7"/>
+  <!-- X mark on centre hole -->
+  <line x1="307" y1="85" x2="317" y2="95" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="317" y1="85" x2="307" y2="95" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="344" y="120" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#ef4444">Don't tape</text>
+  <text x="344" y="132" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#ef4444">centre hole!</text>
+  <text x="200" y="258" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="14" fill="#7e22ce">Tape first spool to boom end ⚙️</text>
+  <text x="200" y="276" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#9333ea">This is the FIXED PULLEY — must spin freely!</text>
+</svg>

@@ -1,0 +1,38 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#fff7ed" rx="20"/>
+  <!-- Three fix options -->
+  <!-- Fix 1: Too heavy -->
+  <rect x="20" y="30" width="110" height="90" rx="12" fill="white" stroke="#f97316" stroke-width="2"/>
+  <text x="75" y="52" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#92400e">Too heavy?</text>
+  <!-- Mini cup with minus -->
+  <path d="M58 65 L54 90 Q54 95 68 95 L85 95 Q99 95 99 90 L95 65 Z" fill="white" stroke="#f97316" stroke-width="2"/>
+  <rect x="55" y="62" width="43" height="6" rx="2" fill="#fed7aa" stroke="#f97316" stroke-width="1"/>
+  <line x1="62" y1="80" x2="95" y2="80" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+  <text x="75" y="108" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#92400e">Remove one 📎</text>
+
+  <!-- Fix 2: Tilting cup -->
+  <rect x="145" y="30" width="110" height="90" rx="12" fill="white" stroke="#f97316" stroke-width="2"/>
+  <text x="200" y="52" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#92400e">Cup tilting?</text>
+  <!-- Tilted then straight cup -->
+  <path d="M163 70 L158 95 Q158 100 172 100 L188 100 Q202 100 202 95 L197 70 Z" fill="#fef3c7" stroke="#f97316" stroke-width="2" transform="rotate(10,180,85)"/>
+  <text x="210" y="88" font-family="Arial" font-size="18" fill="#f97316">→</text>
+  <path d="M223 70 L218 95 Q218 100 232 100 L248 100 Q262 100 262 95 L257 70 Z" fill="white" stroke="#16a34a" stroke-width="2"/>
+  <text x="200" y="108" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#92400e">Centre the cargo</text>
+
+  <!-- Fix 3: Straw catching -->
+  <rect x="270" y="30" width="110" height="90" rx="12" fill="white" stroke="#f97316" stroke-width="2"/>
+  <text x="325" y="48" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#92400e">Straw sticking?</text>
+  <!-- Tape on straw -->
+  <rect x="290" y="58" width="70" height="12" rx="6" fill="#f97316"/>
+  <rect x="308" y="55" width="16" height="18" rx="2" fill="#d4d4d4" opacity="0.8" stroke="#9ca3af" stroke-width="1"/>
+  <text x="325" y="82" text-anchor="middle" font-family="Arial" font-size="18" fill="#16a34a">✓</text>
+  <text x="325" y="108" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#92400e">Adjust the tape</text>
+
+  <!-- ONE change rule -->
+  <rect x="30" y="148" width="340" height="48" rx="14" fill="#fef3c7" stroke="#f97316" stroke-width="2.5"/>
+  <text x="200" y="168" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="14" fill="#ea580c" font-weight="bold">Make ONE change → retest!</text>
+  <text x="200" y="187" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#92400e">Did your score improve on the class chart? 🔧</text>
+
+  <text x="200" y="230" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="12" fill="#b45309">Real engineers always fix and improve!</text>
+  <text x="200" y="260" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="22">🔧 ✨ 🚡</text>
+</svg>

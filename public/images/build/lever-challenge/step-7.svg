@@ -1,0 +1,36 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f0fdf4" rx="20"/>
+  <text x="200" y="30" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="15" fill="#15803d">Real-World Lever Hunt! 🌍</text>
+  <!-- 3×2 grid of real-world examples -->
+  <!-- Row 1 -->
+  <rect x="20" y="45" width="110" height="75" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="75" y="75" text-anchor="middle" font-family="Arial" font-size="36">⚖️</text>
+  <text x="75" y="98" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#15803d">Balance Scale</text>
+  <text x="75" y="111" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#6b7280">Class 1</text>
+  <rect x="145" y="45" width="110" height="75" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="75" text-anchor="middle" font-family="Arial" font-size="36">🛻</text>
+  <text x="200" y="98" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7c3aed">Wheelbarrow</text>
+  <text x="200" y="111" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#6b7280">Class 2</text>
+  <rect x="270" y="45" width="110" height="75" rx="12" fill="#cffafe" stroke="#0891b2" stroke-width="2"/>
+  <text x="325" y="75" text-anchor="middle" font-family="Arial" font-size="36">🦾</text>
+  <text x="325" y="98" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#0891b2">Your Forearm</text>
+  <text x="325" y="111" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#6b7280">Class 3</text>
+  <!-- Row 2 -->
+  <rect x="20" y="130" width="110" height="75" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="75" y="162" text-anchor="middle" font-family="Arial" font-size="36">✂️</text>
+  <text x="75" y="185" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#15803d">Scissors</text>
+  <text x="75" y="198" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#6b7280">Class 1</text>
+  <rect x="145" y="130" width="110" height="75" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="162" text-anchor="middle" font-family="Arial" font-size="36">🚪</text>
+  <text x="200" y="185" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7c3aed">Bottle Opener</text>
+  <text x="200" y="198" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#6b7280">Class 2</text>
+  <rect x="270" y="130" width="110" height="75" rx="12" fill="#cffafe" stroke="#0891b2" stroke-width="2"/>
+  <text x="325" y="162" text-anchor="middle" font-family="Arial" font-size="36">🎣</text>
+  <text x="325" y="185" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#0891b2">Fishing Rod</text>
+  <text x="325" y="198" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#6b7280">Class 3</text>
+  <!-- Challenge question -->
+  <rect x="20" y="218" width="360" height="55" rx="12" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="200" y="237" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="12" fill="#92400e">🔎 Spot-the-lever challenge!</text>
+  <text x="200" y="253" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Find 1 lever in this classroom. Which class is it?</text>
+  <text x="200" y="267" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Share with the class — who found the trickiest one? 🏆</text>
+</svg>

@@ -1,0 +1,27 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#fdf4ff" rx="20"/>
+  <!-- Speech bubbles for share out -->
+  <ellipse cx="120" cy="80" rx="90" ry="45" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <polygon points="95,120 80,148 115,125" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="120" y="68" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7e22ce">"Mine lifted the</text>
+  <text x="120" y="82" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7e22ce">most with the</text>
+  <text x="120" y="96" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7e22ce">compound system!"</text>
+  <!-- Kid 1 -->
+  <circle cx="80" cy="170" r="22" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <text x="80" y="178" text-anchor="middle" font-family="Arial" font-size="22">😊</text>
+
+  <ellipse cx="290" cy="85" rx="90" ry="45" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <polygon points="305,128 330,152 295,130" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="290" y="72" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#15803d">"The compound</text>
+  <text x="290" y="86" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#15803d">saved even MORE</text>
+  <text x="290" y="100" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#15803d">effort with double load!"</text>
+  <!-- Kid 2 -->
+  <circle cx="330" cy="175" r="22" fill="#bbf7d0" stroke="#16a34a" stroke-width="2"/>
+  <text x="330" y="183" text-anchor="middle" font-family="Arial" font-size="22">🤩</text>
+
+  <!-- Vocab banner -->
+  <rect x="20" y="210" width="360" height="55" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="228" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#7e22ce">🧠 New Words: FIXED PULLEY · MOVABLE PULLEY</text>
+  <text x="200" y="244" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#7e22ce">COMPOUND PULLEY · MECHANICAL ADVANTAGE</text>
+  <text x="200" y="258" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#7e22ce">EFFORT · LOAD</text>
+</svg>

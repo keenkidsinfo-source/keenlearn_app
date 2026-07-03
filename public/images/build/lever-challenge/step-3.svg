@@ -1,0 +1,32 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f0fdf4" rx="20"/>
+  <text x="200" y="28" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="14" fill="#7c3aed">Build Class 2: Mini-Barrow 🛻</text>
+  <!-- Popsicle stick lever -->
+  <rect x="60" y="135" width="280" height="14" rx="5" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <!-- Fulcrum at RIGHT end (stack of coins / eraser) -->
+  <rect x="323" y="149" width="14" height="32" rx="3" fill="#fca5a5" stroke="#ef4444" stroke-width="2"/>
+  <rect x="315" y="181" width="30" height="7" rx="3" fill="#fca5a5" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="330" y="202" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="8" fill="#dc2626">fulcrum</text>
+  <!-- Load in MIDDLE (book/eraser on top) -->
+  <rect x="165" y="110" width="50" height="25" rx="5" fill="#c4b5fd" stroke="#7c3aed" stroke-width="2"/>
+  <text x="190" y="127" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#7c3aed">LOAD</text>
+  <line x1="190" y1="135" x2="190" y2="149" stroke="#7c3aed" stroke-width="2" stroke-dasharray="3 2"/>
+  <!-- Effort arrow at LEFT end (up) -->
+  <line x1="75" y1="120" x2="75" y2="135" stroke="#3b82f6" stroke-width="3" marker-end="url(#blarr3)" stroke-linecap="round"/>
+  <defs>
+    <marker id="blarr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <text x="75" y="114" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#3b82f6">effort ↓</text>
+  <!-- E-F-L label -->
+  <text x="75" y="172" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#3b82f6">E</text>
+  <text x="190" y="172" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#ef4444">L</text>
+  <text x="330" y="172" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#f97316">F</text>
+  <line x1="90" y1="167" x2="175" y2="167" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <line x1="205" y1="167" x2="315" y2="167" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect x="30" y="215" width="340" height="50" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="232" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#7c3aed">Class 2 order: E — L — F</text>
+  <text x="200" y="248" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Fulcrum at one END, load in the middle.</text>
+  <text x="200" y="261" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Gives you mechanical advantage — easier to lift!</text>
+</svg>

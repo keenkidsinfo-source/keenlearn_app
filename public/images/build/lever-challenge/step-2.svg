@@ -1,0 +1,34 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#f0fdf4" rx="20"/>
+  <text x="200" y="28" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="14" fill="#15803d">Build Class 1: Seesaw ⚖️</text>
+  <!-- Popsicle stick lever -->
+  <rect x="80" y="130" width="240" height="14" rx="5" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <!-- Fulcrum (eraser) in middle -->
+  <rect x="193" y="144" width="14" height="35" rx="3" fill="#fca5a5" stroke="#ef4444" stroke-width="2"/>
+  <rect x="183" y="179" width="34" height="8" rx="3" fill="#fca5a5" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="200" y="202" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#dc2626">eraser fulcrum</text>
+  <!-- Load (paperclips) on right -->
+  <g transform="translate(270,100)">
+    <ellipse cx="0" cy="34" rx="15" ry="5" fill="#9ca3af"/>
+    <path d="M-10,30 Q-15,10 -5,5 Q5,0 10,5 Q15,10 12,25" stroke="#6b7280" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M5,28 Q0,8 8,3 Q18,-2 20,5 Q22,12 18,25" stroke="#6b7280" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+  <text x="285" y="110" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#374151">load (paperclips)</text>
+  <!-- Effort arrow on left (pushing down) -->
+  <line x1="120" y1="115" x2="120" y2="130" stroke="#3b82f6" stroke-width="3" marker-end="url(#blarr2)" stroke-linecap="round"/>
+  <defs>
+    <marker id="blarr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  <text x="120" y="108" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="9" fill="#3b82f6">your finger (effort)</text>
+  <!-- E-F-L label -->
+  <text x="120" y="170" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#3b82f6">E</text>
+  <text x="200" y="170" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#f97316">F</text>
+  <text x="280" y="170" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#ef4444">L</text>
+  <line x1="135" y1="165" x2="185" y2="165" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <line x1="215" y1="165" x2="265" y2="165" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <rect x="30" y="218" width="340" height="42" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="200" y="234" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="11" fill="#15803d">Class 1 order: E — F — L</text>
+  <text x="200" y="252" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial" font-size="10" fill="#374151">Fulcrum in the MIDDLE. Push one end → other end lifts!</text>
+</svg>
