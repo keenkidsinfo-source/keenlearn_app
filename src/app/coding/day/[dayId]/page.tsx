@@ -26,7 +26,6 @@ export default async function CodingDayPage({ params }: Props) {
   if (items.length === 0) notFound()
   const { curriculumContentId, contentItem: item } = items[0]
 
-  // Find or indicate no project yet (create via API on first save)
   const [project] = await db
     .select()
     .from(codingProjects)
@@ -36,11 +35,10 @@ export default async function CodingDayPage({ params }: Props) {
     ))
     .limit(1)
 
-  // Language determined by grade band
-  const language: 'scratch' | 'python' = session.gradeBand === 'g3-4' ? 'python' : 'scratch'
+  // Language from metadata, fall back to grade band
+  const meta = item.metadata as any
+  const language: 'scratch' | 'python' = meta?.language ?? (session.gradeBand === 'g3-4' ? 'python' : 'scratch')
 
-  // For Scratch: pass /data URL so TurboWarp loads via ?project_url=
-  // For Python: pass the raw saved code directly as a prop
   const projectUrl = (language === 'scratch' && project?.projectData)
     ? `/api/v1/coding/${project.id}/data`
     : null
@@ -58,6 +56,9 @@ export default async function CodingDayPage({ params }: Props) {
       projectUrl={projectUrl}
       savedCode={savedCode}
       gradeBand={session.gradeBand ?? null}
+      challenge={meta?.challenge}
+      tagline={meta?.tagline}
+      steps={meta?.steps}
     />
   )
 }

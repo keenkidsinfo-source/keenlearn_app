@@ -13,10 +13,14 @@ interface Props {
   projectUrl: string | null
   savedCode: string | null
   gradeBand: GradeBand | null
+  challenge?: string
+  tagline?: string
+  steps?: string[]
 }
 
 export function CodingSandbox({
-  contentItemId, title, theme, language, projectId, projectUrl, savedCode, gradeBand
+  contentItemId, title, theme, language, projectId, projectUrl, savedCode, gradeBand,
+  challenge, tagline, steps
 }: Props) {
   const router          = useRouter()
   const iframeRef       = useRef<HTMLIFrameElement>(null)
@@ -26,6 +30,7 @@ export function CodingSandbox({
   const currentProjectId      = useRef(projectId)
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
   const pyCode                = useRef('')
+  const [showInstructions, setShowInstructions] = useState(true)
 
   // ── Upload helper (used by both Scratch and Python) ──
   const uploadProject = useCallback(async (projectJson: string, lang: 'scratch' | 'python') => {
@@ -138,6 +143,33 @@ export function CodingSandbox({
     tryInject().catch(e => console.error('[KK] tryInject error:', e))
   }, [projectUrl])
 
+  const InstructionsPanel = () => (
+    steps && steps.length > 0 ? (
+      <div className="bg-yellow-50 border-b border-yellow-200 shrink-0">
+        <button
+          onClick={() => setShowInstructions(v => !v)}
+          className="w-full flex items-center justify-between px-4 py-2 text-left"
+        >
+          <span className="font-black text-yellow-800 text-sm">
+            🎯 {challenge ?? 'Your Challenge'}
+            {tagline && <span className="font-normal text-yellow-700 ml-2">— {tagline}</span>}
+          </span>
+          <span className="text-yellow-600 text-xs font-bold">{showInstructions ? 'Hide ▲' : 'Show ▼'}</span>
+        </button>
+        {showInstructions && (
+          <ol className="px-4 pb-3 space-y-1">
+            {steps.map((step, i) => (
+              <li key={i} className={`text-sm flex gap-2 ${step.startsWith('⭐') ? 'text-yellow-700 font-bold mt-2' : 'text-gray-700'}`}>
+                {!step.startsWith('⭐') && <span className="text-yellow-500 font-black shrink-0">{i + 1}.</span>}
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
+    ) : null
+  )
+
   if (language === 'scratch') {
     return (
       <div className="flex flex-col h-screen bg-purple-50">
@@ -162,6 +194,7 @@ export function CodingSandbox({
             </form>
           </div>
         </header>
+        <InstructionsPanel />
         <iframe
           ref={iframeRef}
           src="/scratch/editor.html"
@@ -189,6 +222,7 @@ export function CodingSandbox({
             onClick={savePython}
             className="bg-purple-500 hover:bg-purple-400 text-white font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all"
           >
+
             Save
           </button>
           <form action="/api/v1/auth/logout" method="POST">
@@ -196,6 +230,7 @@ export function CodingSandbox({
           </form>
         </div>
       </header>
+      <InstructionsPanel />
       <main className="flex-1 overflow-hidden">
         <PythonEditor
           initialCode={savedCode ?? '# Write your Python code here\nprint("Hello, World!")'}
