@@ -1,54 +1,56 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
-type LoginStep = 'select-type' | 'access-code' | 'pick-avatar' | 'enter-pin' | 'teacher-form'
+type LoginStep = 'select-type' | 'access-code' | 'enter-name' | 'disambiguate' | 'teacher-form'
 
-interface Student {
-  id: string
-  name: string
-  displayName: string | null
-  avatarId: number | null
-}
-
-// Simple avatar display using emoji + colors (replace with real illustrations later)
-const AVATARS = [
-  { id: 1, emoji: '🦊', bg: 'bg-orange-100' },
-  { id: 2, emoji: '🐼', bg: 'bg-gray-100' },
-  { id: 3, emoji: '🦁', bg: 'bg-yellow-100' },
-  { id: 4, emoji: '🐸', bg: 'bg-green-100' },
-  { id: 5, emoji: '🦋', bg: 'bg-purple-100' },
-  { id: 6, emoji: '🐬', bg: 'bg-blue-100' },
-  { id: 7, emoji: '🦄', bg: 'bg-pink-100' },
-  { id: 8, emoji: '🐉', bg: 'bg-red-100' },
-]
+interface NameOption { id: string; firstName: string }
 
 export default function LoginPage() {
   const router = useRouter()
-  const [step, setStep]               = useState<LoginStep>('select-type')
-  const [accessCode, setAccessCode]   = useState('')
-  const [students, setStudents]       = useState<Student[]>([])
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
-  const [pin, setPin]                 = useState('')
-  const [error, setError]             = useState('')
-  const [loading, setLoading]         = useState(false)
+  const searchParams = useSearchParams()
 
-  // Teacher form state
-  const [email, setEmail]       = useState('')
-  const [password, setPassword] = useState('')
+  const [step, setStep]           = useState<LoginStep>('select-type')
+  const [accessCode, setAccessCode] = useState('')
+  const [lastName, setLastName]   = useState('')
+  const [options, setOptions]     = useState<NameOption[]>([])
+  const [error, setError]         = useState('')
+  const [loading, setLoading]     = useState(false)
 
-  async function handleAccessCode() {
-    if (accessCode.length !== 6) return
+  // Teacher form
+  const [email, setEmail]         = useState('')
+  const [password, setPassword]   = useState('')
+
+  // Pre-fill access code from URL ?code=KEEN01
+  useEffect(() => {
+    const code = searchParams.get('code')
+    if (code && code.length === 6) {
+      setAccessCode(code.toUpperCase())
+      setStep('enter-name')
+    }
+  }, [searchParams])
+
+  async function handleNameSubmit() {
+    if (!lastName.trim()) return
     setLoading(true)
     setError('')
     try {
-      const res = await fetch(`/api/v1/classroom/students?code=${accessCode.toUpperCase()}`)
+      const res = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'student', accessCode, lastName: lastName.trim() }),
+      })
       const json = await res.json()
-      if (!res.ok) { setError('Invalid classroom code. Try again!'); return }
-      setStudents(json.data)
-      setStep('pick-avatar')
+      if (!res.ok) { setError(json.error ?? 'Something went wrong.'); return }
+
+      if (json.data?.needsDisambiguation) {
+        setOptions(json.data.options)
+        setStep('disambiguate')
+      } else {
+        router.push('/dashboard')
+      }
     } catch {
       setError('Something went wrong. Try again!')
     } finally {
@@ -56,19 +58,16 @@ export default function LoginPage() {
     }
   }
 
-  async function handlePinSubmit(fullPin?: string) {
-    const pinToUse = fullPin ?? pin
-    if (!selectedStudent || pinToUse.length !== 4) return
+  async function handleDisambiguate(userId: string) {
     setLoading(true)
     setError('')
     try {
       const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'student', accessCode, userId: selectedStudent.id, pin: pinToUse }),
+        body: JSON.stringify({ type: 'student', accessCode, lastName: lastName.trim(), userId }),
       })
-      const json = await res.json()
-      if (!res.ok) { setError('Wrong PIN! Try again.'); setPin(''); return }
+      if (!res.ok) { const j = await res.json(); setError(j.error ?? 'Something went wrong.'); return }
       router.push('/dashboard')
     } catch {
       setError('Something went wrong. Try again!')
@@ -96,14 +95,6 @@ export default function LoginPage() {
     }
   }
 
-  function handlePinDigit(digit: string) {
-    if (pin.length < 4) {
-      const next = pin + digit
-      setPin(next)
-      if (next.length === 4) setTimeout(() => handlePinSubmit(next), 200)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-keen-100 to-white flex flex-col items-center justify-center p-6">
       <div className="w-full max-w-md">
@@ -123,17 +114,13 @@ export default function LoginPage() {
         {/* ── Step: select type ── */}
         {step === 'select-type' && (
           <div className="flex flex-col gap-4">
-            <button
-              onClick={() => setStep('access-code')}
-              className="subject-card bg-keen-50 border-2 border-keen-200 hover:border-keen-400"
-            >
+            <button onClick={() => setStep('access-code')}
+              className="subject-card bg-keen-50 border-2 border-keen-200 hover:border-keen-400">
               <span className="text-4xl">👦👧</span>
               <span className="text-xl font-bold text-keen-700">I&apos;m a Student</span>
             </button>
-            <button
-              onClick={() => setStep('teacher-form')}
-              className="subject-card bg-gray-50 border-2 border-gray-200 hover:border-gray-400"
-            >
+            <button onClick={() => setStep('teacher-form')}
+              className="subject-card bg-gray-50 border-2 border-gray-200 hover:border-gray-400">
               <span className="text-4xl">👩‍🏫</span>
               <span className="text-xl font-bold text-gray-700">I&apos;m a Teacher</span>
             </button>
@@ -149,95 +136,66 @@ export default function LoginPage() {
               maxLength={6}
               value={accessCode}
               onChange={e => setAccessCode(e.target.value.toUpperCase())}
-              placeholder="e.g. KEEN42"
+              placeholder="e.g. KEEN01"
               className="w-full text-center text-3xl font-black tracking-[0.3em] border-4 border-keen-200 rounded-2xl p-4 focus:outline-none focus:border-keen-500 uppercase"
+              autoFocus
             />
             <button
-              onClick={handleAccessCode}
-              disabled={accessCode.length !== 6 || loading}
+              onClick={() => { setError(''); setStep('enter-name') }}
+              disabled={accessCode.length !== 6}
               className="btn-primary w-full mt-6 disabled:opacity-50"
             >
-              {loading ? 'Checking...' : 'Next →'}
+              Next →
             </button>
-            <button onClick={() => setStep('select-type')} className="w-full mt-3 text-gray-400 text-sm">
-              ← Back
-            </button>
+            <button onClick={() => setStep('select-type')} className="w-full mt-3 text-gray-400 text-sm">← Back</button>
           </div>
         )}
 
-        {/* ── Step: pick avatar ── */}
-        {step === 'pick-avatar' && (
+        {/* ── Step: enter last name ── */}
+        {step === 'enter-name' && (
           <div className="bg-white rounded-3xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-center mb-6">Who are you?</h2>
-            <div className="grid grid-cols-3 gap-3">
-              {students.map(student => {
-                const avatar = AVATARS.find(a => a.id === student.avatarId) ?? AVATARS[0]
-                return (
-                  <button
-                    key={student.id}
-                    onClick={() => { setSelectedStudent(student); setStep('enter-pin') }}
-                    className={cn(
-                      'flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all',
-                      avatar.bg, 'border-transparent hover:border-keen-400 active:scale-95'
-                    )}
-                  >
-                    <span className="text-4xl">{avatar.emoji}</span>
-                    <span className="font-bold text-sm text-center leading-tight">
-                      {student.displayName ?? student.name}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-            <button onClick={() => setStep('access-code')} className="w-full mt-4 text-gray-400 text-sm">
-              ← Back
+            <h2 className="text-2xl font-bold text-center mb-2">What&apos;s your last name?</h2>
+            <p className="text-center text-gray-400 text-sm mb-6">Type it exactly as your teacher wrote it</p>
+            <input
+              type="text"
+              value={lastName}
+              onChange={e => setLastName(e.target.value)}
+              placeholder="e.g. Smith"
+              className="w-full text-center text-3xl font-bold border-4 border-keen-200 rounded-2xl p-4 focus:outline-none focus:border-keen-500"
+              autoCapitalize="words"
+              autoComplete="off"
+              autoFocus
+              onKeyDown={e => e.key === 'Enter' && handleNameSubmit()}
+            />
+            <button
+              onClick={handleNameSubmit}
+              disabled={!lastName.trim() || loading}
+              className="btn-primary w-full mt-6 disabled:opacity-50"
+            >
+              {loading ? 'Checking...' : 'Log In →'}
             </button>
+            <button onClick={() => { setStep('access-code'); setLastName('') }} className="w-full mt-3 text-gray-400 text-sm">← Back</button>
           </div>
         )}
 
-        {/* ── Step: enter PIN ── */}
-        {step === 'enter-pin' && selectedStudent && (
+        {/* ── Step: disambiguate ── */}
+        {step === 'disambiguate' && (
           <div className="bg-white rounded-3xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-center mb-2">
-              Hi {selectedStudent.displayName ?? selectedStudent.name}! 👋
-            </h2>
-            <p className="text-center text-gray-500 mb-6">Enter your 4-digit PIN</p>
-
-            {/* PIN dots */}
-            <div className="flex justify-center gap-4 mb-8">
-              {[0,1,2,3].map(i => (
-                <div
-                  key={i}
-                  className={cn(
-                    'w-5 h-5 rounded-full transition-all',
-                    i < pin.length ? 'bg-keen-600 scale-110' : 'bg-gray-200'
-                  )}
-                />
-              ))}
-            </div>
-
-            {/* Number pad */}
-            <div className="grid grid-cols-3 gap-3">
-              {['1','2','3','4','5','6','7','8','9','','0','⌫'].map((d, i) => (
+            <h2 className="text-2xl font-bold text-center mb-2">Which one are you?</h2>
+            <p className="text-center text-gray-400 text-sm mb-6">Tap your first name</p>
+            <div className="flex flex-col gap-3">
+              {options.map(opt => (
                 <button
-                  key={i}
-                  onClick={() => d === '⌫' ? setPin(p => p.slice(0,-1)) : d && handlePinDigit(d)}
-                  disabled={!d && d !== '0'}
-                  className={cn(
-                    'h-16 rounded-2xl text-2xl font-bold transition-all active:scale-95',
-                    d ? 'bg-gray-100 hover:bg-keen-100 text-gray-800' : 'opacity-0 pointer-events-none'
-                  )}
+                  key={opt.id}
+                  onClick={() => handleDisambiguate(opt.id)}
+                  disabled={loading}
+                  className="w-full py-5 text-2xl font-black text-keen-700 bg-keen-50 border-2 border-keen-200 hover:border-keen-500 hover:bg-keen-100 rounded-2xl transition-all active:scale-95 disabled:opacity-50"
                 >
-                  {d}
+                  {opt.firstName}
                 </button>
               ))}
             </div>
-
-            {loading && <p className="text-center text-keen-600 mt-4 font-semibold">Logging in...</p>}
-
-            <button onClick={() => { setStep('pick-avatar'); setPin('') }} className="w-full mt-4 text-gray-400 text-sm">
-              ← Back
-            </button>
+            <button onClick={() => { setStep('enter-name'); setOptions([]) }} className="w-full mt-4 text-gray-400 text-sm">← Back</button>
           </div>
         )}
 
@@ -246,29 +204,17 @@ export default function LoginPage() {
           <div className="bg-white rounded-3xl shadow-lg p-8">
             <h2 className="text-2xl font-bold text-center mb-6">Teacher Login</h2>
             <form onSubmit={handleTeacherLogin} className="flex flex-col gap-4">
-              <input
-                type="email"
-                placeholder="Email address"
-                value={email}
+              <input type="email" placeholder="Email address" value={email}
                 onChange={e => setEmail(e.target.value)}
-                className="border-2 border-gray-200 rounded-2xl p-4 text-lg focus:outline-none focus:border-keen-400"
-                required
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
+                className="border-2 border-gray-200 rounded-2xl p-4 text-lg focus:outline-none focus:border-keen-400" required />
+              <input type="password" placeholder="Password" value={password}
                 onChange={e => setPassword(e.target.value)}
-                className="border-2 border-gray-200 rounded-2xl p-4 text-lg focus:outline-none focus:border-keen-400"
-                required
-              />
+                className="border-2 border-gray-200 rounded-2xl p-4 text-lg focus:outline-none focus:border-keen-400" required />
               <button type="submit" disabled={loading} className="btn-primary disabled:opacity-50">
                 {loading ? 'Signing in...' : 'Sign In'}
               </button>
             </form>
-            <button onClick={() => setStep('select-type')} className="w-full mt-4 text-gray-400 text-sm">
-              ← Back
-            </button>
+            <button onClick={() => setStep('select-type')} className="w-full mt-4 text-gray-400 text-sm">← Back</button>
           </div>
         )}
       </div>
