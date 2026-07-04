@@ -113,8 +113,8 @@ async function run() {
       console.warn(`⚠ No coding item found for ${p.gradeBand} week ${p.weekNumber}`)
       continue
     }
-    await sql`UPDATE content_items SET metadata = ${p.metadata} WHERE id = ${item.id}`
-    console.log(`✓ Updated: ${p.gradeBand} Week ${p.weekNumber} — "${p.metadata.challenge}" (${item.title})`)
+    await sql`UPDATE content_items SET title = ${p.metadata.challenge}, metadata = ${p.metadata} WHERE id = ${item.id}`
+    console.log(`✓ Updated: ${p.gradeBand} Week ${p.weekNumber} — "${p.metadata.challenge}" (was: ${item.title})`)
   }
 
   await sql.end()
