@@ -157,14 +157,14 @@ export function CodingSandbox({
           <span className="text-yellow-600 text-xs font-bold">{showInstructions ? 'Hide ▲' : 'Show ▼'}</span>
         </button>
         {showInstructions && (
-          <ol className="px-4 pb-3 space-y-1">
+          <div className="px-4 pb-3 space-y-1">
             {steps.map((step, i) => (
-              <li key={i} className={`text-sm flex gap-2 ${step.startsWith('⭐') ? 'text-yellow-700 font-bold mt-2' : 'text-gray-700'}`}>
+              <div key={i} className={`text-sm flex gap-2 ${step.startsWith('⭐') ? 'text-yellow-700 font-bold mt-2' : 'text-gray-700'}`}>
                 {!step.startsWith('⭐') && <span className="text-yellow-500 font-black shrink-0">{i + 1}.</span>}
                 <span>{step}</span>
-              </li>
+              </div>
             ))}
-          </ol>
+          </div>
         )}
       </div>
     ) : null
