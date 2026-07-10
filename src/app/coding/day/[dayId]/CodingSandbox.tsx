@@ -116,6 +116,36 @@ export function CodingSandbox({
     }
   }, [language, saveScratch, savePython])
 
+  // Save with keepalive when the tab/window is closed or the user navigates away at OS level
+  useEffect(() => {
+    if (language !== 'scratch') return
+    const handleBeforeUnload = () => {
+      try {
+        const vm = (iframeRef.current?.contentWindow as any)?.vm
+        if (!vm) return
+        const projectJson = vm.toJSON()
+        if (!projectJson) return
+        const method = currentProjectId.current ? 'PUT' : 'POST'
+        const url = currentProjectId.current
+          ? `/api/v1/coding/${currentProjectId.current}`
+          : '/api/v1/coding'
+        const body = currentProjectId.current
+          ? { projectJson, curriculumContentId: contentItemId }
+          : { curriculumContentId: contentItemId, title, language: 'scratch', projectJson }
+        fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          keepalive: true,
+        })
+      } catch (e) {
+        console.error('beforeunload save failed', e)
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [language, contentItemId, title])
+
   // After iframe loads, inject saved project directly via vm.loadProject()
   const onIframeLoad = useCallback(() => {
     console.log('[KK] onIframeLoad, projectUrl=', projectUrl)
@@ -147,7 +177,7 @@ export function CodingSandbox({
     return (
       <div className="flex flex-col h-screen bg-purple-50">
         <header className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3 shrink-0">
-          <button onClick={() => router.push('/dashboard')} className="text-purple-200 text-2xl">←</button>
+          <button onClick={async () => { await saveScratch(); router.push('/dashboard') }} className="text-purple-200 text-2xl">←</button>
           <div className="flex-1 min-w-0">
             <h1 className="font-black text-lg truncate">💻 {title}</h1>
             {theme && <p className="text-purple-200 text-xs">{theme}</p>}
@@ -183,7 +213,7 @@ export function CodingSandbox({
   return (
     <div className="flex flex-col h-screen bg-purple-50">
       <header className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3 shrink-0">
-        <button onClick={() => router.push('/dashboard')} className="text-purple-200 text-2xl">←</button>
+        <button onClick={async () => { await savePython(); router.push('/dashboard') }} className="text-purple-200 text-2xl">←</button>
         <div className="flex-1 min-w-0">
           <h1 className="font-black text-lg truncate">💻 {title}</h1>
           {theme && <p className="text-purple-200 text-xs">{theme}</p>}
