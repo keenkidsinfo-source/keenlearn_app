@@ -143,33 +143,6 @@ export function CodingSandbox({
     tryInject().catch(e => console.error('[KK] tryInject error:', e))
   }, [projectUrl])
 
-  const InstructionsPanel = () => (
-    steps && steps.length > 0 ? (
-      <div className="bg-yellow-50 border-b border-yellow-200 shrink-0">
-        <button
-          onClick={() => setShowInstructions(v => !v)}
-          className="w-full flex items-center justify-between px-4 py-2 text-left"
-        >
-          <span className="font-black text-yellow-800 text-sm">
-            🎯 {challenge ?? 'Your Challenge'}
-            {tagline && <span className="font-normal text-yellow-700 ml-2">— {tagline}</span>}
-          </span>
-          <span className="text-yellow-600 text-xs font-bold">{showInstructions ? 'Hide ▲' : 'Show ▼'}</span>
-        </button>
-        {showInstructions && (
-          <div className="px-4 pb-3 space-y-1">
-            {steps.map((step, i) => (
-              <div key={i} className={`text-sm flex gap-2 ${step.startsWith('⭐') ? 'text-yellow-700 font-bold mt-2' : 'text-gray-700'}`}>
-                {!step.startsWith('⭐') && <span className="text-yellow-500 font-black shrink-0">{i + 1}.</span>}
-                <span>{step}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    ) : null
-  )
-
   if (language === 'scratch') {
     return (
       <div className="flex flex-col h-screen bg-purple-50">
@@ -194,7 +167,7 @@ export function CodingSandbox({
             </form>
           </div>
         </header>
-        <InstructionsPanel />
+        <InstructionsPanel steps={steps} challenge={challenge} tagline={tagline} show={showInstructions} onToggle={() => setShowInstructions(v => !v)} />
         <iframe
           ref={iframeRef}
           src="/scratch/editor.html"
@@ -237,6 +210,42 @@ export function CodingSandbox({
           onCodeChange={code => { pyCode.current = code }}
         />
       </main>
+    </div>
+  )
+}
+
+function InstructionsPanel({
+  steps, challenge, tagline, show, onToggle,
+}: {
+  steps?: string[]
+  challenge?: string
+  tagline?: string
+  show: boolean
+  onToggle: () => void
+}) {
+  if (!steps || steps.length === 0) return null
+  return (
+    <div className="bg-yellow-50 border-b border-yellow-200 shrink-0">
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center justify-between px-4 py-2 text-left"
+      >
+        <span className="font-black text-yellow-800 text-sm">
+          🎯 {challenge ?? 'Your Challenge'}
+          {tagline && <span className="font-normal text-yellow-700 ml-2">— {tagline}</span>}
+        </span>
+        <span className="text-yellow-600 text-xs font-bold">{show ? 'Hide ▲' : 'Show ▼'}</span>
+      </button>
+      {show && (
+        <div className="px-4 pb-3 space-y-1">
+          {steps.map((step, i) => (
+            <div key={i} className={`text-sm flex gap-2 ${step.startsWith('⭐') ? 'text-yellow-700 font-bold mt-2' : 'text-gray-700'}`}>
+              {!step.startsWith('⭐') && <span className="text-yellow-500 font-black shrink-0">{i + 1}.</span>}
+              <span>{step}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

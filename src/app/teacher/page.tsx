@@ -63,7 +63,7 @@ export default async function TeacherDashboardPage() {
     : [undefined]
 
   // Build per-subject per-student progress for this week
-  type SubjectProgress = { subject: Subject; contentItemId: string }
+  type SubjectProgress = { subject: Subject; dayId: string; contentItemId: string }
   let weekSubjects: SubjectProgress[] = []
   // sessionMap: studentId → Set of completed contentItemIds
   const sessionMap = new Map<string, Set<string>>()
@@ -73,7 +73,11 @@ export default async function TeacherDashboardPage() {
   if (thisWeek && students.length > 0) {
     // Get all curriculum days + content items for this week
     const dayItems = await db
-      .select({ subject: curriculumDays.subject, contentItemId: curriculumContent.contentItemId })
+      .select({
+        subject:       curriculumDays.subject,
+        dayId:         curriculumDays.id,
+        contentItemId: curriculumContent.contentItemId,
+      })
       .from(curriculumDays)
       .innerJoin(curriculumContent, eq(curriculumContent.curriculumDayId, curriculumDays.id))
       .where(eq(curriculumDays.curriculumId, thisWeek.curriculumId))
@@ -108,7 +112,8 @@ export default async function TeacherDashboardPage() {
     }
   }
 
-  const totalThisWeek = weekSubjects.length
+  const totalThisWeek   = weekSubjects.length
+  const speakingDay     = weekSubjects.find(ws => ws.subject === 'public_speaking')
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -169,6 +174,14 @@ export default async function TeacherDashboardPage() {
                     </span>
                   ))}
                 </div>
+              )}
+              {speakingDay && (
+                <Link
+                  href={`/teacher/speaking/${speakingDay.dayId}`}
+                  className="mt-3 flex items-center justify-center gap-2 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+                >
+                  🎤 Run Speaking Class
+                </Link>
               )}
             </div>
           ) : (
