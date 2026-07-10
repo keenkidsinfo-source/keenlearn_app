@@ -31,6 +31,8 @@ export function CodingSandbox({
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
   const pyCode                = useRef('')
   const [showInstructions, setShowInstructions] = useState(true)
+  const [projectLoading, setProjectLoading] = useState(false)
+  const [projectLoaded, setProjectLoaded] = useState(false)
 
   // ── Upload helper (used by both Scratch and Python) ──
   const uploadProject = useCallback(async (projectJson: string, lang: 'scratch' | 'python') => {
@@ -147,31 +149,43 @@ export function CodingSandbox({
   }, [language, contentItemId, title])
 
   // After iframe loads, inject saved project directly via vm.loadProject()
-  const onIframeLoad = useCallback(() => {
-    console.log('[KK] onIframeLoad, projectUrl=', projectUrl)
+  // We wait for: (1) vm to exist, and (2) vm.runtime.targets to be populated
+  // — TurboWarp loads a default project async after vm appears, so we must
+  // wait for that too or our loadProject call gets overwritten.
+  const injectProject = useCallback(async () => {
     if (!projectUrl) return
-    let cancelled = false
-    const tryInject = async () => {
+    setProjectLoading(true)
+    try {
       const res = await fetch(projectUrl)
       console.log('[KK] /data fetch status:', res.status)
-      if (!res.ok || cancelled) return
+      if (!res.ok) { console.error('[KK] project data fetch failed:', res.status); return }
       const json = await res.text()
       console.log('[KK] project data length:', json.length)
-      for (let i = 0; i < 40; i++) {
+
+      // Wait up to 45 seconds for VM AND default project to finish loading
+      for (let i = 0; i < 180; i++) {
         await new Promise(r => setTimeout(r, 250))
-        if (cancelled) return
         const vm = (iframeRef.current?.contentWindow as any)?.vm
-        if (vm) {
-          console.log('[KK] VM ready, calling loadProject')
+        // vm.runtime.targets.length > 0 means default project finished loading
+        if (vm && vm.runtime?.targets?.length > 0) {
+          console.log('[KK] VM ready (targets:', vm.runtime.targets.length, '), calling loadProject')
           await vm.loadProject(json)
           console.log('[KK] loadProject done')
+          setProjectLoaded(true)
           return
         }
       }
-      console.warn('[KK] VM never became ready after 10s')
+      console.warn('[KK] VM never became ready after 45s')
+    } catch (e) {
+      console.error('[KK] injectProject error:', e)
+    } finally {
+      setProjectLoading(false)
     }
-    tryInject().catch(e => console.error('[KK] tryInject error:', e))
   }, [projectUrl])
+
+  const onIframeLoad = useCallback(() => {
+    injectProject()
+  }, [injectProject])
 
   if (language === 'scratch') {
     return (
@@ -183,9 +197,20 @@ export function CodingSandbox({
             {theme && <p className="text-purple-200 text-xs">{theme}</p>}
           </div>
           <div className="flex items-center gap-2">
+            {projectLoading && <span className="text-yellow-300 text-xs font-bold animate-pulse">⏳ Loading…</span>}
             {saving    && <span className="text-purple-200 text-sm">Saving…</span>}
             {saved     && <span className="text-green-300 text-sm font-bold">✓ Saved</span>}
-            {saveError && <span className="text-red-300 text-sm">{saveError}</span>}
+            {saveError && <span className="text-red-300 text-xs max-w-[120px] truncate" title={saveError}>⚠ {saveError}</span>}
+            {projectUrl && !projectLoading && !projectLoaded && (
+              <button
+                onClick={injectProject}
+                onMouseDown={e => e.preventDefault()}
+                className="bg-yellow-500 hover:bg-yellow-400 text-white font-bold px-2 py-1 rounded-xl text-xs"
+                title="Reload your saved project"
+              >
+                Reload project
+              </button>
+            )}
             <button
               onClick={saveScratch}
               className="bg-purple-500 hover:bg-purple-400 text-white font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all"
