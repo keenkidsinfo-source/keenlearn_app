@@ -107,9 +107,9 @@ export function CodingSandbox({
 
   useEffect(() => {
     if (language === 'scratch') {
-      autoSaveTimer.current = setInterval(saveScratch, 30_000)
+      autoSaveTimer.current = setInterval(saveScratch, 10_000)
     } else {
-      autoSaveTimer.current = setInterval(savePython, 30_000)
+      autoSaveTimer.current = setInterval(savePython, 10_000)
     }
     return () => {
       if (autoSaveTimer.current) clearInterval(autoSaveTimer.current)
@@ -203,7 +203,7 @@ export function CodingSandbox({
           </form>
         </div>
       </header>
-      <InstructionsPanel />
+      <InstructionsPanel steps={steps} challenge={challenge} tagline={tagline} show={showInstructions} onToggle={() => setShowInstructions(v => !v)} />
       <main className="flex-1 overflow-hidden">
         <PythonEditor
           initialCode={savedCode ?? '# Write your Python code here\nprint("Hello, World!")'}

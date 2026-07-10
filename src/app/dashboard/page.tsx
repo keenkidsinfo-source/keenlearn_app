@@ -6,9 +6,9 @@ import {
   curriculumDays, schoolSchedule, schools, users,
 } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
-import { SUBJECT_COLORS, SUBJECT_EMOJI, SUBJECT_LABEL, DAY_LABELS } from '@/lib/utils'
-import type { Subject } from '@/lib/db/schema'
 import Link from 'next/link'
+import type { Subject } from '@/lib/db/schema'
+import { WeekDays } from './WeekDays'
 
 function getMondayStr(): string {
   const today = new Date()
@@ -82,14 +82,12 @@ export default async function DashboardPage() {
 
   const subjectToDay = new Map(currDays.map(d => [d.subject, d]))
 
-  const todayDow = new Date().getDay()
-  const todayIndex = todayDow === 0 ? 5 : todayDow // clamp Sunday → show Friday
-
   // Build week view: 5 days using school schedule
+  // Note: today-detection moved to WeekDays client component to use browser's local clock
   const weekDays = [1, 2, 3, 4, 5].map(dow => {
-    const subject = dayToSubject.get(dow)
+    const subject = dayToSubject.get(dow) ?? null
     const currDay = subject ? subjectToDay.get(subject) : undefined
-    return { dow, subject, currDay }
+    return { dow, subject, dayId: currDay?.id ?? null, theme: currDay?.theme ?? null }
   })
 
   return (
@@ -123,58 +121,7 @@ export default async function DashboardPage() {
             <p className="text-gray-400 mt-2">Your teacher will assign this week&apos;s plan soon!</p>
           </div>
         ) : (
-          <>
-            {/* Today's highlight */}
-            {weekDays.filter(d => d.dow === todayIndex && d.subject).map(({ dow, subject, currDay }) => {
-              const colors = SUBJECT_COLORS[subject!]
-              return (
-                <div key={dow} className={`${colors.light} border-2 ${colors.border} rounded-3xl p-6 mb-6`}>
-                  <p className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-1">Today</p>
-                  <Link href={currDay ? `/${subject}/day/${currDay.id}` : '#'} className="block">
-                    <div className="flex items-center gap-4">
-                      <span className="text-5xl">{SUBJECT_EMOJI[subject!]}</span>
-                      <div>
-                        <h2 className={`text-2xl font-black ${colors.text}`}>{SUBJECT_LABEL[subject!]}</h2>
-                        {currDay?.theme && <p className="text-gray-600 mt-0.5">{currDay.theme}</p>}
-                      </div>
-                    </div>
-                    <div className={`mt-4 btn-subject ${colors.bg} text-white w-full text-center`}>
-                      Let&apos;s go! →
-                    </div>
-                  </Link>
-                </div>
-              )
-            })}
-
-            {/* Week view */}
-            <h2 className="text-lg font-bold text-gray-700 mb-3">This Week</h2>
-            <div className="flex flex-col gap-3">
-              {weekDays.map(({ dow, subject, currDay }) => {
-                if (!subject) return null
-                const colors  = SUBJECT_COLORS[subject]
-                const isToday = dow === todayIndex
-                const isPast  = dow < todayIndex
-                return (
-                  <Link
-                    key={dow}
-                    href={currDay ? `/${subject}/day/${currDay.id}` : '#'}
-                    className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all
-                      ${isToday ? `${colors.light} ${colors.border} shadow-md` : 'bg-white border-gray-100 hover:border-gray-300'}
-                      ${isPast ? 'opacity-60' : ''}`}
-                  >
-                    <span className="text-3xl w-10 text-center">{SUBJECT_EMOJI[subject]}</span>
-                    <div className="flex-1">
-                      <p className="font-bold text-gray-700">{DAY_LABELS[dow]}</p>
-                      <p className={`font-semibold ${colors.text}`}>{SUBJECT_LABEL[subject]}</p>
-                      {currDay?.theme && <p className="text-sm text-gray-400">{currDay.theme}</p>}
-                    </div>
-                    {isToday && <span className="text-xs font-bold bg-keen-600 text-white px-2 py-1 rounded-full">TODAY</span>}
-                    {isPast && <span className="text-xl">✅</span>}
-                  </Link>
-                )
-              })}
-            </div>
-          </>
+          <WeekDays weekDays={weekDays} />
         )}
       </main>
     </div>
