@@ -16,17 +16,22 @@ function getMondayStr(): string {
   const diff = day === 0 ? -6 : 1 - day
   const monday = new Date(today)
   monday.setDate(today.getDate() + diff)
-  // Use local date components to avoid UTC-offset shifting the date
   const pad = (n: number) => String(n).padStart(2, '0')
   return `${monday.getFullYear()}-${pad(monday.getMonth() + 1)}-${pad(monday.getDate())}`
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ week?: string }>
+}) {
   const session = await getSession()
   if (!session) redirect('/login')
   if (session.role !== 'student') redirect('/teacher')
 
-  const mondayStr = getMondayStr()
+  const { week } = await searchParams
+  // Accept ?week=YYYY-MM-DD so students can browse past weeks
+  const mondayStr = (week && /^\d{4}-\d{2}-\d{2}$/.test(week)) ? week : getMondayStr()
 
   // Load student's school name
   const [student] = await db
@@ -114,15 +119,7 @@ export default async function DashboardPage() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6">
-        {!assigned ? (
-          <div className="text-center py-16">
-            <div className="text-6xl mb-4">📅</div>
-            <h2 className="text-2xl font-bold text-gray-600">No activities this week yet</h2>
-            <p className="text-gray-400 mt-2">Your teacher will assign this week&apos;s plan soon!</p>
-          </div>
-        ) : (
-          <WeekDays weekDays={weekDays} />
-        )}
+        <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned} />
       </main>
     </div>
   )
