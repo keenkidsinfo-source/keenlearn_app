@@ -228,6 +228,8 @@ function InstructionsPanel({
     <div className="bg-yellow-50 border-b border-yellow-200 shrink-0">
       <button
         onClick={onToggle}
+        // prevent stealing keyboard focus from the Scratch iframe (fixes Ctrl+Z undo)
+        onMouseDown={e => e.preventDefault()}
         className="w-full flex items-center justify-between px-4 py-2 text-left"
       >
         <span className="font-black text-yellow-800 text-sm">

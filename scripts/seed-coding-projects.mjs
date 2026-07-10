@@ -18,77 +18,86 @@ try {
 const sql = postgres(process.env.DATABASE_URL)
 
 const projects = [
+  // ── G1-2 Week 1: Zipline Zoo ────────────────────────────────────────────────
+  // Goal: animal slides across the screen when Space is pressed
   {
     gradeBand: 'g1-2',
     weekNumber: 1,
     metadata: {
       language: 'scratch',
       challenge: 'Zipline Zoo',
-      tagline: 'Rescue animals from the mountain using a zipline!',
+      tagline: 'Make an animal ride a zipline across the screen!',
       steps: [
-        'Pick a mountain or forest backdrop from the Scratch library',
-        'Choose an animal sprite — any animal you like!',
-        'Add this code: when 🏁 clicked → go to x: -180 y: 120 (top left)',
-        'Add this code: when SPACE pressed → glide 1 secs to x: 180 y: -100 (bottom right)',
-        'Create a variable called Rescued — add 1 to it each time the animal reaches the bottom',
-        'Add a fun sound when the animal arrives safely',
-        '⭐ Challenge: Add a second animal that slides down after the first one!',
+        '🖼️ Pick a background — click the picture in the bottom-right corner and choose a forest or mountain',
+        '🦁 Add your animal — click "Choose a Sprite" (the cat face icon) and pick any animal you like',
+        '📍 Put your animal on the LEFT side of the screen — drag it there with your mouse',
+        '💻 Go to the Code tab (top left) → click Motion (blue) → drag "glide 1 secs to x: y:" onto your animal',
+        '🏁 Press the green flag and then press SPACE — does your animal move? Ask your teacher if you need help with the numbers!',
+        '🎵 Add a sound! Go to Sound tab → click "Choose a Sound" → pick something fun for when the animal arrives',
+        '⭐ Bonus: Can you add a second animal that goes the other way?',
       ],
     },
   },
+
+  // ── G1-2 Week 2: Balance Scale ──────────────────────────────────────────────
+  // Goal: two objects, student picks which is heavier
   {
     gradeBand: 'g1-2',
     weekNumber: 2,
     metadata: {
       language: 'scratch',
-      challenge: "Who's Heavier?",
-      tagline: 'Guess which mystery object is heavier before the scale tips!',
+      challenge: "Balance Scale",
+      tagline: 'Which object is heavier? Build a guessing game!',
       steps: [
-        'Pick a plain backdrop — draw a big balance scale shape on it, or use a white background',
-        'Add two mystery object sprites on opposite sides (try: a rock and a feather!)',
-        'Add two button sprites: one saying LEFT HEAVIER, one saying RIGHT HEAVIER',
-        'Code the LEFT button: when clicked → if the left object IS heavier → say "You got it! ⭐" else say "Oops! Try again!"',
-        'Add a Score variable — increase by 1 when the answer is correct',
-        'Make the scale sprite tilt left or right to reveal the answer after the button is clicked',
-        '⭐ Challenge: Make a new mystery pair of objects appear after each correct answer!',
+        '🖼️ Pick a plain background — try the white one or draw your own balance scale',
+        '🪨 Add two sprites — pick something heavy (rock, truck) and something light (feather, balloon)',
+        '💬 Click on the heavy sprite → go to Code → drag "when this sprite clicked" → add "say Correct! ⭐ for 2 secs"',
+        '💬 Click on the light sprite → go to Code → drag "when this sprite clicked" → add "say Oops! Try again! for 2 secs"',
+        '🏁 Press the green flag and click each object — does the right one say correct?',
+        '⭐ Bonus: Add a score! Go to Variables → "Make a Variable" called Score → add 1 when the correct one is clicked',
       ],
     },
   },
+
+  // ── G3-4 Week 1: Rescue Mission ─────────────────────────────────────────────
+  // Goal: move a hook with arrow keys, rescue people, timer countdown
   {
     gradeBand: 'g3-4',
     weekNumber: 1,
     metadata: {
       language: 'scratch',
       challenge: 'Rescue Mission',
-      tagline: 'Control a crane to rescue people before time runs out!',
+      tagline: 'Control a crane hook and rescue as many people as you can!',
       steps: [
-        'Choose a city backdrop from the Scratch library',
-        'Draw a crane hook sprite — a simple rectangle with a hook shape works great',
-        'Code the hook: UP arrow → change y by 10, DOWN → change y by -10, LEFT → change x by -10, RIGHT → change x by 10',
-        'Add a person sprite that appears at a random position on the screen',
-        'Code: when hook touches person → play a cheer sound + add 1 to Score + move person to a new random spot',
-        'Add a Timer variable starting at 30 — count it down every second using a forever loop',
-        'When Timer hits 0 → stop all and show "You rescued [Score] people!"',
-        '⭐ Challenge: Make the hook move faster as your score gets higher!',
+        '🏙️ Choose a city or rooftop backdrop from the Scratch library (bottom-right corner)',
+        '🪝 Add a hook sprite — click "Paint" and draw a simple hook shape, or use any sprite you like',
+        '⬆️ Code arrow key movement: Code tab → Events → "when [up arrow] key pressed" → Motion → "change y by 10". Do the same for down (-10), left (-10), right (+10)',
+        '🧑 Add a Person sprite — go to Variables → "Make a Variable" called Score. Code: "when this sprite clicked → change Score by 1 → go to random position"',
+        '⏱️ Add a timer: Variables → "Make a Variable" called Timer. Set it to 30. Use a "forever" loop → "wait 1 second" → "change Timer by -1" → "if Timer = 0 → stop all"',
+        '🏁 Press the green flag and use arrow keys to move your hook. Can you rescue 5 people in 30 seconds?',
+        '⭐ Bonus: Make the person only score when the HOOK touches them (use "touching [hook]?" in the person\'s code)',
       ],
     },
   },
+
+  // ── G3-4 Week 2: Catapult Launch ────────────────────────────────────────────
+  // Goal: launch a ball, hit targets, different distances
   {
     gradeBand: 'g3-4',
     weekNumber: 2,
     metadata: {
       language: 'scratch',
       challenge: 'Catapult Launch',
-      tagline: 'Adjust your fulcrum and launch a projectile to hit the targets!',
+      tagline: 'Launch a ball and hit the targets — fulcrum position matters!',
       steps: [
-        'Draw a catapult arm sprite — a long thin rectangle',
-        'Draw a triangle fulcrum sprite and place it near the center of the arm',
-        'Add a ball sprite sitting on the left end of the catapult',
-        'Code: LEFT arrow → move fulcrum 10 steps left. RIGHT arrow → move fulcrum 10 steps right',
-        'Code: SPACE bar → launch! The ball glides to x: (fulcrum x + 200) y: 50 — the further the fulcrum from the ball, the farther it flies',
-        'Add 3 target sprites at different distances — when ball touches a target → add points to Score',
-        'Reset the ball to the catapult after each launch',
-        '⭐ Challenge: Add 3 rounds with targets getting further away each time!',
+        '🖼️ Pick a plain outdoor backdrop (like the blue sky or grass)',
+        '⚾ Add a Ball sprite — you can find one in the library or draw a circle',
+        '🎯 Add 3 Target sprites at different spots on the right side of the screen — make them different colours',
+        '🚀 Code the ball: "when [space] key pressed" → "glide 0.5 secs to [Target 1 position]" — this is your launch!',
+        '✅ Code each target: "when this sprite clicked" → "say Hit! for 1 sec" → "change Score by 1" (make a Score variable first)',
+        '🔄 After launching, move the ball back to the start: add "wait 1 sec" → "go to x: -150 y: -50" after the glide block',
+        '🏁 Press green flag and SPACE to launch. Does the ball reach the targets?',
+        '⭐ Bonus: Use the LEFT and RIGHT arrow keys to move the ball\'s starting position — further back = more force!',
       ],
     },
   },
