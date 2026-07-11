@@ -1,11 +1,10 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth/jwt'
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSession()
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const userId = req.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json({ error: 'API key not configured' }, { status: 500 })
