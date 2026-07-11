@@ -62,28 +62,17 @@ export function CodingSandbox({
     setMessages(m => [...m, { role: 'user', text: question }])
     setChatInput('')
     setChatLoading(true)
-    setMessages(m => [...m, { role: 'bot', text: '' }])
     try {
       const res = await fetch('/api/v1/ai/help', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question, challenge, steps }),
       })
-      if (!res.ok || !res.body) {
-        setMessages(m => [...m.slice(0, -1), { role: 'bot', text: "Hmm, I couldn't think of an answer. Ask your teacher! 🙂" }])
-        return
-      }
-      const reader = res.body.getReader()
-      const decoder = new TextDecoder()
-      let botText = ''
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
-        botText += decoder.decode(value, { stream: true })
-        setMessages(m => [...m.slice(0, -1), { role: 'bot', text: botText }])
-      }
+      const data = await res.json()
+      const botText = data.text ?? data.error ?? "Hmm, I couldn't think of an answer. Ask your teacher! 🙂"
+      setMessages(m => [...m, { role: 'bot', text: botText }])
     } catch {
-      setMessages(m => [...m.slice(0, -1), { role: 'bot', text: "Oops! Something went wrong. Ask your teacher! 🙂" }])
+      setMessages(m => [...m, { role: 'bot', text: "Oops! Something went wrong. Ask your teacher! 🙂" }])
     } finally {
       setChatLoading(false)
     }
@@ -432,10 +421,17 @@ function KeeBotPanel({
                   ${msg.role === 'user'
                     ? 'bg-purple-600 text-white rounded-br-sm'
                     : 'bg-white text-gray-700 border border-purple-100 rounded-bl-sm shadow-sm'}`}>
-                  {msg.text || (loading && i === messages.length - 1 ? '...' : '')}
+                  {msg.text}
                 </div>
               </div>
             ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="bg-white border border-purple-100 rounded-2xl rounded-bl-sm px-3 py-2 text-xs text-gray-400 shadow-sm animate-pulse">
+                  KeeBot is thinking…
+                </div>
+              </div>
+            )}
             <div ref={chatEndRef} />
           </div>
 
