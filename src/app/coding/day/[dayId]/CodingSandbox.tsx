@@ -251,33 +251,39 @@ export function CodingSandbox({
           </form>
         </header>
 
-        <StepPanel
-          steps={steps} challenge={challenge}
-          currentStep={currentStep} onStepChange={setCurrentStep}
-          onSpeak={speak}
-        />
-
-        <div className="relative flex-1">
-          <iframe
-            ref={iframeRef}
-            src="/scratch/editor.html"
-            onLoad={onIframeLoad}
-            className="w-full h-full border-0"
-            allow="microphone; camera"
-            title="Scratch Editor"
+        <div className="relative shrink-0">
+          <StepPanel
+            steps={steps} challenge={challenge}
+            currentStep={currentStep} onStepChange={setCurrentStep}
+            onSpeak={speak}
+            onKeeBotToggle={() => setChatOpen(v => !v)}
+            keeBotOpen={chatOpen}
           />
-          <KeeBotPanel
-            open={chatOpen}
-            onToggle={() => setChatOpen(v => !v)}
-            messages={messages}
-            input={chatInput}
-            onInputChange={setChatInput}
-            onSend={() => askKeeBot(chatInput)}
-            onListen={startListening}
-            loading={chatLoading}
-            chatEndRef={chatEndRef}
-          />
+          {chatOpen && (
+            <div className="absolute right-2 top-full mt-1 z-50 w-72">
+              <KeeBotPanel
+                open={chatOpen}
+                onToggle={() => setChatOpen(v => !v)}
+                messages={messages}
+                input={chatInput}
+                onInputChange={setChatInput}
+                onSend={() => askKeeBot(chatInput)}
+                onListen={startListening}
+                loading={chatLoading}
+                chatEndRef={chatEndRef}
+              />
+            </div>
+          )}
         </div>
+
+        <iframe
+          ref={iframeRef}
+          src="/scratch/editor.html"
+          onLoad={onIframeLoad}
+          className="flex-1 w-full border-0"
+          allow="microphone; camera"
+          title="Scratch Editor"
+        />
       </div>
     )
   }
@@ -300,27 +306,35 @@ export function CodingSandbox({
         </form>
       </header>
 
-      <StepPanel
-        steps={steps} challenge={challenge}
-        currentStep={currentStep} onStepChange={setCurrentStep}
-        onSpeak={speak}
-      />
+      <div className="relative shrink-0">
+        <StepPanel
+          steps={steps} challenge={challenge}
+          currentStep={currentStep} onStepChange={setCurrentStep}
+          onSpeak={speak}
+          onKeeBotToggle={() => setChatOpen(v => !v)}
+          keeBotOpen={chatOpen}
+        />
+        {chatOpen && (
+          <div className="absolute right-2 top-full mt-1 z-50 w-72">
+            <KeeBotPanel
+              open={chatOpen}
+              onToggle={() => setChatOpen(v => !v)}
+              messages={messages}
+              input={chatInput}
+              onInputChange={setChatInput}
+              onSend={() => askKeeBot(chatInput)}
+              onListen={startListening}
+              loading={chatLoading}
+              chatEndRef={chatEndRef}
+            />
+          </div>
+        )}
+      </div>
 
-      <div className="relative flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden">
         <PythonEditor
           initialCode={savedCode ?? '# Write your Python code here\nprint("Hello, World!")'}
           onCodeChange={code => { pyCode.current = code }}
-        />
-        <KeeBotPanel
-          open={chatOpen}
-          onToggle={() => setChatOpen(v => !v)}
-          messages={messages}
-          input={chatInput}
-          onInputChange={setChatInput}
-          onSend={() => askKeeBot(chatInput)}
-          onListen={startListening}
-          loading={chatLoading}
-          chatEndRef={chatEndRef}
         />
       </div>
     </div>
@@ -329,13 +343,15 @@ export function CodingSandbox({
 
 // ── Step-by-step panel — one step at a time ───────────────────────────────
 function StepPanel({
-  steps, challenge, currentStep, onStepChange, onSpeak,
+  steps, challenge, currentStep, onStepChange, onSpeak, onKeeBotToggle, keeBotOpen,
 }: {
   steps?: string[]
   challenge?: string
   currentStep: number
   onStepChange: (n: number) => void
   onSpeak?: (text: string) => void
+  onKeeBotToggle?: () => void
+  keeBotOpen?: boolean
 }) {
   if (!steps || steps.length === 0) return null
   const total = steps.length
@@ -378,6 +394,17 @@ function StepPanel({
         disabled={isLast}
         className="bg-yellow-400 hover:bg-yellow-500 disabled:opacity-25 text-white font-black text-xl w-10 h-10 rounded-xl shrink-0 flex items-center justify-center active:scale-95 transition-all"
       >→</button>
+
+      {/* KeeBot toggle */}
+      {onKeeBotToggle && (
+        <button
+          onClick={onKeeBotToggle}
+          onMouseDown={e => e.preventDefault()}
+          className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-xl transition-all active:scale-95
+            ${keeBotOpen ? 'bg-purple-500 text-white' : 'bg-purple-100 hover:bg-purple-200 text-purple-600'}`}
+          title="Ask KeeBot"
+        >🤖</button>
+      )}
     </div>
   )
 }
@@ -471,14 +498,6 @@ function KeeBotPanel({
         </div>
       )}
 
-      {/* Toggle button */}
-      <button
-        onClick={onToggle}
-        onMouseDown={e => e.preventDefault()}
-        className="bg-purple-600 hover:bg-purple-500 text-white font-black px-4 py-2.5 rounded-2xl shadow-lg text-sm flex items-center gap-2 active:scale-95 transition-all"
-      >
-        🤖 <span>{open ? 'Close' : 'Ask KeeBot'}</span>
-      </button>
     </div>
   )
 }
