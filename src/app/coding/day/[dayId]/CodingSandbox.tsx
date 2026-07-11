@@ -251,30 +251,13 @@ export function CodingSandbox({
           </form>
         </header>
 
-        <div className="relative shrink-0">
-          <StepPanel
-            steps={steps} challenge={challenge}
-            currentStep={currentStep} onStepChange={setCurrentStep}
-            onSpeak={speak}
-            onKeeBotToggle={() => setChatOpen(v => !v)}
-            keeBotOpen={chatOpen}
-          />
-          {chatOpen && (
-            <div className="absolute right-2 top-full mt-1 z-50 w-72">
-              <KeeBotPanel
-                open={chatOpen}
-                onToggle={() => setChatOpen(v => !v)}
-                messages={messages}
-                input={chatInput}
-                onInputChange={setChatInput}
-                onSend={() => askKeeBot(chatInput)}
-                onListen={startListening}
-                loading={chatLoading}
-                chatEndRef={chatEndRef}
-              />
-            </div>
-          )}
-        </div>
+        <StepPanel
+          steps={steps} challenge={challenge}
+          currentStep={currentStep} onStepChange={setCurrentStep}
+          onSpeak={speak}
+          onKeeBotToggle={() => setChatOpen(v => !v)}
+          keeBotOpen={chatOpen}
+        />
 
         <iframe
           ref={iframeRef}
@@ -284,6 +267,23 @@ export function CodingSandbox({
           allow="microphone; camera"
           title="Scratch Editor"
         />
+
+        {/* Fixed chat panel — above everything including the iframe */}
+        {chatOpen && (
+          <div className="fixed right-3 z-[9999] w-72" style={{ top: '116px', maxHeight: 'calc(100vh - 124px)' }}>
+            <KeeBotPanel
+              open={chatOpen}
+              onToggle={() => setChatOpen(v => !v)}
+              messages={messages}
+              input={chatInput}
+              onInputChange={setChatInput}
+              onSend={() => askKeeBot(chatInput)}
+              onListen={startListening}
+              loading={chatLoading}
+              chatEndRef={chatEndRef}
+            />
+          </div>
+        )}
       </div>
     )
   }
@@ -306,30 +306,13 @@ export function CodingSandbox({
         </form>
       </header>
 
-      <div className="relative shrink-0">
-        <StepPanel
-          steps={steps} challenge={challenge}
-          currentStep={currentStep} onStepChange={setCurrentStep}
-          onSpeak={speak}
-          onKeeBotToggle={() => setChatOpen(v => !v)}
-          keeBotOpen={chatOpen}
-        />
-        {chatOpen && (
-          <div className="absolute right-2 top-full mt-1 z-50 w-72">
-            <KeeBotPanel
-              open={chatOpen}
-              onToggle={() => setChatOpen(v => !v)}
-              messages={messages}
-              input={chatInput}
-              onInputChange={setChatInput}
-              onSend={() => askKeeBot(chatInput)}
-              onListen={startListening}
-              loading={chatLoading}
-              chatEndRef={chatEndRef}
-            />
-          </div>
-        )}
-      </div>
+      <StepPanel
+        steps={steps} challenge={challenge}
+        currentStep={currentStep} onStepChange={setCurrentStep}
+        onSpeak={speak}
+        onKeeBotToggle={() => setChatOpen(v => !v)}
+        keeBotOpen={chatOpen}
+      />
 
       <div className="flex-1 overflow-hidden">
         <PythonEditor
@@ -337,6 +320,22 @@ export function CodingSandbox({
           onCodeChange={code => { pyCode.current = code }}
         />
       </div>
+
+      {chatOpen && (
+        <div className="fixed right-3 z-[9999] w-72" style={{ top: '116px', maxHeight: 'calc(100vh - 124px)' }}>
+          <KeeBotPanel
+            open={chatOpen}
+            onToggle={() => setChatOpen(v => !v)}
+            messages={messages}
+            input={chatInput}
+            onInputChange={setChatInput}
+            onSend={() => askKeeBot(chatInput)}
+            onListen={startListening}
+            loading={chatLoading}
+            chatEndRef={chatEndRef}
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -427,8 +426,7 @@ function KeeBotPanel({
     <div className="absolute bottom-4 left-4 z-50 flex flex-col items-start gap-2">
       {/* Chat panel */}
       {open && (
-        <div className="bg-white rounded-2xl shadow-2xl border border-purple-100 w-72 flex flex-col overflow-hidden"
-          style={{ maxHeight: '420px' }}>
+        <div className="bg-white rounded-2xl shadow-2xl border border-purple-100 w-72 flex flex-col overflow-hidden h-full">
           {/* Header */}
           <div className="bg-purple-600 text-white px-4 py-3 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
