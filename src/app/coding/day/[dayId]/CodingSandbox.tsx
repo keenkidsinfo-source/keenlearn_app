@@ -397,7 +397,7 @@ function KeeBotPanel({
   chatEndRef: React.RefObject<HTMLDivElement>
 }) {
   return (
-    <div className="absolute bottom-4 right-4 z-50 flex flex-col items-end gap-2">
+    <div className="absolute bottom-4 left-4 z-50 flex flex-col items-start gap-2">
       {/* Chat panel */}
       {open && (
         <div className="bg-white rounded-2xl shadow-2xl border border-purple-100 w-72 flex flex-col overflow-hidden"
