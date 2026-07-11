@@ -344,14 +344,14 @@ function StepPanel({
   const isLast  = currentStep === total - 1
 
   return (
-    <div className="bg-yellow-50 border-b border-yellow-200 shrink-0 px-3 py-2 flex items-center gap-2">
+    <div className="bg-yellow-50 border-b border-yellow-200 shrink-0 px-2 py-2 flex items-center gap-2">
       {/* Prev */}
       <button
         onClick={() => onStepChange(currentStep - 1)}
         onMouseDown={e => e.preventDefault()}
         disabled={isFirst}
-        className="text-yellow-500 hover:text-yellow-700 disabled:opacity-25 text-lg font-black shrink-0 leading-none"
-      >‹</button>
+        className="bg-yellow-200 hover:bg-yellow-300 disabled:opacity-25 text-yellow-800 font-black text-xl w-10 h-10 rounded-xl shrink-0 flex items-center justify-center active:scale-95 transition-all"
+      >←</button>
 
       {/* Step text */}
       <div className="flex-1 min-w-0">
@@ -367,7 +367,7 @@ function StepPanel({
           onClick={() => onSpeak(step)}
           onMouseDown={e => e.preventDefault()}
           title="Read aloud"
-          className="text-yellow-400 hover:text-yellow-600 text-lg shrink-0"
+          className="text-yellow-400 hover:text-yellow-600 text-2xl shrink-0 w-9 h-9 flex items-center justify-center"
         >🔊</button>
       )}
 
@@ -376,8 +376,8 @@ function StepPanel({
         onClick={() => onStepChange(currentStep + 1)}
         onMouseDown={e => e.preventDefault()}
         disabled={isLast}
-        className="text-yellow-500 hover:text-yellow-700 disabled:opacity-25 text-lg font-black shrink-0 leading-none"
-      >›</button>
+        className="bg-yellow-400 hover:bg-yellow-500 disabled:opacity-25 text-white font-black text-xl w-10 h-10 rounded-xl shrink-0 flex items-center justify-center active:scale-95 transition-all"
+      >→</button>
     </div>
   )
 }
