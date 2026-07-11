@@ -42,13 +42,15 @@ export function CodingSandbox({
   const currentProjectId      = useRef(projectId)
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
   const pyCode                = useRef('')
-  const [showInstructions, setShowInstructions] = useState(true)
+  const [currentStep, setCurrentStep] = useState(0)
   const [projectLoading, setProjectLoading] = useState(false)
   const [projectLoaded, setProjectLoaded] = useState(false)
 
   // ── KeeBot state ──────────────────────────────────────────────────────────
-  const [chatOpen, setChatOpen]     = useState(false)
-  const [messages, setMessages]     = useState<{ role: 'user' | 'bot'; text: string }[]>([])
+  const [chatOpen, setChatOpen]     = useState(true)
+  const [messages, setMessages]     = useState<{ role: 'user' | 'bot'; text: string }[]>([
+    { role: 'bot', text: `Hi! I'm KeeBot 🤖 Tap the 🔊 button next to any step to hear it read aloud. Ask me anything if you get stuck — I'm here to help! 🌟` },
+  ])
   const [chatInput, setChatInput]   = useState('')
   const [chatLoading, setChatLoading] = useState(false)
   const chatEndRef = useRef<HTMLDivElement>(null)
@@ -66,7 +68,7 @@ export function CodingSandbox({
       const res = await fetch('/api/v1/ai/help', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, challenge, steps }),
+        body: JSON.stringify({ question, challenge, steps, currentStep }),
       })
       const data = await res.json()
       const botText = data.text ?? data.error ?? "Hmm, I couldn't think of an answer. Ask your teacher! 🙂"
@@ -249,9 +251,9 @@ export function CodingSandbox({
           </form>
         </header>
 
-        <InstructionsPanel
-          steps={steps} challenge={challenge} tagline={tagline}
-          show={showInstructions} onToggle={() => setShowInstructions(v => !v)}
+        <StepPanel
+          steps={steps} challenge={challenge}
+          currentStep={currentStep} onStepChange={setCurrentStep}
           onSpeak={speak}
         />
 
@@ -298,9 +300,9 @@ export function CodingSandbox({
         </form>
       </header>
 
-      <InstructionsPanel
-        steps={steps} challenge={challenge} tagline={tagline}
-        show={showInstructions} onToggle={() => setShowInstructions(v => !v)}
+      <StepPanel
+        steps={steps} challenge={challenge}
+        currentStep={currentStep} onStepChange={setCurrentStep}
         onSpeak={speak}
       />
 
@@ -325,51 +327,57 @@ export function CodingSandbox({
   )
 }
 
-// ── Instructions panel with 🔊 per step ────────────────────────────────────
-function InstructionsPanel({
-  steps, challenge, tagline, show, onToggle, onSpeak,
+// ── Step-by-step panel — one step at a time ───────────────────────────────
+function StepPanel({
+  steps, challenge, currentStep, onStepChange, onSpeak,
 }: {
   steps?: string[]
   challenge?: string
-  tagline?: string
-  show: boolean
-  onToggle: () => void
+  currentStep: number
+  onStepChange: (n: number) => void
   onSpeak?: (text: string) => void
 }) {
   if (!steps || steps.length === 0) return null
+  const total = steps.length
+  const step  = steps[currentStep] ?? ''
+  const isFirst = currentStep === 0
+  const isLast  = currentStep === total - 1
+
   return (
-    <div className="bg-yellow-50 border-b border-yellow-200 shrink-0">
+    <div className="bg-yellow-50 border-b border-yellow-200 shrink-0 px-3 py-2 flex items-center gap-2">
+      {/* Prev */}
       <button
-        onClick={onToggle}
+        onClick={() => onStepChange(currentStep - 1)}
         onMouseDown={e => e.preventDefault()}
-        className="w-full flex items-center justify-between px-4 py-2 text-left"
-      >
-        <span className="font-black text-yellow-800 text-sm">
-          🎯 {challenge ?? 'Your Challenge'}
-          {tagline && <span className="font-normal text-yellow-700 ml-2">— {tagline}</span>}
-        </span>
-        <span className="text-yellow-600 text-xs font-bold">{show ? 'Hide ▲' : 'Show ▼'}</span>
-      </button>
-      {show && (
-        <div className="px-4 pb-3 space-y-1">
-          {steps.map((step, i) => (
-            <div key={i} className={`text-sm flex gap-2 items-start ${step.startsWith('⭐') ? 'text-yellow-700 font-bold mt-2' : 'text-gray-700'}`}>
-              {!step.startsWith('⭐') && <span className="text-yellow-500 font-black shrink-0 mt-0.5">{i + 1}.</span>}
-              <span className="flex-1">{step}</span>
-              {onSpeak && (
-                <button
-                  onClick={() => onSpeak(step)}
-                  onMouseDown={e => e.preventDefault()}
-                  title="Read this step aloud"
-                  className="text-yellow-400 hover:text-yellow-600 text-base shrink-0 leading-none mt-0.5"
-                >
-                  🔊
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
+        disabled={isFirst}
+        className="text-yellow-500 hover:text-yellow-700 disabled:opacity-25 text-lg font-black shrink-0 leading-none"
+      >‹</button>
+
+      {/* Step text */}
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-bold text-yellow-500 leading-none mb-0.5">
+          🎯 {challenge ?? 'Challenge'} · Step {currentStep + 1} of {total}
+        </p>
+        <p className="text-sm text-gray-700 leading-snug">{step}</p>
+      </div>
+
+      {/* Read aloud */}
+      {onSpeak && (
+        <button
+          onClick={() => onSpeak(step)}
+          onMouseDown={e => e.preventDefault()}
+          title="Read aloud"
+          className="text-yellow-400 hover:text-yellow-600 text-lg shrink-0"
+        >🔊</button>
       )}
+
+      {/* Next */}
+      <button
+        onClick={() => onStepChange(currentStep + 1)}
+        onMouseDown={e => e.preventDefault()}
+        disabled={isLast}
+        className="text-yellow-500 hover:text-yellow-700 disabled:opacity-25 text-lg font-black shrink-0 leading-none"
+      >›</button>
     </div>
   )
 }

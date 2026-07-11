@@ -11,11 +11,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'API key not configured' }, { status: 500 })
     }
 
-    const { question, challenge, steps } = await req.json().catch(() => ({}))
+    const { question, challenge, steps, currentStep } = await req.json().catch(() => ({}))
     if (!question?.trim()) return NextResponse.json({ error: 'Missing question' }, { status: 400 })
 
     const stepList = Array.isArray(steps)
       ? steps.map((s: string, i: number) => `Step ${i + 1}: ${s.replace(/[^\x00-\x7F]/g, '').trim()}`).join('\n')
+      : ''
+    const currentStepText = Array.isArray(steps) && typeof currentStep === 'number'
+      ? `The student is currently on Step ${currentStep + 1}: "${steps[currentStep]?.replace(/[^\x00-\x7F]/g, '').trim()}"`
       : ''
 
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -25,7 +28,7 @@ export async function POST(req: NextRequest) {
       max_tokens: 150,
       system: `You are KeeBot, a super friendly coding helper for kids aged 6-10 who are learning Scratch!
 The student is working on a project called: "${challenge ?? 'a Scratch project'}".
-${stepList ? `The project steps are:\n${stepList}` : ''}
+${currentStepText ? `${currentStepText}\n` : ''}${stepList ? `All project steps:\n${stepList}` : ''}
 
 Your rules:
 - Use very simple words a 6-year-old can understand — no jargon
