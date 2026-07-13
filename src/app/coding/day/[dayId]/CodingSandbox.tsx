@@ -197,13 +197,22 @@ export function CodingSandbox({
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [language, contentItemId, title])
 
-  // ── Point TurboWarp at the saved project via its native ?project_url= param ─
+  // ── Fetch saved project in parent frame → localStorage → TurboWarp reads it ─
+  // (Fetching here avoids any auth issues inside the TurboWarp iframe)
   useEffect(() => {
-    if (projectUrl) {
-      // TurboWarp requires an absolute URL (prepends https:// to relative ones)
-      const abs = `${window.location.origin}${projectUrl}`
-      setIframeSrc(`/scratch/editor.html?project_url=${encodeURIComponent(abs)}`)
-    }
+    if (!projectUrl) return
+    let cancelled = false
+    fetch(projectUrl)
+      .then(r => r.ok ? r.text() : null)
+      .then(json => {
+        if (!cancelled && json) {
+          localStorage.setItem('kk_project', json)
+          // Re-set iframeSrc to force iframe reload so TurboWarp picks up the localStorage entry
+          setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
+        }
+      })
+      .catch(e => console.warn('[KK] project fetch failed', e))
+    return () => { cancelled = true }
   }, [projectUrl])
 
   // ── Shared header content ───────────────────────────────────────────────────

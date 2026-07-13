@@ -49440,6 +49440,13 @@ class Interface extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.isLoading && !this.props.isLoading) {
       Object(_load_service_worker__WEBPACK_IMPORTED_MODULE_25__["loadServiceWorker"])();
+      try {
+        var kkSaved = localStorage.getItem('kk_project');
+        if (kkSaved) {
+          localStorage.removeItem('kk_project');
+          if (window.vm) { window.vm.loadProject(kkSaved).catch(function(e){console.warn('[KK]',e);}); }
+        }
+      } catch(e) { console.warn('[KK] ls load failed',e); }
     }
   }
   handleUpdateProjectTitle(title, isDefault) {
