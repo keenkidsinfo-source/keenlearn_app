@@ -43,8 +43,8 @@ export function CodingSandbox({
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
   const pyCode                = useRef('')
   const [currentStep, setCurrentStep] = useState(0)
-  const [projectLoading, setProjectLoading] = useState(false)
-  const [projectLoaded, setProjectLoaded] = useState(false)
+  // Use TurboWarp's native ?project_url= to load saved projects — no JS injection
+  const [iframeSrc, setIframeSrc] = useState('/scratch/editor.html')
 
   // ── KeeBot state ──────────────────────────────────────────────────────────
   const [chatOpen, setChatOpen]     = useState(false)
@@ -188,49 +188,21 @@ export function CodingSandbox({
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [language, contentItemId, title])
 
-  // ── Load saved project into TurboWarp ──────────────────────────────────────
-  const injectProject = useCallback(async () => {
-    if (!projectUrl) return
-    setProjectLoading(true)
-    try {
-      const res = await fetch(projectUrl)
-      if (!res.ok) return
-      const json = await res.text()
-      // Wait up to 45s for VM AND default project to finish loading
-      for (let i = 0; i < 180; i++) {
-        await new Promise(r => setTimeout(r, 250))
-        const vm = (iframeRef.current?.contentWindow as any)?.vm
-        if (vm && vm.runtime?.targets?.length > 0) {
-          await vm.loadProject(json)
-          setProjectLoaded(true)
-          // Auto-hide the "ready" banner after 3s
-          setTimeout(() => setProjectLoaded(false), 3000)
-          return
-        }
-      }
-      console.warn('[KK] VM never became ready after 45s')
-    } catch (e) {
-      console.error('[KK] injectProject error:', e)
-    } finally {
-      setProjectLoading(false)
+  // ── Point TurboWarp at the saved project via its native ?project_url= param ─
+  useEffect(() => {
+    if (projectUrl) {
+      // TurboWarp requires an absolute URL (prepends https:// to relative ones)
+      const abs = `${window.location.origin}${projectUrl}`
+      setIframeSrc(`/scratch/editor.html?project_url=${encodeURIComponent(abs)}`)
     }
   }, [projectUrl])
-
-  const onIframeLoad = useCallback(() => { injectProject() }, [injectProject])
 
   // ── Shared header content ───────────────────────────────────────────────────
   const headerStatus = (
     <div className="flex items-center gap-2">
-      {projectLoading && <span className="text-yellow-300 text-xs font-bold animate-pulse">⏳ Loading…</span>}
       {saving    && <span className="text-purple-200 text-sm">Saving…</span>}
       {saved     && <span className="text-green-300 text-sm font-bold">✓ Saved</span>}
       {saveError && <span className="text-red-300 text-xs max-w-[100px] truncate" title={saveError}>⚠ {saveError}</span>}
-      {projectUrl && !projectLoading && !projectLoaded && (
-        <button onClick={injectProject} onMouseDown={e => e.preventDefault()}
-          className="bg-yellow-500 hover:bg-yellow-400 text-white font-bold px-2 py-1 rounded-xl text-xs">
-          Reload project
-        </button>
-      )}
     </div>
   )
 
@@ -266,33 +238,16 @@ export function CodingSandbox({
           <div className="relative flex-1 flex flex-col">
             <iframe
               ref={iframeRef}
-              src="/scratch/editor.html"
-              onLoad={onIframeLoad}
+              src={iframeSrc}
               className="flex-1 w-full border-0"
               allow="microphone; camera"
               title="Scratch Editor"
             />
-            {/* Loading overlay */}
-            {projectLoading && (
-              <div className="absolute inset-0 bg-purple-900/60 flex flex-col items-center justify-center z-10 pointer-events-none">
-                <div className="bg-white rounded-2xl px-8 py-6 shadow-2xl flex flex-col items-center gap-3">
-                  <div className="text-4xl animate-spin">⚙️</div>
-                  <p className="font-black text-purple-700 text-lg">Loading your project…</p>
-                  <p className="text-sm text-gray-400">Give it a few seconds!</p>
-                </div>
-              </div>
-            )}
-            {!projectUrl && !projectLoading && (
+            {/* First-visit hint — no saved project yet */}
+            {!projectUrl && (
               <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
                 <div className="bg-yellow-400 text-yellow-900 text-xs font-bold px-4 py-2 rounded-full shadow-md">
                   ✨ New project — start building! Your work saves automatically.
-                </div>
-              </div>
-            )}
-            {projectLoaded && (
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-                <div className="bg-green-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-md">
-                  ✓ Your project is ready!
                 </div>
               </div>
             )}
