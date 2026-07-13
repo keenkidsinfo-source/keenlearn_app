@@ -225,15 +225,28 @@ export function CodingSandbox({
             {theme && <p className="text-purple-200 text-xs">{theme}</p>}
           </div>
           {headerStatus}
+          {/* Start fresh — wipes stale saved data so student isn't stuck with ? sprite */}
+          {hasProject && currentProjectId.current && (
+            <button
+              onClick={async () => {
+                if (!confirm('Start a brand-new project? Your saved work will be cleared.')) return
+                await fetch(`/api/v1/coding/${currentProjectId.current}`, { method: 'DELETE' })
+                // reload so server sees no project and shows blank TurboWarp
+                window.location.reload()
+              }}
+              className="text-purple-300 hover:text-white text-xs font-semibold shrink-0"
+              title="Clear saved project and start fresh"
+            >Start fresh</button>
+          )}
           <button
             onClick={saveScratch}
-            className={`font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all
+            className={`font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all shrink-0
               ${!hasProject
                 ? 'bg-yellow-400 hover:bg-yellow-300 text-yellow-900 animate-pulse'
                 : 'bg-purple-500 hover:bg-purple-400 text-white'}`}
           >{!hasProject ? '💾 Save first!' : 'Save'}</button>
           <form action="/api/v1/auth/logout" method="POST">
-            <button type="submit" className="text-purple-300 hover:text-white text-xs font-semibold ml-1">Sign out</button>
+            <button type="submit" className="text-purple-300 hover:text-white text-xs font-semibold ml-1 shrink-0">Sign out</button>
           </form>
         </header>
 

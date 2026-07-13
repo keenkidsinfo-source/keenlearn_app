@@ -21,6 +21,11 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
+  // Allow TurboWarp to fetch saved project data — UUID is the access control
+  if (/^\/api\/v1\/coding\/[^/]+\/data$/.test(pathname)) {
+    return NextResponse.next()
+  }
+
   const token = req.cookies.get('kk_token')?.value
 
   if (!token) {

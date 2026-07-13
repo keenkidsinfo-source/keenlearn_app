@@ -87,3 +87,14 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ proj
     return apiError(err?.message ?? 'Internal error', 'INTERNAL_ERROR', 500)
   }
 }
+
+// DELETE /api/v1/coding/:projectId — wipe saved data so student starts fresh
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ projectId: string }> }) {
+  const studentId = req.headers.get('x-user-id')
+  if (!studentId) return apiError('Unauthorized', 'UNAUTHORIZED', 401)
+  const { projectId } = await params
+  await db.delete(codingProjects).where(
+    and(eq(codingProjects.id, projectId), eq(codingProjects.studentId, studentId))
+  )
+  return apiOk({ deleted: true })
+}

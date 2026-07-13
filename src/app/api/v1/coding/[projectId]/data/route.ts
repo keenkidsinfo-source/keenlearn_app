@@ -1,35 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
 import { codingProjects } from '@/lib/db/schema'
-import { eq, and } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 
 // GET /api/v1/coding/[projectId]/data
-// Returns raw Scratch project JSON for TurboWarp to load via ?project_url=
+// Public — fetched directly by TurboWarp's iframe. UUID is the access control.
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ projectId: string }> }
 ) {
-  const session = await getSession()
-  if (!session) return new NextResponse('Unauthorized', { status: 401 })
-
   const { projectId } = await params
 
   const [project] = await db
-    .select()
+    .select({ projectData: codingProjects.projectData })
     .from(codingProjects)
-    .where(and(
-      eq(codingProjects.id, projectId),
-      eq(codingProjects.studentId, session.sub),
-    ))
+    .where(eq(codingProjects.id, projectId))
     .limit(1)
 
-  if (!project) return new NextResponse('Not found', { status: 404 })
+  if (!project?.projectData) {
+    return new NextResponse('Not found', { status: 404 })
+  }
 
-  const data = project.projectData
-  if (!data) return new NextResponse('No saved data', { status: 404 })
-
-  return new NextResponse(data, {
+  return new NextResponse(project.projectData, {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
