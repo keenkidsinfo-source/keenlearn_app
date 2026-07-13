@@ -43,6 +43,7 @@ export function CodingSandbox({
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
   const pyCode                = useRef('')
   const [currentStep, setCurrentStep] = useState(0)
+  const [hasProject, setHasProject]   = useState(!!projectId)
   // Use TurboWarp's native ?project_url= to load saved projects — no JS injection
   const [iframeSrc, setIframeSrc] = useState('/scratch/editor.html')
 
@@ -120,6 +121,7 @@ export function CodingSandbox({
       const json = JSON.parse(text)
       if (!currentProjectId.current && json.data?.id) {
         currentProjectId.current = json.data.id
+        setHasProject(true)
       }
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
@@ -156,11 +158,18 @@ export function CodingSandbox({
   }, [uploadProject])
 
   // ── Auto-save every 10 seconds ─────────────────────────────────────────────
+  // Only auto-save if the student already has a saved project (currentProjectId set).
+  // On a first visit, auto-saving would write TurboWarp's default ? sprite as their
+  // project. We require one manual Save first, then auto-save takes over.
   useEffect(() => {
     if (language === 'scratch') {
-      autoSaveTimer.current = setInterval(saveScratch, 10_000)
+      autoSaveTimer.current = setInterval(() => {
+        if (currentProjectId.current) saveScratch()
+      }, 10_000)
     } else {
-      autoSaveTimer.current = setInterval(savePython, 10_000)
+      autoSaveTimer.current = setInterval(() => {
+        if (currentProjectId.current) savePython()
+      }, 10_000)
     }
     return () => { if (autoSaveTimer.current) clearInterval(autoSaveTimer.current) }
   }, [language, saveScratch, savePython])
@@ -218,8 +227,11 @@ export function CodingSandbox({
           {headerStatus}
           <button
             onClick={saveScratch}
-            className="bg-purple-500 hover:bg-purple-400 text-white font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all"
-          >Save</button>
+            className={`font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all
+              ${!hasProject
+                ? 'bg-yellow-400 hover:bg-yellow-300 text-yellow-900 animate-pulse'
+                : 'bg-purple-500 hover:bg-purple-400 text-white'}`}
+          >{!hasProject ? '💾 Save first!' : 'Save'}</button>
           <form action="/api/v1/auth/logout" method="POST">
             <button type="submit" className="text-purple-300 hover:text-white text-xs font-semibold ml-1">Sign out</button>
           </form>
