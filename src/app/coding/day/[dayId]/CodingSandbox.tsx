@@ -261,55 +261,56 @@ export function CodingSandbox({
           keeBotOpen={chatOpen}
         />
 
-        <div className="relative flex-1 flex flex-col">
-          <iframe
-            ref={iframeRef}
-            src="/scratch/editor.html"
-            onLoad={onIframeLoad}
-            className="flex-1 w-full border-0"
-            allow="microphone; camera"
-            title="Scratch Editor"
-          />
-          {/* Loading overlay — shown while fetching + injecting saved project */}
-          {projectLoading && (
-            <div className="absolute inset-0 bg-purple-900/60 flex flex-col items-center justify-center z-10 pointer-events-none">
-              <div className="bg-white rounded-2xl px-8 py-6 shadow-2xl flex flex-col items-center gap-3">
-                <div className="text-4xl animate-spin">⚙️</div>
-                <p className="font-black text-purple-700 text-lg">Loading your project…</p>
-                <p className="text-sm text-gray-400">Give it a few seconds!</p>
+        {/* Main area: iframe + optional KeeBot side panel, side by side */}
+        <div className="flex-1 flex flex-row overflow-hidden">
+          <div className="relative flex-1 flex flex-col">
+            <iframe
+              ref={iframeRef}
+              src="/scratch/editor.html"
+              onLoad={onIframeLoad}
+              className="flex-1 w-full border-0"
+              allow="microphone; camera"
+              title="Scratch Editor"
+            />
+            {/* Loading overlay */}
+            {projectLoading && (
+              <div className="absolute inset-0 bg-purple-900/60 flex flex-col items-center justify-center z-10 pointer-events-none">
+                <div className="bg-white rounded-2xl px-8 py-6 shadow-2xl flex flex-col items-center gap-3">
+                  <div className="text-4xl animate-spin">⚙️</div>
+                  <p className="font-black text-purple-700 text-lg">Loading your project…</p>
+                  <p className="text-sm text-gray-400">Give it a few seconds!</p>
+                </div>
               </div>
-            </div>
-          )}
-          {/* No-project notice — first time here, nothing saved yet */}
-          {!projectUrl && !projectLoading && (
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-              <div className="bg-yellow-400 text-yellow-900 text-xs font-bold px-4 py-2 rounded-full shadow-md">
-                ✨ New project — start building! Your work saves automatically.
+            )}
+            {!projectUrl && !projectLoading && (
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+                <div className="bg-yellow-400 text-yellow-900 text-xs font-bold px-4 py-2 rounded-full shadow-md">
+                  ✨ New project — start building! Your work saves automatically.
+                </div>
               </div>
-            </div>
-          )}
-          {/* Loaded banner — briefly confirms the project came back */}
-          {projectLoaded && (
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
-              <div className="bg-green-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-md">
-                ✓ Your project is ready!
+            )}
+            {projectLoaded && (
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none">
+                <div className="bg-green-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-md">
+                  ✓ Your project is ready!
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* KeeBot bottom sheet — renders above everything via its own fixed positioning */}
-        <KeeBotPanel
-          open={chatOpen}
-          onToggle={() => setChatOpen(v => !v)}
-          messages={messages}
-          input={chatInput}
-          onInputChange={setChatInput}
-          onSend={() => askKeeBot(chatInput)}
-          onListen={startListening}
-          loading={chatLoading}
-          chatEndRef={chatEndRef}
-        />
+          {/* KeeBot side panel — sits beside the iframe, no overlap */}
+          <KeeBotPanel
+            open={chatOpen}
+            onToggle={() => setChatOpen(v => !v)}
+            messages={messages}
+            input={chatInput}
+            onInputChange={setChatInput}
+            onSend={() => askKeeBot(chatInput)}
+            onListen={startListening}
+            loading={chatLoading}
+            chatEndRef={chatEndRef}
+          />
+        </div>
       </div>
     )
   }
@@ -340,25 +341,25 @@ export function CodingSandbox({
         keeBotOpen={chatOpen}
       />
 
-      <div className="flex-1 overflow-hidden">
-        <PythonEditor
-          initialCode={savedCode ?? '# Write your Python code here\nprint("Hello, World!")'}
-          onCodeChange={code => { pyCode.current = code }}
+      <div className="flex-1 flex flex-row overflow-hidden">
+        <div className="flex-1 overflow-hidden">
+          <PythonEditor
+            initialCode={savedCode ?? '# Write your Python code here\nprint("Hello, World!")'}
+            onCodeChange={code => { pyCode.current = code }}
+          />
+        </div>
+        <KeeBotPanel
+          open={chatOpen}
+          onToggle={() => setChatOpen(v => !v)}
+          messages={messages}
+          input={chatInput}
+          onInputChange={setChatInput}
+          onSend={() => askKeeBot(chatInput)}
+          onListen={startListening}
+          loading={chatLoading}
+          chatEndRef={chatEndRef}
         />
       </div>
-
-      {/* KeeBot bottom sheet — renders above everything via its own fixed positioning */}
-      <KeeBotPanel
-        open={chatOpen}
-        onToggle={() => setChatOpen(v => !v)}
-        messages={messages}
-        input={chatInput}
-        onInputChange={setChatInput}
-        onSend={() => askKeeBot(chatInput)}
-        onListen={startListening}
-        loading={chatLoading}
-        chatEndRef={chatEndRef}
-      />
     </div>
   )
 }
@@ -431,7 +432,7 @@ function StepPanel({
   )
 }
 
-// ── KeeBot bottom-sheet — slides up over the editor, no z-index fights ────
+// ── KeeBot side panel — sits beside the iframe, zero overlap ──────────────
 function KeeBotPanel({
   open, onToggle, messages, input, onInputChange, onSend, onListen, loading, chatEndRef,
 }: {
@@ -447,74 +448,65 @@ function KeeBotPanel({
 }) {
   if (!open) return null
   return (
-    <>
-      {/* Dim backdrop — tapping it closes the sheet */}
-      <div
-        className="fixed inset-0 bg-black/30 z-[9998]"
-        onClick={onToggle}
-      />
-      {/* Bottom sheet */}
-      <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-white rounded-t-3xl shadow-2xl flex flex-col"
-        style={{ height: '42vh' }}>
-        {/* Handle + header */}
-        <div className="bg-purple-600 text-white px-4 py-3 rounded-t-3xl flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🤖</span>
-            <div>
-              <p className="font-black text-sm leading-none">KeeBot</p>
-              <p className="text-purple-200 text-xs">Your coding helper!</p>
+    <div className="w-64 flex flex-col bg-white border-l border-purple-100 shadow-lg shrink-0">
+      {/* Header */}
+      <div className="bg-purple-600 text-white px-3 py-2 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2">
+          <span className="text-lg">🤖</span>
+          <div>
+            <p className="font-black text-sm leading-none">KeeBot</p>
+            <p className="text-purple-200 text-xs">Your coding helper!</p>
+          </div>
+        </div>
+        <button onClick={onToggle} className="text-purple-200 hover:text-white font-bold px-1">✕</button>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-2 space-y-2 bg-purple-50">
+        {messages.map((msg, i) => (
+          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div className={`rounded-2xl px-3 py-2 max-w-[90%] text-xs leading-relaxed
+              ${msg.role === 'user'
+                ? 'bg-purple-600 text-white rounded-br-sm'
+                : 'bg-white text-gray-700 border border-purple-100 rounded-bl-sm shadow-sm'}`}>
+              {msg.text}
             </div>
           </div>
-          <button onClick={onToggle} className="text-purple-200 hover:text-white text-xl font-bold px-2">✕</button>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-purple-50">
-          {messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-              <div className={`rounded-2xl px-3 py-2 max-w-[80%] text-sm leading-relaxed
-                ${msg.role === 'user'
-                  ? 'bg-purple-600 text-white rounded-br-sm'
-                  : 'bg-white text-gray-700 border border-purple-100 rounded-bl-sm shadow-sm'}`}>
-                {msg.text}
-              </div>
+        ))}
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-white border border-purple-100 rounded-2xl rounded-bl-sm px-3 py-2 text-xs text-gray-400 shadow-sm animate-pulse">
+              KeeBot is thinking…
             </div>
-          ))}
-          {loading && (
-            <div className="flex justify-start">
-              <div className="bg-white border border-purple-100 rounded-2xl rounded-bl-sm px-3 py-2 text-sm text-gray-400 shadow-sm animate-pulse">
-                KeeBot is thinking…
-              </div>
-            </div>
-          )}
-          <div ref={chatEndRef} />
-        </div>
-
-        {/* Input */}
-        <div className="px-4 py-3 border-t border-purple-100 bg-white shrink-0 flex gap-2">
-          <button
-            onClick={onListen}
-            onMouseDown={e => e.preventDefault()}
-            title="Speak your question"
-            className="text-purple-400 hover:text-purple-600 text-2xl shrink-0 w-10 h-10 flex items-center justify-center"
-          >🎤</button>
-          <input
-            type="text"
-            value={input}
-            onChange={e => onInputChange(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter' && !loading) onSend() }}
-            placeholder="Ask me anything…"
-            className="flex-1 text-sm border border-purple-200 rounded-xl px-3 py-2 focus:outline-none focus:border-purple-400"
-          />
-          <button
-            onClick={onSend}
-            disabled={loading || !input.trim()}
-            onMouseDown={e => e.preventDefault()}
-            className="bg-purple-600 hover:bg-purple-500 disabled:opacity-40 text-white text-sm font-bold px-4 py-2 rounded-xl shrink-0"
-          >Ask</button>
-        </div>
+          </div>
+        )}
+        <div ref={chatEndRef} />
       </div>
-    </>
+
+      {/* Input */}
+      <div className="px-2 py-2 border-t border-purple-100 bg-white shrink-0 flex gap-1">
+        <button
+          onClick={onListen}
+          onMouseDown={e => e.preventDefault()}
+          title="Speak your question"
+          className="text-purple-400 hover:text-purple-600 text-lg shrink-0"
+        >🎤</button>
+        <input
+          type="text"
+          value={input}
+          onChange={e => onInputChange(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' && !loading) onSend() }}
+          placeholder="Ask me…"
+          className="flex-1 text-xs border border-purple-200 rounded-xl px-2 py-1.5 focus:outline-none focus:border-purple-400 min-w-0"
+        />
+        <button
+          onClick={onSend}
+          disabled={loading || !input.trim()}
+          onMouseDown={e => e.preventDefault()}
+          className="bg-purple-600 hover:bg-purple-500 disabled:opacity-40 text-white text-xs font-bold px-2 py-1.5 rounded-xl shrink-0"
+        >Ask</button>
+      </div>
+    </div>
   )
 }
 
