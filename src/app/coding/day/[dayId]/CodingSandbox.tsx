@@ -47,7 +47,7 @@ export function CodingSandbox({
   const [projectLoaded, setProjectLoaded] = useState(false)
 
   // ── KeeBot state ──────────────────────────────────────────────────────────
-  const [chatOpen, setChatOpen]     = useState(true)
+  const [chatOpen, setChatOpen]     = useState(false)
   const [messages, setMessages]     = useState<{ role: 'user' | 'bot'; text: string }[]>([
     { role: 'bot', text: `Hi! I'm KeeBot 🤖 Tap the 🔊 button next to any step to hear it read aloud. Ask me anything if you get stuck — I'm here to help! 🌟` },
   ])
@@ -455,7 +455,7 @@ function KeeBotPanel({
       />
       {/* Bottom sheet */}
       <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-white rounded-t-3xl shadow-2xl flex flex-col"
-        style={{ height: '55vh' }}>
+        style={{ height: '42vh' }}>
         {/* Handle + header */}
         <div className="bg-purple-600 text-white px-4 py-3 rounded-t-3xl flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
