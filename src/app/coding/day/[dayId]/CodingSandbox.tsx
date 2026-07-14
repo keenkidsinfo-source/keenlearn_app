@@ -141,17 +141,14 @@ export function CodingSandbox({
       if (!vm) { setSaveError('VM not ready — try again in a moment'); return }
       let projectJson: string
       try {
-        // saveProjectSb3 saves the full binary .sb3 including custom-drawn costumes/backdrops.
-        // vm.toJSON() only saves JSON with asset hash references — custom drawn art is lost on reload.
-        const buffer: ArrayBuffer = await vm.saveProjectSb3('arraybuffer')
-        const bytes = new Uint8Array(buffer)
-        // Convert to base64 in 8 KB chunks to avoid stack overflow on large projects
-        const CHUNK = 8192
-        let binary = ''
-        for (let i = 0; i < bytes.byteLength; i += CHUNK) {
-          binary += String.fromCharCode(...(bytes.subarray(i, i + CHUNK) as any))
+        // __kkGetProjectSb3 runs saveProjectSb3 + base64 encoding INSIDE the iframe context
+        // so JSZip and all asset data are guaranteed to be in scope.
+        // Falls back to vm.toJSON() if the helper isn't available yet (first few seconds).
+        if (typeof iframeWin.__kkGetProjectSb3 === 'function') {
+          projectJson = await iframeWin.__kkGetProjectSb3()
+        } else {
+          projectJson = vm.toJSON()
         }
-        projectJson = 'data:application/zip;base64,' + btoa(binary)
       } catch (e: any) { setSaveError('save failed: ' + e?.message); return }
       if (!projectJson) { setSaveError('empty project'); return }
       await uploadProject(projectJson, 'scratch')

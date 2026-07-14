@@ -48959,6 +48959,20 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
     componentDidMount() {
       if (!this.props.vm.initialized) {
         window.vm = this.props.vm;
+        // KeenKids: expose a save helper that encodes the full .sb3 to base64 INSIDE the iframe
+        // context so JSZip and asset data are guaranteed to be in scope.
+        window.__kkGetProjectSb3 = function() {
+          if (!window.vm) return Promise.reject(new Error('[KK] vm not ready'));
+          return window.vm.saveProjectSb3('arraybuffer').then(function(buffer) {
+            var bytes = new Uint8Array(buffer);
+            var CHUNK = 8192;
+            var binary = '';
+            for (var i = 0; i < bytes.byteLength; i += CHUNK) {
+              binary += String.fromCharCode.apply(null, bytes.slice(i, i + CHUNK));
+            }
+            return 'data:application/zip;base64,' + btoa(binary);
+          });
+        };
         try {
           this.audioEngine = new scratch_audio__WEBPACK_IMPORTED_MODULE_5___default.a();
           this.props.vm.attachAudioEngine(this.audioEngine);
