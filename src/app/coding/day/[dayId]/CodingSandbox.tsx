@@ -47,8 +47,9 @@ export function CodingSandbox({
   const pyCode                = useRef('')
   const [currentStep, setCurrentStep] = useState(0)
   const [hasProject, setHasProject]   = useState(!!projectId)
-  // Use TurboWarp's native ?project_url= to load saved projects — no JS injection
-  const [iframeSrc, setIframeSrc] = useState('/scratch/editor.html')
+  // Always load editor.html with a unique timestamp so the TurboWarp service
+  // worker (which caches static files) never serves a stale editor.js version.
+  const [iframeSrc, setIframeSrc] = useState(`/scratch/editor.html?kk=${Date.now()}`)
 
   // ── KeeBot state ──────────────────────────────────────────────────────────
   const [chatOpen, setChatOpen]     = useState(false)
