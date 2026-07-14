@@ -69,11 +69,38 @@ export function CodingSandbox({
     setMessages(m => [...m, { role: 'user', text: question }])
     setChatInput('')
     setChatLoading(true)
+
+    // Snapshot the student's current Scratch project so KeeBot can give
+    // advice based on what they've actually built (sprites, blocks, costumes).
+    let projectSnapshot: string | null = null
+    if (language === 'scratch') {
+      try {
+        const iframeWin = iframeRef.current?.contentWindow as any
+        if (iframeWin?.vm) {
+          const json = JSON.parse(iframeWin.vm.toJSON())
+          const summary = (json.targets ?? []).map((t: any) => {
+            const blocks = Object.values(t.blocks ?? {}) as any[]
+            const categories = [
+              ...new Set(blocks.map((b: any) => b.opcode?.split('_')[0]).filter(Boolean))
+            ]
+            return {
+              name: t.name,
+              isStage: t.isStage,
+              costumes: (t.costumes ?? []).map((c: any) => c.name),
+              blockCategories: categories,
+              blockCount: blocks.length,
+            }
+          })
+          projectSnapshot = JSON.stringify(summary)
+        }
+      } catch { /* ignore — KeeBot still works without snapshot */ }
+    }
+
     try {
       const res = await fetch('/api/v1/ai/help', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, challenge, steps, currentStep }),
+        body: JSON.stringify({ question, challenge, steps, currentStep, projectSnapshot }),
       })
       const data = await res.json()
       const botText = data.text ?? data.error ?? "Hmm, I couldn't think of an answer. Ask your teacher! 🙂"
@@ -83,7 +110,7 @@ export function CodingSandbox({
     } finally {
       setChatLoading(false)
     }
-  }, [chatLoading, challenge, steps])
+  }, [chatLoading, challenge, steps, currentStep, language])
 
   const startListening = useCallback(() => {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
@@ -198,15 +225,28 @@ export function CodingSandbox({
     return () => { if (autoSaveTimer.current) clearInterval(autoSaveTimer.current) }
   }, [language, saveScratch, savePython])
 
-  // ── Keepalive save on tab close ────────────────────────────────────────────
-  // beforeunload is synchronous so we can't await saveProjectSb3.
-  // We fall back to vm.toJSON() here — sprites/scripts survive, custom drawn art
-  // NOTE: beforeunload handler deliberately removed.
-  // vm.toJSON() only stores asset ID references, not actual SVG/PNG bytes. Saving
-  // it on page-unload overwrites the good full .sb3 (from auto-save) with a JSON
-  // blob that references custom assets not on the Scratch CDN, causing them to
-  // vanish on reload. Auto-save every 10s is sufficient; removing beforeunload
-  // ensures drawn backdrops always survive a page refresh.
+  // ── Keepalive save on tab/page close ─────────────────────────────────────
+  // We use the pre-computed __kkLastSb3 (updated every 3 s inside the iframe)
+  // so beforeunload can fire a keepalive fetch synchronously — no async needed.
+  // This avoids the old vm.toJSON() approach that lost custom drawn assets.
+  // Guard: only save if the project has loaded (projectReadyRef) AND a project
+  // row exists, so we never overwrite with an empty VM on initial page load.
+  useEffect(() => {
+    if (language !== 'scratch') return
+    const handleBeforeUnload = () => {
+      const iframeWin = iframeRef.current?.contentWindow as any
+      const lastSb3   = iframeWin?.__kkLastSb3 as string | null | undefined
+      if (!lastSb3 || !currentProjectId.current || !projectReadyRef.current) return
+      fetch(`/api/v1/coding/${currentProjectId.current}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectJson: lastSb3, curriculumContentId: contentItemId }),
+        keepalive: true,
+      })
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [language, contentItemId])
 
   // ── Fetch saved project in parent frame → localStorage → TurboWarp reads it ─
   // (Fetching here avoids any auth issues inside the TurboWarp iframe)

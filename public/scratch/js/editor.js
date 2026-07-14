@@ -49042,6 +49042,18 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
             }).catch(reject);
           });
         };
+        // ── KeenKids: __kkLastSb3 cache ──────────────────────────────────────
+        // Pre-computes the full .sb3 every 3 s so beforeunload in the parent frame
+        // can read it synchronously (plain string) and fire a keepalive fetch.
+        // Avoids vm.toJSON() on unload which loses custom drawn assets.
+        window.__kkLastSb3 = null;
+        setInterval(function() {
+          if (!window.vm || typeof window.__kkGetProjectSb3 !== 'function') return;
+          window.__kkGetProjectSb3().then(function(sb3) {
+            window.__kkLastSb3 = sb3;
+          }).catch(function(e) { console.warn('[KK] __kkLastSb3 cache failed:', e); });
+        }, 3000);
+        // ── end KeenKids ─────────────────────────────────────────────────────
         try {
           this.audioEngine = new scratch_audio__WEBPACK_IMPORTED_MODULE_5___default.a();
           this.props.vm.attachAudioEngine(this.audioEngine);
