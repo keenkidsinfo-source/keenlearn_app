@@ -201,26 +201,12 @@ export function CodingSandbox({
   // ── Keepalive save on tab close ────────────────────────────────────────────
   // beforeunload is synchronous so we can't await saveProjectSb3.
   // We fall back to vm.toJSON() here — sprites/scripts survive, custom drawn art
-  // may not (it was already preserved by the async auto-save every 10 s).
-  useEffect(() => {
-    if (language !== 'scratch') return
-    const handleBeforeUnload = () => {
-      try {
-        const vm = (iframeRef.current?.contentWindow as any)?.vm
-        if (!vm || !currentProjectId.current) return
-        const projectJson = vm.toJSON()
-        if (!projectJson) return
-        fetch(`/api/v1/coding/${currentProjectId.current}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ projectJson, curriculumContentId: contentItemId }),
-          keepalive: true,
-        })
-      } catch (e) { console.error('beforeunload save failed', e) }
-    }
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [language, contentItemId, title])
+  // NOTE: beforeunload handler deliberately removed.
+  // vm.toJSON() only stores asset ID references, not actual SVG/PNG bytes. Saving
+  // it on page-unload overwrites the good full .sb3 (from auto-save) with a JSON
+  // blob that references custom assets not on the Scratch CDN, causing them to
+  // vanish on reload. Auto-save every 10s is sufficient; removing beforeunload
+  // ensures drawn backdrops always survive a page refresh.
 
   // ── Fetch saved project in parent frame → localStorage → TurboWarp reads it ─
   // (Fetching here avoids any auth issues inside the TurboWarp iframe)
