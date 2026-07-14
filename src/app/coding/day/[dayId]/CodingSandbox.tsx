@@ -47,9 +47,13 @@ export function CodingSandbox({
   const pyCode                = useRef('')
   const [currentStep, setCurrentStep] = useState(0)
   const [hasProject, setHasProject]   = useState(!!projectId)
-  // Always load editor.html with a unique timestamp so the TurboWarp service
-  // worker (which caches static files) never serves a stale editor.js version.
-  const [iframeSrc, setIframeSrc] = useState(`/scratch/editor.html?kk=${Date.now()}`)
+  // For saved projects: start null — don't render the iframe until kk_project is
+  // in localStorage. This eliminates the T0/T1 double-load race where T0 (empty
+  // default project) could cache an empty __kkLastSb3 before T1 (real project) loads.
+  // For new projects: load immediately with a timestamp to bypass HTTP cache.
+  const [iframeSrc, setIframeSrc] = useState<string | null>(
+    projectUrl ? null : `/scratch/editor.html?kk=${Date.now()}`
+  )
 
   // ── KeeBot state ──────────────────────────────────────────────────────────
   const [chatOpen, setChatOpen]     = useState(false)
@@ -321,13 +325,19 @@ export function CodingSandbox({
         {/* Main area: iframe + optional KeeBot side panel, side by side */}
         <div className="flex-1 flex flex-row overflow-hidden">
           <div className="relative flex-1 flex flex-col">
-            <iframe
-              ref={iframeRef}
-              src={iframeSrc}
-              className="flex-1 w-full border-0"
-              allow="microphone; camera"
-              title="Scratch Editor"
-            />
+            {iframeSrc ? (
+              <iframe
+                ref={iframeRef}
+                src={iframeSrc}
+                className="flex-1 w-full border-0"
+                allow="microphone; camera"
+                title="Scratch Editor"
+              />
+            ) : (
+              <div className="flex-1 flex items-center justify-center bg-white">
+                <p className="text-purple-400 text-sm animate-pulse">Loading your project…</p>
+              </div>
+            )}
             {/* First-visit hint — no saved project yet */}
             {!projectUrl && (
               <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none">

@@ -48959,6 +48959,10 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
     componentDidMount() {
       if (!this.props.vm.initialized) {
         window.vm = this.props.vm;
+        // ── KeenKids: project-loaded gate ─────────────────────────────────────
+        // Set to true only after the student's project finishes loading.
+        // Guards __kkLastSb3 cache so it never captures the blank default project.
+        window.__kkProjectLoaded = false;
         // ── KeenKids: wrap vm.updateBitmap + vm.updateSvg ─────────────────────
         // (a) logs when the paint editor commits a change so we can diagnose if it's firing
         // (b) synchronously captures the bitmap via canvas.toDataURL so costume.asset is
@@ -49048,7 +49052,7 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
         // Avoids vm.toJSON() on unload which loses custom drawn assets.
         window.__kkLastSb3 = null;
         setInterval(function() {
-          if (!window.vm || typeof window.__kkGetProjectSb3 !== 'function') return;
+          if (!window.vm || !window.__kkProjectLoaded || typeof window.__kkGetProjectSb3 !== 'function') return;
           window.__kkGetProjectSb3().then(function(sb3) {
             window.__kkLastSb3 = sb3;
           }).catch(function(e) { console.warn('[KK] __kkLastSb3 cache failed:', e); });
@@ -49555,13 +49559,13 @@ class Interface extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
               toLoad = kkSaved;
             }
             window.vm.loadProject(toLoad)
-              .then(function() { console.log('[KK] loadProject done'); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); })
-              .catch(function(e) { console.warn('[KK] loadProject failed:',e); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); });
+              .then(function() { console.log('[KK] loadProject done'); window.__kkProjectLoaded = true; window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); })
+              .catch(function(e) { console.warn('[KK] loadProject failed:',e); window.__kkProjectLoaded = true; window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); });
           }
         } else {
-          window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*');
+          window.__kkProjectLoaded = true; window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*');
         }
-      } catch(e) { console.warn('[KK] ls load failed',e); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); }
+      } catch(e) { console.warn('[KK] ls load failed',e); window.__kkProjectLoaded = true; window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); }
     }
   }
   handleUpdateProjectTitle(title, isDefault) {
