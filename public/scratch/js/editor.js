@@ -49461,19 +49461,24 @@ class Interface extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
           if (window.vm) {
             var toLoad;
             if (kkSaved.startsWith('data:application/zip;base64,')) {
-              // Decode base64-encoded .sb3 binary (full project including custom drawn art)
               var b64 = kkSaved.slice('data:application/zip;base64,'.length);
               var binStr = atob(b64);
-              var bytes = new Uint8Array(binStr.length);
-              for (var i = 0; i < binStr.length; i++) { bytes[i] = binStr.charCodeAt(i); }
-              toLoad = bytes.buffer;
+              var kkBytes = new Uint8Array(binStr.length);
+              for (var i = 0; i < binStr.length; i++) { kkBytes[i] = binStr.charCodeAt(i); }
+              toLoad = kkBytes.buffer;
             } else {
-              toLoad = kkSaved; // legacy JSON format fallback
+              toLoad = kkSaved;
             }
-            window.vm.loadProject(toLoad).catch(function(e){console.warn('[KK]',e);});
+            // Signal parent AFTER the student project finishes loading (not after the default project)
+            window.vm.loadProject(toLoad)
+              .then(function() { window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); })
+              .catch(function(e) { console.warn('[KK]',e); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); });
           }
+        } else {
+          // No saved project — TurboWarp default is ready, safe to auto-save new work
+          window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*');
         }
-      } catch(e) { console.warn('[KK] ls load failed',e); }
+      } catch(e) { console.warn('[KK] ls load failed',e); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); }
     }
   }
   handleUpdateProjectTitle(title, isDefault) {

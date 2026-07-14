@@ -41,6 +41,9 @@ export function CodingSandbox({
   const [saveError, setSaveError] = useState<string | null>(null)
   const currentProjectId      = useRef(projectId)
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
+  // true once TurboWarp signals KK_PROJECT_LOADED — prevents auto-save from firing while
+  // the student's .sb3 is still being loaded into the VM (which would overwrite the real project).
+  const projectReadyRef       = useRef(!projectUrl) // no saved project → ready immediately
   const pyCode                = useRef('')
   const [currentStep, setCurrentStep] = useState(0)
   const [hasProject, setHasProject]   = useState(!!projectId)
@@ -166,14 +169,25 @@ export function CodingSandbox({
     await uploadProject(pyCode.current, 'python')
   }, [uploadProject])
 
+  // ── Listen for TurboWarp "project fully loaded" signal ─────────────────────
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      if (e.data?.type === 'KK_PROJECT_LOADED') {
+        projectReadyRef.current = true
+      }
+    }
+    window.addEventListener('message', handler)
+    return () => window.removeEventListener('message', handler)
+  }, [])
+
   // ── Auto-save every 10 seconds ─────────────────────────────────────────────
-  // Only auto-save if the student already has a saved project (currentProjectId set).
-  // On a first visit, auto-saving would write TurboWarp's default ? sprite as their
-  // project. We require one manual Save first, then auto-save takes over.
+  // Guards: (1) project row must exist, (2) TurboWarp must have finished loading
+  // the student's project. Without guard 2, auto-save fires during the ~2s window
+  // while the .sb3 is loading and overwrites the real project with empty VM state.
   useEffect(() => {
     if (language === 'scratch') {
       autoSaveTimer.current = setInterval(() => {
-        if (currentProjectId.current) saveScratch()
+        if (currentProjectId.current && projectReadyRef.current) saveScratch()
       }, 10_000)
     } else {
       autoSaveTimer.current = setInterval(() => {
