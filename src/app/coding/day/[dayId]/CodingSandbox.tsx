@@ -140,7 +140,19 @@ export function CodingSandbox({
       const vm = iframeWin?.vm
       if (!vm) { setSaveError('VM not ready — try again in a moment'); return }
       let projectJson: string
-      try { projectJson = vm.toJSON() } catch (e: any) { setSaveError('toJSON failed: ' + e?.message); return }
+      try {
+        // saveProjectSb3 saves the full binary .sb3 including custom-drawn costumes/backdrops.
+        // vm.toJSON() only saves JSON with asset hash references — custom drawn art is lost on reload.
+        const buffer: ArrayBuffer = await vm.saveProjectSb3('arraybuffer')
+        const bytes = new Uint8Array(buffer)
+        // Convert to base64 in 8 KB chunks to avoid stack overflow on large projects
+        const CHUNK = 8192
+        let binary = ''
+        for (let i = 0; i < bytes.byteLength; i += CHUNK) {
+          binary += String.fromCharCode(...(bytes.subarray(i, i + CHUNK) as any))
+        }
+        projectJson = 'data:application/zip;base64,' + btoa(binary)
+      } catch (e: any) { setSaveError('save failed: ' + e?.message); return }
       if (!projectJson) { setSaveError('empty project'); return }
       await uploadProject(projectJson, 'scratch')
       iframeWin.ReduxStore?.dispatch({
@@ -175,22 +187,23 @@ export function CodingSandbox({
   }, [language, saveScratch, savePython])
 
   // ── Keepalive save on tab close ────────────────────────────────────────────
+  // beforeunload is synchronous so we can't await saveProjectSb3.
+  // We fall back to vm.toJSON() here — sprites/scripts survive, custom drawn art
+  // may not (it was already preserved by the async auto-save every 10 s).
   useEffect(() => {
     if (language !== 'scratch') return
     const handleBeforeUnload = () => {
       try {
         const vm = (iframeRef.current?.contentWindow as any)?.vm
-        if (!vm) return
+        if (!vm || !currentProjectId.current) return
         const projectJson = vm.toJSON()
         if (!projectJson) return
-        const method = currentProjectId.current ? 'PUT' : 'POST'
-        const url = currentProjectId.current
-          ? `/api/v1/coding/${currentProjectId.current}`
-          : '/api/v1/coding'
-        const body = currentProjectId.current
-          ? { projectJson, curriculumContentId: contentItemId }
-          : { curriculumContentId: contentItemId, title, language: 'scratch', projectJson }
-        fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true })
+        fetch(`/api/v1/coding/${currentProjectId.current}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectJson, curriculumContentId: contentItemId }),
+          keepalive: true,
+        })
       } catch (e) { console.error('beforeunload save failed', e) }
     }
     window.addEventListener('beforeunload', handleBeforeUnload)

@@ -49444,7 +49444,20 @@ class Interface extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
         var kkSaved = localStorage.getItem('kk_project');
         if (kkSaved) {
           localStorage.removeItem('kk_project');
-          if (window.vm) { window.vm.loadProject(kkSaved).catch(function(e){console.warn('[KK]',e);}); }
+          if (window.vm) {
+            var toLoad;
+            if (kkSaved.startsWith('data:application/zip;base64,')) {
+              // Decode base64-encoded .sb3 binary (full project including custom drawn art)
+              var b64 = kkSaved.slice('data:application/zip;base64,'.length);
+              var binStr = atob(b64);
+              var bytes = new Uint8Array(binStr.length);
+              for (var i = 0; i < binStr.length; i++) { bytes[i] = binStr.charCodeAt(i); }
+              toLoad = bytes.buffer;
+            } else {
+              toLoad = kkSaved; // legacy JSON format fallback
+            }
+            window.vm.loadProject(toLoad).catch(function(e){console.warn('[KK]',e);});
+          }
         }
       } catch(e) { console.warn('[KK] ls load failed',e); }
     }
