@@ -48959,38 +48959,70 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
     componentDidMount() {
       if (!this.props.vm.initialized) {
         window.vm = this.props.vm;
+        // KeenKids: track pending _updateBitmap async ops (canvas.toBlob + FileReader)
+        // so __kkGetProjectSb3 can wait for them before serialising.
+        window.__kkBitmapPending = 0;
+        window.__kkBitmapWaiters = [];
+        var _kkOrigUpdateBitmap = window.vm._updateBitmap.bind(window.vm);
+        window.vm._updateBitmap = function(costume, bitmap, rx, ry, br) {
+          window.__kkBitmapPending++;
+          // Wrap this specific emitTargetsUpdate call so we know when THIS op completes
+          var _kkOrigEmit = window.vm.emitTargetsUpdate.bind(window.vm);
+          var _kkDone = false;
+          window.vm.emitTargetsUpdate = function() {
+            if (!_kkDone) {
+              _kkDone = true;
+              window.vm.emitTargetsUpdate = _kkOrigEmit; // restore before calling
+              window.__kkBitmapPending = Math.max(0, window.__kkBitmapPending - 1);
+              if (window.__kkBitmapPending === 0 && window.__kkBitmapWaiters.length > 0) {
+                var w = window.__kkBitmapWaiters.slice(); window.__kkBitmapWaiters = [];
+                w.forEach(function(cb) { cb(); });
+              }
+            }
+            return _kkOrigEmit.apply(this, arguments);
+          };
+          return _kkOrigUpdateBitmap(costume, bitmap, rx, ry, br);
+        };
         // KeenKids: expose a save helper that encodes the full .sb3 to base64 INSIDE the iframe
-        // context so JSZip and asset data are guaranteed to be in scope.
+        // context so JSZip and all asset data are guaranteed to be in scope.
+        // Waits for any in-flight _updateBitmap async chains (canvas.toBlob + FileReader)
+        // before serialising so drawn backdrops are always captured.
         window.__kkGetProjectSb3 = function() {
           if (!window.vm) return Promise.reject(new Error('[KK] vm not ready'));
-          console.log('[KK] __kkGetProjectSb3 called');
-          // Log the files + asset data BEFORE zipping so we know if backdrop is present
-          try {
-            var files = window.vm.saveProjectSb3DontZip();
-            var fileKeys = Object.keys(files);
-            console.log('[KK] project files in zip:', fileKeys.map(function(k){ return k+'('+files[k].byteLength+'b)'; }).join(', '));
-          } catch(e) { console.warn('[KK] saveProjectSb3DontZip failed:', e); }
-          // Log stage backdrop costume asset status
-          try {
-            var stage = window.vm.runtime.targets.find(function(t){ return t.isStage; });
-            if (stage) {
-              var costumes = stage.getCostumes();
-              console.log('[KK] stage costumes:', costumes.length);
-              costumes.forEach(function(c, i) {
-                console.log('[KK] backdrop', i, c.name, c.assetId,
-                  c.asset ? ('data='+c.asset.data.byteLength+'b') : 'NO ASSET DATA');
-              });
+          return new Promise(function(resolve, reject) {
+            function doSave() {
+              console.log('[KK] __kkGetProjectSb3 saving (bitmapPending=0)');
+              // Diagnostic: show files + asset status so we can confirm backdrop is captured
+              try {
+                var files = window.vm.saveProjectSb3DontZip();
+                var fileKeys = Object.keys(files);
+                console.log('[KK] project files in zip:', fileKeys.map(function(k){ return k+'('+files[k].byteLength+'b)'; }).join(', '));
+              } catch(e) { console.warn('[KK] saveProjectSb3DontZip failed:', e); }
+              try {
+                var stage = window.vm.runtime.targets.find(function(t){ return t.isStage; });
+                if (stage) {
+                  stage.getCostumes().forEach(function(c, i) {
+                    console.log('[KK] backdrop', i, c.name, c.assetId,
+                      c.asset ? ('fmt='+c.asset.dataFormat+' data='+c.asset.data.byteLength+'b') : 'NO ASSET DATA');
+                  });
+                }
+              } catch(e) { console.warn('[KK] stage diagnostic failed:', e); }
+              window.vm.saveProjectSb3('arraybuffer').then(function(buffer) {
+                console.log('[KK] sb3 total size:', buffer.byteLength, 'bytes');
+                var bytes = new Uint8Array(buffer);
+                var CHUNK = 8192, binary = '';
+                for (var i = 0; i < bytes.byteLength; i += CHUNK) {
+                  binary += String.fromCharCode.apply(null, bytes.slice(i, i + CHUNK));
+                }
+                resolve('data:application/zip;base64,' + btoa(binary));
+              }).catch(reject);
             }
-          } catch(e) { console.warn('[KK] stage diagnostic failed:', e); }
-          return window.vm.saveProjectSb3('arraybuffer').then(function(buffer) {
-            console.log('[KK] sb3 total size:', buffer.byteLength, 'bytes');
-            var bytes = new Uint8Array(buffer);
-            var CHUNK = 8192;
-            var binary = '';
-            for (var i = 0; i < bytes.byteLength; i += CHUNK) {
-              binary += String.fromCharCode.apply(null, bytes.slice(i, i + CHUNK));
+            if (window.__kkBitmapPending === 0) {
+              doSave();
+            } else {
+              console.log('[KK] waiting for', window.__kkBitmapPending, 'pending bitmap update(s)...');
+              window.__kkBitmapWaiters.push(doSave);
             }
-            return 'data:application/zip;base64,' + btoa(binary);
           });
         };
         try {
