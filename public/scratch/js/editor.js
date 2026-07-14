@@ -48963,14 +48963,20 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
         // context so JSZip and asset data are guaranteed to be in scope.
         window.__kkGetProjectSb3 = function() {
           if (!window.vm) return Promise.reject(new Error('[KK] vm not ready'));
+          console.log('[KK] __kkGetProjectSb3 called — saving full .sb3');
           return window.vm.saveProjectSb3('arraybuffer').then(function(buffer) {
+            console.log('[KK] sb3 buffer size:', buffer.byteLength, 'bytes');
             var bytes = new Uint8Array(buffer);
+            // ZIP magic bytes should be 80,75,3,4 (PK..)
+            console.log('[KK] first 4 bytes:', bytes[0], bytes[1], bytes[2], bytes[3]);
             var CHUNK = 8192;
             var binary = '';
             for (var i = 0; i < bytes.byteLength; i += CHUNK) {
               binary += String.fromCharCode.apply(null, bytes.slice(i, i + CHUNK));
             }
-            return 'data:application/zip;base64,' + btoa(binary);
+            var result = 'data:application/zip;base64,' + btoa(binary);
+            console.log('[KK] base64 length:', result.length, 'chars');
+            return result;
           });
         };
         try {
@@ -49456,26 +49462,28 @@ class Interface extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
       Object(_load_service_worker__WEBPACK_IMPORTED_MODULE_25__["loadServiceWorker"])();
       try {
         var kkSaved = localStorage.getItem('kk_project');
+        console.log('[KK] componentDidUpdate: kkSaved present?', !!kkSaved, kkSaved ? ('len='+kkSaved.length+' prefix='+kkSaved.slice(0,30)) : '');
         if (kkSaved) {
           localStorage.removeItem('kk_project');
           if (window.vm) {
             var toLoad;
             if (kkSaved.startsWith('data:application/zip;base64,')) {
+              console.log('[KK] decoding base64 .sb3, length:', kkSaved.length);
               var b64 = kkSaved.slice('data:application/zip;base64,'.length);
               var binStr = atob(b64);
               var kkBytes = new Uint8Array(binStr.length);
               for (var i = 0; i < binStr.length; i++) { kkBytes[i] = binStr.charCodeAt(i); }
               toLoad = kkBytes.buffer;
+              console.log('[KK] decoded ArrayBuffer size:', toLoad.byteLength);
             } else {
+              console.log('[KK] loading as legacy JSON, length:', kkSaved.length);
               toLoad = kkSaved;
             }
-            // Signal parent AFTER the student project finishes loading (not after the default project)
             window.vm.loadProject(toLoad)
-              .then(function() { window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); })
-              .catch(function(e) { console.warn('[KK]',e); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); });
+              .then(function() { console.log('[KK] loadProject done'); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); })
+              .catch(function(e) { console.warn('[KK] loadProject failed:',e); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); });
           }
         } else {
-          // No saved project — TurboWarp default is ready, safe to auto-save new work
           window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*');
         }
       } catch(e) { console.warn('[KK] ls load failed',e); window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); }
