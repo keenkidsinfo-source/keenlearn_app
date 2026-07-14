@@ -80,9 +80,9 @@ export function CodingSandbox({
           const json = JSON.parse(iframeWin.vm.toJSON())
           const summary = (json.targets ?? []).map((t: any) => {
             const blocks = Object.values(t.blocks ?? {}) as any[]
-            const categories = [
-              ...new Set(blocks.map((b: any) => b.opcode?.split('_')[0]).filter(Boolean))
-            ]
+            const categories = Array.from(
+              new Set(blocks.map((b: any) => b.opcode?.split('_')[0]).filter(Boolean))
+            )
             return {
               name: t.name,
               isStage: t.isStage,
