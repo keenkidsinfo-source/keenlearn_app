@@ -48963,20 +48963,34 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
         // context so JSZip and asset data are guaranteed to be in scope.
         window.__kkGetProjectSb3 = function() {
           if (!window.vm) return Promise.reject(new Error('[KK] vm not ready'));
-          console.log('[KK] __kkGetProjectSb3 called — saving full .sb3');
+          console.log('[KK] __kkGetProjectSb3 called');
+          // Log the files + asset data BEFORE zipping so we know if backdrop is present
+          try {
+            var files = window.vm.saveProjectSb3DontZip();
+            var fileKeys = Object.keys(files);
+            console.log('[KK] project files in zip:', fileKeys.map(function(k){ return k+'('+files[k].byteLength+'b)'; }).join(', '));
+          } catch(e) { console.warn('[KK] saveProjectSb3DontZip failed:', e); }
+          // Log stage backdrop costume asset status
+          try {
+            var stage = window.vm.runtime.targets.find(function(t){ return t.isStage; });
+            if (stage) {
+              var costumes = stage.getCostumes();
+              console.log('[KK] stage costumes:', costumes.length);
+              costumes.forEach(function(c, i) {
+                console.log('[KK] backdrop', i, c.name, c.assetId,
+                  c.asset ? ('data='+c.asset.data.byteLength+'b') : 'NO ASSET DATA');
+              });
+            }
+          } catch(e) { console.warn('[KK] stage diagnostic failed:', e); }
           return window.vm.saveProjectSb3('arraybuffer').then(function(buffer) {
-            console.log('[KK] sb3 buffer size:', buffer.byteLength, 'bytes');
+            console.log('[KK] sb3 total size:', buffer.byteLength, 'bytes');
             var bytes = new Uint8Array(buffer);
-            // ZIP magic bytes should be 80,75,3,4 (PK..)
-            console.log('[KK] first 4 bytes:', bytes[0], bytes[1], bytes[2], bytes[3]);
             var CHUNK = 8192;
             var binary = '';
             for (var i = 0; i < bytes.byteLength; i += CHUNK) {
               binary += String.fromCharCode.apply(null, bytes.slice(i, i + CHUNK));
             }
-            var result = 'data:application/zip;base64,' + btoa(binary);
-            console.log('[KK] base64 length:', result.length, 'chars');
-            return result;
+            return 'data:application/zip;base64,' + btoa(binary);
           });
         };
         try {
