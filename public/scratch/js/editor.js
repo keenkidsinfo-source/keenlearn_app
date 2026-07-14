@@ -49051,12 +49051,25 @@ const vmManagerHOC = function vmManagerHOC(WrappedComponent) {
         // can read it synchronously (plain string) and fire a keepalive fetch.
         // Avoids vm.toJSON() on unload which loses custom drawn assets.
         window.__kkLastSb3 = null;
+        // Poll every 1 s as a safety net.
         setInterval(function() {
           if (!window.vm || !window.__kkProjectLoaded || typeof window.__kkGetProjectSb3 !== 'function') return;
           window.__kkGetProjectSb3().then(function(sb3) {
             window.__kkLastSb3 = sb3;
           }).catch(function(e) { console.warn('[KK] __kkLastSb3 cache failed:', e); });
-        }, 3000);
+        }, 1000);
+        // Also refresh immediately (debounced 300 ms) on any project change —
+        // catches backdrop/sprite additions that happen between poll ticks.
+        window.__kkCacheDebounce = null;
+        window.vm.runtime.on('PROJECT_CHANGED', function() {
+          if (!window.__kkProjectLoaded || typeof window.__kkGetProjectSb3 !== 'function') return;
+          clearTimeout(window.__kkCacheDebounce);
+          window.__kkCacheDebounce = setTimeout(function() {
+            window.__kkGetProjectSb3().then(function(sb3) {
+              window.__kkLastSb3 = sb3;
+            }).catch(function() {});
+          }, 300);
+        });
         // ── end KeenKids ─────────────────────────────────────────────────────
         try {
           this.audioEngine = new scratch_audio__WEBPACK_IMPORTED_MODULE_5___default.a();
