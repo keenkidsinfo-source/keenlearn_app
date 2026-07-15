@@ -100,11 +100,17 @@ export function CodingSandbox({
       } catch { /* ignore — KeeBot still works without snapshot */ }
     }
 
+    // Send last 8 messages as history (skip the initial bot greeting at index 0)
+    const history = messages.slice(1, -1).slice(-8).map(m => ({
+      role: m.role === 'bot' ? 'assistant' : 'user',
+      content: m.text,
+    }))
+
     try {
       const res = await fetch('/api/v1/ai/help', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, challenge, steps, currentStep, projectSnapshot }),
+        body: JSON.stringify({ question, challenge, steps, currentStep, projectSnapshot, history }),
       })
       const data = await res.json()
       const botText = data.text ?? data.error ?? "Hmm, I couldn't think of an answer. Ask your teacher! 🙂"
@@ -114,7 +120,7 @@ export function CodingSandbox({
     } finally {
       setChatLoading(false)
     }
-  }, [chatLoading, challenge, steps, currentStep, language])
+  }, [chatLoading, challenge, steps, currentStep, language, messages])
 
   const startListening = useCallback(() => {
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition

@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'API key not configured' }, { status: 500 })
     }
 
-    const { question, challenge, steps, currentStep, projectSnapshot } = await req.json().catch(() => ({}))
+    const { question, challenge, steps, currentStep, projectSnapshot, history } = await req.json().catch(() => ({}))
     if (!question?.trim()) return NextResponse.json({ error: 'Missing question' }, { status: 400 })
 
     const stepList = Array.isArray(steps)
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 250,
+      max_tokens: 400,
       system: `You are KeeBot, a super friendly coding helper for kids aged 6-10 who are learning Scratch!
 The student is working on a project called: "${challenge ?? 'a Scratch project'}".
 ${currentStepText ? `${currentStepText}\n` : ''}${stepList ? `All project steps:\n${stepList}` : ''}${projectContext}
@@ -65,11 +65,14 @@ When the student asks about their project, use the "What the student has built" 
 
 Your rules:
 - Use very simple words a 6-year-old can understand
-- Keep answers to 2-4 SHORT sentences
+- Give enough detail that the student can actually follow your instructions
 - Always be encouraging and positive
 - Use 1-2 fun emojis
 - If something is too tricky, say "Ask your teacher to help with this one!"`,
-      messages: [{ role: 'user', content: question }],
+      messages: [
+        ...(Array.isArray(history) ? history : []),
+        { role: 'user', content: question },
+      ],
     })
 
     const text = message.content[0].type === 'text' ? message.content[0].text : 'Ask your teacher for help! 🙂'
