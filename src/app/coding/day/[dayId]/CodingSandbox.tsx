@@ -432,58 +432,85 @@ function StepPanel({
   onKeeBotToggle?: () => void
   keeBotOpen?: boolean
 }) {
+  const [toast, setToast] = useState<string | null>(null)
+
   if (!steps || steps.length === 0) return null
-  const total = steps.length
-  const step  = steps[currentStep] ?? ''
+  const total   = steps.length
+  const step    = steps[currentStep] ?? ''
   const isFirst = currentStep === 0
   const isLast  = currentStep === total - 1
 
+  function handleNext() {
+    if (isLast) {
+      setToast('🎉 All steps done! Amazing work!')
+    } else {
+      setToast(`✅ Step ${currentStep + 1} done! On to step ${currentStep + 2}!`)
+      onStepChange(currentStep + 1)
+    }
+    setTimeout(() => setToast(null), 2200)
+  }
+
   return (
-    <div className="bg-yellow-50 border-b border-yellow-200 shrink-0 px-2 py-2 flex items-center gap-2">
-      {/* Prev */}
-      <button
-        onClick={() => onStepChange(currentStep - 1)}
-        onMouseDown={e => e.preventDefault()}
-        disabled={isFirst}
-        className="bg-yellow-200 hover:bg-yellow-300 disabled:opacity-25 text-yellow-800 font-black text-xl w-10 h-10 rounded-xl shrink-0 flex items-center justify-center active:scale-95 transition-all"
-      >←</button>
+    <div className="bg-yellow-50 border-b border-yellow-200 shrink-0 relative">
+      {/* Toast notification */}
+      {toast && (
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full mt-0 z-50 pointer-events-none">
+          <div className="bg-green-500 text-white text-sm font-black px-5 py-2 rounded-b-2xl shadow-lg animate-bounce whitespace-nowrap">
+            {toast}
+          </div>
+        </div>
+      )}
 
-      {/* Step text */}
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-bold text-yellow-500 leading-none mb-0.5">
-          🎯 {challenge ?? 'Challenge'} · Step {currentStep + 1} of {total}
-        </p>
-        <p className="text-sm text-gray-700 leading-snug">{step}</p>
+      <div className="px-2 py-2 flex items-center gap-2">
+        {/* Prev */}
+        <button
+          onClick={() => onStepChange(currentStep - 1)}
+          onMouseDown={e => e.preventDefault()}
+          disabled={isFirst}
+          className="bg-yellow-200 hover:bg-yellow-300 disabled:opacity-25 text-yellow-800 font-black text-xl w-10 h-10 rounded-xl shrink-0 flex items-center justify-center active:scale-95 transition-all"
+        >←</button>
+
+        {/* Step text */}
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold text-yellow-500 leading-none mb-0.5">
+            🎯 {challenge ?? 'Challenge'} · Step {currentStep + 1} of {total}
+          </p>
+          <p className="text-sm text-gray-700 leading-snug">{step}</p>
+        </div>
+
+        {/* Read aloud */}
+        {onSpeak && (
+          <button
+            onClick={() => onSpeak(step)}
+            onMouseDown={e => e.preventDefault()}
+            title="Read aloud"
+            className="text-yellow-400 hover:text-yellow-600 text-2xl shrink-0 w-9 h-9 flex items-center justify-center"
+          >🔊</button>
+        )}
+
+        {/* Done / Next step button */}
+        <button
+          onClick={handleNext}
+          onMouseDown={e => e.preventDefault()}
+          className={`font-black text-sm px-3 py-2 rounded-xl shrink-0 flex items-center gap-1.5 active:scale-95 transition-all
+            ${isLast
+              ? 'bg-green-500 hover:bg-green-400 text-white'
+              : 'bg-yellow-400 hover:bg-yellow-500 text-white'}`}
+        >
+          {isLast ? '🎉 Done!' : '✅ Next →'}
+        </button>
+
+        {/* KeeBot toggle */}
+        {onKeeBotToggle && (
+          <button
+            onClick={onKeeBotToggle}
+            onMouseDown={e => e.preventDefault()}
+            className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-xl transition-all active:scale-95
+              ${keeBotOpen ? 'bg-purple-500 text-white' : 'bg-purple-100 hover:bg-purple-200 text-purple-600'}`}
+            title="Ask KeeBot"
+          >🤖</button>
+        )}
       </div>
-
-      {/* Read aloud */}
-      {onSpeak && (
-        <button
-          onClick={() => onSpeak(step)}
-          onMouseDown={e => e.preventDefault()}
-          title="Read aloud"
-          className="text-yellow-400 hover:text-yellow-600 text-2xl shrink-0 w-9 h-9 flex items-center justify-center"
-        >🔊</button>
-      )}
-
-      {/* Next */}
-      <button
-        onClick={() => onStepChange(currentStep + 1)}
-        onMouseDown={e => e.preventDefault()}
-        disabled={isLast}
-        className="bg-yellow-400 hover:bg-yellow-500 disabled:opacity-25 text-white font-black text-xl w-10 h-10 rounded-xl shrink-0 flex items-center justify-center active:scale-95 transition-all"
-      >→</button>
-
-      {/* KeeBot toggle */}
-      {onKeeBotToggle && (
-        <button
-          onClick={onKeeBotToggle}
-          onMouseDown={e => e.preventDefault()}
-          className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-xl transition-all active:scale-95
-            ${keeBotOpen ? 'bg-purple-500 text-white' : 'bg-purple-100 hover:bg-purple-200 text-purple-600'}`}
-          title="Ask KeeBot"
-        >🤖</button>
-      )}
     </div>
   )
 }

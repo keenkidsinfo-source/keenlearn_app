@@ -9,6 +9,7 @@ import { eq, and } from 'drizzle-orm'
 import Link from 'next/link'
 import type { Subject } from '@/lib/db/schema'
 import { WeekDays } from './WeekDays'
+import { getCurrentLab, getUpcomingLab } from '@/lib/scienceLabs'
 
 function getMondayStr(): string {
   const today = new Date()
@@ -95,6 +96,10 @@ export default async function DashboardPage({
     return { dow, subject, dayId: currDay?.id ?? null, theme: currDay?.theme ?? null }
   })
 
+  const currentLab  = getCurrentLab()
+  const upcomingLab = getUpcomingLab()
+  const labToShow   = currentLab ?? upcomingLab
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -118,8 +123,23 @@ export default async function DashboardPage({
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-6">
+      <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
         <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned} />
+
+        {/* Science Lab card — shown when a lab is current or upcoming */}
+        {labToShow && (
+          <Link href="/science/lab" className="block">
+            <div className="bg-gradient-to-br from-teal-500 to-teal-700 text-white rounded-3xl p-5 flex items-center gap-4 shadow-md hover:shadow-lg transition-all active:scale-95">
+              <span className="text-5xl">{labToShow.emoji}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-teal-200 uppercase tracking-wide mb-0.5">🔬 Science Lab</p>
+                <h3 className="text-lg font-black truncate">{labToShow.title}</h3>
+                <p className="text-teal-200 text-sm truncate">{labToShow.conceptShort}</p>
+              </div>
+              <span className="text-2xl shrink-0">→</span>
+            </div>
+          </Link>
+        )}
       </main>
     </div>
   )

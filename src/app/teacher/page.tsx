@@ -23,10 +23,38 @@ function getMondayStr(): string {
 
 const AVATARS = ['🦊','🐼','🦁','🐸','🦋','🐬','🦄','🐉']
 
-export default async function TeacherDashboardPage() {
+function addDays(dateStr: string, days: number): string {
+  const d = new Date(dateStr + 'T12:00:00')
+  d.setDate(d.getDate() + days)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+}
+
+function formatWeekLabel(mondayStr: string): string {
+  const d = new Date(mondayStr + 'T12:00:00')
+  const friday = new Date(d)
+  friday.setDate(d.getDate() + 4)
+  const month = d.toLocaleDateString('en-US', { month: 'short' })
+  const endMonth = friday.toLocaleDateString('en-US', { month: 'short' })
+  if (month === endMonth) return `${month} ${d.getDate()}–${friday.getDate()}`
+  return `${month} ${d.getDate()} – ${endMonth} ${friday.getDate()}`
+}
+
+export default async function TeacherDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ week?: string }>
+}) {
   const session = await getSession()
   if (!session) redirect('/login')
   if (session.role === 'student') redirect('/dashboard')
+
+  const { week } = await searchParams
+  const currentMonday = getMondayStr()
+  const mondayStr = (week && /^\d{4}-\d{2}-\d{2}$/.test(week)) ? week : currentMonday
+  const isCurrentWeek = mondayStr === currentMonday
+  const prevWeek = addDays(mondayStr, -7)
+  const nextWeek = addDays(mondayStr, 7)
 
   // Load classroom
   const [classroom] = await db
@@ -49,7 +77,6 @@ export default async function TeacherDashboardPage() {
     : []
 
   // Load this week's curriculum assignment
-  const mondayStr = getMondayStr()
   const [thisWeek] = classroom
     ? await db
         .select({ weekTitle: curriculum.title, theme: curriculum.theme, curriculumId: classroomCurriculum.curriculumId })
@@ -152,7 +179,22 @@ export default async function TeacherDashboardPage() {
         {/* ── This Week ── */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-bold text-gray-800">This Week</h2>
+            <div className="flex items-center gap-3">
+              <Link
+                href={`/teacher?week=${prevWeek}`}
+                className="text-gray-400 hover:text-keen-600 font-bold text-lg px-1"
+              >←</Link>
+              <div>
+                <h2 className="text-lg font-bold text-gray-800 leading-none">
+                  {isCurrentWeek ? 'This Week' : 'Week of'}
+                </h2>
+                <p className="text-xs text-gray-400">{formatWeekLabel(mondayStr)}</p>
+              </div>
+              <Link
+                href={isCurrentWeek ? '#' : `/teacher?week=${nextWeek}`}
+                className={`font-bold text-lg px-1 ${isCurrentWeek ? 'text-gray-200 pointer-events-none' : 'text-gray-400 hover:text-keen-600'}`}
+              >→</Link>
+            </div>
             <Link href="/teacher/curriculum" className="text-keen-600 font-semibold text-sm hover:underline">
               {thisWeek ? 'Change →' : 'Assign →'}
             </Link>
@@ -183,6 +225,12 @@ export default async function TeacherDashboardPage() {
                   🎤 Run Speaking Class
                 </Link>
               )}
+              <Link
+                href="/teacher/science"
+                className="mt-2 flex items-center justify-center gap-2 w-full bg-teal-700 hover:bg-teal-600 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+              >
+                🔬 Science Lab Manual
+              </Link>
             </div>
           ) : (
             <div className="text-center py-6 text-gray-400">
