@@ -130,10 +130,47 @@ const projects = [
 ]
 
 async function run() {
+  // ── Classroom curriculum assignments ────────────────────────────────────────
+  console.log('\n── Classroom curriculum assignments ──')
+  const assignments = await sql`
+    SELECT cl.name as classroom, cl.grade_band, c.title as curriculum, c.week_number,
+           ccl.week_start_date
+    FROM classroom_curriculum ccl
+    JOIN classrooms cl ON cl.id = ccl.classroom_id
+    JOIN curriculum c ON c.id = ccl.curriculum_id
+    ORDER BY cl.name, ccl.week_start_date
+  `
+  for (const a of assignments) {
+    console.log(`  ${a.classroom} (${a.grade_band}) | ${a.week_start_date} → W${a.week_number}: ${a.curriculum}`)
+  }
+
+  // ── Coding content items so we can see what's in the DB
+  const allItems = await sql`
+    SELECT ci.id, ci.title, ci.grade_band, ci.created_at,
+           c.week_number, c.grade_band as curr_grade,
+           EXISTS (
+             SELECT 1 FROM classroom_curriculum ccl WHERE ccl.curriculum_id = c.id
+           ) as is_assigned
+    FROM content_items ci
+    JOIN curriculum_content cc ON cc.content_item_id = ci.id
+    JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
+    JOIN curriculum c ON c.id = cd.curriculum_id
+    WHERE ci.subject = 'coding'
+      AND ci.grade_band IN ('g1-2', 'g3-4')
+    ORDER BY ci.grade_band, c.week_number, ci.created_at DESC
+  `
+  console.log('\n── Coding content items in DB ──')
+  for (const r of allItems) {
+    console.log(`  ${r.grade_band} W${r.week_number} | ${r.is_assigned ? '✅ ASSIGNED' : '  orphan  '} | "${r.title}" | created ${r.created_at?.toISOString?.()?.slice(0,10)}`)
+  }
+  console.log()
+
   for (const p of projects) {
-    // Find the coding content item for this grade band and week
-    const [item] = await sql`
-      SELECT ci.id, ci.title, ci.metadata
+    // Find the content item that is ACTUALLY ASSIGNED to a classroom
+    // (i.e. reachable via classroom_curriculum → curriculum → curriculum_days → curriculum_content)
+    // If multiple rows are assigned, pick the newest.
+    const items = await sql`
+      SELECT ci.id, ci.title, ci.metadata, ci.created_at
       FROM content_items ci
       JOIN curriculum_content cc ON cc.content_item_id = ci.id
       JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
@@ -142,14 +179,34 @@ async function run() {
         AND ci.grade_band = ${p.gradeBand}
         AND c.week_number = ${p.weekNumber}
         AND c.grade_band = ${p.gradeBand}
-      LIMIT 1
+        AND c.id IN (SELECT curriculum_id FROM classroom_curriculum)
+      ORDER BY ci.created_at DESC
     `
-    if (!item) {
-      console.warn(`⚠ No coding item found for ${p.gradeBand} week ${p.weekNumber}`)
+
+    if (items.length === 0) {
+      // Fallback: no classroom assignment found, just pick the newest row
+      console.warn(`⚠  No assigned classroom found for ${p.gradeBand} week ${p.weekNumber} — falling back to newest row`)
+      const [item] = await sql`
+        SELECT ci.id, ci.title FROM content_items ci
+        JOIN curriculum_content cc ON cc.content_item_id = ci.id
+        JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
+        JOIN curriculum c ON c.id = cd.curriculum_id
+        WHERE ci.subject = 'coding'
+          AND ci.grade_band = ${p.gradeBand}
+          AND c.week_number = ${p.weekNumber}
+        ORDER BY ci.created_at DESC LIMIT 1
+      `
+      if (!item) { console.warn('  Still not found — skipping'); continue }
+      await sql`UPDATE content_items SET title = ${p.metadata.challenge}, metadata = ${p.metadata} WHERE id = ${item.id}`
+      console.log(`✓ Updated (fallback): ${p.gradeBand} Week ${p.weekNumber} — "${p.metadata.challenge}"`)
       continue
     }
-    await sql`UPDATE content_items SET title = ${p.metadata.challenge}, metadata = ${p.metadata} WHERE id = ${item.id}`
-    console.log(`✓ Updated: ${p.gradeBand} Week ${p.weekNumber} — "${p.metadata.challenge}" (was: ${item.title})`)
+
+    // Update ALL matched assigned rows (handles edge case of duplicate assignments)
+    for (const item of items) {
+      await sql`UPDATE content_items SET title = ${p.metadata.challenge}, metadata = ${p.metadata} WHERE id = ${item.id}`
+      console.log(`✓ Updated: ${p.gradeBand} Week ${p.weekNumber} — "${p.metadata.challenge}" (was: "${item.title}", created ${item.created_at?.toISOString?.()?.slice(0,10)})`)
+    }
   }
 
   await sql.end()
