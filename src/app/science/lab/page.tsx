@@ -10,5 +10,5 @@ export default function ScienceLabPage() {
     redirect('/dashboard')
   }
 
-  return <ScienceLabClient lab={lab} />
+  return <ScienceLabClient lab={lab} contentItemId={null} />
 }

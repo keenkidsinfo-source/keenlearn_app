@@ -65,6 +65,20 @@ export function CodingSandbox({
     setCurrentStep(step)
     saveStep(step)
   }, [saveStep])
+
+  // Mark the session as fully completed when student clicks "Done!" on the last step
+  const handleStepComplete = useCallback(() => {
+    const totalSteps = steps?.length ?? 0
+    fetch(`/api/v1/sessions/${sessionContentItemId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        lastStepIndex: Math.max(0, totalSteps - 1),
+        progressPct: 100,
+        completed: true,
+      }),
+    }).catch(() => {})
+  }, [sessionContentItemId, steps])
   const [hasProject, setHasProject]   = useState(!!projectId)
   // For saved projects: start null — don't render the iframe until kk_project is
   // in localStorage. This eliminates the T0/T1 double-load race where T0 (empty
@@ -350,6 +364,7 @@ export function CodingSandbox({
         <StepPanel
           steps={steps} challenge={challenge}
           currentStep={currentStep} onStepChange={handleStepChange}
+          onComplete={handleStepComplete}
           onSpeak={speak}
           onKeeBotToggle={() => setChatOpen(v => !v)}
           keeBotOpen={chatOpen}
@@ -381,7 +396,7 @@ export function CodingSandbox({
             )}
           </div>
 
-          {/* KeeBot side panel — sits beside the iframe, no overlap */}
+          {/* KeeBot side panel — sits beside the iframe on lg+; overlay on small screens */}
           <KeeBotPanel
             open={chatOpen}
             onToggle={() => setChatOpen(v => !v)}
@@ -419,6 +434,7 @@ export function CodingSandbox({
       <StepPanel
         steps={steps} challenge={challenge}
         currentStep={currentStep} onStepChange={handleStepChange}
+        onComplete={handleStepComplete}
         onSpeak={speak}
         onKeeBotToggle={() => setChatOpen(v => !v)}
         keeBotOpen={chatOpen}
@@ -449,12 +465,13 @@ export function CodingSandbox({
 
 // ── Step-by-step panel — one step at a time ───────────────────────────────
 function StepPanel({
-  steps, challenge, currentStep, onStepChange, onSpeak, onKeeBotToggle, keeBotOpen,
+  steps, challenge, currentStep, onStepChange, onComplete, onSpeak, onKeeBotToggle, keeBotOpen,
 }: {
   steps?: string[]
   challenge?: string
   currentStep: number
   onStepChange: (n: number) => void
+  onComplete?: () => void
   onSpeak?: (text: string) => void
   onKeeBotToggle?: () => void
   keeBotOpen?: boolean
@@ -470,6 +487,7 @@ function StepPanel({
   function handleNext() {
     if (isLast) {
       setToast('🎉 All steps done! Amazing work!')
+      onComplete?.()   // ← save completed=true to DB
     } else {
       setToast(`✅ Step ${currentStep + 1} done! On to step ${currentStep + 2}!`)
       onStepChange(currentStep + 1)
@@ -479,10 +497,10 @@ function StepPanel({
 
   return (
     <div className="bg-yellow-50 border-b border-yellow-200 shrink-0 relative">
-      {/* Toast notification */}
+      {/* Toast — fixed so it's never hidden behind the header */}
       {toast && (
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full mt-0 z-50 pointer-events-none">
-          <div className="bg-green-500 text-white text-sm font-black px-5 py-2 rounded-b-2xl shadow-lg animate-bounce whitespace-nowrap">
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+          <div className="bg-green-500 text-white text-sm font-black px-5 py-2.5 rounded-2xl shadow-xl animate-bounce whitespace-nowrap">
             {toast}
           </div>
         </div>
@@ -542,7 +560,7 @@ function StepPanel({
   )
 }
 
-// ── KeeBot side panel — sits beside the iframe, zero overlap ──────────────
+// ── KeeBot panel — side panel on desktop, bottom sheet on mobile ──────────
 function KeeBotPanel({
   open, onToggle, messages, input, onInputChange, onSend, onListen, loading, chatEndRef,
 }: {
@@ -558,7 +576,51 @@ function KeeBotPanel({
 }) {
   if (!open) return null
   return (
-    <div className="w-64 flex flex-col bg-white border-l border-purple-100 shadow-lg shrink-0">
+    <>
+      {/* Mobile: full-screen bottom sheet overlay */}
+      <div className="lg:hidden fixed inset-0 z-40 flex flex-col justify-end">
+        <div className="absolute inset-0 bg-black/30" onClick={onToggle} />
+        <div className="relative flex flex-col bg-white rounded-t-3xl shadow-2xl" style={{ maxHeight: '70vh' }}>
+          <div className="bg-purple-600 text-white px-4 py-3 flex items-center justify-between rounded-t-3xl shrink-0">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🤖</span>
+              <div>
+                <p className="font-black text-sm leading-none">KeeBot</p>
+                <p className="text-purple-200 text-xs">Your coding helper!</p>
+              </div>
+            </div>
+            <button onClick={onToggle} className="text-purple-200 hover:text-white font-bold px-2">✕</button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-purple-50">
+            {messages.map((msg, i) => (
+              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`rounded-2xl px-3 py-2 max-w-[85%] text-sm leading-relaxed
+                  ${msg.role === 'user' ? 'bg-purple-600 text-white rounded-br-sm' : 'bg-white text-gray-700 border border-purple-100 rounded-bl-sm shadow-sm'}`}>
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="bg-white border border-purple-100 rounded-2xl px-3 py-2 text-sm text-gray-400 shadow-sm animate-pulse">KeeBot is thinking…</div>
+              </div>
+            )}
+            <div ref={chatEndRef} />
+          </div>
+          <div className="px-3 py-3 border-t border-purple-100 bg-white shrink-0 flex gap-2">
+            <button onClick={onListen} title="Speak" className="text-purple-400 hover:text-purple-600 text-xl shrink-0">🎤</button>
+            <input type="text" value={input} onChange={e => onInputChange(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter' && !loading) onSend() }}
+              placeholder="Ask me anything…"
+              className="flex-1 text-sm border border-purple-200 rounded-xl px-3 py-2 focus:outline-none focus:border-purple-400" />
+            <button onClick={onSend} disabled={loading || !input.trim()}
+              className="bg-purple-600 hover:bg-purple-500 disabled:opacity-40 text-white text-sm font-bold px-3 py-2 rounded-xl shrink-0">Ask</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop: side panel beside the iframe */}
+      <div className="hidden lg:flex w-64 flex-col bg-white border-l border-purple-100 shadow-lg shrink-0">
       {/* Header */}
       <div className="bg-purple-600 text-white px-3 py-2 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
@@ -617,6 +679,7 @@ function KeeBotPanel({
         >Ask</button>
       </div>
     </div>
+    </>
   )
 }
 

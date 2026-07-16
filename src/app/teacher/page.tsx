@@ -243,9 +243,9 @@ export default async function TeacherDashboardPage({
         {/* ── Student Progress ── */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <h2 className="text-lg font-bold text-gray-800 mb-4">
-            This Week's Progress
+            This Week&apos;s Progress
             {totalThisWeek > 0 && (
-              <span className="ml-2 text-sm font-normal text-gray-400">({totalThisWeek} activities)</span>
+              <span className="ml-2 text-sm font-normal text-gray-400">({totalThisWeek} {totalThisWeek === 1 ? 'activity' : 'activities'})</span>
             )}
           </h2>
 
@@ -255,6 +255,54 @@ export default async function TeacherDashboardPage({
             <p className="text-gray-400 text-center py-4 text-sm">Assign a curriculum week to see progress.</p>
           ) : (
             <>
+              {/* Class summary strip */}
+              {totalThisWeek > 0 && (() => {
+                const allDone      = students.filter(s => (sessionMap.get(s.id)?.size ?? 0) >= totalThisWeek).length
+                const inProgress   = students.filter(s => {
+                  const done = sessionMap.get(s.id)?.size ?? 0
+                  const started = (inProgressMap.get(s.id)?.size ?? 0) + done
+                  return started > 0 && done < totalThisWeek
+                }).length
+                const notStarted   = students.length - allDone - inProgress
+                const classPct     = students.length > 0
+                  ? Math.round((students.reduce((sum, s) => sum + (sessionMap.get(s.id)?.size ?? 0), 0) / (students.length * totalThisWeek)) * 100)
+                  : 0
+
+                return (
+                  <div className="bg-gray-50 rounded-xl p-3 mb-4 flex items-center gap-4 flex-wrap">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">Class completion</span>
+                        <span className="text-sm font-black text-keen-700">{classPct}%</span>
+                      </div>
+                      <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-2.5 bg-keen-500 rounded-full transition-all"
+                          style={{ width: `${classPct}%` }}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-3 text-xs shrink-0">
+                      <span className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+                        <span className="font-bold text-green-700">{allDone}</span>
+                        <span className="text-gray-400">done</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />
+                        <span className="font-bold text-yellow-700">{inProgress}</span>
+                        <span className="text-gray-400">going</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-gray-300 inline-block" />
+                        <span className="font-bold text-gray-500">{notStarted}</span>
+                        <span className="text-gray-400">not yet</span>
+                      </span>
+                    </div>
+                  </div>
+                )
+              })()}
+
               {/* Subject header row */}
               {weekSubjects.length > 0 && (
                 <div className="flex items-center gap-2 mb-2 pl-[52px]">
@@ -273,15 +321,24 @@ export default async function TeacherDashboardPage({
                   const inProgressIds  = inProgressMap.get(student.id) ?? new Set<string>()
                   const doneCount      = completedIds.size
                   const pct            = totalThisWeek > 0 ? Math.round((doneCount / totalThisWeek) * 100) : 0
+                  const neverLoggedIn  = !student.lastActiveAt
+                  const isAllDone      = doneCount >= totalThisWeek && totalThisWeek > 0
 
                   const daysAgo = student.lastActiveAt
                     ? Math.floor((Date.now() - new Date(student.lastActiveAt).getTime()) / 86400000)
                     : null
 
                   return (
-                    <div key={student.id} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+                    <div
+                      key={student.id}
+                      className={`flex items-center gap-3 p-3 rounded-xl transition-colors
+                        ${isAllDone ? 'bg-green-50 border border-green-100' :
+                          neverLoggedIn ? 'bg-red-50 border border-red-100' :
+                          'bg-gray-50'}`}
+                    >
                       {/* Avatar */}
-                      <div className="w-9 h-9 rounded-full bg-keen-100 flex items-center justify-center text-xl flex-shrink-0">
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xl flex-shrink-0
+                        ${isAllDone ? 'bg-green-100' : neverLoggedIn ? 'bg-red-100' : 'bg-keen-100'}`}>
                         {AVATARS[((student.avatarId ?? 1) - 1) % 8]}
                       </div>
 
@@ -289,10 +346,11 @@ export default async function TeacherDashboardPage({
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <p className="font-bold text-gray-800 text-sm truncate">{student.displayName ?? student.name}</p>
-                          {daysAgo === 0 && <span className="text-xs text-green-600 font-bold shrink-0">Today ✓</span>}
-                          {daysAgo === 1 && <span className="text-xs text-gray-400 shrink-0">Yesterday</span>}
-                          {daysAgo !== null && daysAgo > 1 && <span className="text-xs text-red-400 shrink-0">{daysAgo}d ago</span>}
-                          {daysAgo === null && <span className="text-xs text-gray-300 shrink-0">Never</span>}
+                          {isAllDone      && <span className="text-xs text-green-600 font-bold shrink-0">🌟 All done!</span>}
+                          {!isAllDone && daysAgo === 0 && <span className="text-xs text-keen-600 font-bold shrink-0">Active today</span>}
+                          {!isAllDone && daysAgo === 1 && <span className="text-xs text-gray-400 shrink-0">Yesterday</span>}
+                          {!isAllDone && daysAgo !== null && daysAgo > 1 && <span className="text-xs text-orange-500 font-bold shrink-0">{daysAgo}d ago</span>}
+                          {neverLoggedIn  && <span className="text-xs text-red-500 font-bold shrink-0">⚠ Never logged in</span>}
                         </div>
                         {weekSubjects.length > 0 ? (
                           <div className="flex items-center gap-2">
@@ -319,7 +377,7 @@ export default async function TeacherDashboardPage({
 
                       {/* Count */}
                       <div className="text-right flex-shrink-0 w-10">
-                        <span className={`text-sm font-black ${doneCount === totalThisWeek && totalThisWeek > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+                        <span className={`text-sm font-black ${isAllDone ? 'text-green-600' : 'text-gray-500'}`}>
                           {doneCount}/{totalThisWeek || '?'}
                         </span>
                       </div>

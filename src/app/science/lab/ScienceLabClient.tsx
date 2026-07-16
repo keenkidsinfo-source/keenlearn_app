@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import type { ScienceLab } from '@/lib/scienceLabs'
 
@@ -129,7 +129,7 @@ const colorMap: Record<string, string> = {
 // ── Phases of the lab session ─────────────────────────────────────────────────
 type Phase = 'predict' | 'observe' | 'reflect'
 
-export function ScienceLabClient({ lab }: { lab: ScienceLab }) {
+export function ScienceLabClient({ lab, contentItemId }: { lab: ScienceLab; contentItemId: string | null }) {
   const router = useRouter()
   const storageKey = `kk_science_${lab.id}`
 
@@ -142,6 +142,7 @@ export function ScienceLabClient({ lab }: { lab: ScienceLab }) {
   const [expandedVocab, setExpandedVocab] = useState<number | null>(null)
   const [showExplain, setShowExplain]   = useState(false)
 
+  // Load: first from localStorage (instant), then sync from server (authoritative)
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey) ?? '{}')
@@ -153,10 +154,51 @@ export function ScienceLabClient({ lab }: { lab: ScienceLab }) {
     } catch {}
   }, [storageKey])
 
+  // Sync from server (overwrites localStorage with server truth)
+  useEffect(() => {
+    if (!contentItemId) return
+    fetch(`/api/v1/sessions/${contentItemId}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(res => {
+        const data = res?.data?.sessionData
+        if (!data) return
+        if (data.phase)        setPhase(data.phase)
+        if (data.vote)         setVote(data.vote)
+        if (data.observations) setObservations(data.observations)
+        if (data.whatHappened) setWhatHappened(data.whatHappened)
+        if (data.whatILearned) setWhatILearned(data.whatILearned)
+        // Sync back to localStorage so it's available offline
+        localStorage.setItem(storageKey, JSON.stringify(data))
+      })
+      .catch(() => {})
+  }, [contentItemId, storageKey])
+
+  // Debounced server save — fire-and-forget, 800ms after last change
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   function save(updates: Record<string, unknown>) {
+    // 1. Persist to localStorage immediately
     try {
       const existing = JSON.parse(localStorage.getItem(storageKey) ?? '{}')
-      localStorage.setItem(storageKey, JSON.stringify({ ...existing, ...updates }))
+      const merged = { ...existing, ...updates }
+      localStorage.setItem(storageKey, JSON.stringify(merged))
+
+      // 2. Debounce server save
+      if (contentItemId) {
+        if (saveTimer.current) clearTimeout(saveTimer.current)
+        saveTimer.current = setTimeout(() => {
+          const latest = JSON.parse(localStorage.getItem(storageKey) ?? '{}')
+          fetch(`/api/v1/sessions/${contentItemId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              progressPct: latest.phase === 'reflect' ? 100 : latest.phase === 'observe' ? 50 : 10,
+              completed: latest.phase === 'reflect' && !!latest.whatILearned,
+              sessionData: latest,
+            }),
+          }).catch(() => {})
+        }, 800)
+      }
     } catch {}
   }
 

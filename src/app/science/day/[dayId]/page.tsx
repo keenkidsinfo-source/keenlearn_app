@@ -1,10 +1,12 @@
 import { redirect, notFound } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
-import { curriculumDays, curriculum } from '@/lib/db/schema'
+import { curriculumDays, curriculum, curriculumContent } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { scienceLabs } from '@/lib/scienceLabs'
 import { ScienceLabClient } from '@/app/science/lab/ScienceLabClient'
+
+export const dynamic = 'force-dynamic'
 
 interface Props { params: Promise<{ dayId: string }> }
 
@@ -24,11 +26,23 @@ export default async function ScienceDayPage({ params }: Props) {
     .where(eq(curriculum.id, day.curriculumId))
     .limit(1)
 
+  // Content item ID — used to persist observations in student_sessions.session_data
+  const [contentRow] = await db
+    .select({ contentItemId: curriculumContent.contentItemId })
+    .from(curriculumContent)
+    .where(eq(curriculumContent.curriculumDayId, dayId))
+    .limit(1)
+
   // Week 1 → lab index 0 (fire extinguisher), Week 2 → lab index 1 (spinning pen)
   const weekNumber = curriculumRow?.weekNumber ?? 1
   const lab = scienceLabs[weekNumber - 1] ?? scienceLabs[0]
 
   if (!lab) redirect('/dashboard')
 
-  return <ScienceLabClient lab={lab} />
+  return (
+    <ScienceLabClient
+      lab={lab}
+      contentItemId={contentRow?.contentItemId ?? null}
+    />
+  )
 }
