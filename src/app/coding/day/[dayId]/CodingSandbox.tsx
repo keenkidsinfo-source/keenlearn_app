@@ -258,6 +258,14 @@ export function CodingSandbox({
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [language, contentItemId])
 
+  // ── New project: clear stale localStorage so TurboWarp starts blank ─────────
+  // Without this, TurboWarp reads kk_project from a previous week and loads the
+  // wrong project. Auto-save then overwrites the new week's project with old data.
+  useEffect(() => {
+    if (language !== 'scratch' || projectUrl) return
+    localStorage.removeItem('kk_project')
+  }, [language, projectUrl])
+
   // ── Fetch saved project in parent frame → localStorage → TurboWarp reads it ─
   // (Fetching here avoids any auth issues inside the TurboWarp iframe)
   useEffect(() => {

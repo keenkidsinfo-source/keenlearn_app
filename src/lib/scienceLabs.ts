@@ -235,11 +235,39 @@ export const scienceLabs: ScienceLab[] = [
   },
 ]
 
-/** Returns the lab for a given date string (YYYY-MM-DD), or the upcoming one */
+/**
+ * Dashboard card: only show a lab during its week or up to 3 days before.
+ * Returns null at all other times so the card doesn't appear permanently.
+ */
+export function getLabForDashboard(): ScienceLab | null {
+  const now  = new Date()
+  const today = now.toISOString().slice(0, 10)
+  const pad  = (n: number) => String(n).padStart(2, '0')
+
+  // Current week Mon–Fri
+  const dow  = now.getDay()
+  const mon  = new Date(now)
+  mon.setDate(now.getDate() + (dow === 0 ? -6 : 1 - dow))
+  const fri  = new Date(mon)
+  fri.setDate(mon.getDate() + 4)
+  const monStr = `${mon.getFullYear()}-${pad(mon.getMonth() + 1)}-${pad(mon.getDate())}`
+  const friStr = `${fri.getFullYear()}-${pad(fri.getMonth() + 1)}-${pad(fri.getDate())}`
+
+  // 3 days from now
+  const soon = new Date(now)
+  soon.setDate(now.getDate() + 3)
+  const soonStr = `${soon.getFullYear()}-${pad(soon.getMonth() + 1)}-${pad(soon.getDate())}`
+
+  return scienceLabs.find(l =>
+    (l.date >= monStr && l.date <= friStr) ||   // this week
+    (l.date > today && l.date <= soonStr)        // coming up within 3 days
+  ) ?? null
+}
+
+/** Returns the most recent past lab (used on the /science/lab student page) */
 export function getCurrentLab(): ScienceLab | null {
   const today = new Date().toISOString().slice(0, 10)
-  // Show today's lab, or the most recent past lab (so students can revisit)
-  const past = scienceLabs.filter(l => l.date <= today)
+  const past  = scienceLabs.filter(l => l.date <= today)
   if (past.length === 0) return scienceLabs[0] ?? null
   return past[past.length - 1]
 }

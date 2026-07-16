@@ -9,7 +9,7 @@ import { eq, and } from 'drizzle-orm'
 import Link from 'next/link'
 import type { Subject } from '@/lib/db/schema'
 import { WeekDays } from './WeekDays'
-import { getCurrentLab, getUpcomingLab } from '@/lib/scienceLabs'
+import { getLabForDashboard } from '@/lib/scienceLabs'
 
 function getMondayStr(): string {
   const today = new Date()
@@ -96,9 +96,7 @@ export default async function DashboardPage({
     return { dow, subject, dayId: currDay?.id ?? null, theme: currDay?.theme ?? null }
   })
 
-  const currentLab  = getCurrentLab()
-  const upcomingLab = getUpcomingLab()
-  const labToShow   = currentLab ?? upcomingLab
+  const labToShow = getLabForDashboard()
 
   return (
     <div className="min-h-screen bg-gray-50">
