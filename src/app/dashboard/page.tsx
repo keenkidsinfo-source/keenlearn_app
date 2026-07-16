@@ -1,5 +1,8 @@
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
+
+// Always render fresh — never serve a cached/stale week view from Vercel's edge
+export const dynamic = 'force-dynamic'
 import { db } from '@/lib/db'
 import {
   classrooms, classroomCurriculum, curriculum,

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import type { GradeBand } from '@/lib/db/schema'
@@ -130,10 +129,16 @@ export function StepViewer({ contentItemId, title, theme, stepUrls, steps, initi
 
       <main className="flex-1 flex flex-col items-center p-4 gap-3 max-w-lg mx-auto w-full">
 
-        {/* Illustration image */}
+        {/* Illustration image — use plain <img> so SVGs aren't routed through Next.js
+            image optimizer (which refuses SVGs in production) */}
         {currentUrl && (
-          <div className="w-full bg-white rounded-2xl shadow-md overflow-hidden relative aspect-[4/3]">
-            <Image src={currentUrl} alt={`Step ${step + 1}`} fill className="object-contain p-2" priority />
+          <div className="w-full bg-white rounded-2xl shadow-md overflow-hidden">
+            <img
+              src={currentUrl}
+              alt={`Step ${step + 1}`}
+              className="w-full object-contain p-2"
+              style={{ maxHeight: 260 }}
+            />
           </div>
         )}
 

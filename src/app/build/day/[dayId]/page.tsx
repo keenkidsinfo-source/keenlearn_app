@@ -8,14 +8,16 @@ import { eq, and } from 'drizzle-orm'
 import { getStepImageUrls } from '@/lib/r2/client'
 import { StepViewer, type StepData } from './StepViewer'
 
-interface Props { params: { dayId: string } }
+interface Props { params: Promise<{ dayId: string }> }
 
 export default async function BuildDayPage({ params }: Props) {
   const session = await getSession()
   if (!session) redirect('/login')
 
+  const { dayId } = await params
+
   // Load the day
-  const [day] = await db.select().from(curriculumDays).where(eq(curriculumDays.id, params.dayId)).limit(1)
+  const [day] = await db.select().from(curriculumDays).where(eq(curriculumDays.id, dayId)).limit(1)
   if (!day || day.subject !== 'build') notFound()
 
   // Load content items for this day
