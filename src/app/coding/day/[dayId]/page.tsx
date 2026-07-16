@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
-import { curriculumDays, curriculumContent, contentItems, codingProjects } from '@/lib/db/schema'
+import { curriculumDays, curriculumContent, contentItems, codingProjects, studentSessions } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { CodingSandbox } from './CodingSandbox'
 
@@ -35,6 +35,16 @@ export default async function CodingDayPage({ params }: Props) {
     ))
     .limit(1)
 
+  // Load saved step position (same mechanism as build page)
+  const [sessionData] = await db
+    .select()
+    .from(studentSessions)
+    .where(and(
+      eq(studentSessions.studentId, session.sub),
+      eq(studentSessions.contentItemId, item.id),
+    ))
+    .limit(1)
+
   // Language from metadata, fall back to grade band
   const meta = item.metadata as any
   const language: 'scratch' | 'python' = meta?.language ?? (session.gradeBand === 'g3-4' ? 'python' : 'scratch')
@@ -49,6 +59,7 @@ export default async function CodingDayPage({ params }: Props) {
   return (
     <CodingSandbox
       contentItemId={curriculumContentId}
+      sessionContentItemId={item.id}
       title={item.title}
       theme={day.theme ?? ''}
       language={language}
@@ -59,6 +70,7 @@ export default async function CodingDayPage({ params }: Props) {
       challenge={meta?.challenge}
       tagline={meta?.tagline}
       steps={meta?.steps}
+      initialStep={sessionData?.lastStepIndex ?? 0}
     />
   )
 }

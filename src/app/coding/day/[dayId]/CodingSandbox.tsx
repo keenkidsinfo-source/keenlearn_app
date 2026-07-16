@@ -6,6 +6,7 @@ import type { GradeBand } from '@/lib/db/schema'
 
 interface Props {
   contentItemId: string
+  sessionContentItemId: string   // content_items.id — used for step progress persistence
   title: string
   theme: string
   language: 'scratch' | 'python'
@@ -16,6 +17,7 @@ interface Props {
   challenge?: string
   tagline?: string
   steps?: string[]
+  initialStep?: number
 }
 
 // ── Text-to-speech helper ──────────────────────────────────────────────────
@@ -31,8 +33,8 @@ function speak(text: string) {
 }
 
 export function CodingSandbox({
-  contentItemId, title, theme, language, projectId, projectUrl, savedCode, gradeBand,
-  challenge, tagline, steps
+  contentItemId, sessionContentItemId, title, theme, language, projectId, projectUrl,
+  savedCode, gradeBand, challenge, tagline, steps, initialStep = 0
 }: Props) {
   const router          = useRouter()
   const iframeRef       = useRef<HTMLIFrameElement>(null)
@@ -48,7 +50,21 @@ export function CodingSandbox({
   // stale or empty state over a real project).
   const projectReadyRef       = useRef(false)
   const pyCode                = useRef('')
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(initialStep)
+
+  // Save step position to student_sessions (fire-and-forget)
+  const saveStep = useCallback((step: number) => {
+    fetch(`/api/v1/sessions/${sessionContentItemId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lastStepIndex: step, progressPct: 0, completed: false }),
+    }).catch(() => {})
+  }, [sessionContentItemId])
+
+  const handleStepChange = useCallback((step: number) => {
+    setCurrentStep(step)
+    saveStep(step)
+  }, [saveStep])
   const [hasProject, setHasProject]   = useState(!!projectId)
   // For saved projects: start null — don't render the iframe until kk_project is
   // in localStorage. This eliminates the T0/T1 double-load race where T0 (empty
@@ -333,7 +349,7 @@ export function CodingSandbox({
 
         <StepPanel
           steps={steps} challenge={challenge}
-          currentStep={currentStep} onStepChange={setCurrentStep}
+          currentStep={currentStep} onStepChange={handleStepChange}
           onSpeak={speak}
           onKeeBotToggle={() => setChatOpen(v => !v)}
           keeBotOpen={chatOpen}
@@ -402,7 +418,7 @@ export function CodingSandbox({
 
       <StepPanel
         steps={steps} challenge={challenge}
-        currentStep={currentStep} onStepChange={setCurrentStep}
+        currentStep={currentStep} onStepChange={handleStepChange}
         onSpeak={speak}
         onKeeBotToggle={() => setChatOpen(v => !v)}
         keeBotOpen={chatOpen}
