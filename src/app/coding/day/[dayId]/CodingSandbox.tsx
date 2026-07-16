@@ -43,7 +43,10 @@ export function CodingSandbox({
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
   // true once TurboWarp signals KK_PROJECT_LOADED — prevents auto-save from firing while
   // the student's .sb3 is still being loaded into the VM (which would overwrite the real project).
-  const projectReadyRef       = useRef(!projectUrl) // no saved project → ready immediately
+  // Wait for KK_PROJECT_LOADED signal even for new projects — prevents auto-save
+  // from firing before TurboWarp has finished initialising (which could write
+  // stale or empty state over a real project).
+  const projectReadyRef       = useRef(false)
   const pyCode                = useRef('')
   const [currentStep, setCurrentStep] = useState(0)
   const [hasProject, setHasProject]   = useState(!!projectId)
