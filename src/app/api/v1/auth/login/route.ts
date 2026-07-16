@@ -7,6 +7,10 @@ import { comparePassword } from '@/lib/auth/password'
 import { signToken, setTokenCookie } from '@/lib/auth/jwt'
 import { apiError, apiOk } from '@/lib/utils'
 
+async function touchLastActive(userId: string) {
+  await db.update(users).set({ lastActiveAt: new Date() }).where(eq(users.id, userId))
+}
+
 const studentSchema = z.object({
   type:       z.literal('student'),
   accessCode: z.string().length(6),
@@ -23,6 +27,7 @@ const teacherSchema = z.object({
 const schema = z.discriminatedUnion('type', [studentSchema, teacherSchema])
 
 async function issueStudentToken(student: any, classroom: any) {
+  await touchLastActive(student.id)
   const token = await signToken({
     sub:         student.id,
     role:        'student',
@@ -111,6 +116,7 @@ export async function POST(req: NextRequest) {
   const passwordValid = await comparePassword(data.password, teacher.passwordHash)
   if (!passwordValid) return apiError('Invalid credentials', 'INVALID_CREDENTIALS', 401)
 
+  await touchLastActive(teacher.id)
   const token = await signToken({
     sub:         teacher.id,
     role:        teacher.role as 'teacher' | 'admin',
