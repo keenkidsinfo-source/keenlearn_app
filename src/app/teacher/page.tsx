@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { SUBJECT_EMOJI, SUBJECT_LABEL } from '@/lib/utils'
 import type { Subject } from '@/lib/db/schema'
 import { StudentManager } from './StudentManager'
+import { SendReportButton } from './SendReportButton'
 
 function getMondayStr(): string {
   const today = new Date()
@@ -231,6 +232,11 @@ export default async function TeacherDashboardPage({
               >
                 🔬 Science Lab Manual
               </Link>
+              <SendReportButton
+                weekStartDate={mondayStr}
+                weekTitle={thisWeek.weekTitle}
+                studentCount={students.length}
+              />
             </div>
           ) : (
             <div className="text-center py-6 text-gray-400">
