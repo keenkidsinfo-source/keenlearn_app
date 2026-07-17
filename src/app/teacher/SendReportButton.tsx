@@ -8,6 +8,12 @@ interface Props {
   studentCount: number
 }
 
+type PreviewRow = {
+  studentName: string
+  matched: boolean
+  portalName: string | null
+}
+
 type ResultRow = {
   student: string
   status: 'sent' | 'no_match' | 'error'
@@ -23,9 +29,24 @@ type SendResult = {
 }
 
 export function SendReportButton({ weekStartDate, weekTitle, studentCount }: Props) {
-  const [state, setState]     = useState<'idle' | 'confirm' | 'sending' | 'done' | 'error'>('idle')
-  const [result, setResult]   = useState<SendResult | null>(null)
-  const [errMsg, setErrMsg]   = useState('')
+  const [state, setState]       = useState<'idle' | 'previewing' | 'preview' | 'sending' | 'done' | 'error'>('idle')
+  const [preview, setPreview]   = useState<PreviewRow[]>([])
+  const [result, setResult]     = useState<SendResult | null>(null)
+  const [errMsg, setErrMsg]     = useState('')
+
+  async function loadPreview() {
+    setState('previewing')
+    try {
+      const res = await fetch(`/api/v1/teacher/send-report?weekStartDate=${weekStartDate}`)
+      const data = await res.json()
+      if (!res.ok) { setErrMsg(data?.error ?? `Error ${res.status}`); setState('error'); return }
+      setPreview(data.data.preview)
+      setState('preview')
+    } catch (e: any) {
+      setErrMsg(e?.message ?? 'Network error')
+      setState('error')
+    }
+  }
 
   async function send() {
     setState('sending')
@@ -36,11 +57,7 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount }: Pro
         body:    JSON.stringify({ weekStartDate }),
       })
       const data = await res.json()
-      if (!res.ok) {
-        setErrMsg(data?.error ?? `Error ${res.status}`)
-        setState('error')
-        return
-      }
+      if (!res.ok) { setErrMsg(data?.error ?? `Error ${res.status}`); setState('error'); return }
       setResult(data.data)
       setState('done')
     } catch (e: any) {
@@ -49,35 +66,67 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount }: Pro
     }
   }
 
+  // ── Idle ──────────────────────────────────────────────────────────────────
   if (state === 'idle') {
     return (
       <button
-        onClick={() => setState('confirm')}
-        className="mt-2 flex items-center justify-center gap-2 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+        onClick={loadPreview}
+        className="mt-2 flex items-center justify-center gap-2 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all active:scale-95"
       >
         📤 Send Weekly Report to Parents
       </button>
     )
   }
 
-  if (state === 'confirm') {
+  // ── Loading preview ────────────────────────────────────────────────────────
+  if (state === 'previewing') {
+    return (
+      <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-center">
+        <p className="text-indigo-600 text-sm animate-pulse">Checking portal matches…</p>
+      </div>
+    )
+  }
+
+  // ── Preview ───────────────────────────────────────────────────────────────
+  if (state === 'preview') {
+    const matchCount = preview.filter(p => p.matched).length
     return (
       <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-xl p-4">
-        <p className="font-bold text-indigo-800 text-sm mb-1">📤 Send weekly report to parents?</p>
-        <p className="text-indigo-700 text-xs mb-3">
-          This will push <strong>{weekTitle}</strong> progress for <strong>{studentCount} students</strong> to the parent portal
-          — science observations, coding, math scores, and speaking.
+        <p className="font-bold text-indigo-800 text-sm mb-1">📤 Ready to send — {weekTitle}</p>
+        <p className="text-indigo-600 text-xs mb-3">
+          {matchCount} of {preview.length} students matched in the parent portal.
+          Unmatched students will be skipped.
         </p>
+
+        <div className="flex flex-col gap-1.5 mb-4">
+          {preview.map((row, i) => (
+            <div key={i} className="flex items-center gap-2 text-xs bg-white rounded-lg px-3 py-2 border border-indigo-100">
+              <span className="text-base">{row.matched ? '✅' : '🔍'}</span>
+              <span className="font-semibold text-gray-800 flex-1">{row.studentName}</span>
+              {row.matched
+                ? <span className="text-green-600 font-medium">→ {row.portalName}</span>
+                : <span className="text-orange-500">No match in portal</span>}
+            </div>
+          ))}
+        </div>
+
+        {matchCount === 0 ? (
+          <p className="text-orange-600 text-xs mb-3">
+            No students matched — check that children are registered in the parent portal with matching names.
+          </p>
+        ) : null}
+
         <div className="flex gap-2">
           <button
             onClick={send}
-            className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 rounded-xl text-sm active:scale-95 transition-all"
+            disabled={matchCount === 0}
+            className="flex-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-bold py-2 rounded-xl text-sm active:scale-95 transition-all"
           >
-            Yes, send it →
+            Send to {matchCount} {matchCount === 1 ? 'parent' : 'parents'} →
           </button>
           <button
             onClick={() => setState('idle')}
-            className="flex-1 border border-indigo-200 text-indigo-600 font-semibold py-2 rounded-xl text-sm hover:bg-indigo-100 transition-all"
+            className="flex-1 border border-indigo-200 text-indigo-600 font-semibold py-2 rounded-xl text-sm hover:bg-white transition-all"
           >
             Cancel
           </button>
@@ -86,6 +135,7 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount }: Pro
     )
   }
 
+  // ── Sending ───────────────────────────────────────────────────────────────
   if (state === 'sending') {
     return (
       <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-center">
@@ -94,49 +144,39 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount }: Pro
     )
   }
 
+  // ── Error ─────────────────────────────────────────────────────────────────
   if (state === 'error') {
     return (
       <div className="mt-2 bg-red-50 border border-red-200 rounded-xl p-4">
-        <p className="text-red-700 font-bold text-sm mb-1">⚠ Send failed</p>
+        <p className="text-red-700 font-bold text-sm mb-1">⚠ Something went wrong</p>
         <p className="text-red-600 text-xs mb-3">{errMsg}</p>
         <button onClick={() => setState('idle')} className="text-red-600 text-xs underline">Try again</button>
       </div>
     )
   }
 
-  // done
+  // ── Done ──────────────────────────────────────────────────────────────────
   if (state === 'done' && result) {
-    const allGood = result.noMatch === 0 && result.errors === 0
     return (
       <div className="mt-2 bg-green-50 border border-green-200 rounded-xl p-4">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-xl">{allGood ? '✅' : '⚠️'}</span>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xl">✅</span>
           <p className="font-bold text-green-800 text-sm">
-            {result.sent} of {result.sent + result.noMatch + result.errors} reports sent
+            {result.sent} {result.sent === 1 ? 'report' : 'reports'} sent to parent portal
           </p>
         </div>
 
         <div className="flex flex-col gap-1 mb-3">
           {result.results.map((r, i) => (
             <div key={i} className="flex items-center gap-2 text-xs">
-              <span>
-                {r.status === 'sent'     ? '✅' :
-                 r.status === 'no_match' ? '🔍' : '⚠️'}
-              </span>
+              <span>{r.status === 'sent' ? '✅' : r.status === 'no_match' ? '🔍' : '⚠️'}</span>
               <span className="font-semibold text-gray-700">{r.student}</span>
-              {r.status === 'sent'     && <span className="text-green-600">→ {r.portalName}</span>}
-              {r.status === 'no_match' && <span className="text-orange-500">No matching child in portal</span>}
-              {r.status === 'error'    && <span className="text-red-500">Failed to write</span>}
+              {r.status === 'sent'     && <span className="text-green-600">sent</span>}
+              {r.status === 'no_match' && <span className="text-orange-500">skipped — no match</span>}
+              {r.status === 'error'    && <span className="text-red-500">failed</span>}
             </div>
           ))}
         </div>
-
-        {result.noMatch > 0 && (
-          <p className="text-xs text-orange-600 mb-2">
-            🔍 {result.noMatch} student{result.noMatch > 1 ? 's' : ''} had no matching child record in the portal.
-            Check that the child&apos;s name in the portal matches the student&apos;s name here.
-          </p>
-        )}
 
         <button onClick={() => setState('idle')} className="text-green-700 text-xs underline">Done</button>
       </div>

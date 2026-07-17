@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { db } from '@/lib/db'
 import {
   users, classrooms, classroomCurriculum, curriculum,
-  curriculumDays, curriculumContent, contentItems, studentSessions,
+  curriculumDays, curriculumContent, contentItems, studentSessions, schools,
 } from '@/lib/db/schema'
 import { eq, and, inArray, isNull } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
@@ -32,11 +32,84 @@ async function supabaseFetch(path: string, opts: RequestInit = {}) {
   })
 }
 
+// ── Name matching ─────────────────────────────────────────────────────────────
+// Exact full-name match only (case-insensitive) to avoid sending to wrong family.
+// Also filters by school name when available.
+
+function matchChild(
+  student: { name: string; displayName: string | null },
+  children: { id: string; full_name: string; school_name: string }[],
+  schoolName: string,
+) {
+  const last  = student.name.trim().toLowerCase()
+  const first = (student.displayName ?? '').trim().toLowerCase()
+  const full  = first ? `${first} ${last}` : last
+
+  // Filter to same school first (loose match — portal school_name may differ slightly)
+  const schoolSlug = schoolName.toLowerCase().replace(/[^a-z0-9]/g, '')
+  const sameSchool = children.filter(c => {
+    const cs = c.school_name.toLowerCase().replace(/[^a-z0-9]/g, '')
+    return cs.includes(schoolSlug) || schoolSlug.includes(cs.split(' ')[0])
+  })
+  const pool = sameSchool.length > 0 ? sameSchool : children
+
+  // Exact full-name match only
+  return pool.find(c => c.full_name.trim().toLowerCase() === full) ?? null
+}
+
 // ── Schema ────────────────────────────────────────────────────────────────────
 
 const bodySchema = z.object({
   weekStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 })
+
+// ── GET /api/v1/teacher/send-report?weekStartDate=YYYY-MM-DD ─────────────────
+// Preview only — returns match status per student without writing anything.
+
+export async function GET(req: NextRequest) {
+  const session = await getSession()
+  if (!session) return apiError('Unauthorized', 'UNAUTHORIZED', 401)
+  if (session.role === 'student') return apiError('Forbidden', 'FORBIDDEN', 403)
+
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+    return apiError('SUPABASE_URL and SUPABASE_SERVICE_KEY env vars are not set.', 'CONFIG_ERROR', 500)
+  }
+
+  const weekStartDate = req.nextUrl.searchParams.get('weekStartDate')
+  if (!weekStartDate || !/^\d{4}-\d{2}-\d{2}$/.test(weekStartDate)) {
+    return apiError('weekStartDate required (YYYY-MM-DD)', 'VALIDATION_ERROR', 400)
+  }
+
+  const [classroom] = await db.select().from(classrooms)
+    .where(eq(classrooms.teacherId, session.sub)).limit(1)
+  if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
+
+  const [school] = classroom.schoolId
+    ? await db.select({ name: schools.name }).from(schools).where(eq(schools.id, classroom.schoolId)).limit(1)
+    : [undefined]
+  const schoolName = school?.name ?? ''
+
+  const students = await db
+    .select({ id: users.id, name: users.name, displayName: users.displayName })
+    .from(users)
+    .where(and(eq(users.classroomId, classroom.id), eq(users.role, 'student'), isNull(users.deletedAt)))
+
+  const childrenRes = await supabaseFetch('/children?select=id,full_name,school_name')
+  if (!childrenRes.ok) return apiError('Failed to fetch portal children', 'SUPABASE_ERROR', 502)
+  const portalChildren: { id: string; full_name: string; school_name: string }[] = await childrenRes.json()
+
+  const preview = students.map(s => {
+    const match = matchChild(s, portalChildren, schoolName)
+    const displayName = (s.displayName ?? s.name).trim()
+    return {
+      studentName: displayName,
+      matched:     !!match,
+      portalName:  match?.full_name ?? null,
+    }
+  })
+
+  return apiOk({ weekStartDate, preview })
+}
 
 // ── POST /api/v1/teacher/send-report ─────────────────────────────────────────
 
@@ -65,6 +138,11 @@ export async function POST(req: NextRequest) {
     .limit(1)
 
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
+
+  const [school] = classroom.schoolId
+    ? await db.select({ name: schools.name }).from(schools).where(eq(schools.id, classroom.schoolId)).limit(1)
+    : [undefined]
+  const schoolName = school?.name ?? ''
 
   // ── 2. Load curriculum for the week ─────────────────────────────────────────
   const [weekRow] = await db
@@ -129,11 +207,11 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 6. Fetch all children from Supabase portal ──────────────────────────────
-  const childrenRes = await supabaseFetch('/children?select=id,full_name,parent_id')
+  const childrenRes = await supabaseFetch('/children?select=id,full_name,school_name,parent_id')
   if (!childrenRes.ok) {
     return apiError('Failed to fetch children from portal', 'SUPABASE_ERROR', 502)
   }
-  const portalChildren: { id: string; full_name: string; parent_id: string }[] = await childrenRes.json()
+  const portalChildren: { id: string; full_name: string; school_name: string; parent_id: string }[] = await childrenRes.json()
 
   // ── 7. Compile a report row per student ─────────────────────────────────────
   const results: { student: string; status: 'sent' | 'no_match' | 'error'; portalName?: string }[] = []
@@ -144,14 +222,8 @@ export async function POST(req: NextRequest) {
     const studentFirst  = (student.displayName ?? '').trim().toLowerCase()
     const studentSess   = sessionsByStudent.get(student.id) ?? new Map()
 
-    // Name match: portal full_name contains the student's last name (case-insensitive)
-    // If displayName is set, also try matching the full "First Last" combo
-    const match = portalChildren.find(c => {
-      const portalLower = c.full_name.toLowerCase()
-      if (studentFirst && portalLower === `${studentFirst} ${studentLast}`) return true
-      if (studentFirst && portalLower === `${studentLast}, ${studentFirst}`) return true
-      return portalLower.includes(studentLast) && studentLast.length >= 3
-    })
+    // Exact full-name match only — no fuzzy matching to avoid wrong-family sends
+    const match = matchChild(student, portalChildren, schoolName)
 
     if (!match) {
       results.push({ student: studentName, status: 'no_match' })
