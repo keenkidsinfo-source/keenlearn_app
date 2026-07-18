@@ -158,6 +158,9 @@ export default async function TeacherDashboardPage({
             <Link href="/teacher/curriculum" className="bg-keen-600 hover:bg-keen-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all">
               📚 Curriculum
             </Link>
+            <Link href="/account/password" className="text-keen-200 hover:text-white text-sm font-semibold">
+              🔑 Password
+            </Link>
             <form action="/api/v1/auth/logout" method="POST">
               <button type="submit" className="text-keen-200 hover:text-white text-sm font-semibold">Sign out</button>
             </form>
