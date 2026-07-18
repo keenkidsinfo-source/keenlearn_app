@@ -62,10 +62,14 @@ export default function AdminPage() {
   const [classrooms,  setClassrooms]  = useState<Classroom[]>([])
   const [curriculum,  setCurriculum]  = useState<CurriculumWeek[]>([])
   const [loading,     setLoading]     = useState(true)
-  const [tab,         setTab]         = useState<'pending' | 'teachers' | 'classrooms'>('pending')
+  const [tab,         setTab]         = useState<'pending' | 'teachers' | 'classrooms' | 'admins'>('pending')
   const [toast,       setToast]       = useState('')
   const [newClassroom, setNewClassroom] = useState({ name: '', gradeLevel: '1', gradeBand: 'g1-2', schoolId: '' })
   const [creating,    setCreating]    = useState(false)
+
+  // New admin form
+  const [newAdmin, setNewAdmin] = useState({ name: '', email: '', password: '' })
+  const [creatingAdmin, setCreatingAdmin] = useState(false)
 
   // Per-teacher classroom assignment state
   const [teacherClassroom, setTeacherClassroom] = useState<Record<string, string>>({})
@@ -146,6 +150,26 @@ export default function AdminPage() {
     else showToast('❌ Failed to assign.')
   }
 
+  async function createAdmin(e: React.FormEvent) {
+    e.preventDefault()
+    const { name, email, password } = newAdmin
+    if (!name || !email || password.length < 8) { showToast('All fields required, password min 8 chars.'); return }
+    setCreatingAdmin(true)
+    const res = await fetch('/api/v1/admin/admins', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
+    })
+    setCreatingAdmin(false)
+    if (res.ok) {
+      showToast('✅ Admin account created!')
+      setNewAdmin({ name: '', email: '', password: '' })
+    } else {
+      const j = await res.json()
+      showToast(`❌ ${j.error ?? 'Failed to create admin.'}`)
+    }
+  }
+
   async function createClassroom() {
     const { name, gradeLevel, gradeBand, schoolId } = newClassroom
     if (!name.trim()) { showToast('Enter a classroom name.'); return }
@@ -195,6 +219,7 @@ export default function AdminPage() {
             { key: 'pending',    label: `⏳ Pending Approvals${pendingTeachers.length ? ` (${pendingTeachers.length})` : ''}` },
             { key: 'teachers',   label: '👩‍🏫 Teachers' },
             { key: 'classrooms', label: '🏫 Classrooms' },
+            { key: 'admins',     label: '🔑 Admins' },
           ].map(t => (
             <button
               key={t.key}
@@ -304,6 +329,43 @@ export default function AdminPage() {
                     </div>
                   )
                 })}
+              </div>
+            )}
+
+            {/* ── Admins ── */}
+            {tab === 'admins' && (
+              <div className="max-w-lg">
+                <div className="bg-white rounded-2xl shadow-sm p-6">
+                  <h2 className="font-black text-gray-700 text-lg mb-1">Add Admin Account</h2>
+                  <p className="text-gray-400 text-sm mb-5">Admins have full access to this dashboard. If the email already exists in the system, that account will be upgraded to admin.</p>
+                  <form onSubmit={createAdmin} className="flex flex-col gap-4">
+                    <div>
+                      <label className="text-xs font-bold text-gray-400 block mb-1">Full Name</label>
+                      <input type="text" value={newAdmin.name}
+                        onChange={e => setNewAdmin(p => ({ ...p, name: e.target.value }))}
+                        placeholder="Shilpa Patel" required
+                        className="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-keen-400" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-gray-400 block mb-1">Email</label>
+                      <input type="email" value={newAdmin.email}
+                        onChange={e => setNewAdmin(p => ({ ...p, email: e.target.value }))}
+                        placeholder="shilpa@keenkids.com" required
+                        className="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-keen-400" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-gray-400 block mb-1">Password (min 8 chars)</label>
+                      <input type="password" value={newAdmin.password}
+                        onChange={e => setNewAdmin(p => ({ ...p, password: e.target.value }))}
+                        placeholder="••••••••" required minLength={8}
+                        className="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-keen-400" />
+                    </div>
+                    <button type="submit" disabled={creatingAdmin}
+                      className="bg-keen-600 hover:bg-keen-500 text-white font-bold py-3 rounded-xl text-sm transition-all active:scale-95 disabled:opacity-50">
+                      {creatingAdmin ? 'Creating…' : 'Create Admin Account →'}
+                    </button>
+                  </form>
+                </div>
               </div>
             )}
 
