@@ -254,7 +254,7 @@ export default function AdminPage() {
                   <div key={t.id} className="bg-white rounded-2xl shadow-sm p-5 flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="flex-1">
                       <div className="font-black text-gray-800 text-lg">{t.name}</div>
-                      <div className="text-gray-500 text-sm">{t.email}</div>
+                      <div className="text-keen-700 text-sm font-semibold">{t.email ?? <span className="text-red-400 italic">no email on record</span>}</div>
                       <div className="text-gray-400 text-xs mt-1">
                         {t.displayName ?? '—'} &middot; Signed up {new Date(t.createdAt).toLocaleDateString()}
                       </div>
@@ -302,7 +302,7 @@ export default function AdminPage() {
                     <div key={t.id} className="bg-white rounded-2xl shadow-sm p-5 flex flex-col sm:flex-row sm:items-center gap-4">
                       <div className="flex-1">
                         <div className="font-black text-gray-800 text-lg">{t.name}</div>
-                        <div className="text-gray-500 text-sm">{t.email}</div>
+                        <div className="text-keen-700 text-sm font-semibold">{t.email ?? '—'}</div>
                         {assignedClassroom && (
                           <div className="text-green-600 text-xs mt-1 font-semibold">
                             📚 {assignedClassroom.schoolName ?? ''} — {assignedClassroom.name} (G{assignedClassroom.gradeLevel}) · Code: {assignedClassroom.accessCode}

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
 import { users } from '@/lib/db/schema'
-import { eq, isNull, and } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import { getSession } from '@/lib/auth/jwt'
 
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       approvedAt:  users.approvedAt,
     })
     .from(users)
-    .where(and(eq(users.role, 'teacher'), isNull(users.deletedAt)))
+    .where(eq(users.role, 'teacher'))
     .orderBy(users.createdAt)
 
   return apiOk(teachers)
