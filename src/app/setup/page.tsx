@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation'
 export default function SetupPage() {
   const router = useRouter()
   const [checking, setChecking] = useState(true)
-  const [needed,   setNeeded]   = useState(false)
+  const [needed,   setNeeded]   = useState<boolean | null>(null)
+  const [fetchError, setFetchError] = useState(false)
   const [name,     setName]     = useState('')
   const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
@@ -17,8 +18,14 @@ export default function SetupPage() {
   useEffect(() => {
     fetch('/api/v1/setup')
       .then(r => r.json())
-      .then(j => { setNeeded(j.data?.needed); setChecking(false) })
-      .catch(() => setChecking(false))
+      .then(j => {
+        setNeeded(j.data?.needed === true)
+        setChecking(false)
+      })
+      .catch(() => {
+        setFetchError(true)
+        setChecking(false)
+      })
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
@@ -47,7 +54,21 @@ export default function SetupPage() {
     )
   }
 
-  if (!needed) {
+  if (fetchError) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center text-center p-6">
+        <div className="text-5xl mb-4">⚠️</div>
+        <h1 className="text-2xl font-black text-gray-700 mb-2">Could not reach the server</h1>
+        <p className="text-gray-500 mb-6">Make sure the app is deployed and try refreshing.</p>
+        <button onClick={() => window.location.reload()}
+          className="bg-keen-600 text-white font-bold px-8 py-3 rounded-2xl hover:bg-keen-500 transition-all">
+          Retry
+        </button>
+      </div>
+    )
+  }
+
+  if (needed === false) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center text-center p-6">
         <div className="text-5xl mb-4">🔒</div>

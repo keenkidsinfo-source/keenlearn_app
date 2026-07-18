@@ -2,13 +2,14 @@ import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/lib/db'
 import { users } from '@/lib/db/schema'
-import { eq, count } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { hashPassword } from '@/lib/auth/password'
 import { apiOk, apiError } from '@/lib/utils'
 
 async function adminExists() {
-  const [{ value }] = await db.select({ value: count() }).from(users).where(eq(users.role, 'admin'))
-  return Number(value) > 0
+  const rows = await db.select({ id: users.id }).from(users)
+    .where(eq(users.role, 'admin')).limit(1)
+  return rows.length > 0
 }
 
 // GET /api/v1/setup — check if setup is still needed
