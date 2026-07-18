@@ -76,18 +76,26 @@ function LoginForm() {
     }
   }
 
+  const [pendingApproval, setPendingApproval] = useState(false)
+
   async function handleTeacherLogin(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setPendingApproval(false)
     try {
       const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'teacher', email, password }),
       })
-      if (!res.ok) { setError('Invalid email or password.'); return }
-      router.push('/teacher')
+      const json = await res.json()
+      if (!res.ok) {
+        if (json.code === 'PENDING_APPROVAL') { setPendingApproval(true); return }
+        setError('Invalid email or password.')
+        return
+      }
+      router.push(json.data?.role === 'admin' ? '/admin' : '/teacher')
     } catch {
       setError('Something went wrong. Try again!')
     } finally {
@@ -203,18 +211,33 @@ function LoginForm() {
         {step === 'teacher-form' && (
           <div className="bg-white rounded-3xl shadow-lg p-8">
             <h2 className="text-2xl font-bold text-center mb-6">Teacher Login</h2>
-            <form onSubmit={handleTeacherLogin} className="flex flex-col gap-4">
-              <input type="email" placeholder="Email address" value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="border-2 border-gray-200 rounded-2xl p-4 text-lg focus:outline-none focus:border-keen-400" required />
-              <input type="password" placeholder="Password" value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="border-2 border-gray-200 rounded-2xl p-4 text-lg focus:outline-none focus:border-keen-400" required />
-              <button type="submit" disabled={loading} className="btn-primary disabled:opacity-50">
-                {loading ? 'Signing in...' : 'Sign In'}
-              </button>
-            </form>
-            <button onClick={() => setStep('select-type')} className="w-full mt-4 text-gray-400 text-sm">← Back</button>
+
+            {pendingApproval ? (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-5 text-center mb-4">
+                <p className="text-3xl mb-2">⏳</p>
+                <p className="font-bold text-yellow-800">Your account is pending approval</p>
+                <p className="text-yellow-700 text-sm mt-1">We&apos;ll notify you by email once a KeenKids admin approves your account.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleTeacherLogin} className="flex flex-col gap-4">
+                <input type="email" placeholder="Email address" value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className="border-2 border-gray-200 rounded-2xl p-4 text-lg focus:outline-none focus:border-keen-400" required />
+                <input type="password" placeholder="Password" value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="border-2 border-gray-200 rounded-2xl p-4 text-lg focus:outline-none focus:border-keen-400" required />
+                <button type="submit" disabled={loading} className="btn-primary disabled:opacity-50">
+                  {loading ? 'Signing in...' : 'Sign In →'}
+                </button>
+              </form>
+            )}
+
+            <div className="mt-5 pt-4 border-t border-gray-100 text-center">
+              <p className="text-gray-400 text-sm">New teacher?{' '}
+                <a href="/auth/teacher-signup" className="text-keen-600 font-semibold hover:underline">Create an account →</a>
+              </p>
+            </div>
+            <button onClick={() => { setStep('select-type'); setPendingApproval(false) }} className="w-full mt-3 text-gray-400 text-sm">← Back</button>
           </div>
         )}
       </div>

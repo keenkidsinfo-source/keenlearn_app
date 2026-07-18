@@ -116,6 +116,14 @@ export async function POST(req: NextRequest) {
   const passwordValid = await comparePassword(data.password, teacher.passwordHash)
   if (!passwordValid) return apiError('Invalid credentials', 'INVALID_CREDENTIALS', 401)
 
+  // Block teachers who haven't been approved yet (admins are always allowed)
+  if (teacher.role === 'teacher' && !teacher.approvedAt) {
+    return apiError(
+      'Your account is pending approval. You\'ll receive an email once approved.',
+      'PENDING_APPROVAL', 403
+    )
+  }
+
   await touchLastActive(teacher.id)
   const token = await signToken({
     sub:         teacher.id,

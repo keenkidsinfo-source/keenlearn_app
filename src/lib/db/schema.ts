@@ -47,7 +47,8 @@ export const users = pgTable('users', {
   passwordHash: text('password_hash'), // teachers/admins only
   createdAt:    timestamp('created_at').defaultNow().notNull(),
   lastActiveAt: timestamp('last_active_at'),
-  deletedAt:    timestamp('deleted_at'), // soft delete
+  deletedAt:    timestamp('deleted_at'),   // soft delete
+  approvedAt:   timestamp('approved_at'),  // null = pending (teachers only)
 })
 
 // ─── curriculum ──────────────────────────────────────────────────────────────
