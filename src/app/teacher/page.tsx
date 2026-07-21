@@ -287,6 +287,7 @@ export default async function TeacherDashboardPage({
                 weekStartDate={mondayStr}
                 weekTitle={thisWeek.weekTitle}
                 studentCount={students.length}
+                classroomId={isAdmin ? (qClassroomId ?? classroom?.id) : undefined}
               />
             </div>
           ) : (

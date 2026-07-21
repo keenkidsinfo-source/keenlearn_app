@@ -80,8 +80,10 @@ export async function GET(req: NextRequest) {
     return apiError('weekStartDate required (YYYY-MM-DD)', 'VALIDATION_ERROR', 400)
   }
 
-  const [classroom] = await db.select().from(classrooms)
-    .where(eq(classrooms.teacherId, session.sub)).limit(1)
+  const adminClassroomId = req.nextUrl.searchParams.get('classroomId')
+  const [classroom] = session.role === 'admin' && adminClassroomId
+    ? await db.select().from(classrooms).where(eq(classrooms.id, adminClassroomId)).limit(1)
+    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).limit(1)
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
 
   const [school] = classroom.schoolId
@@ -130,11 +132,12 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) return apiError('Invalid request', 'VALIDATION_ERROR', 400)
 
   const { weekStartDate } = parsed.data
+  const adminClassroomId: string | undefined = body?.classroomId
 
-  // ── 1. Load teacher's classroom ──────────────────────────────────────────────
-  const [classroom] = await db.select()
-    .from(classrooms)
-    .where(eq(classrooms.teacherId, session.sub))
+  // ── 1. Load classroom (admin can pass classroomId explicitly) ─────────────────
+  const [classroom] = session.role === 'admin' && adminClassroomId
+    ? await db.select().from(classrooms).where(eq(classrooms.id, adminClassroomId)).limit(1)
+    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub))
     .limit(1)
 
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)

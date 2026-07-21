@@ -6,6 +6,7 @@ interface Props {
   weekStartDate: string
   weekTitle: string
   studentCount: number
+  classroomId?: string  // passed by admin when viewing another classroom
 }
 
 type PreviewRow = {
@@ -28,7 +29,7 @@ type SendResult = {
   results: ResultRow[]
 }
 
-export function SendReportButton({ weekStartDate, weekTitle, studentCount }: Props) {
+export function SendReportButton({ weekStartDate, weekTitle, studentCount, classroomId }: Props) {
   const [state, setState]       = useState<'idle' | 'previewing' | 'preview' | 'sending' | 'done' | 'error'>('idle')
   const [preview, setPreview]   = useState<PreviewRow[]>([])
   const [result, setResult]     = useState<SendResult | null>(null)
@@ -37,7 +38,8 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount }: Pro
   async function loadPreview() {
     setState('previewing')
     try {
-      const res = await fetch(`/api/v1/teacher/send-report?weekStartDate=${weekStartDate}`)
+      const qs = new URLSearchParams({ weekStartDate, ...(classroomId ? { classroomId } : {}) })
+      const res = await fetch(`/api/v1/teacher/send-report?${qs}`)
       const data = await res.json()
       if (!res.ok) { setErrMsg(data?.error ?? `Error ${res.status}`); setState('error'); return }
       setPreview(data.data.preview)
@@ -54,7 +56,7 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount }: Pro
       const res = await fetch('/api/v1/teacher/send-report', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ weekStartDate }),
+        body:    JSON.stringify({ weekStartDate, ...(classroomId ? { classroomId } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) { setErrMsg(data?.error ?? `Error ${res.status}`); setState('error'); return }
