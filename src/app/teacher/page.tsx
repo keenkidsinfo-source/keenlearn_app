@@ -60,10 +60,17 @@ export default async function TeacherDashboardPage({
   // Admins can pick any classroom via ?classroomId=; teachers use their own
   const isAdmin = session.role === 'admin'
 
-  // For admin: load all classrooms for the picker
+  // For admin: load all classrooms with school names for the picker
   const allClassrooms = isAdmin
-    ? await db.select({ id: classrooms.id, name: classrooms.name, gradeLevel: classrooms.gradeLevel, schoolId: classrooms.schoolId })
-        .from(classrooms).orderBy(classrooms.name)
+    ? await db.select({
+        id:         classrooms.id,
+        name:       classrooms.name,
+        gradeLevel: classrooms.gradeLevel,
+        schoolName: schools.name,
+      })
+        .from(classrooms)
+        .leftJoin(schools, eq(classrooms.schoolId, schools.id))
+        .orderBy(schools.name, classrooms.gradeLevel)
     : []
 
   // Load classroom
@@ -197,7 +204,7 @@ export default async function TeacherDashboardPage({
                 <option value="">— Pick a classroom —</option>
                 {allClassrooms.map(c => (
                   <option key={c.id} value={c.id}>
-                    {c.name} (Grade {c.gradeLevel})
+                    {c.schoolName ? `${c.schoolName} — ` : ''}{c.name} (Grade {c.gradeLevel})
                   </option>
                 ))}
               </select>
