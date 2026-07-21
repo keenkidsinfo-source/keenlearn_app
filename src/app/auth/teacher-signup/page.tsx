@@ -1,13 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-const SCHOOLS = [
-  'Mattos Elementary',
-  'Sinnott Elementary',
-  'Other',
-]
+interface School { id: string; name: string }
 
 export default function TeacherSignupPage() {
   const router = useRouter()
@@ -19,6 +15,14 @@ export default function TeacherSignupPage() {
   const [loading, setLoading]       = useState(false)
   const [error, setError]           = useState('')
   const [done, setDone]             = useState(false)
+  const [schools, setSchools]       = useState<School[]>([])
+
+  useEffect(() => {
+    fetch('/api/v1/schools')
+      .then(r => r.json())
+      .then(j => setSchools(j.data ?? []))
+      .catch(() => {})
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -113,7 +117,10 @@ export default function TeacherSignupPage() {
                 required
               >
                 <option value="">Select your school…</option>
-                {SCHOOLS.map(s => <option key={s} value={s}>{s}</option>)}
+                {schools.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
+                {schools.length === 0 && (
+                  <option disabled>Loading schools…</option>
+                )}
               </select>
             </div>
 

@@ -62,7 +62,7 @@ export default function AdminPage() {
   const [classrooms,  setClassrooms]  = useState<Classroom[]>([])
   const [curriculum,  setCurriculum]  = useState<CurriculumWeek[]>([])
   const [loading,     setLoading]     = useState(true)
-  const [tab,         setTab]         = useState<'pending' | 'teachers' | 'classrooms' | 'admins'>('pending')
+  const [tab,         setTab]         = useState<'pending' | 'teachers' | 'classrooms' | 'admins' | 'schools'>('pending')
   const [toast,       setToast]       = useState('')
   const [newClassroom, setNewClassroom] = useState({ name: '', gradeLevel: '1', gradeBand: 'g1-2', schoolId: '' })
   const [creating,    setCreating]    = useState(false)
@@ -70,6 +70,11 @@ export default function AdminPage() {
   // New admin form
   const [newAdmin, setNewAdmin] = useState({ name: '', email: '', password: '' })
   const [creatingAdmin, setCreatingAdmin] = useState(false)
+
+  // Schools
+  const [schoolsList,   setSchoolsList]   = useState<{ id: string; name: string }[]>([])
+  const [newSchoolName, setNewSchoolName] = useState('')
+  const [creatingSchool, setCreatingSchool] = useState(false)
 
   // Per-teacher classroom assignment state
   const [teacherClassroom, setTeacherClassroom] = useState<Record<string, string>>({})
@@ -85,12 +90,14 @@ export default function AdminPage() {
   const loadData = useCallback(async () => {
     setLoading(true)
     try {
-      const [tRes, cRes, curRes] = await Promise.all([
+      const [tRes, cRes, curRes, sRes] = await Promise.all([
         fetch('/api/v1/admin/teachers'),
         fetch('/api/v1/admin/classrooms'),
         fetch('/api/v1/admin/curriculum'),
+        fetch('/api/v1/admin/schools'),
       ])
-      const [tJson, cJson, curJson] = await Promise.all([tRes.json(), cRes.json(), curRes.json()])
+      const [tJson, cJson, curJson, sJson] = await Promise.all([tRes.json(), cRes.json(), curRes.json(), sRes.json()])
+      setSchoolsList(sJson.data ?? [])
       setTeachers(tJson.data ?? [])
       setClassrooms(cJson.data ?? [])
       setCurriculum(curJson.data ?? [])
@@ -148,6 +155,26 @@ export default function AdminPage() {
     })
     if (res.ok) { showToast('✅ Curriculum assigned!'); loadData() }
     else showToast('❌ Failed to assign.')
+  }
+
+  async function createSchool(e: React.FormEvent) {
+    e.preventDefault()
+    if (!newSchoolName.trim()) return
+    setCreatingSchool(true)
+    const res = await fetch('/api/v1/admin/schools', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: newSchoolName.trim() }),
+    })
+    setCreatingSchool(false)
+    if (res.ok) {
+      showToast('✅ School added!')
+      setNewSchoolName('')
+      loadData()
+    } else {
+      const j = await res.json()
+      showToast(`❌ ${j.error ?? 'Failed to add school.'}`)
+    }
   }
 
   async function createAdmin(e: React.FormEvent) {
@@ -222,6 +249,7 @@ export default function AdminPage() {
             { key: 'pending',    label: `⏳ Pending Approvals${pendingTeachers.length ? ` (${pendingTeachers.length})` : ''}` },
             { key: 'teachers',   label: '👩‍🏫 Teachers' },
             { key: 'classrooms', label: '🏫 Classrooms' },
+            { key: 'schools',    label: '🏫 Schools' },
             { key: 'admins',     label: '🔑 Admins' },
           ].map(t => (
             <button
@@ -332,6 +360,46 @@ export default function AdminPage() {
                     </div>
                   )
                 })}
+              </div>
+            )}
+
+            {/* ── Schools ── */}
+            {tab === 'schools' && (
+              <div className="max-w-lg space-y-4">
+                {/* Add school form */}
+                <div className="bg-white rounded-2xl shadow-sm p-6">
+                  <h2 className="font-black text-gray-700 text-lg mb-4">+ Add School</h2>
+                  <form onSubmit={createSchool} className="flex gap-3">
+                    <input
+                      type="text" value={newSchoolName}
+                      onChange={e => setNewSchoolName(e.target.value)}
+                      placeholder="e.g. Mattos Elementary"
+                      className="flex-1 border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-keen-400"
+                      required
+                    />
+                    <button type="submit" disabled={creatingSchool}
+                      className="bg-keen-600 hover:bg-keen-500 text-white font-bold px-5 py-2 rounded-xl text-sm transition-all active:scale-95 disabled:opacity-50">
+                      {creatingSchool ? 'Adding…' : 'Add →'}
+                    </button>
+                  </form>
+                </div>
+
+                {/* Schools list */}
+                <div className="bg-white rounded-2xl shadow-sm p-6">
+                  <h2 className="font-black text-gray-700 text-lg mb-4">All Schools</h2>
+                  {schoolsList.length === 0 ? (
+                    <p className="text-gray-400 text-sm">No schools added yet.</p>
+                  ) : (
+                    <ul className="space-y-2">
+                      {schoolsList.map(s => (
+                        <li key={s.id} className="flex items-center gap-3 py-2 border-b border-gray-100 last:border-0">
+                          <span className="text-lg">🏫</span>
+                          <span className="font-semibold text-gray-700">{s.name}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
             )}
 
