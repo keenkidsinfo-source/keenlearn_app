@@ -44,25 +44,32 @@ function formatWeekLabel(mondayStr: string): string {
 export default async function TeacherDashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ week?: string }>
+  searchParams: Promise<{ week?: string; classroomId?: string }>
 }) {
   const session = await getSession()
   if (!session) redirect('/login')
   if (session.role === 'student') redirect('/dashboard')
 
-  const { week } = await searchParams
+  const { week, classroomId: qClassroomId } = await searchParams
   const currentMonday = getMondayStr()
   const mondayStr = (week && /^\d{4}-\d{2}-\d{2}$/.test(week)) ? week : currentMonday
   const isCurrentWeek = mondayStr === currentMonday
   const prevWeek = addDays(mondayStr, -7)
   const nextWeek = addDays(mondayStr, 7)
 
+  // Admins can pick any classroom via ?classroomId=; teachers use their own
+  const isAdmin = session.role === 'admin'
+
+  // For admin: load all classrooms for the picker
+  const allClassrooms = isAdmin
+    ? await db.select({ id: classrooms.id, name: classrooms.name, gradeLevel: classrooms.gradeLevel, schoolId: classrooms.schoolId })
+        .from(classrooms).orderBy(classrooms.name)
+    : []
+
   // Load classroom
-  const [classroom] = await db
-    .select()
-    .from(classrooms)
-    .where(eq(classrooms.teacherId, session.sub))
-    .limit(1)
+  const [classroom] = isAdmin && qClassroomId
+    ? await db.select().from(classrooms).where(eq(classrooms.id, qClassroomId)).limit(1)
+    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).limit(1)
 
   const [school] = classroom?.schoolId
     ? await db.select().from(schools).where(eq(schools.id, classroom.schoolId)).limit(1)
@@ -149,12 +156,19 @@ export default async function TeacherDashboardPage({
       <header className="bg-keen-700 text-white px-6 py-5">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-black">KeenKids Teacher</h1>
+            <h1 className="text-2xl font-black">
+              {isAdmin ? '🛡️ Admin · Teacher View' : 'KeenKids Teacher'}
+            </h1>
             <p className="text-keen-200 text-sm mt-0.5">
               {school?.name ?? ''}{classroom ? ` · ${classroom.name}` : ''}
             </p>
           </div>
           <div className="flex items-center gap-3">
+            {isAdmin && (
+              <Link href="/admin" className="bg-white/20 hover:bg-white/30 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all">
+                ← Admin
+              </Link>
+            )}
             <Link href="/teacher/curriculum" className="bg-keen-600 hover:bg-keen-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all">
               📚 Curriculum
             </Link>
@@ -166,6 +180,32 @@ export default async function TeacherDashboardPage({
             </form>
           </div>
         </div>
+
+        {/* Admin classroom picker */}
+        {isAdmin && (
+          <div className="max-w-3xl mx-auto mt-3 pt-3 border-t border-keen-600">
+            <form method="GET" action="/teacher" className="flex items-center gap-3">
+              {week && <input type="hidden" name="week" value={week} />}
+              <label className="text-keen-200 text-sm font-semibold whitespace-nowrap">Viewing classroom:</label>
+              <select
+                name="classroomId"
+                defaultValue={qClassroomId ?? ''}
+                className="flex-1 bg-keen-800 text-white border border-keen-500 rounded-xl px-3 py-1.5 text-sm focus:outline-none"
+                onChange="this.form.submit()"
+              >
+                <option value="">— Pick a classroom —</option>
+                {allClassrooms.map(c => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} (Grade {c.gradeLevel})
+                  </option>
+                ))}
+              </select>
+              <button type="submit" className="bg-white/20 hover:bg-white/30 text-white font-bold px-4 py-1.5 rounded-xl text-sm">
+                Go →
+              </button>
+            </form>
+          </div>
+        )}
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-6 space-y-5">

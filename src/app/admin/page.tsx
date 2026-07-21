@@ -229,6 +229,7 @@ export default function AdminPage() {
       <header className="bg-keen-700 text-white px-6 py-4 flex items-center gap-4 shadow">
         <div className="font-black text-xl tracking-tight">KeenKids Admin</div>
         <div className="flex-1" />
+        <a href="/teacher" className="text-keen-200 hover:text-white text-sm font-semibold">👩‍🏫 Teacher View</a>
         <a href="/account/password" className="text-keen-200 hover:text-white text-sm font-semibold">🔑 Change Password</a>
         <form action="/api/v1/auth/logout" method="POST">
           <button type="submit" className="text-keen-200 hover:text-white text-sm font-semibold">Sign out</button>
