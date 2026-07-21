@@ -191,7 +191,6 @@ export default async function TeacherDashboardPage({
                 name="classroomId"
                 defaultValue={qClassroomId ?? ''}
                 className="flex-1 bg-keen-800 text-white border border-keen-500 rounded-xl px-3 py-1.5 text-sm focus:outline-none"
-                onChange="this.form.submit()"
               >
                 <option value="">— Pick a classroom —</option>
                 {allClassrooms.map(c => (
