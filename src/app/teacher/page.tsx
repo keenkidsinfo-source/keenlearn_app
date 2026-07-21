@@ -181,16 +181,18 @@ export default async function TeacherDashboardPage({
           </div>
         </div>
 
-        {/* Admin classroom picker */}
-        {isAdmin && (
-          <div className="max-w-3xl mx-auto mt-3 pt-3 border-t border-keen-600">
+      </header>
+
+      {/* Admin classroom picker — prominent banner */}
+      {isAdmin && (
+        <div className="bg-yellow-50 border-b-2 border-yellow-200 px-6 py-4">
+          <div className="max-w-3xl mx-auto">
+            <p className="text-yellow-800 text-xs font-bold uppercase tracking-wide mb-2">🛡️ Admin — Select a classroom to view</p>
             <form method="GET" action="/teacher" className="flex items-center gap-3">
-              {week && <input type="hidden" name="week" value={week} />}
-              <label className="text-keen-200 text-sm font-semibold whitespace-nowrap">Viewing classroom:</label>
               <select
                 name="classroomId"
                 defaultValue={qClassroomId ?? ''}
-                className="flex-1 bg-keen-800 text-white border border-keen-500 rounded-xl px-3 py-1.5 text-sm focus:outline-none"
+                className="flex-1 bg-white border-2 border-yellow-300 rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 focus:outline-none focus:border-yellow-500"
               >
                 <option value="">— Pick a classroom —</option>
                 {allClassrooms.map(c => (
@@ -199,13 +201,13 @@ export default async function TeacherDashboardPage({
                   </option>
                 ))}
               </select>
-              <button type="submit" className="bg-white/20 hover:bg-white/30 text-white font-bold px-4 py-1.5 rounded-xl text-sm">
-                Go →
+              <button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black px-6 py-2.5 rounded-xl text-sm transition-all active:scale-95">
+                Load →
               </button>
             </form>
           </div>
-        )}
-      </header>
+        </div>
+      )}
 
       <main className="max-w-3xl mx-auto px-4 py-6 space-y-5">
 
@@ -224,7 +226,7 @@ export default async function TeacherDashboardPage({
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <Link
-                href={`/teacher?week=${prevWeek}`}
+                href={`/teacher?week=${prevWeek}${qClassroomId ? `&classroomId=${qClassroomId}` : ''}`}
                 className="text-gray-400 hover:text-keen-600 font-bold text-lg px-1"
               >←</Link>
               <div>
@@ -234,7 +236,7 @@ export default async function TeacherDashboardPage({
                 <p className="text-xs text-gray-400">{formatWeekLabel(mondayStr)}</p>
               </div>
               <Link
-                href={isCurrentWeek ? '#' : `/teacher?week=${nextWeek}`}
+                href={isCurrentWeek ? '#' : `/teacher?week=${nextWeek}${qClassroomId ? `&classroomId=${qClassroomId}` : ''}`}
                 className={`font-bold text-lg px-1 ${isCurrentWeek ? 'text-gray-200 pointer-events-none' : 'text-gray-400 hover:text-keen-600'}`}
               >→</Link>
             </div>

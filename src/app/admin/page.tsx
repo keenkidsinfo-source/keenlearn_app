@@ -567,7 +567,7 @@ export default function AdminPage() {
                           Assign Week →
                         </button>
                         <a
-                          href={`/teacher?classroomId=${cls.id}`}
+                          href={`/teacher?classroomId=${cls.id}&week=${new Date(Date.now() - ((new Date().getDay() + 6) % 7) * 86400000).toISOString().slice(0, 10)}`}
                           className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-5 py-2 rounded-xl text-sm transition-all"
                         >
                           👁 View as Teacher
