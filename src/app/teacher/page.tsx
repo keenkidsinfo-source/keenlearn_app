@@ -176,9 +176,6 @@ export default async function TeacherDashboardPage({
                 ← Admin
               </Link>
             )}
-            <Link href="/teacher/curriculum" className="bg-keen-600 hover:bg-keen-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition-all">
-              📚 Curriculum
-            </Link>
             <Link href="/account/password" className="text-keen-200 hover:text-white text-sm font-semibold">
               🔑 Password
             </Link>
@@ -247,8 +244,8 @@ export default async function TeacherDashboardPage({
                 className={`font-bold text-lg px-1 ${isCurrentWeek ? 'text-gray-200 pointer-events-none' : 'text-gray-400 hover:text-keen-600'}`}
               >→</Link>
             </div>
-            <Link href="/teacher/curriculum" className="text-keen-600 font-semibold text-sm hover:underline">
-              {thisWeek ? 'Change →' : 'Assign →'}
+            <Link href="/teacher/curriculum" className="bg-keen-600 hover:bg-keen-500 text-white font-bold px-4 py-1.5 rounded-xl text-sm transition-all">
+              📚 {thisWeek ? 'Change Curriculum' : 'Assign Curriculum'}
             </Link>
           </div>
           {thisWeek ? (
