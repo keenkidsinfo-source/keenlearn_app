@@ -1,12 +1,16 @@
-import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { curriculum, curriculumDays, curriculumContent, classroomCurriculum } from '@/lib/db/schema'
+import { sql } from 'drizzle-orm'
 
+// Temporary debug endpoint — remove before going to production
 export async function GET() {
-  const curricula = await db.select().from(curriculum)
-  const days = await db.select().from(curriculumDays)
-  const content = await db.select().from(curriculumContent)
-  const assignments = await db.select().from(classroomCurriculum)
+  const [searchPath] = await db.execute(sql`SHOW search_path`)
+  const [currentSchema] = await db.execute(sql`SELECT current_schema()`)
+  const [userCount] = await db.execute(sql`SELECT count(*) FROM users`)
 
-  return NextResponse.json({ curricula, days, content, assignments })
+  return Response.json({
+    DATABASE_SCHEMA: process.env.DATABASE_SCHEMA ?? '(not set)',
+    search_path: searchPath,
+    current_schema: currentSchema,
+    user_count: userCount,
+  })
 }
