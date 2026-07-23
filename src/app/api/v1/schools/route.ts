@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { db } from '@/lib/db'
 import { schools } from '@/lib/db/schema'
 import { apiOk } from '@/lib/utils'
