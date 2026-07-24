@@ -112,8 +112,8 @@ export async function POST(req: NextRequest) {
     .limit(1)
 
   if (!teacher || !teacher.passwordHash || teacher.role === 'student') {
-    const [row] = await db.execute(sql`SELECT current_schema(), count(*) FROM users`) as any[]
-    return apiError(`Invalid credentials [debug: schema=${row?.current_schema}, users=${row?.count}, env=${process.env.DATABASE_SCHEMA}]`, 'INVALID_CREDENTIALS', 401)
+    const [row] = await db.execute(sql`SELECT current_schema() AS s, (SELECT count(*) FROM users) AS c`) as any[]
+    return apiError(`Invalid credentials [debug: schema=${row?.s}, users=${row?.c}, env=${process.env.DATABASE_SCHEMA}]`, 'INVALID_CREDENTIALS', 401)
   }
 
   const passwordValid = await comparePassword(data.password, teacher.passwordHash)
