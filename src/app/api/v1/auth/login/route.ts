@@ -1,10 +1,8 @@
-export const dynamic = 'force-dynamic'
-
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/lib/db'
 import { users, classrooms } from '@/lib/db/schema'
-import { eq, and, ilike, isNull, sql } from 'drizzle-orm'
+import { eq, and, ilike, isNull } from 'drizzle-orm'
 import { comparePassword } from '@/lib/auth/password'
 import { signToken, setTokenCookie } from '@/lib/auth/jwt'
 import { apiError, apiOk } from '@/lib/utils'
@@ -112,8 +110,7 @@ export async function POST(req: NextRequest) {
     .limit(1)
 
   if (!teacher || !teacher.passwordHash || teacher.role === 'student') {
-    const [row] = await db.execute(sql`SELECT current_schema() AS s, (SELECT count(*) FROM users) AS c`) as any[]
-    return apiError(`Invalid credentials [debug: schema=${row?.s}, users=${row?.c}, env=${process.env.DATABASE_SCHEMA}]`, 'INVALID_CREDENTIALS', 401)
+    return apiError('Invalid credentials', 'INVALID_CREDENTIALS', 401)
   }
 
   const passwordValid = await comparePassword(data.password, teacher.passwordHash)
