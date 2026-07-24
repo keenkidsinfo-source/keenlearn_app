@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/lib/db'
 import { users, classrooms } from '@/lib/db/schema'
-import { eq, and, ilike, isNull } from 'drizzle-orm'
+import { eq, and, ilike, isNull, sql } from 'drizzle-orm'
 import { comparePassword } from '@/lib/auth/password'
 import { signToken, setTokenCookie } from '@/lib/auth/jwt'
 import { apiError, apiOk } from '@/lib/utils'
@@ -112,7 +112,8 @@ export async function POST(req: NextRequest) {
     .limit(1)
 
   if (!teacher || !teacher.passwordHash || teacher.role === 'student') {
-    return apiError('Invalid credentials', 'INVALID_CREDENTIALS', 401)
+    const [row] = await db.execute(sql`SELECT current_schema(), count(*) FROM users`) as any[]
+    return apiError(`Invalid credentials [debug: schema=${row?.current_schema}, users=${row?.count}, env=${process.env.DATABASE_SCHEMA}]`, 'INVALID_CREDENTIALS', 401)
   }
 
   const passwordValid = await comparePassword(data.password, teacher.passwordHash)
