@@ -15,7 +15,7 @@ async function adminExists() {
 }
 
 // GET /api/v1/setup — check if setup is still needed
-export async function GET() {
+export async function GET(_req: Request) {
   const needed = !(await adminExists())
   return apiOk({ needed })
 }
