@@ -19,10 +19,12 @@ interface ImprovGame {
 }
 
 interface SpeakingMeta {
+  sessionType?: string
   weekWord?: string
   weekWordDef?: string
   prompt?: string
-  timeLimit?: number   // seconds
+  timeLimit?: number   // speech time in seconds
+  prepTime?: number    // prep time in seconds (impromptu only)
   structure?: string[]
   improvGame?: ImprovGame
   tip?: string
@@ -42,28 +44,51 @@ function fmt(secs: number) {
   return `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`
 }
 
+const SESSION_TYPE_LABEL: Record<string, string> = {
+  intro:      '👋 Introduction',
+  skills:     '💪 Skills',
+  formal:     '📋 Formal Speech',
+  impromptu:  '⚡ Impromptu',
+  platform:   '🎭 Platform',
+  showcase:   '🏆 Showcase',
+}
+
 export function SpeakingSession({ contentItemId, meta, students, initialDoneIds }: Props) {
   const [phase, setPhase]           = useState<Phase>('warmup')
   const [doneIds, setDoneIds]       = useState<Set<string>>(new Set(initialDoneIds))
   const [saving, setSaving]         = useState<string | null>(null) // studentId being saved
-  const [timerSecs, setTimerSecs]   = useState<number>(meta.timeLimit ?? 60)
+
+  const speechLimit = meta.timeLimit ?? 60
+  const prepLimit   = meta.prepTime ?? 0
+
+  const [timerPhase, setTimerPhase] = useState<'prep' | 'speech'>(prepLimit > 0 ? 'prep' : 'speech')
+  const [timerSecs, setTimerSecs]   = useState<number>(prepLimit > 0 ? prepLimit : speechLimit)
   const [running, setRunning]       = useState(false)
   const intervalRef                 = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const timeLimit = meta.timeLimit ?? 60
   const doneCount = doneIds.size
   const total     = students.length
 
   // ── Timer ──
   function startTimer() {
-    setTimerSecs(timeLimit)
+    if (timerPhase === 'prep') {
+      setTimerSecs(prepLimit)
+    } else {
+      setTimerSecs(speechLimit)
+    }
     setRunning(true)
   }
 
   function stopTimer() {
     setRunning(false)
-    setTimerSecs(timeLimit)
+    setTimerSecs(timerPhase === 'prep' ? prepLimit : speechLimit)
     if (intervalRef.current) clearInterval(intervalRef.current)
+  }
+
+  function switchToSpeech() {
+    setRunning(false)
+    setTimerPhase('speech')
+    setTimerSecs(speechLimit)
   }
 
   useEffect(() => {
@@ -72,6 +97,10 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
         setTimerSecs(prev => {
           if (prev <= 1) {
             setRunning(false)
+            if (timerPhase === 'prep') {
+              setTimerPhase('speech')
+              setTimerSecs(speechLimit)
+            }
             return 0
           }
           return prev - 1
@@ -81,7 +110,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
     return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
-  }, [running])
+  }, [running, timerPhase, speechLimit])
 
   // ── Mark student done / undo ──
   const toggleDone = useCallback(async (studentId: string) => {
@@ -114,10 +143,13 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
   }, [doneIds, contentItemId])
 
   // ── Timer color ──
+  const isPrepPhase = timerPhase === 'prep'
   const timerColor = timerSecs <= 10
     ? 'text-red-500'
     : timerSecs <= 20
     ? 'text-orange-400'
+    : isPrepPhase
+    ? 'text-blue-600'
     : 'text-teal-600'
 
   return (
@@ -203,6 +235,15 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
             </div>
           )}
 
+          {/* Session type badge */}
+          {meta.sessionType && SESSION_TYPE_LABEL[meta.sessionType] && (
+            <div className="flex">
+              <span className="bg-teal-100 text-teal-700 text-xs font-black px-3 py-1 rounded-full">
+                {SESSION_TYPE_LABEL[meta.sessionType]}
+              </span>
+            </div>
+          )}
+
           {/* Tip + Prompt */}
           <div className="bg-teal-600 rounded-2xl p-5 text-white">
             {meta.tip && (
@@ -214,7 +255,9 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
             <p className="text-xs font-black text-teal-200 uppercase tracking-wide mb-2">💬 Today's Prompt</p>
             <p className="text-xl font-black leading-snug">{meta.prompt ?? 'No prompt set.'}</p>
             <p className="text-teal-200 text-xs mt-3 font-semibold">
-              ⏱ {Math.floor(timeLimit / 60) > 0 ? `${Math.floor(timeLimit / 60)} min ` : ''}{timeLimit % 60 > 0 ? `${timeLimit % 60} sec` : ''} per student
+              {prepLimit > 0
+                ? `🧠 ${fmt(prepLimit)} prep · 🎤 ${fmt(speechLimit)} speech`
+                : `⏱ ${fmt(speechLimit)} per student`}
             </p>
           </div>
 
@@ -237,15 +280,41 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
 
           {/* Timer */}
           <div className="bg-white rounded-2xl shadow-sm p-5">
+            {/* Phase tabs — only shown for impromptu */}
+            {prepLimit > 0 && (
+              <div className="flex gap-2 mb-4">
+                <button
+                  onClick={() => { setRunning(false); setTimerPhase('prep'); setTimerSecs(prepLimit) }}
+                  className={cn(
+                    'flex-1 py-2 rounded-xl text-xs font-black transition-all',
+                    isPrepPhase ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                  )}
+                >
+                  🧠 Prep Time
+                </button>
+                <button
+                  onClick={switchToSpeech}
+                  className={cn(
+                    'flex-1 py-2 rounded-xl text-xs font-black transition-all',
+                    !isPrepPhase ? 'bg-teal-100 text-teal-700' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'
+                  )}
+                >
+                  🎤 Speech Time
+                </button>
+              </div>
+            )}
             <div className={cn('text-6xl font-black text-center mb-4 tabular-nums', timerColor)}>
               {fmt(timerSecs)}
             </div>
             {!running ? (
               <button
                 onClick={startTimer}
-                className="w-full bg-teal-600 hover:bg-teal-500 text-white font-black py-3 rounded-xl text-lg active:scale-95 transition-all"
+                className={cn(
+                  'w-full font-black py-3 rounded-xl text-lg active:scale-95 transition-all text-white',
+                  isPrepPhase ? 'bg-blue-600 hover:bg-blue-500' : 'bg-teal-600 hover:bg-teal-500'
+                )}
               >
-                {timerSecs === 0 ? '🔄 Reset & Start' : '▶ Start Timer'}
+                {timerSecs === 0 ? '🔄 Reset & Start' : isPrepPhase ? '🧠 Start Prep Timer' : '▶ Start Timer'}
               </button>
             ) : (
               <button
