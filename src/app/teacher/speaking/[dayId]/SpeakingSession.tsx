@@ -205,7 +205,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
               )}
               {meta.objectives && meta.objectives.length > 0 && (
                 <>
-                  <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-2">This Week's Objectives</p>
+                  <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-2">Today's Goals</p>
                   <div className="space-y-1.5">
                     {meta.objectives.map((obj, i) => (
                       <div key={i} className="flex items-start gap-2">
@@ -219,6 +219,29 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
             </div>
           )}
 
+          {/* Teacher tip banner */}
+          {meta.tip && (
+            <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl px-4 py-3 flex items-start gap-3">
+              <span className="text-xl shrink-0">{meta.tipIcon ?? '💡'}</span>
+              <div>
+                <p className="text-xs font-black text-amber-700 uppercase tracking-wide mb-0.5">Teacher Tip</p>
+                <p className="text-sm text-amber-900">{meta.tip}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Warm-up activity description */}
+          {meta.improvGame && (
+            <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl px-4 py-3 flex items-start gap-3">
+              <span className="text-xl shrink-0">🎭</span>
+              <div>
+                <p className="text-xs font-black text-orange-700 uppercase tracking-wide mb-0.5">Warm-Up: {meta.improvGame.name}</p>
+                <p className="text-sm text-orange-900">{meta.improvGame.description}</p>
+                <p className="text-xs text-orange-600 mt-1">Full instructions are in the Warm-Up tab.</p>
+              </div>
+            </div>
+          )}
+
           {/* Minute-by-minute plan */}
           {meta.sessionPlan && meta.sessionPlan.length > 0 ? (
             <div className="space-y-3">
@@ -228,8 +251,28 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
                   : seg.label === 'MAIN ACTIVITY'
                   ? { bg: 'bg-teal-600', light: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-700', timebg: 'bg-teal-100' }
                   : { bg: 'bg-purple-600', light: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', timebg: 'bg-purple-100' }
+
+                // Parse an action string: split quoted ("...") parts as SAY, rest as DO
+                function parseAction(action: string) {
+                  const parts: { kind: 'say' | 'do'; text: string }[] = []
+                  const re = /"([^"]+)"/g
+                  let last = 0, m: RegExpExecArray | null
+                  while ((m = re.exec(action)) !== null) {
+                    const before = action.slice(last, m.index).replace(/^\s*[-–:]\s*/, '').trim()
+                    if (before) parts.push({ kind: 'do', text: before })
+                    parts.push({ kind: 'say', text: m[1] })
+                    last = m.index + m[0].length
+                  }
+                  const after = action.slice(last).replace(/^\s*[-–:]\s*/, '').trim()
+                  if (after) parts.push({ kind: 'do', text: after })
+                  if (parts.length === 0) parts.push({ kind: 'do', text: action })
+                  return parts
+                }
+
+                const duration = seg.endMin - seg.startMin
                 return (
                   <div key={si} className={cn('rounded-2xl border-2 overflow-hidden', segColor.border)}>
+                    {/* Segment header */}
                     <div className={cn('px-4 py-3 flex items-center justify-between', segColor.bg)}>
                       <div className="flex items-center gap-2">
                         <span className="text-xl">{seg.emoji}</span>
@@ -238,20 +281,47 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
                           {seg.title && <p className="text-white/80 text-xs">{seg.title}</p>}
                         </div>
                       </div>
-                      <span className="text-white/90 text-xs font-bold tabular-nums">
-                        {seg.startMin}:{String(0).padStart(2,'0')} – {seg.endMin}:{String(0).padStart(2,'0')}
-                      </span>
+                      <div className="text-right">
+                        <p className="text-white/90 text-xs font-bold tabular-nums">
+                          min {seg.startMin} – {seg.endMin}
+                        </p>
+                        <p className="text-white/60 text-xs">{duration} min</p>
+                      </div>
                     </div>
+
+                    {/* Steps */}
                     {seg.steps && seg.steps.length > 0 && (
-                      <div className={cn('p-3 space-y-2', segColor.light)}>
-                        {seg.steps.map((step, ti) => (
-                          <div key={ti} className="flex gap-2.5 items-start">
-                            <span className={cn('text-xs font-black px-1.5 py-0.5 rounded shrink-0 tabular-nums', segColor.timebg, segColor.text)}>
-                              {step.time}
-                            </span>
-                            <p className="text-gray-700 text-sm leading-snug">{step.action}</p>
-                          </div>
-                        ))}
+                      <div className={cn('p-3 space-y-3', segColor.light)}>
+                        {seg.steps.map((step, ti) => {
+                          const parsed = parseAction(step.action)
+                          return (
+                            <div key={ti} className="flex gap-2.5 items-start">
+                              {/* Minute badge */}
+                              <div className="shrink-0 text-center">
+                                <span className={cn('text-xs font-black px-1.5 py-0.5 rounded block tabular-nums', segColor.timebg, segColor.text)}>
+                                  {step.time}
+                                </span>
+                                <span className="text-gray-300 text-xs">min</span>
+                              </div>
+                              {/* Action parts */}
+                              <div className="space-y-1.5 flex-1">
+                                {parsed.map((part, pi) =>
+                                  part.kind === 'say' ? (
+                                    <div key={pi} className="bg-white border border-gray-200 rounded-xl px-3 py-2 flex items-start gap-2">
+                                      <span className="text-xs font-black text-teal-600 uppercase tracking-wide shrink-0 mt-0.5 leading-none">SAY</span>
+                                      <p className="text-gray-800 text-sm leading-snug italic">&ldquo;{part.text}&rdquo;</p>
+                                    </div>
+                                  ) : (
+                                    <div key={pi} className="flex items-start gap-2">
+                                      <span className="text-xs font-black text-gray-400 uppercase tracking-wide shrink-0 mt-0.5 leading-none">DO</span>
+                                      <p className="text-gray-600 text-sm leading-snug">{part.text}</p>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          )
+                        })}
                       </div>
                     )}
                   </div>
@@ -267,17 +337,50 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
           {/* Picture cards */}
           {meta.pictureCards && meta.pictureCards.length > 0 && (
             <div className="bg-white rounded-2xl shadow-sm p-5">
-              <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-3">📇 Picture Cards This Week</p>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-xs font-black text-gray-400 uppercase tracking-wide">📇 Picture Cards This Week</p>
+                <a
+                  href="/SpeakUp_PictureCards_G12.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-teal-600 font-bold hover:underline"
+                >
+                  Open full PDF ↗
+                </a>
+              </div>
               <div className="space-y-2">
-                {meta.pictureCards.map((card, ci) => (
-                  <div key={ci} className="flex items-start gap-3 p-2.5 bg-yellow-50 rounded-xl border border-yellow-200">
-                    <span className="text-2xl shrink-0">{card.emoji}</span>
-                    <div>
-                      <p className="font-black text-sm text-gray-800">{card.name}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">{card.use}</p>
-                    </div>
-                  </div>
-                ))}
+                {meta.pictureCards.map((card, ci) => {
+                  // Map known card names to their PDF page numbers
+                  const PAGE_MAP: Record<string, number> = {
+                    'Three Pillars Poster': 1,
+                    'Voice Dial': 2,
+                    'Body Check Card': 3,
+                    'Hook Types Card': 4,
+                    'Three-Part Train': 5,
+                    'Feeling Faces': 6,
+                    'Story Mountain': 7,
+                    'Feedback Sandwich': 8,
+                    'Pre-Speech Ritual Card': 9,
+                  }
+                  const page = PAGE_MAP[card.name]
+                  const href = `/SpeakUp_PictureCards_G12.pdf${page ? `#page=${page}` : ''}`
+                  return (
+                    <a
+                      key={ci}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-3 p-2.5 bg-yellow-50 rounded-xl border border-yellow-200 hover:bg-yellow-100 hover:border-yellow-400 transition-colors cursor-pointer group"
+                    >
+                      <span className="text-2xl shrink-0">{card.emoji}</span>
+                      <div className="flex-1">
+                        <p className="font-black text-sm text-gray-800 group-hover:text-teal-700">{card.name}</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{card.use}</p>
+                      </div>
+                      <span className="text-gray-300 group-hover:text-teal-500 text-sm shrink-0 mt-0.5">↗</span>
+                    </a>
+                  )
+                })}
               </div>
             </div>
           )}
