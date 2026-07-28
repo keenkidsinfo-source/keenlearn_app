@@ -240,8 +240,8 @@ export default async function TeacherDashboardPage({
                 <p className="text-xs text-gray-400">{formatWeekLabel(mondayStr)}</p>
               </div>
               <Link
-                href={isCurrentWeek ? '#' : `/teacher?week=${nextWeek}${qClassroomId ? `&classroomId=${qClassroomId}` : ''}`}
-                className={`font-bold text-lg px-1 ${isCurrentWeek ? 'text-gray-200 pointer-events-none' : 'text-gray-400 hover:text-keen-600'}`}
+                href={`/teacher?week=${nextWeek}${qClassroomId ? `&classroomId=${qClassroomId}` : ''}`}
+                className="text-gray-400 hover:text-keen-600 font-bold text-lg px-1"
               >→</Link>
             </div>
             <Link href="/teacher/curriculum" className="bg-keen-600 hover:bg-keen-500 text-white font-bold px-4 py-1.5 rounded-xl text-sm transition-all">
