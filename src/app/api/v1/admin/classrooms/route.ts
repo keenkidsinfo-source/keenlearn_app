@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
 import { classrooms, schools, users, classroomCurriculum, curriculum } from '@/lib/db/schema'
