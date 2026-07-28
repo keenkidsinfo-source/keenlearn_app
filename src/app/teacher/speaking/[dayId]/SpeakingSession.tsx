@@ -353,11 +353,11 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
                   // Map known card names to their PDF page numbers
                   const PAGE_MAP: Record<string, number> = {
                     'Three Pillars Poster': 1,
-                    'Voice Dial': 2,
-                    'Body Check Card': 3,
-                    'Hook Types Card': 4,
-                    'Three-Part Train': 5,
-                    'Feeling Faces': 6,
+                    'Feeling Faces': 2,
+                    'Voice Dial': 3,
+                    'Body Check Card': 4,
+                    'Hook Types Card': 5,
+                    'Three-Part Train': 6,
                     'Story Mountain': 7,
                     'Feedback Sandwich': 8,
                     'Pre-Speech Ritual Card': 9,
