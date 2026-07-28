@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { cn } from '@/lib/utils'
 
-type Phase = 'warmup' | 'session'
+type Phase = 'plan' | 'warmup' | 'session'
 
 interface Student {
   id: string
@@ -18,7 +18,29 @@ interface ImprovGame {
   instructions: string[]
 }
 
+interface PlanStep {
+  time: string
+  action: string
+}
+
+interface SessionSegment {
+  startMin: number
+  endMin: number
+  label: string
+  emoji: string
+  title?: string
+  steps?: PlanStep[]
+}
+
+interface PictureCard {
+  name: string
+  emoji: string
+  use: string
+}
+
 interface SpeakingMeta {
+  pillar?: string
+  objectives?: string[]
   weekWord?: string
   weekWordDef?: string
   prompt?: string
@@ -27,6 +49,8 @@ interface SpeakingMeta {
   improvGame?: ImprovGame
   tip?: string
   tipIcon?: string
+  sessionPlan?: SessionSegment[]
+  pictureCards?: PictureCard[]
 }
 
 interface Props {
@@ -42,8 +66,14 @@ function fmt(secs: number) {
   return `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`
 }
 
+const PILLAR_COLOR: Record<string, string> = {
+  'Voice': 'bg-teal-600',
+  'Body':  'bg-purple-600',
+  'Mind':  'bg-amber-500',
+}
+
 export function SpeakingSession({ contentItemId, meta, students, initialDoneIds }: Props) {
-  const [phase, setPhase]           = useState<Phase>('warmup')
+  const [phase, setPhase]           = useState<Phase>('plan')
   const [doneIds, setDoneIds]       = useState<Set<string>>(new Set(initialDoneIds))
   const [saving, setSaving]         = useState<string | null>(null) // studentId being saved
   const [timerSecs, setTimerSecs]   = useState<number>(meta.timeLimit ?? 60)
@@ -124,11 +154,22 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
     <main className="max-w-2xl mx-auto px-4 py-5 space-y-4">
 
       {/* ── Phase tabs ── */}
-      <div className="flex gap-2 bg-white rounded-2xl p-1.5 shadow-sm border border-teal-100">
+      <div className="flex gap-1.5 bg-white rounded-2xl p-1.5 shadow-sm border border-teal-100">
+        <button
+          onClick={() => setPhase('plan')}
+          className={cn(
+            'flex-1 py-2.5 rounded-xl text-xs font-black transition-all',
+            phase === 'plan'
+              ? 'bg-teal-600 text-white shadow'
+              : 'text-gray-500 hover:bg-teal-50'
+          )}
+        >
+          📋 Plan
+        </button>
         <button
           onClick={() => setPhase('warmup')}
           className={cn(
-            'flex-1 py-2.5 rounded-xl text-sm font-black transition-all',
+            'flex-1 py-2.5 rounded-xl text-xs font-black transition-all',
             phase === 'warmup'
               ? 'bg-teal-600 text-white shadow'
               : 'text-gray-500 hover:bg-teal-50'
@@ -139,7 +180,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
         <button
           onClick={() => setPhase('session')}
           className={cn(
-            'flex-1 py-2.5 rounded-xl text-sm font-black transition-all',
+            'flex-1 py-2.5 rounded-xl text-xs font-black transition-all',
             phase === 'session'
               ? 'bg-teal-600 text-white shadow'
               : 'text-gray-500 hover:bg-teal-50'
@@ -148,6 +189,107 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
           🎤 Session
         </button>
       </div>
+
+      {/* ════════════════════ SESSION PLAN ════════════════════ */}
+      {phase === 'plan' && (
+        <>
+          {/* Pillar badge + objectives */}
+          {(meta.pillar || meta.objectives) && (
+            <div className="bg-white rounded-2xl shadow-sm p-5">
+              {meta.pillar && (
+                <div className="flex items-center gap-2 mb-3">
+                  <span className={cn('text-white text-xs font-black px-3 py-1 rounded-full', PILLAR_COLOR[meta.pillar] ?? 'bg-teal-600')}>
+                    Pillar: {meta.pillar}
+                  </span>
+                </div>
+              )}
+              {meta.objectives && meta.objectives.length > 0 && (
+                <>
+                  <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-2">This Week's Objectives</p>
+                  <div className="space-y-1.5">
+                    {meta.objectives.map((obj, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <span className="text-teal-500 font-black text-sm shrink-0 mt-0.5">✓</span>
+                        <p className="text-gray-700 text-sm">{obj}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Minute-by-minute plan */}
+          {meta.sessionPlan && meta.sessionPlan.length > 0 ? (
+            <div className="space-y-3">
+              {meta.sessionPlan.map((seg, si) => {
+                const segColor = seg.label === 'WARM-UP'
+                  ? { bg: 'bg-orange-500', light: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', timebg: 'bg-orange-100' }
+                  : seg.label === 'MAIN ACTIVITY'
+                  ? { bg: 'bg-teal-600', light: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-700', timebg: 'bg-teal-100' }
+                  : { bg: 'bg-purple-600', light: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', timebg: 'bg-purple-100' }
+                return (
+                  <div key={si} className={cn('rounded-2xl border-2 overflow-hidden', segColor.border)}>
+                    <div className={cn('px-4 py-3 flex items-center justify-between', segColor.bg)}>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xl">{seg.emoji}</span>
+                        <div>
+                          <p className="text-white font-black text-sm">{seg.label}</p>
+                          {seg.title && <p className="text-white/80 text-xs">{seg.title}</p>}
+                        </div>
+                      </div>
+                      <span className="text-white/90 text-xs font-bold tabular-nums">
+                        {seg.startMin}:{String(0).padStart(2,'0')} – {seg.endMin}:{String(0).padStart(2,'0')}
+                      </span>
+                    </div>
+                    {seg.steps && seg.steps.length > 0 && (
+                      <div className={cn('p-3 space-y-2', segColor.light)}>
+                        {seg.steps.map((step, ti) => (
+                          <div key={ti} className="flex gap-2.5 items-start">
+                            <span className={cn('text-xs font-black px-1.5 py-0.5 rounded shrink-0 tabular-nums', segColor.timebg, segColor.text)}>
+                              {step.time}
+                            </span>
+                            <p className="text-gray-700 text-sm leading-snug">{step.action}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-sm p-5 text-center text-gray-400">
+              <p className="text-sm">No session plan set for this week.</p>
+            </div>
+          )}
+
+          {/* Picture cards */}
+          {meta.pictureCards && meta.pictureCards.length > 0 && (
+            <div className="bg-white rounded-2xl shadow-sm p-5">
+              <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-3">📇 Picture Cards This Week</p>
+              <div className="space-y-2">
+                {meta.pictureCards.map((card, ci) => (
+                  <div key={ci} className="flex items-start gap-3 p-2.5 bg-yellow-50 rounded-xl border border-yellow-200">
+                    <span className="text-2xl shrink-0">{card.emoji}</span>
+                    <div>
+                      <p className="font-black text-sm text-gray-800">{card.name}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{card.use}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <button
+            onClick={() => setPhase('warmup')}
+            className="w-full bg-orange-500 hover:bg-orange-400 text-white font-black py-3.5 rounded-2xl text-base active:scale-95 transition-all"
+          >
+            Start Warm-Up →
+          </button>
+        </>
+      )}
 
       {/* ════════════════════ WARM-UP ════════════════════ */}
       {phase === 'warmup' && (
