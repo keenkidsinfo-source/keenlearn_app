@@ -3,25 +3,31 @@
 <rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
 <text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🪢  Step 5 — Tie the knots</text>
 
-<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Tie a knot at each end — then hang the cup over the straw</text>
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Tie the TWO string ends TOGETHER in one knot on TOP of the straw.</text>
 
-<rect x="175" y="130" width="610" height="30" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="15"/>
-<text x="480" y="120" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">STRAW  (zip line pulley)</text>
+<line x1="60" y1="155" x2="900" y2="155" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
 
-<line x1="320" y1="162" x2="370" y2="243" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
-<line x1="640" y1="162" x2="590" y2="243" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+<rect x="240" y="143" width="480" height="24" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="12"/>
+<text x="480" y="133" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">STRAW</text>
 
-<circle cx="357" cy="245" r="15" fill="#fbbf24" stroke="#1e293b" stroke-width="3"/>
-<text x="290" y="245" font-size="20" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot</text>
-<circle cx="603" cy="245" r="15" fill="#fbbf24" stroke="#1e293b" stroke-width="3"/>
-<text x="675" y="245" font-size="20" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot</text>
+<circle cx="480" cy="138" r="14" fill="#fbbf24" stroke="#1e293b" stroke-width="3"/>
+<text x="480" y="108" font-size="19" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot here — ties both ends together</text>
+<line x1="480" y1="118" x2="480" y2="124" stroke="#92400e" stroke-width="3" stroke-linecap="round"/><polygon points="480,124 471,106 489,106" fill="#92400e"/>
 
-<polygon points="360,243 600,243 569,438 391,438" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+<line x1="480" y1="152" x2="390" y2="255" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+<line x1="480" y1="152" x2="570" y2="255" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
 
-<line x1="358" y1="248" x2="602" y2="248" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
-<circle cx="358" cy="248" r="5" fill="#16a34a" stroke="none" stroke-width="3"/><circle cx="602" cy="248" r="5" fill="#16a34a" stroke="none" stroke-width="3"/>
+<circle cx="390" cy="257" r="11" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
+<circle cx="570" cy="257" r="11" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
 
-<rect x="141.47999999999996" y="432" width="677.0400000000001" height="37" fill="#16a34a" stroke="none" stroke-width="0" rx="10"/><text x="480" y="463" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">✅  Cup hangs LEVEL when strings are same length on both sides</text>
-<text x="480" y="495" font-size="18" text-anchor="middle" fill="#475569" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Tilting? Adjust both string ends until cup is level.</text>
+<polygon points="370,255 590,255 562,440 398,440" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+
+<line x1="388" y1="260" x2="572" y2="260" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
+<circle cx="388" cy="260" r="5" fill="#16a34a" stroke="none" stroke-width="3"/><circle cx="572" cy="260" r="5" fill="#16a34a" stroke="none" stroke-width="3"/>
+<text x="480" y="300" font-size="18" text-anchor="middle" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">level ✓</text>
+
+<rect x="620" y="310" width="300" height="160" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="10"/><text x="770" y="342" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">The loop:</text><text x="770" y="372" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Straw sits INSIDE</text><text x="770" y="398" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">the string loop.</text><text x="770" y="424" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">It can't fall off!</text>
+
+<rect x="27.519999999999982" y="468" width="904.96" height="36" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="498" font-size="18" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Pull tight! Cup should hang level — if tilting, re-tie with equal string on both sides.</text>
 
 </svg>
