@@ -1,0 +1,32 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🪙  Step 11 — Cargo test</text>
+
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Put 3 pennies in your bucket. Count the cranks to raise it. Harder?</text>
+
+<rect x="265" y="220" width="110" height="100" fill="#d4956a" stroke="#1e293b" stroke-width="3" rx="0"/><ellipse cx="320" cy="220" rx="55" ry="17.6" fill="#d4956a" stroke="#1e293b" stroke-width="3"/><ellipse cx="320" cy="320" rx="55" ry="17.6" fill="#d4956a" stroke="#1e293b99" stroke-width="2"/>
+<circle cx="282" cy="260" r="16" fill="#d97706" stroke="#1e293b" stroke-width="2"/>
+<circle cx="320" cy="255" r="16" fill="#d97706" stroke="#1e293b" stroke-width="2"/>
+<circle cx="356" cy="260" r="16" fill="#d97706" stroke="#1e293b" stroke-width="2"/>
+<text x="282" y="264" font-size="13" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">1¢</text>
+<text x="320" y="259" font-size="13" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">1¢</text>
+<text x="356" y="264" font-size="13" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">1¢</text>
+<text x="320" y="170" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">BUCKET</text>
+<text x="320" y="195" font-size="16" text-anchor="middle" fill="#475569" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">with cargo</text>
+
+<rect x="480" y="140" width="440" height="290" fill="white" stroke="#1e293b" stroke-width="3" rx="12"/>
+<rect x="480" y="140" width="440" height="46" fill="#1e293b" stroke="#1e293b" stroke-width="0" rx="12"/>
+<text x="700" y="165" font-size="22" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Compare:</text>
+<text x="700" y="215" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Empty bucket:  ___ cranks</text>
+<line x1="480" y1="235" x2="920" y2="235" stroke="#e2e8f0" stroke-width="1" stroke-linecap="round"/>
+<text x="700" y="270" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Loaded bucket:  ___ cranks</text>
+<line x1="480" y1="290" x2="920" y2="290" stroke="#e2e8f0" stroke-width="1" stroke-linecap="round"/>
+<text x="700" y="330" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Difference:  ___ cranks</text>
+
+<text x="700" y="400" font-size="19" text-anchor="middle" fill="#475569" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Heavier cargo = more cranks</text>
+<text x="700" y="425" font-size="19" text-anchor="middle" fill="#475569" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">OR…  it just feels harder!</text>
+
+<rect x="157.44" y="474" width="645.12" height="37" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">MECHANICAL ADVANTAGE = using a machine to lift heavy loads</text>
+
+</svg>

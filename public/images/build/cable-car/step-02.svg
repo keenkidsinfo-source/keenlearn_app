@@ -1,0 +1,30 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">✂️  Step 2 — Punch the holes</text>
+
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Use a pencil to poke 2 holes near the TOP RIM of your cup</text>
+
+<polygon points="365,145 595,145 565,355 395,355" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+
+<circle cx="385" cy="178" r="13" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
+<text x="260" y="163" font-size="24" text-anchor="middle" fill="#1e40af" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">LEFT</text>
+<text x="260" y="192" font-size="24" text-anchor="middle" fill="#1e40af" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">hole</text>
+<line x1="300" y1="178" x2="372" y2="178" stroke="#1e40af" stroke-width="4" stroke-linecap="round"/><polygon points="372,178 354,187 354,169" fill="#1e40af"/>
+
+<circle cx="575" cy="178" r="13" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
+<text x="700" y="163" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">RIGHT</text>
+<text x="700" y="192" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">hole</text>
+<line x1="662" y1="178" x2="590" y2="178" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><polygon points="590,178 608,169 608,187" fill="#dc2626"/>
+
+<rect x="700" y="290" width="220" height="180" fill="white" stroke="#1e293b" stroke-width="2" rx="10"/>
+<text x="810" y="318" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Top view:</text>
+<ellipse cx="810" cy="385" rx="85" ry="55" fill="#d4956a" stroke="#1e293b" stroke-width="3"/>
+<circle cx="725" cy="385" r="12" fill="#f0f4f8" stroke="#1e293b" stroke-width="3"/>
+<circle cx="895" cy="385" r="12" fill="#f0f4f8" stroke="#1e293b" stroke-width="3"/>
+<line x1="725" y1="385" x2="895" y2="385" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+<text x="810" y="448" font-size="14" text-anchor="middle" fill="#475569" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">holes OPPOSITE each other</text>
+
+<rect x="205.32" y="477" width="549.36" height="37" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="508" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Holes must be as close to the TOP RIM as possible</text>
+
+</svg>

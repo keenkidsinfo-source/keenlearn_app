@@ -71,11 +71,6 @@ const builds = [
         text: 'Put a small piece of tape over each hole — inside and outside. This stops the string from tearing through when you add cargo!',
       },
       {
-        emoji: '🪝',
-        title: 'Make the S-hook',
-        text: 'Bend a paperclip into an S-shape. This is your cargo hook — hang it onto the bottom of your cup to make it easy to add and remove cargo.',
-      },
-      {
         emoji: '🚦',
         title: 'Dry test — no cargo yet',
         text: 'Gently slide your cup to the top of the zip line and let go. Does it slide all the way down? It should! If it stops, check that the straw can move freely and nothing is caught.',
@@ -221,12 +216,17 @@ async function run() {
   }
 
   for (const build of builds) {
+    const imgFolder = build.gradeBand === 'g1-2' ? 'cable-car' : 'well-pulley'
+    const stepsWithImages = build.steps.map((step, i) => ({
+      ...step,
+      image: `/images/build/${imgFolder}/step-${String(i + 1).padStart(2, '0')}.svg`,
+    }))
     const metadata = {
       simpleMachine: build.simpleMachine,
       tagline: build.tagline,
-      steps: build.steps,
+      steps: stepsWithImages,
     }
-    const stepCount = build.steps.length
+    const stepCount = stepsWithImages.length
 
     // Try to find existing assigned build content item for this week + grade
     const items = await sql`

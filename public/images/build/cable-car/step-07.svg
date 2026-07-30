@@ -1,0 +1,26 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">📎  Step 7 — Cargo Challenge Round 1</text>
+
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Drop 3 paperclips INTO your cup. Test the zip line again!</text>
+
+<line x1="65" y1="165" x2="830" y2="415" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
+<text x="65" y="153" font-size="18" text-anchor="left" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🔝 START</text>
+
+<g transform="rotate(27 435 280)">
+  <rect x="397" y="269" width="78" height="22" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="11"/>
+</g>
+<polygon points="375,294 495,294 479,396 391,396" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+<line x1="400" y1="286" x2="382" y2="294" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+<line x1="470" y1="286" x2="488" y2="294" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+<text x="435" y="330" font-size="30" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">📎  📎  📎</text>
+<text x="435" y="363" font-size="18" text-anchor="middle" fill="#475569" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">3 paperclips</text>
+
+<line x1="275" y1="220" x2="395" y2="284" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><polygon points="395,284 374.88235294117646,283.4705882352941 383.3529411764706,267.5882352941176" fill="#dc2626"/>
+
+<rect x="615" y="150" width="310" height="250" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2" rx="10"/><text x="770" y="182" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">📋  Class chart:</text><text x="770" y="212" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Name: __________</text><text x="770" y="238" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Cargo: 3 clips</text><text x="770" y="264" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Made it to end?</text><text x="770" y="290" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">⬜ YES    ⬜ NO</text>
+
+<rect x="173.39999999999998" y="474" width="613.2" height="37" fill="#1d4ed8" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">💡  GRAVITY pulls the cargo down — heavier = more pull!</text>
+
+</svg>

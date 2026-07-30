@@ -1,0 +1,27 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🔲  Step 3 — Attach the base</text>
+
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Stand the cylinder on the flat cardboard square. Tape all the way around.</text>
+
+<rect x="330" y="340" width="300" height="130" fill="#c49a4a" stroke="#92400e" stroke-width="3" rx="6"/>
+<text x="480" y="415" font-size="18" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">CARDBOARD BASE</text>
+
+<rect x="410" y="165" width="140" height="175" fill="#c49a4a" stroke="#1e293b" stroke-width="3" rx="0"/><ellipse cx="480" cy="165" rx="70" ry="22.400000000000002" fill="#c49a4a" stroke="#1e293b" stroke-width="3"/><ellipse cx="480" cy="340" rx="70" ry="22.400000000000002" fill="#c49a4a" stroke="#1e293b99" stroke-width="2"/>
+
+<rect x="402" y="335" width="156" height="20" fill="#fbbf24" stroke="#92400e" stroke-width="3" rx="4"/>
+<text x="480" y="330" font-size="18" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">tape all around</text>
+<line x1="480" y1="322" x2="480" y2="310" stroke="#92400e" stroke-width="3" stroke-linecap="round"/><polygon points="480,310 489,328 471,328" fill="#92400e"/>
+
+<rect x="640" y="200" width="270" height="190" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="12"/>
+<text x="775" y="233" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Stability test:</text>
+<text x="775" y="260" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Push the cylinder</text>
+<text x="775" y="283" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">sideways firmly.</text>
+<text x="775" y="306" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">It should NOT</text>
+<text x="775" y="329" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">tip over!</text>
+<line x1="570" y1="315" x2="637" y2="315" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/><polygon points="637,315 619,324 619,306" fill="#16a34a"/>
+
+<rect x="125.51999999999998" y="474" width="708.96" height="37" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Tape a FULL circle — no gaps — or it will tip under cargo weight</text>
+
+</svg>

@@ -1,0 +1,32 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🧵  Step 3 — Thread the string</text>
+
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Cut 30 cm of string — thread it through BOTH holes</text>
+
+<polygon points="360,150 600,150 570,365 390,365" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+
+<circle cx="380" cy="183" r="12" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
+<circle cx="580" cy="183" r="12" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
+
+<line x1="285" y1="183" x2="380" y2="183" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+<line x1="380" y1="183" x2="580" y2="183" stroke="#3b82f6" stroke-width="4" stroke-dasharray="14 8"/>
+<line x1="580" y1="183" x2="680" y2="183" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+
+<line x1="225" y1="183" x2="283" y2="183" stroke="#1e40af" stroke-width="4" stroke-linecap="round"/><polygon points="283,183 265,192 265,174" fill="#1e40af"/>
+<text x="185" y="163" font-size="20" text-anchor="middle" fill="#1e40af" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Enter</text>
+<text x="185" y="188" font-size="20" text-anchor="middle" fill="#1e40af" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">here →</text>
+
+<line x1="740" y1="183" x2="685" y2="183" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><polygon points="685,183 703,174 703,192" fill="#dc2626"/>
+<text x="790" y="163" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">← Exit</text>
+<text x="790" y="188" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">here</text>
+
+<line x1="285" y1="183" x2="245" y2="380" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+<text x="220" y="400" font-size="20" text-anchor="middle" fill="#3b82f6" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">End 1</text>
+<line x1="680" y1="183" x2="720" y2="380" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+<text x="750" y="400" font-size="20" text-anchor="middle" fill="#3b82f6" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">End 2</text>
+
+<rect x="189.35999999999996" y="467" width="581.2800000000001" height="37" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="498" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Both ends hang OUTSIDE the cup — ready to tie knots!</text>
+
+</svg>

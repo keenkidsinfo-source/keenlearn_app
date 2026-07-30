@@ -1,0 +1,32 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🏗️  Step 2 — Build the well body</text>
+
+<text x="480" y="103" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Stack 2 cardboard sheets, roll them tightly into a cylinder, tape the seam.</text>
+
+<rect x="55" y="148" width="200" height="130" fill="#c49a4a" stroke="#92400e" stroke-width="3" rx="4"/>
+<rect x="65" y="158" width="200" height="130" fill="#c49a4a" stroke="#92400e" stroke-width="3" rx="4"/>
+<text x="165" y="200" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">2 sheets</text>
+<text x="165" y="225" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">stacked</text>
+
+<line x1="300" y1="220" x2="390" y2="220" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/><polygon points="390,220 372,229 372,211" fill="#dc2626"/>
+<text x="345" y="208" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">roll</text>
+
+<path d="M420,148 Q500,148 500,215 Q500,280 420,280" fill="none" stroke="#c49a4a" stroke-width="8"/>
+<text x="480" y="230" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">roll</text>
+<text x="480" y="255" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">tightly!</text>
+
+<line x1="560" y1="220" x2="640" y2="220" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/><polygon points="640,220 622,229 622,211" fill="#dc2626"/>
+<text x="600" y="208" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">tape</text>
+
+<rect x="680" y="145" width="140" height="160" fill="#c49a4a" stroke="#1e293b" stroke-width="3" rx="0"/><ellipse cx="750" cy="145" rx="70" ry="22.400000000000002" fill="#c49a4a" stroke="#1e293b" stroke-width="3"/><ellipse cx="750" cy="305" rx="70" ry="22.400000000000002" fill="#c49a4a" stroke="#1e293b99" stroke-width="2"/>
+<rect x="817" y="145" width="5" height="160" fill="#fbbf24" stroke="none" stroke-width="0" rx="0"/>
+<text x="750" y="135" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">CYLINDER</text>
+<text x="750" y="330" font-size="18" text-anchor="middle" fill="#92400e" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">tape seam</text>
+<line x1="750" y1="345" x2="822" y2="290" stroke="#92400e" stroke-width="3" stroke-linecap="round"/><polygon points="822,290 813.1592850427667,308.07876541816256 802.23255869113,293.7746872851109" fill="#92400e"/>
+
+<rect x="221.27999999999997" y="432" width="517.44" height="37" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="463" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Roll from one CORNER — it makes a tighter tube</text>
+<text x="480" y="498" font-size="18" text-anchor="middle" fill="#475569" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Test it: should hold shape without springing open. Tape more if needed.</text>
+
+</svg>

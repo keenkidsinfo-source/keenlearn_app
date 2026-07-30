@@ -1,0 +1,22 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🎤  Step 11 — Share out!</text>
+
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Tell the class what you built and what you discovered!</text>
+
+<rect x="80" y="130" width="800" height="140" fill="white" stroke="#1e293b" stroke-width="3" rx="12"/>
+<text x="480" y="165" font-size="22" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">"My cable car carried ___ paperclips.</text>
+<text x="480" y="198" font-size="22" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">I changed ___ and it ___."</text>
+<text x="480" y="230" font-size="17" text-anchor="middle" fill="#64748b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">(fill in your own result!)</text>
+
+<rect x="80" y="290" width="800" height="175" fill="#faf5ff" stroke="#7c3aed" stroke-width="2" rx="12"/>
+<text x="480" y="322" font-size="22" text-anchor="middle" fill="#7c3aed" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">📚  Key vocabulary — use these words!</text>
+<rect x="100" y="340" width="168" height="80" fill="#ede9fe" stroke="none" stroke-width="0" rx="8"/><text x="184" y="370" font-size="20" text-anchor="middle" fill="#7c3aed" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">PULLEY</text><text x="184" y="395" font-size="16" text-anchor="middle" fill="#7c3aed" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">(your straw)</text>
+<rect x="282" y="340" width="168" height="80" fill="#ede9fe" stroke="none" stroke-width="0" rx="8"/><text x="366" y="370" font-size="20" text-anchor="middle" fill="#7c3aed" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">GRAVITY</text><text x="366" y="395" font-size="16" text-anchor="middle" fill="#7c3aed" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">(pulls cargo down)</text>
+<rect x="464" y="340" width="168" height="80" fill="#ede9fe" stroke="none" stroke-width="0" rx="8"/><text x="548" y="370" font-size="20" text-anchor="middle" fill="#7c3aed" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">LOAD</text><text x="548" y="395" font-size="16" text-anchor="middle" fill="#7c3aed" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">(the paperclips)</text>
+<rect x="646" y="340" width="168" height="80" fill="#ede9fe" stroke="none" stroke-width="0" rx="8"/><text x="730" y="370" font-size="20" text-anchor="middle" fill="#7c3aed" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">FRICTION</text><text x="730" y="395" font-size="16" text-anchor="middle" fill="#7c3aed" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">(slows it down)</text>
+
+<text x="480" y="500" font-size="20" text-anchor="middle" fill="#475569" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">⚡  Real cable cars + ski lifts use the SAME pulley system you just built!</text>
+
+</svg>

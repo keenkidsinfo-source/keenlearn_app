@@ -1,0 +1,33 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">✅  Step 9 — Test your well!</text>
+
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Turn the crank — does the bucket rise? Both directions should work!</text>
+
+<rect x="360" y="270" width="240" height="100" fill="#c49a4a" stroke="#92400e" stroke-width="3" rx="6"/>
+<rect x="410" y="148" width="140" height="122" fill="#c49a4a" stroke="#1e293b" stroke-width="3" rx="0"/><ellipse cx="480" cy="148" rx="70" ry="22.400000000000002" fill="#c49a4a" stroke="#1e293b" stroke-width="3"/><ellipse cx="480" cy="270" rx="70" ry="22.400000000000002" fill="#c49a4a" stroke="#1e293b99" stroke-width="2"/>
+<rect x="368" y="130" width="18" height="200" fill="#8B6914" stroke="#5c3d0a" stroke-width="3" rx="4"/>
+<rect x="594" y="130" width="18" height="200" fill="#8B6914" stroke="#5c3d0a" stroke-width="3" rx="4"/>
+<rect x="345" y="200" width="290" height="18" fill="#c49a4a" stroke="#5c3d0a" stroke-width="4" rx="9"/>
+<rect x="633" y="180" width="80" height="58" fill="#fed7aa" stroke="#1e293b" stroke-width="4" rx="6"/>
+<text x="673" y="210" font-size="16" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">CRANK</text>
+
+<line x1="480" y1="218" x2="480" y2="390" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+<polygon points="440,390 520,390 510,455 450,455" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+<line x1="450" y1="390" x2="440" y2="380" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+<line x1="510" y1="390" x2="520" y2="380" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+
+<path d="M 700 205 A 40 40 0 0 1 740 165" fill="none" stroke="#16a34a" stroke-width="4"/>
+<polygon points="740,165 730,152 748,150" fill="#16a34a"/>
+<text x="745" y="145" font-size="18" text-anchor="left" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">↑ bucket RISES</text>
+
+<path d="M 740 205 A 40 40 0 0 0 700 165" fill="none" stroke="#3b82f6" stroke-width="4"/>
+<polygon points="700,165 710,152 692,150" fill="#3b82f6"/>
+<text x="640" y="145" font-size="18" text-anchor="right" fill="#3b82f6" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">bucket LOWERS ↓</text>
+
+<rect x="30" y="200" width="290" height="200" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="10"/><text x="175" y="232" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Test checklist:</text><text x="175" y="262" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">⬜ Clockwise = rises?</text><text x="175" y="288" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">⬜ Counter-cw = lowers?</text><text x="175" y="314" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">⬜ String stays wound?</text><text x="175" y="340" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">⬜ Bucket doesn't tip?</text>
+
+<rect x="178.71999999999997" y="474" width="602.5600000000001" height="37" fill="#ea580c" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Not working? Ask your teacher for an INSTRUCTOR CHECK!</text>
+
+</svg>
