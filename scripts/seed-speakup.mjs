@@ -1658,7 +1658,7 @@ async function run() {
       await sql`
         INSERT INTO classroom_curriculum (classroom_id, curriculum_id, week_start_date)
         VALUES (${classroom.id}, ${curId}, ${weekStart})
-        ON CONFLICT (classroom_id, week_start_date) DO UPDATE SET curriculum_id = EXCLUDED.curriculum_id
+        ON CONFLICT (classroom_id, week_start_date) DO NOTHING
       `
 
       console.log(`✓ ${gradeBand} W${weekNum} [${weekStart}]: ${s.title.slice(0,50)}`)
