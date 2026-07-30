@@ -73,7 +73,7 @@ export default async function BuildDayPage({ params }: Props) {
       steps={textSteps.length > 0 ? textSteps : undefined}
       initialStep={lastStep}
       completed={sessionData?.completed ?? false}
-      gradeBand={session.gradeBand ?? null}
+      gradeBand={item.gradeBand ?? null}
     />
   )
 }
