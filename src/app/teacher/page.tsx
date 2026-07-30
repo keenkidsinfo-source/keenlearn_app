@@ -76,7 +76,7 @@ export default async function TeacherDashboardPage({
   // Load classroom
   const [classroom] = isAdmin && qClassroomId
     ? await db.select().from(classrooms).where(eq(classrooms.id, qClassroomId)).limit(1)
-    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).limit(1)
+    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).orderBy(classrooms.name).limit(1)
 
   const [school] = classroom?.schoolId
     ? await db.select().from(schools).where(eq(schools.id, classroom.schoolId)).limit(1)
