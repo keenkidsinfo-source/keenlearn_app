@@ -60,10 +60,16 @@ const builds = [
         text: 'Cut 30cm of string. Push one end through the LEFT hole from the OUTSIDE going IN. Pull it across the inside of the cup, then push it out through the RIGHT hole from the INSIDE going OUT. Both ends should hang outside the cup.',
       },
       {
+        emoji: '🎪',
+        title: 'Hook onto the straw',
+        text: 'Hold your cup under the straw on the zip line. Bring BOTH string ends UP — one on the LEFT side of the straw, one on the RIGHT side. Drape them over the top of the straw so the cup hangs below. The string inside the cup should be resting on top of the straw.',
+        tip: 'The straw is like a hook — the string sits in the groove on top of it. Gravity keeps the cup hanging straight down.',
+      },
+      {
         emoji: '🪢',
         title: 'Tie the knots',
-        text: 'Tie a knot at each end of the string — the knot should sit flat against the OUTSIDE of the cup wall. Pull tight! Hang your cup from the straw by looping the strings over it. The cup should hang level (not tilting).',
-        tip: 'If the cup tilts, adjust the strings so they are exactly the same length on both sides.',
+        text: 'While the cup is hanging, tie a knot at each string end — the knot should sit flat against the OUTSIDE of the cup wall. Pull tight! The knots stop the string from slipping back through the holes. Check the cup hangs level (not tilting).',
+        tip: 'If the cup tilts, loosen one knot, slide the string a little, and re-tie until both sides are equal length.',
       },
       {
         emoji: '🩹',

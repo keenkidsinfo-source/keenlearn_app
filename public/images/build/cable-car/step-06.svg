@@ -1,28 +1,26 @@
 <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
 <rect width="960" height="540" fill="#f0f4f8"/>
 <rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
-<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🚦  Step 6 — Dry test (no cargo yet!)</text>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🩹  Step 6 — Reinforce the holes</text>
 
-<text x="480" y="103" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Slide your cable car to the TOP and let go — does it reach the end?</text>
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Put a small piece of tape over each hole — inside AND outside</text>
 
-<line x1="65" y1="165" x2="870" y2="445" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
-<text x="65" y="153" font-size="20" text-anchor="left" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🔝 START</text>
-<text x="870" y="460" font-size="20" text-anchor="right" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">END 🏁</text>
+<polygon points="365,148 595,148 566,356 394,356" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
 
-<g transform="rotate(28 450 295)">
-  <rect x="412" y="284" width="78" height="22" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="11"/>
-</g>
+<circle cx="385" cy="181" r="12" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
+<rect x="358" y="165" width="55" height="32" fill="#fbbf24" stroke="#92400e" stroke-width="3" rx="4"/>
+<text x="265" y="175" font-size="22" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Tape</text>
+<text x="265" y="200" font-size="18" text-anchor="middle" fill="#92400e" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">outside</text>
+<line x1="305" y1="182" x2="355" y2="182" stroke="#92400e" stroke-width="3" stroke-linecap="round"/><polygon points="355,182 337,191 337,173" fill="#92400e"/>
 
-<polygon points="392.5,308 507.5,308 492,403 408,403" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
-<line x1="413" y1="300" x2="395" y2="308" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-<line x1="487" y1="300" x2="505" y2="308" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+<circle cx="575" cy="181" r="12" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
+<rect x="522" y="165" width="55" height="32" fill="#fbbf24" stroke="#92400e" stroke-width="3" rx="4"/>
+<text x="693" y="175" font-size="22" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Tape</text>
+<text x="693" y="200" font-size="18" text-anchor="middle" fill="#92400e" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">outside</text>
+<line x1="655" y1="182" x2="580" y2="182" stroke="#92400e" stroke-width="3" stroke-linecap="round"/><polygon points="580,182 598,173 598,191" fill="#92400e"/>
 
-<line x1="290" y1="215" x2="420" y2="290" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/><polygon points="420,290 399.911157369719,288.800666111625 408.90616153253137,273.2093255627502" fill="#dc2626"/>
-<text x="285" y="200" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">SLIDES DOWN</text>
-<text x="285" y="228" font-size="30" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">→</text>
+<rect x="680" y="280" width="250" height="200" fill="#fff7ed" stroke="#ea580c" stroke-width="2" rx="10"/><text x="805" y="312" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🤔  Why?</text><text x="805" y="342" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">When cargo is heavy,</text><text x="805" y="368" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">the string pulls hard</text><text x="805" y="394" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">and can TEAR through</text><text x="805" y="420" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">the cup wall.</text><text x="805" y="446" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Tape stops that!</text>
 
-<rect x="600" y="150" width="325" height="230" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="10"/><text x="762.5" y="182" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">✅  Check all three:</text><text x="762.5" y="212" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">1. Reaches the end?</text><text x="762.5" y="238" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">2. Slides smoothly?</text><text x="762.5" y="264" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">3. Cup stays level?</text>
-
-<rect x="189.35999999999996" y="472" width="581.2800000000001" height="37" fill="#ea580c" stroke="none" stroke-width="0" rx="10"/><text x="480" y="503" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">If it stops: check tape is not catching on the straw</text>
+<rect x="208.39999999999998" y="473" width="543.2" height="38" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="20" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Press tape firmly. Do BOTH sides of each hole.</text>
 
 </svg>

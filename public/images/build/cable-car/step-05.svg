@@ -1,26 +1,27 @@
 <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
 <rect width="960" height="540" fill="#f0f4f8"/>
 <rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
-<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🩹  Step 5 — Reinforce the holes</text>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🪢  Step 5 — Tie the knots</text>
 
-<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Put a small piece of tape over each hole — inside AND outside</text>
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Tie a knot at each end — then hang the cup over the straw</text>
 
-<polygon points="365,148 595,148 566,356 394,356" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+<rect x="175" y="130" width="610" height="30" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="15"/>
+<text x="480" y="120" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">STRAW  (zip line pulley)</text>
 
-<circle cx="385" cy="181" r="12" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
-<rect x="358" y="165" width="55" height="32" fill="#fbbf24" stroke="#92400e" stroke-width="3" rx="4"/>
-<text x="265" y="175" font-size="22" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Tape</text>
-<text x="265" y="200" font-size="18" text-anchor="middle" fill="#92400e" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">outside</text>
-<line x1="305" y1="182" x2="355" y2="182" stroke="#92400e" stroke-width="3" stroke-linecap="round"/><polygon points="355,182 337,191 337,173" fill="#92400e"/>
+<line x1="320" y1="162" x2="370" y2="243" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+<line x1="640" y1="162" x2="590" y2="243" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
 
-<circle cx="575" cy="181" r="12" fill="#f0f4f8" stroke="#1e293b" stroke-width="4"/>
-<rect x="522" y="165" width="55" height="32" fill="#fbbf24" stroke="#92400e" stroke-width="3" rx="4"/>
-<text x="693" y="175" font-size="22" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Tape</text>
-<text x="693" y="200" font-size="18" text-anchor="middle" fill="#92400e" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">outside</text>
-<line x1="655" y1="182" x2="580" y2="182" stroke="#92400e" stroke-width="3" stroke-linecap="round"/><polygon points="580,182 598,173 598,191" fill="#92400e"/>
+<circle cx="357" cy="245" r="15" fill="#fbbf24" stroke="#1e293b" stroke-width="3"/>
+<text x="290" y="245" font-size="20" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot</text>
+<circle cx="603" cy="245" r="15" fill="#fbbf24" stroke="#1e293b" stroke-width="3"/>
+<text x="675" y="245" font-size="20" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot</text>
 
-<rect x="680" y="280" width="250" height="200" fill="#fff7ed" stroke="#ea580c" stroke-width="2" rx="10"/><text x="805" y="312" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🤔  Why?</text><text x="805" y="342" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">When cargo is heavy,</text><text x="805" y="368" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">the string pulls hard</text><text x="805" y="394" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">and can TEAR through</text><text x="805" y="420" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">the cup wall.</text><text x="805" y="446" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Tape stops that!</text>
+<polygon points="360,243 600,243 569,438 391,438" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
 
-<rect x="208.39999999999998" y="473" width="543.2" height="38" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="20" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Press tape firmly. Do BOTH sides of each hole.</text>
+<line x1="358" y1="248" x2="602" y2="248" stroke="#16a34a" stroke-width="3" stroke-linecap="round"/>
+<circle cx="358" cy="248" r="5" fill="#16a34a" stroke="none" stroke-width="3"/><circle cx="602" cy="248" r="5" fill="#16a34a" stroke="none" stroke-width="3"/>
+
+<rect x="141.47999999999996" y="432" width="677.0400000000001" height="37" fill="#16a34a" stroke="none" stroke-width="0" rx="10"/><text x="480" y="463" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">✅  Cup hangs LEVEL when strings are same length on both sides</text>
+<text x="480" y="495" font-size="18" text-anchor="middle" fill="#475569" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Tilting? Adjust both string ends until cup is level.</text>
 
 </svg>

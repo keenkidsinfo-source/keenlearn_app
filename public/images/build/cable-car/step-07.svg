@@ -1,26 +1,28 @@
 <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
 <rect width="960" height="540" fill="#f0f4f8"/>
 <rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
-<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">📎  Step 7 — Cargo Challenge Round 1</text>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🚦  Step 7 — Dry test (no cargo yet!)</text>
 
-<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Drop 3 paperclips INTO your cup. Test the zip line again!</text>
+<text x="480" y="103" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Slide your cable car to the TOP and let go — does it reach the end?</text>
 
-<line x1="65" y1="165" x2="830" y2="415" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
-<text x="65" y="153" font-size="18" text-anchor="left" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🔝 START</text>
+<line x1="65" y1="165" x2="870" y2="445" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+<text x="65" y="153" font-size="20" text-anchor="left" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🔝 START</text>
+<text x="870" y="460" font-size="20" text-anchor="right" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">END 🏁</text>
 
-<g transform="rotate(27 435 280)">
-  <rect x="397" y="269" width="78" height="22" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="11"/>
+<g transform="rotate(28 450 295)">
+  <rect x="412" y="284" width="78" height="22" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="11"/>
 </g>
-<polygon points="375,294 495,294 479,396 391,396" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
-<line x1="400" y1="286" x2="382" y2="294" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-<line x1="470" y1="286" x2="488" y2="294" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-<text x="435" y="330" font-size="30" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">📎  📎  📎</text>
-<text x="435" y="363" font-size="18" text-anchor="middle" fill="#475569" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">3 paperclips</text>
 
-<line x1="275" y1="220" x2="395" y2="284" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><polygon points="395,284 374.88235294117646,283.4705882352941 383.3529411764706,267.5882352941176" fill="#dc2626"/>
+<polygon points="392.5,308 507.5,308 492,403 408,403" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+<line x1="413" y1="300" x2="395" y2="308" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+<line x1="487" y1="300" x2="505" y2="308" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
 
-<rect x="615" y="150" width="310" height="250" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2" rx="10"/><text x="770" y="182" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">📋  Class chart:</text><text x="770" y="212" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Name: __________</text><text x="770" y="238" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Cargo: 3 clips</text><text x="770" y="264" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Made it to end?</text><text x="770" y="290" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">⬜ YES    ⬜ NO</text>
+<line x1="290" y1="215" x2="420" y2="290" stroke="#dc2626" stroke-width="5" stroke-linecap="round"/><polygon points="420,290 399.911157369719,288.800666111625 408.90616153253137,273.2093255627502" fill="#dc2626"/>
+<text x="285" y="200" font-size="24" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">SLIDES DOWN</text>
+<text x="285" y="228" font-size="30" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">→</text>
 
-<rect x="173.39999999999998" y="474" width="613.2" height="37" fill="#1d4ed8" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">💡  GRAVITY pulls the cargo down — heavier = more pull!</text>
+<rect x="600" y="150" width="325" height="230" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="10"/><text x="762.5" y="182" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">✅  Check all three:</text><text x="762.5" y="212" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">1. Reaches the end?</text><text x="762.5" y="238" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">2. Slides smoothly?</text><text x="762.5" y="264" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">3. Cup stays level?</text>
+
+<rect x="189.35999999999996" y="472" width="581.2800000000001" height="37" fill="#ea580c" stroke="none" stroke-width="0" rx="10"/><text x="480" y="503" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">If it stops: check tape is not catching on the straw</text>
 
 </svg>

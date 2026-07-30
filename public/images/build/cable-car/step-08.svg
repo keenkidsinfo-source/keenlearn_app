@@ -1,34 +1,26 @@
 <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
 <rect width="960" height="540" fill="#f0f4f8"/>
 <rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
-<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">📈  Step 8 — Cargo Challenge Round 2</text>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">📎  Step 8 — Cargo Challenge Round 1</text>
 
-<text x="480" y="103" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Add paperclips ONE AT A TIME. Test after each one. Find your maximum!</text>
+<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Drop 3 paperclips INTO your cup. Test the zip line again!</text>
 
-<line x1="60" y1="165" x2="740" y2="415" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
-<text x="60" y="153" font-size="18" text-anchor="left" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🔝 START</text>
+<line x1="65" y1="165" x2="830" y2="415" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
+<text x="65" y="153" font-size="18" text-anchor="left" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🔝 START</text>
 
-<g transform="rotate(30 390 272)">
-  <rect x="352" y="261" width="78" height="22" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="11"/>
+<g transform="rotate(27 435 280)">
+  <rect x="397" y="269" width="78" height="22" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="11"/>
 </g>
-<polygon points="327.5,288 452.5,288 436,396 344,396" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
-<line x1="355" y1="280" x2="338" y2="288" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-<line x1="425" y1="280" x2="442" y2="288" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-<text x="390" y="320" font-size="28" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">📎📎📎📎📎</text>
-<text x="390" y="348" font-size="28" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">📎📎📎</text>
-<line x1="230" y1="330" x2="332" y2="320" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><polygon points="332,320 314.96402936412267,330.7133423586445 313.207743731558,312.79922890648487" fill="#dc2626"/>
-<text x="190" y="310" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">+1 at</text>
-<text x="190" y="338" font-size="20" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">a time</text>
+<polygon points="375,294 495,294 479,396 391,396" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+<line x1="400" y1="286" x2="382" y2="294" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+<line x1="470" y1="286" x2="488" y2="294" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+<text x="435" y="330" font-size="30" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">📎  📎  📎</text>
+<text x="435" y="363" font-size="18" text-anchor="middle" fill="#475569" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">3 paperclips</text>
 
-<rect x="650" y="140" width="280" height="300" fill="white" stroke="#1e293b" stroke-width="3" rx="10"/>
-<rect x="650" y="140" width="280" height="44" fill="#1e293b" stroke="#1e293b" stroke-width="0" rx="10"/>
-<text x="790" y="168" font-size="20" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Class Chart</text>
-<line x1="650" y1="184" x2="930" y2="184" stroke="#1e293b" stroke-width="2" stroke-linecap="round"/>
-<text x="730" y="205" font-size="17" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Name</text>
-<line x1="800" y1="184" x2="800" y2="440" stroke="#1e293b" stroke-width="1" stroke-linecap="round"/>
-<text x="865" y="205" font-size="17" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Max 📎</text>
-<line x1="650" y1="229" x2="930" y2="229" stroke="#e2e8f0" stroke-width="1" stroke-linecap="round"/><text x="730" y="224" font-size="16" text-anchor="middle" fill="#94a3b8" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">__________</text><text x="865" y="224" font-size="16" text-anchor="middle" fill="#94a3b8" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">_____</text><line x1="650" y1="282" x2="930" y2="282" stroke="#e2e8f0" stroke-width="1" stroke-linecap="round"/><text x="730" y="277" font-size="16" text-anchor="middle" fill="#94a3b8" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">__________</text><text x="865" y="277" font-size="16" text-anchor="middle" fill="#94a3b8" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">_____</text><line x1="650" y1="336" x2="930" y2="336" stroke="#e2e8f0" stroke-width="1" stroke-linecap="round"/><text x="730" y="331" font-size="16" text-anchor="middle" fill="#94a3b8" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">__________</text><text x="865" y="331" font-size="16" text-anchor="middle" fill="#94a3b8" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">_____</text><line x1="650" y1="390" x2="930" y2="390" stroke="#e2e8f0" stroke-width="1" stroke-linecap="round"/><text x="730" y="385" font-size="16" text-anchor="middle" fill="#94a3b8" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">__________</text><text x="865" y="385" font-size="16" text-anchor="middle" fill="#94a3b8" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">_____</text>
+<line x1="275" y1="220" x2="395" y2="284" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><polygon points="395,284 374.88235294117646,283.4705882352941 383.3529411764706,267.5882352941176" fill="#dc2626"/>
 
-<rect x="148.47999999999996" y="476" width="663.0400000000001" height="36" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="506" font-size="18" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">When it stops before the end = your MAX. Write it on the chart!</text>
+<rect x="615" y="150" width="310" height="250" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2" rx="10"/><text x="770" y="182" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">📋  Class chart:</text><text x="770" y="212" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Name: __________</text><text x="770" y="238" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Cargo: 3 clips</text><text x="770" y="264" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Made it to end?</text><text x="770" y="290" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">⬜ YES    ⬜ NO</text>
+
+<rect x="173.39999999999998" y="474" width="613.2" height="37" fill="#1d4ed8" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">💡  GRAVITY pulls the cargo down — heavier = more pull!</text>
 
 </svg>

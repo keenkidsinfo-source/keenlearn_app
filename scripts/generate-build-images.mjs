@@ -95,7 +95,7 @@ function save(path, svg) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-//  CABLE CAR  (G1-2) — 11 steps
+//  CABLE CAR  (G1-2) — 12 steps
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const cableCar = [
@@ -187,8 +187,41 @@ ${tx(750,400,'End 2',20,'middle',C.rope,'bold')}
 ${badge(W/2,490,'Both ends hang OUTSIDE the cup — ready to tie knots!',C.dark,'white',19)}
 `),
 
-// 04 — Tie the knots
-wrap('🪢  Step 4 — Tie the knots', `
+// 04 — Hook onto the straw
+wrap('🎪  Step 4 — Hook onto the straw', `
+${tx(W/2,103,'Bring BOTH string ends UP and drape them OVER the straw — one on each side',20,'middle',C.dark)}
+
+${/* Zip line background */ln(60,155,900,155,'#94a3b8',3)}
+${tx(65,143,'zip line →',16,'left','#94a3b8','bold')}
+
+${/* Straw */bx(240,143,480,24,C.straw,C.dark,3,12)}
+${tx(480,133,'STRAW  (zip line pulley)',20,'middle',C.dark,'bold')}
+
+${/* Cup */cup(480,308,220,164,185,C.cup)}
+
+${/* Left string — from left hole UP over straw */ln(368,312,310,155,C.rope,5)}
+${ln(310,155,290,182,C.rope,5)}
+
+${/* Right string */ln(592,312,650,155,C.rope,5)}
+${ln(650,155,670,182,C.rope,5)}
+
+${/* Holes */ci(368,312,11,C.bg,C.dark,4)}
+${ci(592,312,11,C.bg,C.dark,4)}
+
+${/* Left label */tx(155,218,'drape over',18,'middle','#1e40af','bold')}
+${tx(155,240,'the straw ↗',18,'middle','#1e40af')}
+${arr(215,232,295,192,'#1e40af',3)}
+
+${/* Right label */tx(805,218,'↖ drape over',18,'middle','#1e40af','bold')}
+${tx(805,240,'the straw',18,'middle','#1e40af')}
+${arr(755,232,665,192,'#1e40af',3)}
+
+${badge(W/2,495,'String rests on TOP of the straw — cup hangs straight below',C.green,'white',19)}
+${tx(W/2,530,'Like a coat hanger over a rail — gravity holds the cup down.',18,'middle','#475569')}
+`),
+
+// 05 — Tie the knots
+wrap('🪢  Step 5 — Tie the knots', `
 ${tx(W/2,103,'Tie a knot at each end — then hang the cup over the straw',21,'middle',C.dark)}
 
 ${/* Straw */bx(175,130,610,30,C.straw,C.dark,3,15)}
@@ -211,8 +244,8 @@ ${badge(W/2,455,'✅  Cup hangs LEVEL when strings are same length on both sides
 ${tx(W/2,495,'Tilting? Adjust both string ends until cup is level.',18,'middle','#475569')}
 `),
 
-// 05 — Reinforce the holes
-wrap('🩹  Step 5 — Reinforce the holes', `
+// 06 — Reinforce the holes
+wrap('🩹  Step 6 — Reinforce the holes', `
 ${tx(W/2,103,'Put a small piece of tape over each hole — inside AND outside',21,'middle',C.dark)}
 
 ${cup(W/2,148,230,172,208,C.cup)}
@@ -234,8 +267,8 @@ ${/* Why box */callout(680,280,250,200,'🤔  Why?',['When cargo is heavy,','the
 ${badge(W/2,497,'Press tape firmly. Do BOTH sides of each hole.',C.dark,'white',20)}
 `),
 
-// 06 — Dry test
-wrap('🚦  Step 6 — Dry test (no cargo yet!)', `
+// 07 — Dry test
+wrap('🚦  Step 7 — Dry test (no cargo yet!)', `
 ${tx(W/2,103,'Slide your cable car to the TOP and let go — does it reach the end?',20,'middle',C.dark)}
 
 ${/* Zip line */ln(65,165,870,445,C.dark,6)}
@@ -259,8 +292,8 @@ ${callout(600,150,325,230,'✅  Check all three:',['1. Reaches the end?','2. Sli
 ${badge(W/2,495,'If it stops: check tape is not catching on the straw',C.orange,'white',19)}
 `),
 
-// 07 — Cargo Challenge Round 1
-wrap('📎  Step 7 — Cargo Challenge Round 1', `
+// 08 — Cargo Challenge Round 1
+wrap('📎  Step 8 — Cargo Challenge Round 1', `
 ${tx(W/2,103,'Drop 3 paperclips INTO your cup. Test the zip line again!',21,'middle',C.dark)}
 
 ${ln(65,165,830,415,C.dark,5)}
@@ -282,8 +315,8 @@ ${callout(615,150,310,250,'📋  Class chart:',['Name: __________','Cargo: 3 cli
 ${badge(W/2,497,'💡  GRAVITY pulls the cargo down — heavier = more pull!',C.blue,'white',19)}
 `),
 
-// 08 — Cargo Challenge Round 2
-wrap('📈  Step 8 — Cargo Challenge Round 2', `
+// 09 — Cargo Challenge Round 2
+wrap('📈  Step 9 — Cargo Challenge Round 2', `
 ${tx(W/2,103,'Add paperclips ONE AT A TIME. Test after each one. Find your maximum!',20,'middle',C.dark)}
 
 ${ln(60,165,740,415,C.dark,5)}
@@ -315,8 +348,8 @@ ${[214,240,267,294,321,348,375,402].map((y,i)=>
 ${badge(W/2,498,'When it stops before the end = your MAX. Write it on the chart!',C.dark,'white',18)}
 `),
 
-// 09 — Fix time
-wrap('🔧  Step 9 — Fix time!', `
+// 10 — Fix time
+wrap('🔧  Step 10 — Fix time!', `
 ${tx(W/2,103,'Why did it stop? Make ONE change and retest.',21,'middle',C.dark)}
 
 ${/* Problems */bx(30,130,410,310,'#fef2f2',C.red,2,12)}
@@ -340,8 +373,8 @@ ${tx(580,350,'•  Try just ONE fix at a time!',19,'left',C.dark,'bold')}
 ${badge(W/2,497,'FRICTION is slowing it down. Less friction = more cargo!',C.orange,'white',19)}
 `),
 
-// 10 — Update class chart
-wrap('📊  Step 10 — Update the class chart', `
+// 11 — Update class chart
+wrap('📊  Step 11 — Update the class chart', `
 ${tx(W/2,103,'After your best fix — write your new maximum on the class chart.',21,'middle',C.dark)}
 
 ${/* Big chart */bx(90,130,780,320,'white',C.dark,3,12)}
@@ -364,8 +397,8 @@ ${tx(480,482,'🏆  Who carried the most paperclips? Compare with classmates!',2
 ${badge(W/2,530,'',C.dark)}
 `),
 
-// 11 — Share out
-wrap('🎤  Step 11 — Share out!', `
+// 12 — Share out
+wrap('🎤  Step 12 — Share out!', `
 ${tx(W/2,103,'Tell the class what you built and what you discovered!',21,'middle',C.dark)}
 
 ${/* Speech template */bx(80,130,800,140,'white',C.dark,3,12)}
@@ -772,7 +805,7 @@ wellPulley.forEach((svg, i) => {
   save(`${PUBLIC}/well-pulley/step-${n}.svg`, svg)
 })
 
-console.log('\n✅  Done! 24 SVGs generated.')
-console.log('   Cable Car:   public/images/build/cable-car/step-01.svg … step-11.svg')
+console.log('\n✅  Done! 25 SVGs generated.')
+console.log('   Cable Car:   public/images/build/cable-car/step-01.svg … step-12.svg')
 console.log('   Well Pulley: public/images/build/well-pulley/step-01.svg … step-13.svg')
 console.log('\nNext: update seed-build-w1.mjs image paths then run seed.')
