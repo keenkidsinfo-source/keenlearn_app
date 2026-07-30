@@ -225,32 +225,34 @@ ${badge(W/2,495,'Don\'t let go yet — you\'ll tie the two ends together in the 
 
 // 05 — Tie the knots
 wrap('🪢  Step 5 — Tie the knots', `
-${tx(W/2,103,'Tie the TWO string ends TOGETHER in one knot on TOP of the straw.',21,'middle',C.dark)}
+${tx(W/2,103,'Tie both string ends TOGETHER in one knot on top of the straw.',20,'middle',C.dark)}
 
-${/* Zip line */ln(60,155,900,155,'#94a3b8',3)}
+${/* Zip line */ln(60,210,900,210,'#94a3b8',3)}
+${tx(65,202,'zip line',15,'left','#94a3b8')}
 
-${/* Straw */bx(240,143,480,24,C.straw,C.dark,3,12)}
-${tx(480,133,'STRAW',20,'middle',C.dark,'bold')}
+${/* Straw */bx(240,198,480,24,C.straw,C.dark,3,12)}
+${tx(130,212,'STRAW →',18,'right',C.dark,'bold')}
 
-${/* Knot on top of straw */ci(480,138,14,'#fbbf24',C.dark,3)}
-${tx(480,108,'knot here — ties both ends together',19,'middle','#92400e','bold')}
-${arr(480,118,480,124,'#92400e',3)}
+${/* Knot on top of straw — label beside, not above */ci(480,193,15,'#fbbf24',C.dark,3)}
+${tx(660,175,'← knot',17,'left','#92400e','bold')}
+${tx(660,196,'(both ends tied here)',15,'left','#92400e')}
+${arr(655,185,500,190,'#92400e',3)}
 
-${/* Left string from knot down to cup */ln(480,152,390,255,C.rope,5)}
-${/* Right string from knot down to cup */ln(480,152,570,255,C.rope,5)}
+${/* Strings from knot down to cup holes */ln(480,208,385,325,C.rope,5)}
+${ln(480,208,575,325,C.rope,5)}
 
-${/* Holes */ci(390,257,11,C.bg,C.dark,4)}
-${ci(570,257,11,C.bg,C.dark,4)}
+${/* Holes */ci(385,327,11,C.bg,C.dark,4)}
+${ci(575,327,11,C.bg,C.dark,4)}
 
-${/* Cup */cup(480,255,220,164,185,C.cup)}
+${/* Cup */cup(480,325,220,164,175,C.cup)}
 
-${/* Level indicator */ln(388,260,572,260,C.green,3)}
-${ci(388,260,5,C.green,'none')}${ci(572,260,5,C.green,'none')}
-${tx(480,300,'level ✓',18,'middle',C.green,'bold')}
+${/* Level indicator */ln(383,330,577,330,C.green,3)}
+${ci(383,330,5,C.green,'none')}${ci(577,330,5,C.green,'none')}
+${tx(480,370,'level ✓',18,'middle',C.green,'bold')}
 
-${/* Diagram callout */callout(620,310,300,160,'The loop:',['Straw sits INSIDE','the string loop.','It can\'t fall off!'],'#f0fdf4',C.green)}
+${callout(30,230,260,195,'The loop:',['Straw sits INSIDE','the string loop.','It can\'t fall off!','String pulls tight','around the straw.'],'#f0fdf4',C.green)}
 
-${badge(W/2,490,'Pull tight! Cup should hang level — if tilting, re-tie with equal string on both sides.',C.dark,'white',18)}
+${badge(W/2,492,'Pull tight! If cup tilts, untie and re-tie with equal string on both sides.',C.dark,'white',18)}
 `),
 
 // 06 — Reinforce the holes
