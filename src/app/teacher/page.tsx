@@ -112,8 +112,8 @@ export default async function TeacherDashboardPage({
   // inProgressMap: studentId → Set of started (not completed) contentItemIds
   const inProgressMap = new Map<string, Set<string>>()
 
-  if (thisWeek && students.length > 0) {
-    // Get all curriculum days + content items for this week
+  if (thisWeek) {
+    // Get all curriculum days + content items for this week (always, even with no students)
     const dayItems = await db
       .select({
         subject:       curriculumDays.subject,
@@ -126,7 +126,8 @@ export default async function TeacherDashboardPage({
 
     weekSubjects = dayItems as SubjectProgress[]
 
-    if (weekSubjects.length > 0) {
+    // Load student progress only if there are students
+    if (weekSubjects.length > 0 && students.length > 0) {
       const contentItemIds = weekSubjects.map(d => d.contentItemId)
       const studentIds     = students.map(s => s.id)
 
