@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
-type LoginStep = 'select-type' | 'access-code' | 'enter-name' | 'disambiguate' | 'teacher-form'
+type LoginStep = 'select-type' | 'access-code' | 'enter-name' | 'disambiguate' | 'enter-pin' | 'teacher-form'
 
 interface NameOption { id: string; firstName: string }
 
@@ -12,12 +12,15 @@ function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const [step, setStep]           = useState<LoginStep>('select-type')
-  const [accessCode, setAccessCode] = useState('')
-  const [lastName, setLastName]   = useState('')
-  const [options, setOptions]     = useState<NameOption[]>([])
-  const [error, setError]         = useState('')
-  const [loading, setLoading]     = useState(false)
+  const [step, setStep]               = useState<LoginStep>('select-type')
+  const [accessCode, setAccessCode]   = useState('')
+  const [lastName, setLastName]       = useState('')
+  const [options, setOptions]         = useState<NameOption[]>([])
+  const [pendingUserId, setPendingUserId] = useState('')
+  const [pendingFirstName, setPendingFirstName] = useState('')
+  const [pin, setPin]                 = useState('')
+  const [error, setError]             = useState('')
+  const [loading, setLoading]         = useState(false)
 
   // Teacher form
   const [email, setEmail]         = useState('')
@@ -48,8 +51,11 @@ function LoginForm() {
       if (json.data?.needsDisambiguation) {
         setOptions(json.data.options)
         setStep('disambiguate')
-      } else {
-        router.push('/dashboard')
+      } else if (json.data?.needsPin) {
+        setPendingUserId(json.data.userId)
+        setPendingFirstName(json.data.firstName)
+        setPin('')
+        setStep('enter-pin')
       }
     } catch {
       setError('Something went wrong. Try again!')
@@ -65,9 +71,36 @@ function LoginForm() {
       const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'student', accessCode, lastName: lastName.trim(), userId }),
+        body: JSON.stringify({ type: 'student', accessCode, userId }),
       })
-      if (!res.ok) { const j = await res.json(); setError(j.error ?? 'Something went wrong.'); return }
+      const json = await res.json()
+      if (!res.ok) { setError(json.error ?? 'Something went wrong.'); return }
+
+      if (json.data?.needsPin) {
+        setPendingUserId(json.data.userId)
+        setPendingFirstName(json.data.firstName)
+        setPin('')
+        setStep('enter-pin')
+      }
+    } catch {
+      setError('Something went wrong. Try again!')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function handlePinSubmit() {
+    if (pin.length !== 4) return
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'student', accessCode, userId: pendingUserId, pin }),
+      })
+      const json = await res.json()
+      if (!res.ok) { setError(json.error ?? 'Something went wrong.'); setPin(''); return }
       router.push('/dashboard')
     } catch {
       setError('Something went wrong. Try again!')
@@ -204,6 +237,34 @@ function LoginForm() {
               ))}
             </div>
             <button onClick={() => { setStep('enter-name'); setOptions([]) }} className="w-full mt-4 text-gray-400 text-sm">← Back</button>
+          </div>
+        )}
+
+        {/* ── Step: enter PIN ── */}
+        {step === 'enter-pin' && (
+          <div className="bg-white rounded-3xl shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-center mb-1">Hi, {pendingFirstName}! 👋</h2>
+            <p className="text-center text-gray-400 text-sm mb-6">Enter your 4-digit PIN</p>
+            <input
+              type="password"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={4}
+              value={pin}
+              onChange={e => { setPin(e.target.value.replace(/\D/g, '')); setError('') }}
+              placeholder="• • • •"
+              className="w-full text-center text-4xl font-black tracking-[0.5em] border-4 border-keen-200 rounded-2xl p-4 focus:outline-none focus:border-keen-500"
+              autoFocus
+              onKeyDown={e => e.key === 'Enter' && pin.length === 4 && handlePinSubmit()}
+            />
+            <button
+              onClick={handlePinSubmit}
+              disabled={pin.length !== 4 || loading}
+              className="btn-primary w-full mt-6 disabled:opacity-50"
+            >
+              {loading ? 'Checking...' : 'Go! →'}
+            </button>
+            <button onClick={() => { setStep('enter-name'); setPin(''); setError('') }} className="w-full mt-3 text-gray-400 text-sm">← Back</button>
           </div>
         )}
 
