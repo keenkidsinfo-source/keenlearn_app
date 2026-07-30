@@ -59,7 +59,10 @@ export default async function BuildDayPage({ params }: Props) {
   const r2Urls = stepCount > 0 && r2Key
     ? await getStepImageUrls(r2Key.replace(/\/$/, ''), stepCount)
     : []
-  const stepUrls = metaImageUrls.some(u => u) ? metaImageUrls : r2Urls
+  // Build step images are for teacher/admin only — students follow along with the teacher
+  const isTeacher = session.role === 'teacher' || session.role === 'admin'
+  const rawStepUrls = metaImageUrls.some(u => u) ? metaImageUrls : r2Urls
+  const stepUrls = isTeacher ? rawStepUrls : []
 
   return (
     <StepViewer

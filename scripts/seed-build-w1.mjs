@@ -1,0 +1,288 @@
+/**
+ * seed-build-w1.mjs
+ * Seeds Week 1 build content for Aug 17 week — BOTH teacher and student accounts see this.
+ *
+ * Source: Google Doc KeenKids_BuildDay_Manual_August2025_v5
+ *   G1-2 Build: Cable Car (Week 1, Mon Aug 18)
+ *   G3-4 Build: Well Pulley (Week 1, Mon Aug 18)
+ *
+ * Run from Mac Terminal:
+ *   cd ~/Documents/keenlearn_app && node scripts/seed-build-w1.mjs
+ */
+
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
+import postgres from 'postgres'
+
+try {
+  const lines = readFileSync(resolve(process.cwd(), '.env.local'), 'utf8').split('\n')
+  for (const line of lines) {
+    const t = line.trim()
+    if (!t || t.startsWith('#')) continue
+    const i = t.indexOf('=')
+    if (i === -1) continue
+    const k = t.slice(0, i).trim()
+    const v = t.slice(i + 1).trim().replace(/^["']|["']$/g, '')
+    if (!process.env[k]) process.env[k] = v
+  }
+} catch {}
+
+const sql = postgres(process.env.DATABASE_URL)
+
+// ── Build content from KeenKids_BuildDay_Manual_August2025_v5 ──────────────────
+// Steps formatted as { emoji, title, text, tip? } for StepViewer
+// Simple machine context included age-appropriately in each track
+
+const builds = [
+  // ── G1-2 Week 1: Cable Car ───────────────────────────────────────────────────
+  {
+    gradeBand: 'g1-2',
+    weekNumber: 1,
+    title: 'Cable Car',
+    simpleMachine: 'Pulley',
+    tagline: 'Build a paper cup that slides down a zip line and carries cargo!',
+    steps: [
+      {
+        emoji: '🚡',
+        title: 'Meet your materials',
+        text: 'You have: 1 paper cup, 1 wide straw (already on the zip line!), string, paperclips, tape, and scissors. Your straw is your PULLEY — it lets your cup roll along the line!',
+        tip: 'A PULLEY is a simple machine that helps things move along a line. The straw is your pulley today!',
+      },
+      {
+        emoji: '✂️',
+        title: 'Punch the holes',
+        text: 'Use a pencil to poke 2 holes near the TOP of your cup — one on the LEFT side and one on the RIGHT side, directly across from each other. Like ears on your cup!',
+        tip: 'Make the holes as close to the rim as possible so your cup hangs straight.',
+      },
+      {
+        emoji: '🧵',
+        title: 'Thread the string',
+        text: 'Cut 30cm of string. Push one end through the LEFT hole from the OUTSIDE going IN. Pull it across the inside of the cup, then push it out through the RIGHT hole from the INSIDE going OUT. Both ends should hang outside the cup.',
+      },
+      {
+        emoji: '🪢',
+        title: 'Tie the knots',
+        text: 'Tie a knot at each end of the string — the knot should sit flat against the OUTSIDE of the cup wall. Pull tight! Hang your cup from the straw by looping the strings over it. The cup should hang level (not tilting).',
+        tip: 'If the cup tilts, adjust the strings so they are exactly the same length on both sides.',
+      },
+      {
+        emoji: '🩹',
+        title: 'Reinforce the holes',
+        text: 'Put a small piece of tape over each hole — inside and outside. This stops the string from tearing through when you add cargo!',
+      },
+      {
+        emoji: '🪝',
+        title: 'Make the S-hook',
+        text: 'Bend a paperclip into an S-shape. This is your cargo hook — hang it onto the bottom of your cup to make it easy to add and remove cargo.',
+      },
+      {
+        emoji: '🚦',
+        title: 'Dry test — no cargo yet',
+        text: 'Gently slide your cup to the top of the zip line and let go. Does it slide all the way down? It should! If it stops, check that the straw can move freely and nothing is caught.',
+      },
+      {
+        emoji: '📎',
+        title: 'Cargo Challenge Round 1',
+        text: 'Place 3 paperclips in your cup as cargo. Let it go from the top — does it still make it all the way down? Write YES or NO on the class chart!',
+        tip: 'GRAVITY is pulling your cargo down. The HEAVIER the cargo, the more gravity pulls — but too heavy and friction wins!',
+      },
+      {
+        emoji: '📈',
+        title: 'Cargo Challenge Round 2 — push the limit',
+        text: 'Add paperclips ONE at a time. After each one, test the zip line. Keep going until your cable car stops before reaching the end. Record your maximum cargo on the class chart — how many paperclips?',
+      },
+      {
+        emoji: '🔧',
+        title: 'Fix time!',
+        text: 'If your cable car stopped before the end, figure out why. Is the cup tilting? Is cargo in one spot? Is the string catching on something? Make ONE fix and retest.',
+        tip: 'FRICTION is what slows things down. Smoother movement = less friction = more cargo!',
+      },
+      {
+        emoji: '📊',
+        title: 'Update the class chart',
+        text: 'Write your new max cargo on the class chart after your fix. Did your fix improve it? Compare with your classmates — who has the most cargo-carrying cable car?',
+      },
+      {
+        emoji: '🎤',
+        title: 'Share out!',
+        text: 'Tell the class: "My cable car carried ___ paperclips. I changed ___ and it ___." Remember: PULLEY, GRAVITY, LOAD, FRICTION!',
+        tip: 'Real cable cars and ski lifts use the same pulley system as your cup today!',
+      },
+    ],
+  },
+
+  // ── G3-4 Week 1: Well Pulley ─────────────────────────────────────────────────
+  {
+    gradeBand: 'g3-4',
+    weekNumber: 1,
+    title: 'Well Pulley',
+    simpleMachine: 'Wheel & Axle',
+    tagline: 'Build a working well with a crank that raises and lowers a bucket!',
+    steps: [
+      {
+        emoji: '⚙️',
+        title: 'The science: Wheel & Axle',
+        text: 'A WHEEL & AXLE is a simple machine! The crank (wheel) turns the skewer (axle), which winds the string and lifts the bucket. More crank = more rotation = bucket rises. You\'ll build one today!',
+        tip: 'Real-world examples: water wells, fishing reels, winches, and window blinds all use wheel & axle!',
+      },
+      {
+        emoji: '🏗️',
+        title: 'Build the well body',
+        text: 'Take your 2 large cardboard pieces. Stack them together. Roll them tightly into a cylinder (tube shape) — the double layer makes it rigid. Tape the seam firmly along the FULL length. The cylinder should hold its shape without springing open.',
+        tip: 'Roll from a corner for a tighter cylinder. Tape as you go, not just at the end.',
+      },
+      {
+        emoji: '🔲',
+        title: 'Attach the base',
+        text: 'Stand your cylinder upright on the flat cardboard square. Tape around the outside edge where the cylinder meets the base — go all the way around. Push the cylinder sideways to test: it should NOT tip over.',
+      },
+      {
+        emoji: '🪵',
+        title: 'Add the uprights',
+        text: 'Push one popsicle stick firmly into the corrugated ridges on the LEFT side of your cylinder. The ridges grip it naturally — no tape needed if it\'s tight! Stick should stand about 8-10cm above the top. Repeat on the RIGHT side.',
+        tip: 'If the stick is loose, add one small tape strip at the base. But try WITHOUT tape first — the ridges should hold it.',
+      },
+      {
+        emoji: '🔩',
+        title: 'Install the axle',
+        text: 'Rest the wooden skewer horizontally across the TOP of both upright sticks — like a bridge. Tape each end of the skewer to the top of each stick. IMPORTANT: use just enough tape to hold it, but the skewer must still ROTATE (spin freely). Test it: spin the skewer with your fingers. Does it turn?',
+        tip: 'If the skewer is stuck, the tape is too thick. Unwrap a layer. The axle MUST spin for the machine to work!',
+      },
+      {
+        emoji: '🧵',
+        title: 'Attach the string',
+        text: 'Tie one end of the string to the CENTRE of the skewer with a tight knot. Wind the string around the skewer 3-4 times. Let the other end hang down into the well.',
+      },
+      {
+        emoji: '🪣',
+        title: 'Make the bucket',
+        text: 'Roll the small corrugated piece into a mini cylinder. Tape the seam. Cut 3 equal strings (~15cm each). Tie one end of each string around the TOP EDGE of the bucket, equally spaced (like a tripod). Gather all 3 free ends together and tie them in one knot. Tie this combined knot to the hanging end of your main string.',
+        tip: 'Space the 3 strings equally (about 120° apart) so the bucket hangs level, not tilted.',
+      },
+      {
+        emoji: '🎡',
+        title: 'Add the crank',
+        text: 'Tape the cardstock strip to ONE end of the skewer as a handle. This is your CRANK (the "wheel" in wheel & axle).',
+      },
+      {
+        emoji: '✅',
+        title: 'Test your well!',
+        text: 'Turn the crank clockwise — does the string wind up and the bucket rise? Turn it counter-clockwise — does the bucket lower? Both directions should work smoothly. If not, ask your teacher for an INSTRUCTOR CHECK.',
+      },
+      {
+        emoji: '📊',
+        title: 'Count the cranks',
+        text: 'Lower your bucket all the way down. Count how many FULL turns of the crank it takes to raise the bucket completely to the top. Record your number on the class chart.',
+      },
+      {
+        emoji: '🪙',
+        title: 'Cargo test',
+        text: 'Place 3 pennies in your bucket as cargo. Count the cranks to raise it now. Does it feel harder? Does it take more cranks?',
+        tip: 'MECHANICAL ADVANTAGE means you can lift a heavy load with less force — but you may need more cranks!',
+      },
+      {
+        emoji: '🔧',
+        title: 'Improve it — fewer cranks!',
+        text: 'Challenge: can you reduce the number of cranks needed? Try: winding extra string on the skewer before you start (pre-winding), OR making your crank handle LONGER so each turn moves more string. Make ONE change and retest. Record your new count!',
+      },
+      {
+        emoji: '🎤',
+        title: 'Share out!',
+        text: 'Tell the class: "It took ___ cranks before and ___ cranks after my improvement." Key vocab: WHEEL, AXLE, CRANK, MECHANICAL ADVANTAGE, LOAD, ROTATION.',
+        tip: 'Real wells, fishing reels, winches, and cranes all use wheel & axle. You just built one!',
+      },
+    ],
+  },
+]
+
+async function run() {
+  // ── Show what's in DB for build W1 ──────────────────────────────────────────
+  console.log('\n── Build content items in DB (Week 1) ──')
+  const existing = await sql`
+    SELECT ci.id, ci.title, ci.grade_band, ci.subject, ci.step_count,
+           c.week_number, c.grade_band as curr_grade,
+           EXISTS (
+             SELECT 1 FROM classroom_curriculum ccl WHERE ccl.curriculum_id = c.id
+           ) as is_assigned
+    FROM content_items ci
+    JOIN curriculum_content cc ON cc.content_item_id = ci.id
+    JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
+    JOIN curriculum c ON c.id = cd.curriculum_id
+    WHERE ci.subject = 'build'
+      AND c.week_number = 1
+    ORDER BY ci.grade_band, ci.created_at DESC
+  `
+  if (existing.length === 0) {
+    console.log('  No build content items found for Week 1 — will INSERT.')
+  } else {
+    for (const r of existing) {
+      console.log(`  ${r.grade_band} W${r.week_number} | ${r.is_assigned ? '✅ ASSIGNED' : '  orphan  '} | "${r.title}" | ${r.step_count ?? 0} steps`)
+    }
+  }
+
+  for (const build of builds) {
+    const metadata = {
+      simpleMachine: build.simpleMachine,
+      tagline: build.tagline,
+      steps: build.steps,
+    }
+    const stepCount = build.steps.length
+
+    // Try to find existing assigned build content item for this week + grade
+    const items = await sql`
+      SELECT ci.id, ci.title, ci.metadata, ci.created_at
+      FROM content_items ci
+      JOIN curriculum_content cc ON cc.content_item_id = ci.id
+      JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
+      JOIN curriculum c ON c.id = cd.curriculum_id
+      WHERE ci.subject = 'build'
+        AND ci.grade_band = ${build.gradeBand}
+        AND c.week_number = ${build.weekNumber}
+        AND c.grade_band = ${build.gradeBand}
+        AND c.id IN (SELECT curriculum_id FROM classroom_curriculum)
+      ORDER BY ci.created_at DESC
+    `
+
+    if (items.length === 0) {
+      // Fallback: no classroom assignment, pick newest build content item for this week
+      console.warn(`⚠  No assigned classroom build found for ${build.gradeBand} week ${build.weekNumber} — trying fallback`)
+      const [item] = await sql`
+        SELECT ci.id, ci.title FROM content_items ci
+        JOIN curriculum_content cc ON cc.content_item_id = ci.id
+        JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
+        JOIN curriculum c ON c.id = cd.curriculum_id
+        WHERE ci.subject = 'build'
+          AND ci.grade_band = ${build.gradeBand}
+          AND c.week_number = ${build.weekNumber}
+        ORDER BY ci.created_at DESC LIMIT 1
+      `
+      if (!item) {
+        console.warn(`  Still not found for ${build.gradeBand} W${build.weekNumber} — skipping`)
+        continue
+      }
+      await sql`
+        UPDATE content_items
+        SET title = ${build.title}, metadata = ${metadata}, step_count = ${stepCount}
+        WHERE id = ${item.id}
+      `
+      console.log(`✓ Updated (fallback): ${build.gradeBand} W${build.weekNumber} — "${build.title}" (${stepCount} steps)`)
+      continue
+    }
+
+    for (const item of items) {
+      await sql`
+        UPDATE content_items
+        SET title = ${build.title}, metadata = ${metadata}, step_count = ${stepCount}
+        WHERE id = ${item.id}
+      `
+      console.log(`✓ Updated: ${build.gradeBand} W${build.weekNumber} — "${build.title}" (${stepCount} steps, was: "${item.title}")`)
+    }
+  }
+
+  await sql.end()
+  console.log('\n✅ Done! W1 build content seeded (Cable Car + Well Pulley).')
+  console.log('   Both teacher AND student accounts will see text steps.')
+  console.log('   Build step images remain gated to teacher/admin only.')
+}
+
+run().catch(e => { console.error(e); process.exit(1) })

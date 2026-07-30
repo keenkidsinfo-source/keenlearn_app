@@ -156,6 +156,7 @@ export default async function TeacherDashboardPage({
 
   const totalThisWeek   = weekSubjects.length
   const speakingDay     = weekSubjects.find(ws => ws.subject === 'public_speaking')
+  const buildDay        = weekSubjects.find(ws => ws.subject === 'build')
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -266,10 +267,18 @@ export default async function TeacherDashboardPage({
                   ))}
                 </div>
               )}
+              {buildDay && (
+                <Link
+                  href={`/build/day/${buildDay.dayId}`}
+                  className="mt-3 flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-400 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+                >
+                  🏗️ View Build Steps
+                </Link>
+              )}
               {speakingDay && (
                 <Link
                   href={`/teacher/speaking/${speakingDay.dayId}`}
-                  className="mt-3 flex items-center justify-center gap-2 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+                  className="mt-2 flex items-center justify-center gap-2 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
                 >
                   🎤 Run Speaking Class
                 </Link>

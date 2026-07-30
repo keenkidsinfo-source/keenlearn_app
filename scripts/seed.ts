@@ -133,7 +133,7 @@ async function seed() {
 
   const [week1] = await sql`
     INSERT INTO curriculum (title, grade_band, week_number, theme, is_active)
-    VALUES ('Week 1 — Exploring Our World', 'g1-2', 1, 'Nature & Discovery', true)
+    VALUES ('Week 1 — Pulleys', 'g1-2', 1, 'Nature & Discovery', true)
     RETURNING id, title
   `
   console.log('✓ Curriculum:', week1.title)
@@ -188,7 +188,7 @@ async function seed() {
   await sql`DELETE FROM curriculum WHERE week_number = 1 AND grade_band = 'g3-4'`
   const [week1g34] = await sql`
     INSERT INTO curriculum (title, grade_band, week_number, theme, is_active)
-    VALUES ('Week 1 — Exploring Our World', 'g3-4', 1, 'Motion & Transportation', true)
+    VALUES ('Week 1 — Pulleys & Wheel-and-Axle', 'g3-4', 1, 'Motion & Transportation', true)
     RETURNING id, title
   `
   console.log('✓ G3-4 Curriculum:', week1g34.title)
