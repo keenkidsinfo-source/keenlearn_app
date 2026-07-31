@@ -24,16 +24,17 @@ interface Props {
   buildTitle: string
   buildDayId: string
   weekStartDate: string
+  initialRows?: Record<string, { a: string; b: string; c: string; note: string }>
 }
 
 function display(s: Student) { return s.displayName ?? s.name }
 function safeInt(v: string) { const n = parseInt(v, 10); return isNaN(n) ? undefined : Math.max(0, n) }
 
-export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekStartDate }: Props) {
+export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekStartDate, initialRows = {} }: Props) {
   const isG12 = gradeBand === 'g1-2'
 
   const [rows, setRows] = useState<Record<string, Row>>(
-    () => Object.fromEntries(students.map(s => [s.id, { a: '', b: '', c: '', note: '' }]))
+    () => Object.fromEntries(students.map(s => [s.id, initialRows[s.id] ?? { a: '', b: '', c: '', note: '' }]))
   )
   const [sending, setSending] = useState(false)
   const [sendResult, setSendResult] = useState<{ sent: number; noMatch: number; errors: number } | null>(null)

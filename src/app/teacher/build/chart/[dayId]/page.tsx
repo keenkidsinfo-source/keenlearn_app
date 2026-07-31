@@ -5,9 +5,9 @@ import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
 import {
   users, classrooms, curriculumDays, curriculumContent, contentItems,
-  classroomCurriculum,
+  classroomCurriculum, studentSessions,
 } from '@/lib/db/schema'
-import { eq, and, isNull } from 'drizzle-orm'
+import { eq, and, isNull, inArray } from 'drizzle-orm'
 import { getMondayStr } from '@/lib/teacher-dashboard'
 import { ChartClient } from './ChartClient'
 import type { GradeBand } from '@/lib/db/schema'
@@ -65,6 +65,41 @@ export default async function BuildChartPage({ params }: Props) {
     .where(and(eq(users.classroomId, classroom.id), eq(users.role, 'student'), isNull(users.deletedAt)))
     .orderBy(users.name)
 
+  // Load any build results students have already submitted
+  const isG12 = (item.gradeBand ?? 'g1-2') === 'g1-2'
+  const studentIds = students.map(s => s.id)
+  const existingSessions = studentIds.length > 0
+    ? await db
+        .select({ studentId: studentSessions.studentId, sessionData: studentSessions.sessionData })
+        .from(studentSessions)
+        .where(and(
+          inArray(studentSessions.studentId, studentIds),
+          eq(studentSessions.contentItemId, item.id),
+        ))
+    : []
+
+  // Build initial rows from student submissions
+  const initialRows: Record<string, { a: string; b: string; c: string; note: string }> = {}
+  for (const s of existingSessions) {
+    const sd = (s.sessionData ?? {}) as Record<string, any>
+    const br = (sd.buildResults ?? {}) as Record<string, any>
+    if (isG12) {
+      initialRows[s.studentId] = {
+        a: br.round1Clips != null ? String(br.round1Clips) : '',
+        b: br.afterFixClips != null ? String(br.afterFixClips) : '',
+        c: br.maxClips != null ? String(br.maxClips) : '',
+        note: br.note ?? '',
+      }
+    } else {
+      initialRows[s.studentId] = {
+        a: br.cranksNoLoad != null ? String(br.cranksNoLoad) : '',
+        b: br.cranksWithLoad != null ? String(br.cranksWithLoad) : '',
+        c: br.cranksImproved != null ? String(br.cranksImproved) : '',
+        note: br.note ?? '',
+      }
+    }
+  }
+
   // Determine week start date from the curriculum assignment
   const mondayStr = getMondayStr()
   const [weekRow] = await db
@@ -85,6 +120,7 @@ export default async function BuildChartPage({ params }: Props) {
       buildTitle={item.title}
       buildDayId={dayId}
       weekStartDate={weekStartDate}
+      initialRows={initialRows}
     />
   )
 }

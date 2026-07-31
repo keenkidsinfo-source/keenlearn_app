@@ -76,6 +76,7 @@ export default async function BuildDayPage({ params }: Props) {
       initialStep={lastStep}
       completed={sessionData?.completed ?? false}
       gradeBand={(item.gradeBand as GradeBand | null) ?? null}
+      isTeacher={isTeacher}
     />
   )
 }

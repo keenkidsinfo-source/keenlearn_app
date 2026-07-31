@@ -5,7 +5,7 @@ import {
   users, classrooms, schools, studentSessions,
   classroomCurriculum, curriculum, curriculumDays, curriculumContent, contentItems,
 } from '@/lib/db/schema'
-import { eq, and, isNull, inArray } from 'drizzle-orm'
+import { eq, and, isNull, inArray, gte, desc } from 'drizzle-orm'
 import Link from 'next/link'
 import { SUBJECT_EMOJI, SUBJECT_LABEL } from '@/lib/utils'
 import type { Subject } from '@/lib/db/schema'
@@ -142,6 +142,23 @@ export default async function TeacherDashboardPage({
   const speakingDay     = weekSubjects.find(ws => ws.subject === 'public_speaking')
   const buildDay        = weekSubjects.find(ws => ws.subject === 'build')
 
+  // Find the most recent (or upcoming) build day across ALL weeks for this classroom
+  // so the chart is always accessible regardless of which week the teacher is browsing
+  const nearestBuildDay = buildDay ?? (classroom ? await (async () => {
+    const rows = await db
+      .select({ dayId: curriculumDays.id, weekStart: classroomCurriculum.weekStartDate })
+      .from(curriculumDays)
+      .innerJoin(curriculumContent, eq(curriculumContent.curriculumDayId, curriculumDays.id))
+      .innerJoin(classroomCurriculum, eq(classroomCurriculum.curriculumId, curriculumDays.curriculumId))
+      .where(and(
+        eq(classroomCurriculum.classroomId, classroom.id),
+        eq(curriculumDays.subject, 'build'),
+      ))
+      .orderBy(desc(classroomCurriculum.weekStartDate))
+      .limit(1)
+    return rows[0] ? { dayId: rows[0].dayId, weekStart: rows[0].weekStart } : null
+  })() : null)
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -231,6 +248,33 @@ export default async function TeacherDashboardPage({
           </div>
           <div className="text-5xl">🔑</div>
         </div>
+
+        {/* ── Build Day Quick Access (always visible if any build day exists) ── */}
+        {nearestBuildDay && (
+          <div className="bg-teal-50 border-2 border-teal-200 rounded-2xl p-5">
+            <p className="text-xs font-bold text-teal-700 uppercase tracking-widest mb-3">🏗️ Build Day</p>
+            <div className="flex flex-col gap-2">
+              <Link
+                href={`/build/theory/${nearestBuildDay.dayId}`}
+                className="flex items-center justify-center gap-2 w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+              >
+                📖 Theory Slides (show first)
+              </Link>
+              <Link
+                href={`/build/day/${nearestBuildDay.dayId}`}
+                className="flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-400 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+              >
+                🏗️ View Build Steps
+              </Link>
+              <Link
+                href={`/teacher/build/chart/${nearestBuildDay.dayId}`}
+                className="flex items-center justify-center gap-2 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+              >
+                📊 Class Results Chart
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* ── This Week ── */}
         <div className="bg-white rounded-2xl shadow-sm p-5">

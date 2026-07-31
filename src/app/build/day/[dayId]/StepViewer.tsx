@@ -22,9 +22,10 @@ interface Props {
   initialStep: number
   completed: boolean
   gradeBand: GradeBand | null
+  isTeacher?: boolean
 }
 
-export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand }: Props) {
+export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand, isTeacher = false }: Props) {
   const router = useRouter()
   const [step, setStep]         = useState(Math.max(0, initialStep))
   const [isDone, setIsDone]     = useState(completed)
@@ -174,6 +175,16 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
         ) : null}
 
         {saving && <p className="text-orange-400 text-sm">Saving…</p>}
+
+        {/* Results button — show once students are past the halfway point */}
+        {!isTeacher && step >= Math.floor(totalSteps / 2) && (
+          <button
+            onClick={() => router.push(`/build/day/${dayId}/results`)}
+            className="w-full py-3 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-sm transition-all shadow-sm"
+          >
+            📊 Enter My Results on the Class Chart
+          </button>
+        )}
       </main>
 
       {/* Navigation */}
