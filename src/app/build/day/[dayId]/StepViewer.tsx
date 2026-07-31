@@ -135,7 +135,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
         ))}
       </div>
 
-      <main className="flex-1 flex flex-col items-center p-4 gap-3 max-w-lg mx-auto w-full">
+      <main className="flex-1 overflow-y-auto flex flex-col items-center p-4 gap-3 max-w-lg mx-auto w-full">
 
         {/* Illustration image — use plain <img> so SVGs aren't routed through Next.js
             image optimizer (which refuses SVGs in production) */}
