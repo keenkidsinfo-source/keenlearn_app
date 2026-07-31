@@ -361,12 +361,14 @@ function SvgCrankWell() {
       {/* String going down */}
       <line x1="380" y1="78" x2="380" y2="200" stroke="#3b82f6" strokeWidth="3" strokeDasharray="6,4"/>
 
-      {/* CRANK on right */}
-      <line x1="490" y1="70" x2="540" y2="70" stroke="#7c3aed" strokeWidth="8" strokeLinecap="round"/>
-      <line x1="540" y1="70" x2="540" y2="38" stroke="#7c3aed" strokeWidth="8" strokeLinecap="round"/>
-      <circle cx="540" cy="38" r="12" fill="#8b5cf6" stroke="#7c3aed" strokeWidth="3"/>
-      <rect x="548" y="28" width="85" height="26" rx="8" fill="#7c3aed"/>
-      <text x="590" y="44" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">CRANK = WHEEL</text>
+      {/* CRANK on right — cardstock strip */}
+      <line x1="490" y1="70" x2="550" y2="70" stroke="#7c3aed" strokeWidth="8" strokeLinecap="round"/>
+      <line x1="550" y1="70" x2="550" y2="30" stroke="#7c3aed" strokeWidth="8" strokeLinecap="round"/>
+      <circle cx="550" cy="30" r="12" fill="#8b5cf6" stroke="#7c3aed" strokeWidth="3"/>
+      {/* Label: cardstock strip */}
+      <rect x="558" y="18" width="190" height="44" rx="8" fill="#7c3aed"/>
+      <text x="653" y="36" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">CARDSTOCK STRIP</text>
+      <text x="653" y="52" textAnchor="middle" fontSize="11" fill="#ddd6fe">= your CRANK handle</text>
 
       {/* Bucket */}
       <path d="M360,200 Q360,235 368,240 L392,240 Q400,235 400,200 Z" fill="#d4956a" stroke="#92400e" strokeWidth="3"/>
@@ -388,53 +390,68 @@ function SvgCrankWell() {
 }
 
 function SvgMechanicalAdvantage() {
+  // Helper: mini well + crank
+  const Well = ({ x, cranks, crankLen, label, labelColor, bgColor, borderColor, pennies }: {
+    x: number; cranks: number; crankLen: number; label: string; labelColor: string; bgColor: string; borderColor: string; pennies: number
+  }) => (
+    <g>
+      {/* Card */}
+      <rect x={x} y={50} width={210} height={270} rx="14" fill={bgColor} stroke={borderColor} strokeWidth="3"/>
+      {/* Header */}
+      <rect x={x} y={50} width={210} height={36} rx="14" fill={borderColor}/>
+      <rect x={x} y={72} width={210} height={14} fill={borderColor}/>
+      <text x={x+105} y={73} textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">{label}</text>
+
+      {/* Well barrel */}
+      <rect x={x+75} y={110} width={60} height={55} rx="5" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2"/>
+      {/* Uprights */}
+      <rect x={x+70} y={98} width={7} height={22} rx="3" fill="#92400e"/>
+      <rect x={x+133} y={98} width={7} height={22} rx="3" fill="#92400e"/>
+      {/* Axle */}
+      <rect x={x+60} y={108} width={90} height={7} rx="3" fill="#c49a4a"/>
+      {/* Crank arm */}
+      <line x1={x+105} y1={108} x2={x+105+crankLen} y2={108-crankLen} stroke="#7c3aed" strokeWidth="5" strokeLinecap="round"/>
+      <circle cx={x+105+crankLen} cy={108-crankLen} r="7" fill="#8b5cf6"/>
+      {/* String + bucket */}
+      <line x1={x+105} y1={115} x2={x+105} y2={155} stroke="#64748b" strokeWidth="2" strokeDasharray="3,3"/>
+      <rect x={x+85} y={155} width={40} height={24} rx="5" fill="#fed7aa" stroke="#92400e" strokeWidth="2"/>
+      {/* Pennies on bucket */}
+      {Array.from({length: pennies}).map((_,i) => (
+        <circle key={i} cx={x+95+i*10} cy={152} r="5" fill="#fbbf24" stroke="#d97706" strokeWidth="1"/>
+      ))}
+
+      {/* Crank count badge */}
+      <rect x={x+30} y={192} width={150} height={44} rx="10" fill={borderColor}/>
+      <text x={x+105} y={210} textAnchor="middle" fontSize="11" fill="white">CRANKS NEEDED</text>
+      <text x={x+105} y={230} textAnchor="middle" fontSize="22" fontWeight="black" fill="white">{cranks}</text>
+
+      {/* Result label */}
+      <text x={x+105} y={265} textAnchor="middle" fontSize="12" fontWeight="bold" fill={labelColor}>
+        {cranks <= 6 ? '✅ Great!' : cranks <= 10 ? '🙂 OK' : '😓 Hmm...'}
+      </text>
+      <text x={x+105} y={283} textAnchor="middle" fontSize="11" fill="#64748b">
+        {pennies === 0 ? 'empty bucket' : pennies === 3 ? '3 pennies' : 'longer crank!'}
+      </text>
+      <text x={x+105} y={300} textAnchor="middle" fontSize="11" fill="#94a3b8">(example only)</text>
+    </g>
+  )
+
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
       <rect width="760" height="340" fill="#fdf4ff" rx="16"/>
-      <text x="380" y="32" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Mechanical Advantage</text>
+      <text x="380" y="32" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Count Your Cranks — This Is Your Experiment!</text>
 
-      {/* Left: without MA */}
-      <rect x="20" y="50" width="330" height="240" rx="14" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
-      <text x="185" y="78" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#ef4444">SHORT CRANK = more effort</text>
+      <Well x={20}  cranks={10} crankLen={14} label="① Empty Bucket"    labelColor="#92400e" bgColor="#fffbeb" borderColor="#f59e0b" pennies={0}/>
+      <Well x={275} cranks={16} crankLen={14} label="② Add 3 Pennies"   labelColor="#dc2626" bgColor="#fff1f2" borderColor="#ef4444" pennies={3}/>
+      <Well x={530} cranks={6}  crankLen={30} label="③ Longer Crank!"   labelColor="#15803d" bgColor="#f0fdf4" borderColor="#22c55e" pennies={3}/>
 
-      {/* Short crank well */}
-      <circle cx="185" cy="155" r="22" fill="#f1f5f9" stroke="#94a3b8" strokeWidth="3"/>
-      <circle cx="185" cy="155" r="6" fill="#cbd5e1"/>
-      <line x1="185" y1="133" x2="185" y2="195" stroke="#94a3b8" strokeWidth="4"/>
-      <line x1="163" y1="155" x2="207" y2="155" stroke="#94a3b8" strokeWidth="4"/>
-      {/* crank arm short */}
-      <line x1="185" y1="133" x2="200" y2="118" stroke="#7c3aed" strokeWidth="5" strokeLinecap="round"/>
-      <circle cx="200" cy="118" r="8" fill="#8b5cf6"/>
-      {/* force needed big */}
-      <text x="185" y="215" textAnchor="middle" fontSize="13" fill="#64748b">Axle r = 0.5 cm · Crank r = 2 cm</text>
-      <rect x="105" y="224" width="160" height="30" rx="8" fill="#ef4444"/>
-      <text x="185" y="243" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">MA = 2 ÷ 0.5 = 4×</text>
-      <text x="185" y="272" textAnchor="middle" fontSize="12" fill="#64748b">Lift 100g → need 25g force</text>
+      {/* Arrows */}
+      <text x={248} y={190} textAnchor="middle" fontSize="22" fill="#94a3b8">→</text>
+      <text x={503} y={190} textAnchor="middle" fontSize="22" fill="#94a3b8">→</text>
 
-      {/* Right: with MA */}
-      <rect x="410" y="50" width="330" height="240" rx="14" fill="#f0fdf4" stroke="#22c55e" strokeWidth="3"/>
-      <text x="575" y="78" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#16a34a">LONG CRANK = less effort! ✅</text>
-
-      {/* Long crank well */}
-      <circle cx="575" cy="155" r="22" fill="#f0fdf4" stroke="#22c55e" strokeWidth="3"/>
-      <circle cx="575" cy="155" r="6" fill="#86efac"/>
-      <line x1="575" y1="133" x2="575" y2="195" stroke="#22c55e" strokeWidth="4"/>
-      <line x1="553" y1="155" x2="597" y2="155" stroke="#22c55e" strokeWidth="4"/>
-      {/* crank arm LONG */}
-      <line x1="575" y1="133" x2="625" y2="83" stroke="#7c3aed" strokeWidth="6" strokeLinecap="round"/>
-      <circle cx="625" cy="83" r="10" fill="#8b5cf6"/>
-      {/* MA numbers */}
-      <text x="575" y="215" textAnchor="middle" fontSize="13" fill="#64748b">Axle r = 0.5 cm · Crank r = 5 cm</text>
-      <rect x="495" y="224" width="160" height="30" rx="8" fill="#22c55e"/>
-      <text x="575" y="243" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">MA = 5 ÷ 0.5 = 10×</text>
-      <text x="575" y="272" textAnchor="middle" fontSize="12" fill="#16a34a">Lift 100g → need only 10g!</text>
-
-      {/* VS divider */}
-      <text x="380" y="182" textAnchor="middle" fontSize="20" fontWeight="black" fill="#7c3aed">VS</text>
-
-      {/* Formula */}
-      <rect x="110" y="298" width="540" height="34" rx="10" fill="#1e293b"/>
-      <text x="380" y="320" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">MA = Crank radius ÷ Axle radius → longer crank = more advantage!</text>
+      {/* Bottom bar */}
+      <rect x={30} y={315} width={700} height={22} rx="8" fill="#7c3aed"/>
+      <text x={380} y={330} textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Skewer (axle) stays the same — only the cardstock strip length changes!</text>
     </svg>
   )
 }

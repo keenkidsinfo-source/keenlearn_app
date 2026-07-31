@@ -164,7 +164,8 @@ const builds = [
       {
         emoji: '🎡',
         title: 'Add the crank',
-        text: 'Tape the cardstock strip to ONE end of the skewer as a handle. This is your CRANK (the "wheel" in wheel & axle).',
+        text: 'Cut a strip of cardstock 2 cm wide and 15 cm long. Place one SHORT end of the strip against the tip of the skewer and tape it firmly — wrap tape around 2–3 times so it grips tightly. The strip should stick straight out like a flag. To turn the crank: pinch the FAR END of the strip and sweep it in a full circle. The skewer spins with it and winds up the string!',
+        tip: 'The strip must NOT spin loose from the skewer — if it slips, add more tape. The cardstock is stiff enough for light loads as long as the tape holds.',
       },
       {
         emoji: '✅',
@@ -185,7 +186,8 @@ const builds = [
       {
         emoji: '🔧',
         title: 'Improve it — fewer cranks!',
-        text: 'Challenge: can you reduce the number of cranks needed? Try: winding extra string on the skewer before you start (pre-winding), OR making your crank handle LONGER so each turn moves more string. Make ONE change and retest. Record your new count!',
+        text: 'Cut a NEW cardstock strip: same 2 cm wide but make it 25 cm long this time. Tape it to the same end of the skewer the same way — remove the old strip first. Now sweep the longer strip in a circle: your hand travels a bigger circle each turn, which winds more string per turn, so the bucket reaches the top in FEWER cranks. Count again and record your new number!',
+        tip: 'Longer strip = bigger circle = more string wound per turn = fewer cranks needed. The skewer (axle) stays exactly the same — only the cardstock strip length changes!',
       },
       {
         emoji: '🎤',
