@@ -40,3 +40,4 @@ coding-keenkids/
 
 # TurboWarp source maps (large, not needed in production)
 public/scratch/js/*.map
+.github/workflows/ci.yml
