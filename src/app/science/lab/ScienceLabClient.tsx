@@ -371,7 +371,7 @@ export function ScienceLabClient({ lab, contentItemId }: { lab: ScienceLab; cont
               <label className="block font-black text-gray-800 mb-2">
                 🤔 What do you think caused it?
               </label>
-              <p className="text-xs text-gray-500 mb-2">Try to explain in your own words — it's OK if you're not sure yet!</p>
+              <p className="text-xs text-gray-500 mb-2">Try to explain in your own words — it&apos;s OK if you&apos;re not sure yet!</p>
               <textarea
                 value={whatHappened}
                 onChange={e => handleWhatHappened(e.target.value)}

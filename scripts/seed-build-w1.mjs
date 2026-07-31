@@ -140,25 +140,26 @@ const builds = [
       {
         emoji: '🪵',
         title: 'Add the uprights',
-        text: 'Push one popsicle stick firmly into the corrugated ridges on the LEFT side of your cylinder. The ridges grip it naturally — no tape needed if it\'s tight! Stick should stand about 8-10cm above the top. Repeat on the RIGHT side.',
-        tip: 'If the stick is loose, add one small tape strip at the base. But try WITHOUT tape first — the ridges should hold it.',
+        text: 'Push one popsicle stick firmly into the LEFT side of your cylinder so it stands 8-10cm above the top. Repeat on the RIGHT side. Then use a pencil tip to punch a small hole near the TOP of each stick — this is where the skewer will thread through.',
+        tip: 'Make the holes as horizontal and level as possible so the skewer sits straight across.',
       },
       {
         emoji: '🔩',
         title: 'Install the axle',
-        text: 'Rest the wooden skewer horizontally across the TOP of both upright sticks — like a bridge. Tape each end of the skewer to the top of each stick. IMPORTANT: use just enough tape to hold it, but the skewer must still ROTATE (spin freely). Test it: spin the skewer with your fingers. Does it turn?',
-        tip: 'If the skewer is stuck, the tape is too thick. Unwrap a layer. The axle MUST spin for the machine to work!',
+        text: 'Thread the wooden skewer through the hole in the LEFT stick, straight across the top of the well, and out through the hole in the RIGHT stick. It should stick out a few centimetres on each side. Spin it with your fingers — it should rotate freely inside the holes.',
+        tip: 'If it\'s too tight, gently wiggle the skewer to widen the holes slightly. The axle MUST spin freely!',
       },
       {
         emoji: '🧵',
         title: 'Attach the string',
-        text: 'Tie one end of the string to the CENTRE of the skewer with a tight knot. Wind the string around the skewer 3-4 times. Let the other end hang down into the well.',
+        text: 'Put a small dot of glue on the CENTRE of the skewer. Press one end of the twine firmly into the glue and hold for 10 seconds. Once it grips, wind the twine around the skewer 4-5 times in the SAME direction. Let the rest hang down into the well.',
+        tip: 'Winding in one direction means it unwinds cleanly when you reverse the crank.',
       },
       {
         emoji: '🪣',
         title: 'Make the bucket',
-        text: 'Roll the small corrugated piece into a mini cylinder. Tape the seam. Cut 3 equal strings (~15cm each). Tie one end of each string around the TOP EDGE of the bucket, equally spaced (like a tripod). Gather all 3 free ends together and tie them in one knot. Tie this combined knot to the hanging end of your main string.',
-        tip: 'Space the 3 strings equally (about 120° apart) so the bucket hangs level, not tilted.',
+        text: 'Roll the small corrugated piece into a mini cylinder and tape the seam. Bend a large paperclip into an S-hook shape. Hook one end through the TOP RIM of the bucket. Hook the other end onto the hanging end of your twine. The bucket should hang level below the well.',
+        tip: 'If the bucket tilts, reposition the paperclip hook to a different spot on the rim until it balances.',
       },
       {
         emoji: '🎡',

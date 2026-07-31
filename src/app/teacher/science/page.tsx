@@ -120,11 +120,21 @@ export default async function TeacherSciencePage({ searchParams }: Props) {
               <div className="flex flex-col gap-2">
                 {lab.sessionPlan.map((phase, i) => (
                   <div key={i} className="border border-gray-200 rounded-xl p-3">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-2">
                       <span className="bg-teal-100 text-teal-700 text-xs font-bold px-2 py-0.5 rounded-full">{phase.time}</span>
                       <span className="font-bold text-gray-800 text-sm">{phase.phase}</span>
                     </div>
-                    <p className="text-gray-600 text-sm leading-relaxed">{phase.instructions}</p>
+                    <ul className="flex flex-col gap-1.5">
+                      {phase.instructions.map((bullet, j) => (
+                        <li key={j} className="flex items-start gap-2 text-sm text-gray-700 leading-snug">
+                          <span className="text-teal-500 shrink-0 mt-0.5 font-bold">•</span>
+                          <span dangerouslySetInnerHTML={{ __html: bullet
+                            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                          }} />
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ))}
               </div>

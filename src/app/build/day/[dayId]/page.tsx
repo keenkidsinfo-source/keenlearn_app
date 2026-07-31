@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
 import {
   curriculumDays, curriculumContent, contentItems, studentSessions,
+  type GradeBand,
 } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { getStepImageUrls } from '@/lib/r2/client'
@@ -67,13 +68,14 @@ export default async function BuildDayPage({ params }: Props) {
   return (
     <StepViewer
       contentItemId={item.id}
+      dayId={dayId}
       title={item.title}
       theme={day.theme ?? ''}
       stepUrls={stepUrls}
       steps={textSteps.length > 0 ? textSteps : undefined}
       initialStep={lastStep}
       completed={sessionData?.completed ?? false}
-      gradeBand={item.gradeBand ?? null}
+      gradeBand={(item.gradeBand as GradeBand | null) ?? null}
     />
   )
 }

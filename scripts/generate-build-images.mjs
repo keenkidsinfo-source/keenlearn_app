@@ -525,108 +525,111 @@ ${badge(W/2,497,'Tape a FULL circle — no gaps — or it will tip under cargo w
 
 // 04 — Add the uprights
 wrap('🪵  Step 4 — Add the uprights', `
-${tx(W/2,103,'Push one popsicle stick into each SIDE of the cylinder (left &amp; right).',21,'middle',C.dark)}
+${tx(W/2,103,'Push sticks into each side of the cylinder, then punch a hole near the top of each.',19,'middle',C.dark)}
 
-${/* Cylinder + base */bx(360,260,240,100,C.cardboard,'#92400e',3,6)}
-${cyl(480,140,140,122,C.cardboard,C.dark)}
+${/* Cylinder + base */bx(360,300,240,90,C.cardboard,'#92400e',3,6)}
+${cyl(480,178,140,124,C.cardboard,C.dark)}
 
-${/* Left stick */bx(348,100,18,200,C.wood,'#5c3d0a',3,4)}
-${/* Right stick */bx(594,100,18,200,C.wood,'#5c3d0a',3,4)}
+${/* Left stick */bx(348,128,18,222,C.wood,'#5c3d0a',3,4)}
+${/* Right stick */bx(594,128,18,222,C.wood,'#5c3d0a',3,4)}
 
-${/* Height annotation */ln(635,100,680,100,'#475569',2)}
-${ln(635,240,680,240,'#475569',2)}
-${ln(657,100,657,240,'#475569',2)}
-${arr(657,240,657,102,'#475569',2)}
-${tx(700,175,'8–10 cm',18,'middle','#475569','bold')}
-${tx(700,200,'above top',16,'middle','#475569')}
+${/* Holes near top of each stick */ci(357,150,9,C.bg,C.dark,4)}
+${ci(603,150,9,C.bg,C.dark,4)}
 
-${/* Instruction callout */callout(30,130,290,250,'How to insert:',['Push INTO the','corrugated ridges.','No tape needed if','it grips tightly.','Tape base only if','it wobbles.'],'#fff7ed',C.orange)}
+${tx(185,140,'punch hole →',17,'middle',C.red,'bold')}
+${tx(185,160,'near top',16,'middle',C.red)}
+${arr(237,150,344,150,C.red,3)}
 
-${badge(W/2,497,'Sticks must be directly OPPOSITE each other — left and right',C.dark,'white',19)}
+${tx(775,140,'← punch hole',17,'middle',C.red,'bold')}
+${tx(775,160,'near top',16,'middle',C.red)}
+${arr(722,150,614,150,C.red,3)}
+
+${callout(30,290,265,185,'Steps:',['1. Push sticks into','   cylinder sides','2. Use pencil tip to','   punch hole near top','3. Holes must line up','   with each other'],'#fff7ed',C.orange)}
+
+${badge(W/2,492,'Both holes must be at the SAME HEIGHT — skewer threads through both.',C.dark,'white',18)}
 `),
 
 // 05 — Install the axle
 wrap('🔩  Step 5 — Install the axle', `
-${tx(W/2,103,'Rest the wooden skewer across BOTH sticks. Tape ends — but it must still SPIN!',20,'middle',C.dark)}
+${tx(W/2,103,'Thread the skewer THROUGH the hole in the left stick, across, out through the right.',20,'middle',C.dark)}
 
-${/* Left stick */bx(178,130,18,240,C.wood,'#5c3d0a',3,4)}
-${/* Right stick */bx(764,130,18,240,C.wood,'#5c3d0a',3,4)}
+${/* Left stick with hole */bx(248,130,18,250,C.wood,'#5c3d0a',3,4)}
+${/* Right stick with hole */bx(694,130,18,250,C.wood,'#5c3d0a',3,4)}
 
-${/* Axle/skewer */bx(155,210,650,18,C.cardboard,'#5c3d0a',4,9)}
-${tx(480,200,'AXLE (skewer)',22,'middle','#92400e','bold')}
+${/* Holes */ci(257,158,10,C.bg,C.dark,4)}
+${ci(703,158,10,C.bg,C.dark,4)}
 
-${/* Tape at ends */bx(155,206,40,26,C.tape,'#92400e',3,4)}
-${bx(765,206,40,26,C.tape,'#92400e',3,4)}
-${tx(175,248,'tape',16,'middle','#92400e')}
-${tx(785,248,'tape',16,'middle','#92400e')}
+${/* Skewer threading through holes */bx(160,150,640,16,C.cardboard,'#5c3d0a',4,8)}
+${tx(480,140,'SKEWER threads through both holes',19,'middle','#92400e','bold')}
 
-<path d="M 430 180 A 50 50 0 0 1 530 180" fill="none" stroke="${C.red}" stroke-width="4"/>
-<polygon points="530,180 518,165 540,165" fill="${C.red}"/>
-${tx(480,160,'must spin freely!',20,'middle',C.red,'bold')}
+${/* Threading arrows */arr(175,195,175,170,'#1e40af',4)}
+${tx(175,215,'enter',16,'middle','#1e40af','bold')}
+${tx(175,232,'here',16,'middle','#1e40af')}
 
-${bx(140,330,720,150,'#fef2f2',C.red,2,12)}
-${tx(480,363,'⚠️  CRITICAL CHECK:',22,'middle',C.red,'bold')}
-${tx(480,393,'Spin the skewer with your fingers right now.',20,'middle',C.dark)}
-${tx(480,420,'If it doesn\'t rotate, remove tape and try again with LESS tape.',18,'middle',C.dark)}
-${tx(480,447,'The axle MUST spin or the machine won\'t work!',18,'middle',C.red,'bold')}
+${arr(785,195,785,170,C.red,4)}
+${tx(785,215,'exits',16,'middle',C.red,'bold')}
+${tx(785,232,'here',16,'middle',C.red)}
+
+<path d="M 420 120 A 60 60 0 0 1 540 120" fill="none" stroke="${C.green}" stroke-width="4"/>
+<polygon points="540,120 528,107 550,105" fill="${C.green}"/>
+${tx(480,108,'spins freely!',18,'middle',C.green,'bold')}
+
+${bx(140,340,680,140,'#fef2f2',C.red,2,12)}
+${tx(480,368,'⚠️  CRITICAL CHECK:',20,'middle',C.red,'bold')}
+${tx(480,395,'Spin the skewer with your fingers — it MUST rotate freely in the holes.',18,'middle',C.dark)}
+${tx(480,422,'If stuck, gently wiggle to widen the holes slightly.',18,'middle',C.dark)}
 `),
 
 // 06 — Attach the string
 wrap('🧵  Step 6 — Attach the string', `
-${tx(W/2,103,'Tie one end to the CENTRE of the skewer. Wind it 3–4 times. Let the rest hang.',20,'middle',C.dark)}
+${tx(W/2,103,'Glue one end of the twine to the CENTRE of the skewer, then wind it 4–5 times.',19,'middle',C.dark)}
 
-${/* Sticks */bx(178,130,18,240,C.wood,'#5c3d0a',3,4)}
-${bx(764,130,18,240,C.wood,'#5c3d0a',3,4)}
+${/* Sticks */bx(248,130,18,240,C.wood,'#5c3d0a',3,4)}
+${bx(694,130,18,240,C.wood,'#5c3d0a',3,4)}
 
-${/* Axle */bx(155,210,650,18,C.cardboard,'#5c3d0a',4,9)}
-${tx(480,200,'skewer (axle)',18,'middle','#92400e','bold')}
+${/* Axle */bx(225,208,510,16,C.cardboard,'#5c3d0a',4,8)}
+${tx(480,198,'skewer (axle)',18,'middle','#92400e','bold')}
 
-${/* Centre marker */ci(480,219,10,'#fbbf24',C.dark,3)}
-${tx(480,180,'tie here',18,'middle','#1e40af','bold')}
-${arr(480,175,480,168,'#1e40af',3)}
+${/* Glue dot at centre */ci(480,216,14,'#fef08a',C.dark,3)}
+${tx(480,170,'glue dot here',17,'middle','#ca8a04','bold')}
+${arr(480,177,480,200,'#ca8a04',3)}
+${tx(318,185,'← press string end',15,'right','#ca8a04')}
+${tx(318,200,'   into glue,',15,'right','#ca8a04')}
+${tx(318,215,'   hold 10 sec',15,'right','#ca8a04')}
 
-${/* String wound around */ci(480,219,28,'none',C.rope,5)}
-${ci(480,219,36,'none',C.rope,3)}
+${/* String wound around */ci(480,216,26,'none',C.rope,5)}
+${ci(480,216,36,'none',C.rope,3)}
+${ci(480,216,44,'none',C.rope,2)}
 
-${/* Hanging string */ln(480,247,480,420,C.rope,5)}
-${tx(525,350,'string',18,'middle',C.rope,'bold')}
-${tx(525,375,'hangs',18,'middle',C.rope)}
-${tx(525,400,'down',18,'middle',C.rope)}
-${tx(525,420,'into well',18,'middle',C.rope)}
-${arr(510,415,492,410,C.rope,3)}
+${/* Hanging string */ln(480,252,480,430,C.rope,5)}
+${tx(530,340,'twine hangs',18,'middle',C.rope,'bold')}
+${tx(530,362,'into well',18,'middle',C.rope)}
 
-${callout(640,180,280,230,'Steps:',['1. Tie knot at centre','2. Wind 3–4 times','3. Let rest hang down','4. The bucket attaches','   to the hanging end'],'#eff6ff',C.blue)}
-
-${badge(W/2,497,'Wind in ONE direction — it will unwind cleanly when you lower the bucket',C.dark,'white',18)}
+${badge(W/2,492,'Wind in ONE direction — always clockwise or always counter-clockwise.',C.dark,'white',18)}
 `),
 
 // 07 — Make the bucket
 wrap('🪣  Step 7 — Make the bucket', `
-${tx(W/2,103,'Roll a small piece of corrugated cardboard into a mini cylinder = your BUCKET!',20,'middle',C.dark)}
+${tx(W/2,103,'Roll cardboard into a mini cylinder. Attach with a bent paperclip S-hook.',20,'middle',C.dark)}
 
-${/* Bucket cylinder */cyl(480,180,110,110,'#d4956a',C.dark)}
-${tx(480,172,'BUCKET',20,'middle',C.dark,'bold')}
+${/* Bucket */cyl(300,210,120,115,'#d4956a',C.dark)}
+${tx(300,202,'BUCKET',18,'middle',C.dark,'bold')}
 
-${/* 3 strings attached at rim equally spaced */ln(425,183,360,310,C.rope,4)}
-${ln(480,180,480,310,C.rope,4)}
-${ln(535,183,600,310,C.rope,4)}
-${tx(360,310,'str',14,'middle',C.rope)}
-${tx(480,310,'str',14,'middle',C.rope)}
-${tx(600,310,'str',14,'middle',C.rope)}
+${/* Paperclip S-hook diagram */bx(510,155,260,240,'white',C.dark,2,10)}
+${tx(640,180,'Bent paperclip',17,'middle',C.dark,'bold')}
+${tx(640,198,'= S-hook',15,'middle','#475569')}
+<path d="M 610 215 Q 610 240 640 240 Q 670 240 670 265 Q 670 290 640 290 Q 610 290 610 315 Q 610 340 640 340 Q 670 340 670 365" fill="none" stroke="${C.dark}" stroke-width="6" stroke-linecap="round"/>
+${tx(690,232,'← hook onto',15,'left','#1e40af')}
+${tx(690,248,'main twine',15,'left','#1e40af')}
+${tx(690,330,'← hook onto',15,'left',C.green)}
+${tx(690,346,'bucket rim',15,'left',C.green)}
 
-${/* Join to one knot */ln(360,310,480,360,C.rope,4)}
-${ln(600,310,480,360,C.rope,4)}
-${ln(480,310,480,360,C.rope,4)}
-${ci(480,360,12,'#fbbf24',C.dark,3)}
-${tx(480,350,'knot',16,'middle','#92400e')}
+${/* Connection line */ln(300,325,510,300,C.rope,4)}
+${tx(390,310,'twine',16,'middle',C.rope,'bold')}
 
-${/* Main string up */ln(480,372,480,420,C.rope,5)}
-${tx(480,440,'to axle',18,'middle',C.rope,'bold')}
-${arr(480,444,480,438,C.rope,3)}
+${callout(30,210,240,215,'Assembly:',['1. Roll + tape bucket','2. Bend paperclip','   into S-shape','3. Hook top end to','   hanging twine','4. Hook bottom to','   bucket rim'],'#f0fdf4',C.green)}
 
-${callout(640,155,285,235,'3-string trick:',['Space strings equally','around the rim','(like a tripod).','Gather all 3 ends','to ONE knot.','Bucket hangs LEVEL!'],'#f0fdf4',C.green)}
-
-${badge(W/2,497,'Test: hold the combined knot — does bucket hang straight?',C.dark,'white',19)}
+${badge(W/2,492,'If bucket tilts, reposition the hook on the rim until it hangs level.',C.dark,'white',18)}
 `),
 
 // 08 — Add the crank

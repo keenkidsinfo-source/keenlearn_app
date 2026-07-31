@@ -14,6 +14,7 @@ export interface StepData {
 
 interface Props {
   contentItemId: string
+  dayId: string
   title: string
   theme: string
   stepUrls: string[]
@@ -23,7 +24,7 @@ interface Props {
   gradeBand: GradeBand | null
 }
 
-export function StepViewer({ contentItemId, title, theme, stepUrls, steps, initialStep, completed, gradeBand }: Props) {
+export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand }: Props) {
   const router = useRouter()
   const [step, setStep]         = useState(Math.max(0, initialStep))
   const [isDone, setIsDone]     = useState(completed)
@@ -105,6 +106,13 @@ export function StepViewer({ contentItemId, title, theme, stepUrls, steps, initi
             <span className="text-xs font-bold bg-orange-400 text-white px-2 py-0.5 rounded-full">
               {isG12 ? 'Grades 1–2' : 'Grades 3–4'}
             </span>
+            <button
+              onClick={() => router.push(`/build/theory/${dayId}`)}
+              className="text-xs font-bold bg-purple-600 text-white px-2 py-0.5 rounded-full hover:bg-purple-500 transition-all"
+              title="Show theory slides"
+            >
+              📖 Theory
+            </button>
           </div>
           <h1 className={`font-black truncate ${isG12 ? 'text-xl' : 'text-lg'}`}>🔨 {title}</h1>
           {theme && <p className="text-orange-200 text-sm">{theme}</p>}

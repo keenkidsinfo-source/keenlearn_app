@@ -101,13 +101,13 @@ export function SpeakingActivity({ title, theme, gradeBand, completed, meta }: P
           <div className="bg-white rounded-2xl shadow-sm border-2 border-teal-100 p-4">
             <p className="text-xs font-black text-teal-500 uppercase tracking-wide mb-1">📖 Word of the Day</p>
             <p className="text-2xl font-black text-gray-800">{meta.weekWord}</p>
-            {meta.weekWordDef && <p className="text-gray-500 text-sm italic mt-0.5">"{meta.weekWordDef}"</p>}
+            {meta.weekWordDef && <p className="text-gray-500 text-sm italic mt-0.5">&quot;{meta.weekWordDef}&quot;</p>}
           </div>
         )}
 
         {/* Today's Prompt */}
         <div className="bg-teal-600 rounded-2xl p-5 text-white">
-          <p className="text-xs font-black text-teal-200 uppercase tracking-wide mb-2">💬 Today's Prompt</p>
+          <p className="text-xs font-black text-teal-200 uppercase tracking-wide mb-2">💬 Today&apos;s Prompt</p>
           <p className="text-xl font-black leading-snug">{prompt}</p>
           <p className="text-teal-200 text-xs mt-3">
             ⏱ {fmt(timeLimit)} to speak
@@ -161,7 +161,7 @@ export function SpeakingActivity({ title, theme, gradeBand, completed, meta }: P
         {/* Teacher marks done note */}
         <div className="text-center pb-2">
           <p className="text-gray-400 text-sm">
-            When you're done presenting, your teacher will mark you complete. 🎤
+            When you&apos;re done presenting, your teacher will mark you complete. 🎤
           </p>
         </div>
 

@@ -91,7 +91,7 @@ export function MathActivity({ contentItemId, title, description, theme, gradeBa
         <h1 className="text-3xl font-black text-math-700 mb-2">Math complete!</h1>
         <p className="text-gray-600 mb-2">You scored <strong>{score}/{questions.length}</strong></p>
         {pct >= 80 && <p className="text-math-600 font-bold mb-6">Amazing work! 🎉</p>}
-        {pct < 80  && <p className="text-gray-500 mb-6">Keep practicing — you're getting it!</p>}
+        {pct < 80  && <p className="text-gray-500 mb-6">Keep practicing — you&apos;re getting it!</p>}
         <button onClick={() => router.push('/dashboard')} className="btn-primary bg-math-600">
           Back to Home
         </button>

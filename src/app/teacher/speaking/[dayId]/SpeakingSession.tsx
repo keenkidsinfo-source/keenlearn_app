@@ -205,7 +205,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
               )}
               {meta.objectives && meta.objectives.length > 0 && (
                 <>
-                  <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-2">Today's Goals</p>
+                  <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-2">Today&apos;s Goals</p>
                   <div className="space-y-1.5">
                     {meta.objectives.map((obj, i) => (
                       <div key={i} className="flex items-start gap-2">
@@ -400,7 +400,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
           {meta.improvGame ? (
             <div className="bg-white rounded-2xl shadow-sm p-5">
               <div className="mb-4">
-                <p className="text-xs font-black text-teal-500 uppercase tracking-wide mb-1">Today's Warm-Up Game</p>
+                <p className="text-xs font-black text-teal-500 uppercase tracking-wide mb-1">Today&apos;s Warm-Up Game</p>
                 <h2 className="text-2xl font-black text-gray-800">{meta.improvGame.name}</h2>
                 <p className="text-gray-500 text-sm mt-1">{meta.improvGame.description}</p>
               </div>
@@ -443,7 +443,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
               <p className="text-xs font-black text-teal-500 uppercase tracking-wide mb-2">📖 Word of the Day</p>
               <p className="text-4xl font-black text-gray-800 tracking-wide mb-1">{meta.weekWord.toUpperCase()}</p>
               {meta.weekWordDef && (
-                <p className="text-gray-500 text-sm italic">"{meta.weekWordDef}"</p>
+                <p className="text-gray-500 text-sm italic">&quot;{meta.weekWordDef}&quot;</p>
               )}
             </div>
           )}
@@ -456,7 +456,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
                 <p className="text-sm font-semibold leading-snug">{meta.tip}</p>
               </div>
             )}
-            <p className="text-xs font-black text-teal-200 uppercase tracking-wide mb-2">💬 Today's Prompt</p>
+            <p className="text-xs font-black text-teal-200 uppercase tracking-wide mb-2">💬 Today&apos;s Prompt</p>
             <p className="text-xl font-black leading-snug">{meta.prompt ?? 'No prompt set.'}</p>
             <p className="text-teal-200 text-xs mt-3 font-semibold">
               ⏱ {Math.floor(timeLimit / 60) > 0 ? `${Math.floor(timeLimit / 60)} min ` : ''}{timeLimit % 60 > 0 ? `${timeLimit % 60} sec` : ''} per student

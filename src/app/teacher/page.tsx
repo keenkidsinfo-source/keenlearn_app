@@ -11,35 +11,9 @@ import { SUBJECT_EMOJI, SUBJECT_LABEL } from '@/lib/utils'
 import type { Subject } from '@/lib/db/schema'
 import { StudentManager } from './StudentManager'
 import { SendReportButton } from './SendReportButton'
-
-function getMondayStr(): string {
-  const today = new Date()
-  const day = today.getDay()
-  const diff = day === 0 ? -6 : 1 - day
-  const monday = new Date(today)
-  monday.setDate(today.getDate() + diff)
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${monday.getFullYear()}-${pad(monday.getMonth() + 1)}-${pad(monday.getDate())}`
-}
+import { getMondayStr, addDays, formatWeekLabel, summarizeClassProgress } from '@/lib/teacher-dashboard'
 
 const AVATARS = ['🦊','🐼','🦁','🐸','🦋','🐬','🦄','🐉']
-
-function addDays(dateStr: string, days: number): string {
-  const d = new Date(dateStr + 'T12:00:00')
-  d.setDate(d.getDate() + days)
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
-}
-
-function formatWeekLabel(mondayStr: string): string {
-  const d = new Date(mondayStr + 'T12:00:00')
-  const friday = new Date(d)
-  friday.setDate(d.getDate() + 4)
-  const month = d.toLocaleDateString('en-US', { month: 'short' })
-  const endMonth = friday.toLocaleDateString('en-US', { month: 'short' })
-  if (month === endMonth) return `${month} ${d.getDate()}–${friday.getDate()}`
-  return `${month} ${d.getDate()} – ${endMonth} ${friday.getDate()}`
-}
 
 export default async function TeacherDashboardPage({
   searchParams,
@@ -73,7 +47,12 @@ export default async function TeacherDashboardPage({
         .orderBy(schools.name, classrooms.gradeLevel)
     : []
 
-  // Load classroom
+  // Load classroom. A teacher should only ever own one classroom (enforced in
+  // assign-classroom, which clears any prior classroom before assigning a new
+  // one). orderBy + limit(1) here is only a defensive fallback in case stale
+  // data ever produces more than one row for a teacherId — it must NOT be
+  // relied on to pick the "right" classroom, since alphabetical order has no
+  // relationship to which school/classroom is actually current.
   const [classroom] = isAdmin && qClassroomId
     ? await db.select().from(classrooms).where(eq(classrooms.id, qClassroomId)).limit(1)
     : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).orderBy(classrooms.name).limit(1)
@@ -269,12 +248,26 @@ export default async function TeacherDashboardPage({
                 </div>
               )}
               {buildDay && (
-                <Link
-                  href={`/build/day/${buildDay.dayId}`}
-                  className="mt-3 flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-400 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
-                >
-                  🏗️ View Build Steps
-                </Link>
+                <div className="mt-3 flex flex-col gap-2">
+                  <Link
+                    href={`/build/theory/${buildDay.dayId}`}
+                    className="flex items-center justify-center gap-2 w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+                  >
+                    📖 Theory Slides (show first)
+                  </Link>
+                  <Link
+                    href={`/build/day/${buildDay.dayId}`}
+                    className="flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-400 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+                  >
+                    🏗️ View Build Steps
+                  </Link>
+                  <Link
+                    href={`/teacher/build/chart/${buildDay.dayId}`}
+                    className="flex items-center justify-center gap-2 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+                  >
+                    📊 Class Results Chart
+                  </Link>
+                </div>
               )}
               {speakingDay && (
                 <Link
@@ -322,16 +315,14 @@ export default async function TeacherDashboardPage({
             <>
               {/* Class summary strip */}
               {totalThisWeek > 0 && (() => {
-                const allDone      = students.filter(s => (sessionMap.get(s.id)?.size ?? 0) >= totalThisWeek).length
-                const inProgress   = students.filter(s => {
-                  const done = sessionMap.get(s.id)?.size ?? 0
-                  const started = (inProgressMap.get(s.id)?.size ?? 0) + done
-                  return started > 0 && done < totalThisWeek
-                }).length
-                const notStarted   = students.length - allDone - inProgress
-                const classPct     = students.length > 0
-                  ? Math.round((students.reduce((sum, s) => sum + (sessionMap.get(s.id)?.size ?? 0), 0) / (students.length * totalThisWeek)) * 100)
-                  : 0
+                const { allDone, inProgress, notStarted, classPct } = summarizeClassProgress(
+                  students.map(s => {
+                    const completedCount = sessionMap.get(s.id)?.size ?? 0
+                    const startedCount = (inProgressMap.get(s.id)?.size ?? 0) + completedCount
+                    return { id: s.id, completedCount, startedCount }
+                  }),
+                  totalThisWeek,
+                )
 
                 return (
                   <div className="bg-gray-50 rounded-xl p-3 mb-4 flex items-center gap-4 flex-wrap">

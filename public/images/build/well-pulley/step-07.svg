@@ -3,30 +3,25 @@
 <rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
 <text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🪣  Step 7 — Make the bucket</text>
 
-<text x="480" y="103" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Roll a small piece of corrugated cardboard into a mini cylinder = your BUCKET!</text>
+<text x="480" y="103" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Roll cardboard into a mini cylinder. Attach with a bent paperclip S-hook.</text>
 
-<rect x="425" y="180" width="110" height="110" fill="#d4956a" stroke="#1e293b" stroke-width="3" rx="0"/><ellipse cx="480" cy="180" rx="55" ry="17.6" fill="#d4956a" stroke="#1e293b" stroke-width="3"/><ellipse cx="480" cy="290" rx="55" ry="17.6" fill="#d4956a" stroke="#1e293b99" stroke-width="2"/>
-<text x="480" y="172" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">BUCKET</text>
+<rect x="240" y="210" width="120" height="115" fill="#d4956a" stroke="#1e293b" stroke-width="3" rx="0"/><ellipse cx="300" cy="210" rx="60" ry="19.2" fill="#d4956a" stroke="#1e293b" stroke-width="3"/><ellipse cx="300" cy="325" rx="60" ry="19.2" fill="#d4956a" stroke="#1e293b99" stroke-width="2"/>
+<text x="300" y="202" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">BUCKET</text>
 
-<line x1="425" y1="183" x2="360" y2="310" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
-<line x1="480" y1="180" x2="480" y2="310" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
-<line x1="535" y1="183" x2="600" y2="310" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
-<text x="360" y="310" font-size="14" text-anchor="middle" fill="#3b82f6" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">str</text>
-<text x="480" y="310" font-size="14" text-anchor="middle" fill="#3b82f6" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">str</text>
-<text x="600" y="310" font-size="14" text-anchor="middle" fill="#3b82f6" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">str</text>
+<rect x="510" y="155" width="260" height="240" fill="white" stroke="#1e293b" stroke-width="2" rx="10"/>
+<text x="640" y="180" font-size="17" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Bent paperclip</text>
+<text x="640" y="198" font-size="15" text-anchor="middle" fill="#475569" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">= S-hook</text>
+<path d="M 610 215 Q 610 240 640 240 Q 670 240 670 265 Q 670 290 640 290 Q 610 290 610 315 Q 610 340 640 340 Q 670 340 670 365" fill="none" stroke="#1e293b" stroke-width="6" stroke-linecap="round"/>
+<text x="690" y="232" font-size="15" text-anchor="left" fill="#1e40af" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">← hook onto</text>
+<text x="690" y="248" font-size="15" text-anchor="left" fill="#1e40af" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">main twine</text>
+<text x="690" y="330" font-size="15" text-anchor="left" fill="#16a34a" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">← hook onto</text>
+<text x="690" y="346" font-size="15" text-anchor="left" fill="#16a34a" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">bucket rim</text>
 
-<line x1="360" y1="310" x2="480" y2="360" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
-<line x1="600" y1="310" x2="480" y2="360" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
-<line x1="480" y1="310" x2="480" y2="360" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
-<circle cx="480" cy="360" r="12" fill="#fbbf24" stroke="#1e293b" stroke-width="3"/>
-<text x="480" y="350" font-size="16" text-anchor="middle" fill="#92400e" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">knot</text>
+<line x1="300" y1="325" x2="510" y2="300" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"/>
+<text x="390" y="310" font-size="16" text-anchor="middle" fill="#3b82f6" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">twine</text>
 
-<line x1="480" y1="372" x2="480" y2="420" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
-<text x="480" y="440" font-size="18" text-anchor="middle" fill="#3b82f6" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">to axle</text>
-<line x1="480" y1="444" x2="480" y2="438" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/><polygon points="480,438 489,456 471,456" fill="#3b82f6"/>
+<rect x="30" y="210" width="240" height="215" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="10"/><text x="150" y="242" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Assembly:</text><text x="150" y="272" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">1. Roll + tape bucket</text><text x="150" y="298" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">2. Bend paperclip</text><text x="150" y="324" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">   into S-shape</text><text x="150" y="350" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">3. Hook top end to</text><text x="150" y="376" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">   hanging twine</text><text x="150" y="402" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">4. Hook bottom to</text><text x="150" y="428" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">   bucket rim</text>
 
-<rect x="640" y="155" width="285" height="235" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="10"/><text x="782.5" y="187" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">3-string trick:</text><text x="782.5" y="217" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Space strings equally</text><text x="782.5" y="243" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">around the rim</text><text x="782.5" y="269" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">(like a tripod).</text><text x="782.5" y="295" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Gather all 3 ends</text><text x="782.5" y="321" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">to ONE knot.</text><text x="782.5" y="347" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Bucket hangs LEVEL!</text>
-
-<rect x="162.76" y="474" width="634.48" height="37" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Test: hold the combined knot — does bucket hang straight?</text>
+<rect x="118.23999999999995" y="470" width="723.5200000000001" height="36" fill="#1e293b" stroke="none" stroke-width="0" rx="10"/><text x="480" y="500" font-size="18" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">If bucket tilts, reposition the hook on the rim until it hangs level.</text>
 
 </svg>

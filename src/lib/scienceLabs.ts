@@ -10,7 +10,8 @@ export interface VocabWord {
 export interface SessionPhase {
   time: string
   phase: string
-  instructions: string
+  /** Key steps for this phase — rendered as a bullet list */
+  instructions: string[]
 }
 
 export interface DiscussionQuestion {
@@ -82,42 +83,87 @@ export const scienceLabs: ScienceLab[] = [
       {
         time: '0–5 min',
         phase: 'Gather & Hook',
-        instructions: 'Gather all kids in a semicircle around your demo table. Show the unlit candles, the bowl, the baking soda and vinegar. Ask: "What do you think happens when I mix these two things?" Take 3-4 answers. Then ask: "And what do you think has to do with these candles?" Let them guess freely — do not confirm or deny anything yet. Build the mystery.',
+        instructions: [
+          'Seat kids in a **semicircle** around the demo table — everyone must be able to see.',
+          'Show the unlit candles, bowl, baking soda, and vinegar. Do NOT explain yet.',
+          'Ask: *"What do you think happens when I mix these two things?"* — take 3–4 answers.',
+          'Ask: *"And what do you think this has to do with these candles?"* — let them guess freely.',
+          '**Do not confirm or deny anything. Build the mystery.**',
+        ],
       },
       {
         time: '5–10 min',
         phase: 'Predictions',
-        instructions: 'Ask every kid to make a silent prediction — thumbs up if they think the candles will go out, thumbs down if they think nothing will happen, sideways if they\'re not sure. Count and note the split on the whiteboard. Ask one "thumbs up" kid and one "thumbs down" kid to explain their prediction. Tell them: "Remember your prediction — we will come back to it."',
+        instructions: [
+          'Ask every kid to make a **silent prediction**: 👍 candles go out · 👎 nothing happens · ✋ not sure.',
+          'Count and write the split on the whiteboard.',
+          'Ask one 👍 kid and one 👎 kid to explain their reasoning.',
+          'Tell everyone: *"Remember your prediction — we\'ll come back to it."*',
+        ],
       },
       {
         time: '10–22 min',
         phase: 'Demo',
-        instructions: 'STEP 1: Light all candles one by one. Let kids watch them burn for 20 seconds — build the anticipation. STEP 2: Add 4 tablespoons of baking soda to the bowl. STEP 3: Slowly pour 1 cup of vinegar into the bowl. It fizzes dramatically — let kids react. STEP 4: Wait 15 seconds for the fizzing to settle — CO₂ is now filling the bowl invisibly. STEP 5: Very slowly tilt the bowl toward the candles and pour the invisible CO₂ over them. Angle matters — pour slowly and low. Candles go out one by one. STEP 6: If any candles remain lit, repeat with another baking soda + vinegar mix. Do not rush this step — the slow reveal is everything.',
+        instructions: [
+          '**STEP 1:** Light all candles one by one. Let kids watch for 20 seconds — build anticipation.',
+          '**STEP 2:** Add 4 tablespoons of baking soda to the bowl.',
+          '**STEP 3:** Slowly pour 1 cup of vinegar into the bowl. It fizzes dramatically — let kids react!',
+          '**STEP 4:** Wait 15 seconds for fizzing to settle. CO₂ is now filling the bowl invisibly.',
+          '**STEP 5:** Very slowly tilt the bowl toward the candles and pour the invisible CO₂ over them. **Pour slowly and low — angle matters.** Candles go out one by one.',
+          '**STEP 6:** If any candles remain lit, repeat with a fresh baking soda + vinegar mix.',
+          '⚠️ **Do not rush this step — the slow reveal is everything.**',
+        ],
       },
       {
         time: '22–32 min',
         phase: 'Discussion',
-        instructions: 'Ask immediately: "What just happened? What put out the candles?" Take all answers — do not correct yet. Then ask: "What did you SEE come out of the bowl?" (nothing — it was invisible). "So what do fires need to keep burning?" Guide toward: heat, fuel, and OXYGEN. "What did the CO₂ do to the oxygen?" It pushed it away. Ask the kids who predicted correctly: "Why did you think it would work?" Ask kids who predicted wrong: "What surprised you?"',
+        instructions: [
+          'Ask immediately: *"What just happened? What put out the candles?"* — take all answers, do not correct yet.',
+          'Ask: *"What did you SEE come out of the bowl?"* (nothing — it was invisible).',
+          'Guide toward: **fire needs HEAT + FUEL + OXYGEN**.',
+          'Ask: *"What did the CO₂ do to the oxygen?"* (pushed it away).',
+          'Ask correct predictors: *"Why did you think it would work?"*',
+          'Ask wrong predictors: *"What surprised you?"*',
+        ],
       },
       {
         time: '32–37 min',
         phase: 'Explain the Science',
-        instructions: 'Say: "When baking soda and vinegar mix, they have a chemical reaction — that means they combine and turn into something completely new. One of the things they make is carbon dioxide gas — the same gas you breathe out right now." Ask kids to breathe out — tell them that gas is CO₂. "CO₂ is heavier than air so it sinks and sits in the bowl like an invisible liquid. When I poured it out, it pushed the oxygen away from the candle flames — and without oxygen, fire cannot survive." Write on whiteboard: FIRE needs HEAT + FUEL + OXYGEN. Remove any one of these and fire goes out.',
+        instructions: [
+          'Say: *"Baking soda and vinegar have a **chemical reaction** — they turn into something completely new."*',
+          'Ask kids to breathe out — tell them that gas is CO₂. *"It\'s the same gas you just breathed out!"*',
+          'Say: *"CO₂ is heavier than air, so it sinks in the bowl like an invisible liquid. When I poured it, it pushed the oxygen away — and without oxygen, fire cannot survive."*',
+          '**Write on whiteboard: FIRE = HEAT + FUEL + OXYGEN. Remove any one → fire goes out.**',
+        ],
       },
       {
         time: '37–42 min',
         phase: 'Real World Connections',
-        instructions: 'Ask: "Where have you seen a fire extinguisher in real life?" (school hallway, kitchen, car). "What do you think is inside it?" Many real fire extinguishers spray CO₂ — same gas, just stored under pressure. Also: CO₂ is used in fizzy drinks (the bubbles in soda are CO₂). And dry ice is frozen CO₂. Ask: "Can you think of any reason CO₂ might be dangerous in large amounts?" (it replaces oxygen — that is why firefighters wear breathing tanks).',
+        instructions: [
+          'Ask: *"Where have you seen a fire extinguisher?"* (school hallway, kitchen, car).',
+          'Many real extinguishers spray **CO₂** — same gas, stored under pressure.',
+          '**CO₂ is also in fizzy drinks** (those bubbles = CO₂) and **dry ice** (frozen CO₂).',
+          'Ask: *"Why do firefighters wear breathing tanks?"* (CO₂ replaces oxygen — dangerous in enclosed spaces).',
+        ],
       },
       {
         time: '42–47 min',
         phase: 'Draw & Write',
-        instructions: 'Each kid draws what they saw and writes one sentence explaining why the candles went out. G1-2: one sentence is fine — "The gas pushed the oxygen away." G3-4: challenge them to write the full fire triangle — heat, fuel, oxygen — and explain which one CO₂ removed. Circulate and ask questions as they draw.',
+        instructions: [
+          'Each kid draws what they saw and writes **one sentence** explaining why the candles went out.',
+          '**G1–2:** *"The gas pushed the oxygen away."* is perfect.',
+          '**G3–4:** Challenge: write the full **fire triangle** (heat, fuel, oxygen) and identify which element CO₂ removed.',
+          'Circulate and ask questions as they draw.',
+        ],
       },
       {
         time: '47–50 min',
         phase: 'Share Out',
-        instructions: '3-4 kids share their drawing and sentence. End with: "Next time you see a fire extinguisher, you will know exactly what is inside it and why it works." Optional: if time allows and you have materials, let 2-3 kids add their own baking soda and vinegar to the bowl and watch the fizz — safe, supervised, and they love it.',
+        instructions: [
+          '3–4 kids share their drawing and sentence.',
+          'Close with: *"Next time you see a fire extinguisher, you\'ll know exactly what\'s inside and why it works."*',
+          '**Optional:** Let 2–3 kids add their own baking soda + vinegar to the bowl and watch the fizz — safe and they love it.',
+        ],
       },
     ],
     discussionQuestions: [
@@ -179,42 +225,87 @@ export const scienceLabs: ScienceLab[] = [
       {
         time: '0–5 min',
         phase: 'Gather & Hook',
-        instructions: 'Gather all kids in a close semicircle — this demo works best when kids are close enough to see the pen floating. Hold up two magnets and stick them together. Ask: "What is this force called?" (magnetism). "What do magnets do to each other?" (attract or repel). "Has anyone ever felt two magnets push each other away?" Let kids share. Then say: "Today I am going to make this pen float in mid-air using nothing but magnets — and you are going to tell me why it works."',
+        instructions: [
+          'Seat kids in a **close semicircle** — they need to see the floating pen clearly.',
+          'Hold up two magnets and stick them together. Ask: *"What is this force called?"* (magnetism).',
+          'Ask: *"Has anyone felt two magnets push each other away?"* — let kids share.',
+          'Say: *"Today I\'m going to make this pen float in mid-air using nothing but magnets — and you\'re going to tell me why it works."*',
+        ],
       },
       {
         time: '5–10 min',
         phase: 'Predictions',
-        instructions: 'Ask: "Do you think I can make this pen float without touching it?" Thumbs up / down / sideways. Count and record on whiteboard. Ask one kid: "If magnets can push each other away — how could that make something float?" Let them reason it out. Do not confirm or deny. Tell them to hold that thought.',
+        instructions: [
+          'Ask: *"Do you think I can make this pen float without touching it?"* 👍 / 👎 / ✋',
+          'Count and record the split on the whiteboard.',
+          'Ask one kid: *"If magnets can push each other away — how could that make something float?"* Let them reason it out.',
+          '**Do not confirm or deny. Tell them to hold that thought.**',
+        ],
       },
       {
         time: '10–22 min',
         phase: 'Demo',
-        instructions: 'STEP 1: Show the base with magnets taped to it. Let 2 kids touch the magnets — feel the force. STEP 2: Show the pen with magnets attached. Slowly lower it toward the base — kids will feel the tension as you get close. STEP 3: Release the pen above the base — it floats and wobbles. Give it a gentle spin — it rotates freely. STEP 4: Invite a kid to try pushing it down — it pushes back. STEP 5: Invite another kid to try spinning it. STEP 6: Ask: "What would happen if I flipped one of the magnets over?" Flip the base magnet — pen now sticks instead of floats. Flip it back — floats again. This flip is the key teaching moment — pole alignment is everything.',
+        instructions: [
+          '**STEP 1:** Show the base with magnets taped to it. Let 2 kids touch the magnets — feel the force.',
+          '**STEP 2:** Show the pen with magnets attached. Slowly lower it toward the base — feel the tension build.',
+          '**STEP 3:** Release the pen above the base — it floats and wobbles. Give it a gentle spin — it rotates freely.',
+          '**STEP 4:** Invite a kid to try pushing it down — it pushes back.',
+          '**STEP 5:** Invite another kid to spin it.',
+          '**STEP 6 (key teaching moment):** Ask *"What if I flip one magnet?"* — flip it. Pen now **sticks** instead of floats. Flip back — floats again. **Pole alignment is everything.**',
+        ],
       },
       {
         time: '22–32 min',
         phase: 'Discussion',
-        instructions: 'Ask: "What is stopping the pen from falling?" (the magnetic force pushing up). "Can you see that force?" (no — it is invisible). "So how do we know it is there?" (we can feel it, we can see its effect). Ask G3-4: "If both magnets are pushing each other away, what does that tell you about which poles are facing each other?" (same poles — north to north or south to south). Ask G1-2: "What word do we use when magnets push each other away?" (repel). Ask everyone: "Where else do you think magnetic repulsion might be useful in real life?"',
+        instructions: [
+          'Ask: *"What is stopping the pen from falling?"* (magnetic force pushing up).',
+          'Ask: *"Can you see that force?"* (no — invisible). *"So how do we know it\'s there?"* (feel it, see its effect).',
+          '**G3–4:** *"If both magnets push each other away, what does that tell you about the poles?"* (same poles facing — N↑N or S↑S).',
+          '**G1–2:** *"What word do we use when magnets push each other away?"* (repel).',
+          'Ask everyone: *"Where else could magnetic repulsion be useful in real life?"*',
+        ],
       },
       {
         time: '32–37 min',
         phase: 'Explain the Science',
-        instructions: 'Say: "Every magnet has two ends — a north pole and a south pole. Opposite poles attract each other — they pull together. Same poles repel each other — they push apart. Our pen has the same pole facing down as the base magnet facing up. So they push away from each other with enough force to hold the pen in the air against gravity." Write on board: SAME POLES REPEL. OPPOSITE POLES ATTRACT. Ask: "What other force is the magnetic repulsion fighting against?" (gravity — the pen wants to fall but the magnets push back up).',
+        instructions: [
+          'Say: *"Every magnet has a north pole and a south pole. Opposite poles attract — pull together. Same poles repel — push apart."*',
+          'Say: *"Our pen has the same pole facing down as the base facing up — so they push apart with enough force to hold the pen against gravity."*',
+          '**Write on board: SAME POLES REPEL · OPPOSITE POLES ATTRACT**',
+          'Ask: *"What other force is the magnetic repulsion fighting?"* (gravity — pen wants to fall, magnets push back up).',
+        ],
       },
       {
         time: '37–42 min',
         phase: 'Real World Connections',
-        instructions: 'Ask: "Where do we use magnetism in real life?" Guide toward: maglev trains (they float above the track using magnetic repulsion — no friction, so they go incredibly fast), MRI machines in hospitals, credit card strips, speakers, electric motors, compasses. If you have a compass, show how it always points north — the Earth itself is a giant magnet. Ask G3-4: "If a maglev train floats above the track like our pen, what advantage does that give it?" (no friction = faster speeds, quieter, less wear).',
+        instructions: [
+          'Guide toward: **maglev trains** (float above track using magnetic repulsion — no friction → incredible speed).',
+          '**MRI machines** in hospitals use powerful magnets.',
+          '**Compasses** always point north because Earth itself is a giant magnet.',
+          '**Speakers, motors, credit card strips** all use magnetic fields.',
+          '**G3–4:** *"If a maglev train floats like our pen, what advantage does that give?"* (no friction = faster, quieter, less wear).',
+          'If you have a compass, show it live — always points north.',
+        ],
       },
       {
         time: '42–47 min',
         phase: 'Draw & Write',
-        instructions: 'Each kid draws the floating pen setup and labels: magnet on base, magnet on pen, repulsion force arrows pushing up, gravity arrow pulling down. G1-2: label the arrows with words (push up / pull down). G3-4: label with: MAGNETIC REPULSION, GRAVITY, NORTH POLE, SOUTH POLE. Circulate and ask: "Which force is winning — magnetism or gravity? How do you know?" (they are balanced — that is why it floats and does not shoot up or fall down).',
+        instructions: [
+          'Each kid draws the floating pen setup and labels the forces.',
+          '**G1–2:** Label arrows with words: *push up* / *pull down*.',
+          '**G3–4:** Label with: **MAGNETIC REPULSION**, **GRAVITY**, **NORTH POLE**, **SOUTH POLE**.',
+          'Circulate and ask: *"Which force is winning — magnetism or gravity? How do you know?"* (balanced — that\'s why it floats, not shoots up or falls down).',
+        ],
       },
       {
         time: '47–50 min',
         phase: 'Share Out',
-        instructions: '3-4 kids share their diagram. End with: "Next time you see a maglev train video, or go through a hospital MRI, or use a compass — you will know the same invisible force is at work." If time allows: let kids take turns floating and spinning the pen themselves. Supervise closely — neodymium magnets are strong and can pinch fingers if two snap together suddenly.',
+        instructions: [
+          '3–4 kids share their diagram.',
+          'Close with: *"Next time you see a maglev train, hospital MRI, or compass — you\'ll know the same invisible force is at work."*',
+          '**Optional:** Let kids take turns floating and spinning the pen themselves.',
+          '⚠️ **Supervise closely** — neodymium magnets can pinch fingers if two snap together suddenly.',
+        ],
       },
     ],
     discussionQuestions: [

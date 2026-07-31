@@ -252,7 +252,7 @@ export function StudentManager({ initialStudents }: Props) {
                 <div className="text-center mb-4">
                   <div className="text-5xl mb-2">{AVATARS[((modal.student.avatarId ?? 1) - 1) % 8]}</div>
                   <h3 className="text-xl font-black text-gray-800">Remove {modal.student.displayName ?? modal.student.name}?</h3>
-                  <p className="text-gray-500 text-sm mt-1">Their progress will be kept but they won't be able to log in.</p>
+                  <p className="text-gray-500 text-sm mt-1">Their progress will be kept but they won&apos;t be able to log in.</p>
                 </div>
                 {error && <p className="text-red-500 text-sm font-semibold text-center mb-3">{error}</p>}
                 <div className="flex gap-3">

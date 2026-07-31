@@ -32,8 +32,17 @@ export async function POST(
     const [cls] = await db.select({ id: classrooms.id })
       .from(classrooms).where(eq(classrooms.id, classroomId)).limit(1)
     if (!cls) return apiError('Classroom not found', 'NOT_FOUND', 404)
+  }
 
-    // Set classroom's teacherId too
+  // A teacher may only own one classroom at a time. Clear any classroom(s)
+  // currently pointing at this teacher before (re)assigning, so stale rows
+  // never linger and a dashboard lookup by teacherId is always unambiguous.
+  await db.update(classrooms)
+    .set({ teacherId: null })
+    .where(eq(classrooms.teacherId, id))
+
+  if (classroomId) {
+    // Set the new classroom's teacherId
     await db.update(classrooms)
       .set({ teacherId: id })
       .where(eq(classrooms.id, classroomId))
