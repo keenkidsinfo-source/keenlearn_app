@@ -138,7 +138,7 @@ const wellPulleyDeck: TheoryDeck = {
       headline: 'The cardstock strip IS your crank. The skewer is just the axle.',
       bullets: [
         '**Wooden skewer** = the AXLE. It spins in the popsicle stick holes and winds the string.',
-        '**Cardstock strip** (2 cm × 15 cm) taped to one end = the CRANK HANDLE. Pinch the far end and sweep it in a circle.',
+        '**Cardstock strip** taped to one end of the skewer = the CRANK HANDLE. Pinch the far end and sweep it in a circle.',
         'Each full circle of the cardstock strip = **1 crank**. Count them!',
       ],
       vocab: { word: 'Axle', definition: 'The rod that spins — string wraps around it to lift the bucket' },

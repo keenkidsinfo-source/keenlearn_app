@@ -509,8 +509,7 @@ ${tx(480,415,'CARDBOARD BASE',18,'middle','#92400e','bold')}
 ${/* Cylinder */cyl(480,165,140,175,C.cardboard,C.dark)}
 
 ${/* Tape ring */bx(402,335,156,20,C.tape,'#92400e',3,4)}
-${tx(480,330,'tape all around',18,'middle','#92400e','bold')}
-${arr(480,322,480,310,'#92400e',3)}
+${tx(480,368,'▲ tape all the way around',16,'middle','#92400e','bold')}
 
 ${/* Stability test */bx(640,200,270,190,'#f0fdf4',C.green,2,12)}
 ${tx(775,233,'Stability test:',20,'middle',C.green,'bold')}
@@ -536,43 +535,43 @@ ${/* Right stick */bx(594,128,18,222,C.wood,'#5c3d0a',3,4)}
 ${/* Holes near top of each stick */ci(357,150,9,C.bg,C.dark,4)}
 ${ci(603,150,9,C.bg,C.dark,4)}
 
-${tx(185,140,'punch hole →',17,'middle',C.red,'bold')}
-${tx(185,160,'near top',16,'middle',C.red)}
-${arr(237,150,344,150,C.red,3)}
+${tx(200,138,'punch hole →',17,'middle',C.red,'bold')}
+${tx(200,158,'near top',16,'middle',C.red)}
+${arr(252,148,343,148,C.red,3)}
 
-${tx(775,140,'← punch hole',17,'middle',C.red,'bold')}
-${tx(775,160,'near top',16,'middle',C.red)}
-${arr(722,150,614,150,C.red,3)}
+${tx(760,138,'← punch hole',17,'middle',C.red,'bold')}
+${tx(760,158,'near top',16,'middle',C.red)}
+${arr(708,148,614,148,C.red,3)}
 
-${callout(30,290,265,185,'Steps:',['1. Push sticks into','   cylinder sides','2. Use pencil tip to','   punch hole near top','3. Holes must line up','   with each other'],'#fff7ed',C.orange)}
+${callout(30,310,280,148,'Key check:',['Holes at same HEIGHT on both','Skewer must thread through both','Both holes must spin freely'],'#fff7ed',C.orange)}
 
-${badge(W/2,492,'Both holes must be at the SAME HEIGHT — skewer threads through both.',C.dark,'white',18)}
+${badge(W/2,492,'Use a pencil tip to poke the hole — wiggle until the skewer fits through',C.dark,'white',18)}
 `),
 
 // 05 — Install the axle
 wrap('🔩  Step 5 — Install the axle', `
 ${tx(W/2,103,'Thread the skewer THROUGH the hole in the left stick, across, out through the right.',20,'middle',C.dark)}
 
-${/* Left stick with hole */bx(248,130,18,250,C.wood,'#5c3d0a',3,4)}
-${/* Right stick with hole */bx(694,130,18,250,C.wood,'#5c3d0a',3,4)}
+${/* Left stick with hole */bx(248,140,18,240,C.wood,'#5c3d0a',3,4)}
+${/* Right stick with hole */bx(694,140,18,240,C.wood,'#5c3d0a',3,4)}
 
-${/* Holes */ci(257,158,10,C.bg,C.dark,4)}
-${ci(703,158,10,C.bg,C.dark,4)}
+${/* Holes */ci(257,168,10,C.bg,C.dark,4)}
+${ci(703,168,10,C.bg,C.dark,4)}
 
-${/* Skewer threading through holes */bx(160,150,640,16,C.cardboard,'#5c3d0a',4,8)}
-${tx(480,140,'SKEWER threads through both holes',19,'middle','#92400e','bold')}
+${/* Skewer threading through holes */bx(160,160,640,16,C.cardboard,'#5c3d0a',4,8)}
+${tx(480,152,'SKEWER threads through both holes',19,'middle','#92400e','bold')}
 
-${/* Threading arrows */arr(175,195,175,170,'#1e40af',4)}
-${tx(175,215,'enter',16,'middle','#1e40af','bold')}
-${tx(175,232,'here',16,'middle','#1e40af')}
+${/* Threading arrows */arr(175,205,175,180,'#1e40af',4)}
+${tx(175,225,'enter',16,'middle','#1e40af','bold')}
+${tx(175,242,'here',16,'middle','#1e40af')}
 
-${arr(785,195,785,170,C.red,4)}
-${tx(785,215,'exits',16,'middle',C.red,'bold')}
-${tx(785,232,'here',16,'middle',C.red)}
+${arr(785,205,785,180,C.red,4)}
+${tx(785,225,'exits',16,'middle',C.red,'bold')}
+${tx(785,242,'here',16,'middle',C.red)}
 
-<path d="M 420 120 A 60 60 0 0 1 540 120" fill="none" stroke="${C.green}" stroke-width="4"/>
-<polygon points="540,120 528,107 550,105" fill="${C.green}"/>
-${tx(480,108,'spins freely!',18,'middle',C.green,'bold')}
+${tx(480,125,'↻  spins freely!',17,'middle',C.green,'bold')}
+<path d="M 425 142 A 52 52 0 0 1 535 142" fill="none" stroke="${C.green}" stroke-width="3"/>
+<polygon points="535,142 524,130 546,128" fill="${C.green}"/>
 
 ${bx(140,340,680,140,'#fef2f2',C.red,2,12)}
 ${tx(480,368,'⚠️  CRITICAL CHECK:',20,'middle',C.red,'bold')}
@@ -582,28 +581,27 @@ ${tx(480,422,'If stuck, gently wiggle to widen the holes slightly.',18,'middle',
 
 // 06 — Attach the string
 wrap('🧵  Step 6 — Attach the string', `
-${tx(W/2,103,'Glue one end of the twine to the CENTRE of the skewer, then wind it 4–5 times.',19,'middle',C.dark)}
+${tx(W/2,103,'Put a glue dot at the CENTRE of the skewer. Press in one end of twine, then wind 4–5×.',19,'middle',C.dark)}
 
-${/* Sticks */bx(248,130,18,240,C.wood,'#5c3d0a',3,4)}
-${bx(694,130,18,240,C.wood,'#5c3d0a',3,4)}
+${/* Sticks */bx(248,145,18,230,C.wood,'#5c3d0a',3,4)}
+${bx(694,145,18,230,C.wood,'#5c3d0a',3,4)}
 
-${/* Axle */bx(225,208,510,16,C.cardboard,'#5c3d0a',4,8)}
-${tx(480,198,'skewer (axle)',18,'middle','#92400e','bold')}
+${/* Axle */bx(225,218,510,16,C.cardboard,'#5c3d0a',4,8)}
+${tx(480,212,'skewer (axle)',16,'middle','#92400e','bold')}
 
-${/* Glue dot at centre */ci(480,216,14,'#fef08a',C.dark,3)}
-${tx(480,170,'glue dot here',17,'middle','#ca8a04','bold')}
-${arr(480,177,480,200,'#ca8a04',3)}
-${tx(318,185,'← press string end',15,'right','#ca8a04')}
-${tx(318,200,'   into glue,',15,'right','#ca8a04')}
-${tx(318,215,'   hold 10 sec',15,'right','#ca8a04')}
+${/* Glue dot at centre */ci(480,226,14,'#fef08a',C.dark,3)}
+${tx(480,170,'glue dot here ↓',17,'middle','#ca8a04','bold')}
+${arr(480,178,480,210,'#ca8a04',3)}
 
-${/* String wound around */ci(480,216,26,'none',C.rope,5)}
-${ci(480,216,36,'none',C.rope,3)}
-${ci(480,216,44,'none',C.rope,2)}
+${/* String wound around */ci(480,226,26,'none',C.rope,5)}
+${ci(480,226,36,'none',C.rope,3)}
+${ci(480,226,44,'none',C.rope,2)}
 
-${/* Hanging string */ln(480,252,480,430,C.rope,5)}
-${tx(530,340,'twine hangs',18,'middle',C.rope,'bold')}
-${tx(530,362,'into well',18,'middle',C.rope)}
+${/* Hanging string */ln(480,262,480,430,C.rope,5)}
+${tx(548,350,'twine hangs',18,'middle',C.rope,'bold')}
+${tx(548,372,'into well',18,'middle',C.rope)}
+
+${callout(30,280,280,170,'How to attach:',['1. Press string end into glue dot','2. Hold 10 seconds to grip','3. Wind 4–5 times same direction','4. Let rest hang down into well'],'#eff6ff',C.blue)}
 
 ${badge(W/2,492,'Wind in ONE direction — always clockwise or always counter-clockwise.',C.dark,'white',18)}
 `),
@@ -634,59 +632,67 @@ ${badge(W/2,492,'If bucket tilts, reposition the hook on the rim until it hangs 
 
 // 08 — Add the crank
 wrap('🎡  Step 8 — Add the crank', `
-${tx(W/2,103,'Tape the cardstock strip to ONE END of the skewer — this is your CRANK!',21,'middle',C.dark)}
+${tx(W/2,103,'Cut cardstock 2 cm wide × 15 cm long. Tape one short end firmly to the TIP of the skewer.',20,'middle',C.dark)}
 
-${/* Sticks */bx(178,130,18,250,C.wood,'#5c3d0a',3,4)}
-${bx(764,130,18,250,C.wood,'#5c3d0a',3,4)}
+${/* Left stick */bx(220,148,18,232,C.wood,'#5c3d0a',3,4)}
+${/* Right stick */bx(580,148,18,232,C.wood,'#5c3d0a',3,4)}
 
-${/* Axle */bx(155,210,650,18,C.cardboard,'#5c3d0a',4,9)}
+${/* Axle — extends well past right stick */bx(200,215,520,18,C.cardboard,'#5c3d0a',4,9)}
 
-${/* Crank handle */bx(765,190,90,58,'#fed7aa',C.dark,4,6)}
-${tx(810,213,'CRANK',20,'middle',C.dark,'bold')}
-${tx(810,235,'(handle)',16,'middle','#92400e')}
+${/* Cardstock strip (crank) — vertical at right tip of skewer */bx(686,120,42,100,'#fde68a',C.dark,4,5)}
+${tx(707,115,'CRANK',14,'middle',C.dark,'bold')}
+${tx(707,196,'= strip',12,'middle','#92400e')}
 
-${/* Tape fixing crank to axle */bx(763,205,18,28,C.tape,'#92400e',3,4)}
-${tx(745,265,'tape',16,'middle','#92400e')}
+${/* Tape band at strip base */bx(684,212,46,20,C.tape,'#92400e',3,3)}
+${tx(644,254,'← tape here',13,'middle','#92400e','bold')}
+${tx(644,271,'   2-3× wrap',13,'middle','#92400e')}
 
-<path d="M 810 160 A 55 55 0 0 1 870 220" fill="none" stroke="${C.red}" stroke-width="4"/>
-<polygon points="870,220 855,210 872,198" fill="${C.red}"/>
-${tx(840,152,'TURN',22,'middle',C.red,'bold')}
-${tx(840,178,'to wind',18,'middle',C.red)}
-${tx(840,200,'string!',18,'middle',C.red)}
+${/* Pinch-end label — right side */tx(742,120,'← PINCH',14,'left',C.red,'bold')}
+${tx(742,137,'   far end +',14,'left',C.red)}
+${tx(742,154,'   sweep full',14,'left',C.red)}
+${tx(742,171,'   circle',14,'left',C.red)}
 
-${callout(30,160,280,240,'Wheel &amp; Axle:',['Crank = the WHEEL','(big radius)','','Skewer = the AXLE','(small radius)','','Big wheel, small axle','= MECHANICAL ADVANTAGE'],'#fff7ed',C.orange)}
+${/* = 1 crank badge */bx(738,185,140,38,'#fee2e2','#dc2626',2,6)}
+${tx(808,209,'= 1 CRANK',16,'middle',C.red,'bold')}
 
-${badge(W/2,497,'The LONGER the crank handle, the easier it is to wind the string!',C.dark,'white',19)}
+<path d="M 700 122 A 42 42 0 0 1 742 162" fill="none" stroke="${C.red}" stroke-width="3"/>
+<polygon points="742,162 730,155 736,141" fill="${C.red}"/>
+
+${callout(30,148,260,210,'Cardstock strip:',['Width: 2 cm','Length: 15 cm (first try)','Use stiff cardstock','Tape VERY firmly so','strip cannot spin loose!'],'#fff7ed',C.orange)}
+
+${badge(W/2,497,'Each full sweep of the strip = 1 CRANK. Count each full circle!',C.dark,'white',19)}
 `),
 
 // 09 — Test your well
 wrap('✅  Step 9 — Test your well!', `
 ${tx(W/2,103,'Turn the crank — does the bucket rise? Both directions should work!',21,'middle',C.dark)}
 
-${bx(360,270,240,100,C.cardboard,'#92400e',3,6)}
-${cyl(480,148,140,122,C.cardboard,C.dark)}
-${bx(368,130,18,200,C.wood,'#5c3d0a',3,4)}
-${bx(594,130,18,200,C.wood,'#5c3d0a',3,4)}
-${bx(345,200,290,18,C.cardboard,'#5c3d0a',4,9)}
-${bx(633,180,80,58,'#fed7aa',C.dark,4,6)}
-${tx(673,210,'CRANK',16,'middle',C.dark,'bold')}
+${bx(360,275,240,95,C.cardboard,'#92400e',3,6)}
+${cyl(480,155,140,120,C.cardboard,C.dark)}
+${bx(368,138,18,192,C.wood,'#5c3d0a',3,4)}
+${bx(594,138,18,192,C.wood,'#5c3d0a',3,4)}
+${bx(345,208,290,18,C.cardboard,'#5c3d0a',4,9)}
+${bx(633,188,72,52,'#fed7aa',C.dark,4,6)}
+${tx(669,217,'CRANK',15,'middle',C.dark,'bold')}
 
-${/* String and bucket */ln(480,218,480,390,C.rope,5)}
+${/* String and bucket */ln(480,226,480,390,C.rope,5)}
 ${cup(480,390,80,60,65,C.cup)}
 ${ln(450,390,440,380,C.rope,3)}
 ${ln(510,390,520,380,C.rope,3)}
 
-<path d="M 700 205 A 40 40 0 0 1 740 165" fill="none" stroke="${C.green}" stroke-width="4"/>
-<polygon points="740,165 730,152 748,150" fill="${C.green}"/>
-${tx(745,145,'↑ bucket RISES',18,'left',C.green,'bold')}
+${/* Clockwise = rises — label ABOVE the crank */tx(700,148,'↑ RISES',18,'middle',C.green,'bold')}
+${tx(700,168,'clockwise',15,'middle',C.green)}
+<path d="M 680 190 A 35 35 0 0 1 715 158" fill="none" stroke="${C.green}" stroke-width="3"/>
+<polygon points="715,158 703,147 720,143" fill="${C.green}"/>
 
-<path d="M 740 205 A 40 40 0 0 0 700 165" fill="none" stroke="#3b82f6" stroke-width="4"/>
-<polygon points="700,165 710,152 692,150" fill="#3b82f6"/>
-${tx(640,145,'bucket LOWERS ↓',18,'right','#3b82f6','bold')}
+${/* Counter-clockwise = lowers — label to the right */tx(830,208,'↓ LOWERS',18,'middle','#3b82f6','bold')}
+${tx(830,228,'counter-cw',15,'middle','#3b82f6')}
+<path d="M 718 213 A 35 35 0 0 0 752 182" fill="none" stroke="#3b82f6" stroke-width="3"/>
+<polygon points="752,182 742,170 758,166" fill="#3b82f6"/>
 
-${callout(30,200,290,200,'Test checklist:',['⬜ Clockwise = rises?','⬜ Counter-cw = lowers?','⬜ String stays wound?','⬜ Bucket doesn\'t tip?'],'#f0fdf4',C.green)}
+${callout(30,205,285,195,'Test checklist:',['⬜ Clockwise = rises?','⬜ Counter-cw = lowers?','⬜ String stays wound?','⬜ Bucket doesn\'t tip?'],'#f0fdf4',C.green)}
 
-${badge(W/2,497,'Not working? Ask your teacher for an INSTRUCTOR CHECK!',C.orange,'white',19)}
+${badge(W/2,496,'Not working? Ask your teacher for an INSTRUCTOR CHECK!',C.orange,'white',19)}
 `),
 
 // 10 — Count the cranks
@@ -702,7 +708,8 @@ ${bx(566,173,70,50,'#fed7aa',C.dark,4,6)}
 
 ${/* Bucket at bottom */cup(430,385,80,60,65,C.cup)}
 ${ln(430,218,430,385,C.rope,4)}
-${tx(430,455,'START:\nbucket down',18,'middle','#475569')}
+${tx(430,450,'START:',17,'middle','#475569','bold')}
+${tx(430,470,'bucket at bottom',16,'middle','#475569')}
 
 ${/* Tally chart */bx(600,130,320,310,'white',C.dark,3,12)}
 ${bx(600,130,320,46,C.dark,C.dark,0,12)}
@@ -748,35 +755,48 @@ ${badge(W/2,497,'MECHANICAL ADVANTAGE = using a machine to lift heavy loads',C.d
 
 // 12 — Improve
 wrap('🔧  Step 12 — Improve it!', `
-${tx(W/2,103,'Challenge: can you reduce the number of cranks needed? Try ONE thing!',20,'middle',C.dark)}
+${tx(W/2,103,'Can you reduce cranks needed? Pick ONE option, change it, recount!',20,'middle',C.dark)}
 
-${/* Option A */bx(30,130,410,310,'#eff6ff',C.blue,2,12)}
-${tx(235,162,'Option A:  Pre-wind',22,'middle',C.blue,'bold')}
-${tx(235,190,'Wind the string around',19,'middle',C.dark)}
-${tx(235,215,'the skewer BEFORE you',19,'middle',C.dark)}
-${tx(235,240,'start counting.',19,'middle',C.dark)}
-${bx(80,265,310,100,'white',C.dark,2,8)}
-${bx(155,295,180,18,C.cardboard,'#5c3d0a',3,9)}
-${/* Pre-wound string */ci(200,304,22,'none',C.rope,5)}
-${ci(200,304,30,'none',C.rope,3)}
-${ci(245,304,22,'none',C.rope,4)}
-${ci(245,304,30,'none',C.rope,3)}
-${tx(235,350,'string pre-loaded',15,'middle','#475569')}
+${/* Option A — Pre-wind */bx(18,130,295,295,'#eff6ff',C.blue,2,12)}
+${tx(165,158,'Option A',19,'middle',C.blue,'bold')}
+${tx(165,178,'Pre-wind the string',16,'middle',C.blue)}
+${tx(165,205,'Wind string around skewer',15,'middle',C.dark)}
+${tx(165,224,'BEFORE counting — bucket',15,'middle',C.dark)}
+${tx(165,243,'starts higher up!',15,'middle',C.dark)}
+${bx(45,258,240,100,'white',C.dark,2,8)}
+${bx(90,284,160,15,C.cardboard,'#5c3d0a',3,8)}
+${ci(120,292,18,'none',C.rope,4)}
+${ci(120,292,26,'none',C.rope,3)}
+${ci(165,292,18,'none',C.rope,4)}
+${ci(165,292,26,'none',C.rope,3)}
+${tx(165,335,'string pre-loaded',13,'middle','#475569')}
 
-${/* Option B */bx(520,130,410,310,'#fff7ed',C.orange,2,12)}
-${tx(725,162,'Option B:  Longer crank',22,'middle',C.orange,'bold')}
-${tx(725,190,'Make the crank handle',19,'middle',C.dark)}
-${tx(725,215,'LONGER — each turn',19,'middle',C.dark)}
-${tx(725,240,'moves more string.',19,'middle',C.dark)}
-${bx(540,265,370,100,'white',C.dark,2,8)}
-${bx(610,295,200,18,C.cardboard,'#5c3d0a',3,9)}
-${bx(808,277,50,54,'#fed7aa',C.dark,3,4)}
-${tx(720,315,'Short crank',14,'middle','#94a3b8')}
-${bx(580,265,430,100,'none','none',0)}
-${bx(808,277,110,54,'#fde68a',C.dark,3,6)}
-${tx(863,308,'Longer!',16,'middle',C.orange,'bold')}
+${/* Option B — Longer crank */bx(331,130,295,295,'#fff7ed',C.orange,2,12)}
+${tx(478,158,'Option B',19,'middle',C.orange,'bold')}
+${tx(478,178,'Longer cardstock strip',16,'middle',C.orange)}
+${tx(478,205,'Tape a 2cm × 25cm strip',15,'middle',C.dark)}
+${tx(478,224,'to skewer — bigger sweep',15,'middle',C.dark)}
+${tx(478,243,'= fewer cranks needed!',15,'middle',C.dark)}
+${bx(348,258,260,100,'white',C.dark,2,8)}
+${bx(375,295,190,14,C.cardboard,'#5c3d0a',3,8)}
+${bx(562,262,30,80,'#fde68a',C.dark,3,4)}
+${tx(577,307,'25cm',12,'left',C.orange,'bold')}
+${tx(577,321,'strip',12,'left',C.orange,'bold')}
+${tx(420,335,'longer = fewer cranks',13,'middle','#475569')}
 
-${badge(W/2,497,'Make ONE change → retest → record new count. Did it improve?',C.dark,'white',19)}
+${/* Option C — Wider axle */bx(644,130,295,295,'#f0fdf4',C.green,2,12)}
+${tx(791,158,'Option C',19,'middle',C.green,'bold')}
+${tx(791,178,'Wider axle (more tape)',16,'middle',C.green)}
+${tx(791,205,'Wrap extra tape around',15,'middle',C.dark)}
+${tx(791,224,'the CENTRE of the skewer',15,'middle',C.dark)}
+${tx(791,243,'— more string per turn!',15,'middle',C.dark)}
+${bx(661,258,260,100,'white',C.dark,2,8)}
+${bx(688,295,190,14,C.cardboard,'#5c3d0a',3,8)}
+${ci(783,302,22,C.tape,'#92400e',4)}
+${ci(783,302,16,'#fbbf24','none',0)}
+${tx(791,335,'tape builds up axle',13,'middle','#475569')}
+
+${badge(W/2,497,'Make ONE change → retest → record new crank count. Did it improve?',C.dark,'white',19)}
 `),
 
 // 13 — Share out

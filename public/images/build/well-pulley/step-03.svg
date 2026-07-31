@@ -11,8 +11,7 @@
 <rect x="410" y="165" width="140" height="175" fill="#c49a4a" stroke="#1e293b" stroke-width="3" rx="0"/><ellipse cx="480" cy="165" rx="70" ry="22.400000000000002" fill="#c49a4a" stroke="#1e293b" stroke-width="3"/><ellipse cx="480" cy="340" rx="70" ry="22.400000000000002" fill="#c49a4a" stroke="#1e293b99" stroke-width="2"/>
 
 <rect x="402" y="335" width="156" height="20" fill="#fbbf24" stroke="#92400e" stroke-width="3" rx="4"/>
-<text x="480" y="330" font-size="18" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">tape all around</text>
-<line x1="480" y1="322" x2="480" y2="310" stroke="#92400e" stroke-width="3" stroke-linecap="round"/><polygon points="480,310 489,328 471,328" fill="#92400e"/>
+<text x="480" y="368" font-size="16" text-anchor="middle" fill="#92400e" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">▲ tape all the way around</text>
 
 <rect x="640" y="200" width="270" height="190" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="12"/>
 <text x="775" y="233" font-size="20" text-anchor="middle" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Stability test:</text>
