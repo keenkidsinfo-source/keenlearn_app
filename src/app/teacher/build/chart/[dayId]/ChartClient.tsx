@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useCallback } from 'react'
 import type { GradeBand } from '@/lib/db/schema'
 
 interface Student {
@@ -9,21 +9,14 @@ interface Student {
   displayName: string | null
 }
 
-interface G12Result {
-  round1Clips: string
-  round2Clips: string
-  maxClips: string
+// G1-2 Cable Car: rounds 1 + 2 + max clips
+// G3-4 Well Pulley: no-load + with-load + improved cranks
+interface Row {
+  a: string   // Round 1 clips  /  Cranks no-load
+  b: string   // After fix clips /  Cranks with-load
+  c: string   // Max clips       /  Cranks improved ← the KEY metric
   note: string
 }
-
-interface G34Result {
-  cranksNoLoad: string
-  cranksWithLoad: string
-  cranksImproved: string
-  note: string
-}
-
-type Result = G12Result | G34Result
 
 interface Props {
   students: Student[]
@@ -33,100 +26,106 @@ interface Props {
   weekStartDate: string
 }
 
-function displayName(s: Student) {
-  return s.displayName ?? s.name
-}
-
-function safeInt(v: string): number | undefined {
-  const n = parseInt(v, 10)
-  return isNaN(n) ? undefined : Math.max(0, n)
-}
+function display(s: Student) { return s.displayName ?? s.name }
+function safeInt(v: string) { const n = parseInt(v, 10); return isNaN(n) ? undefined : Math.max(0, n) }
 
 export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekStartDate }: Props) {
   const isG12 = gradeBand === 'g1-2'
 
-  // Initialize result map
-  const emptyResult = (): Result =>
-    isG12
-      ? { round1Clips: '', round2Clips: '', maxClips: '', note: '' }
-      : { cranksNoLoad: '', cranksWithLoad: '', cranksImproved: '', note: '' }
-
-  const [results, setResults] = useState<Record<string, Result>>(
-    () => Object.fromEntries(students.map(s => [s.id, emptyResult()]))
+  const [rows, setRows] = useState<Record<string, Row>>(
+    () => Object.fromEntries(students.map(s => [s.id, { a: '', b: '', c: '', note: '' }]))
   )
-
   const [sending, setSending] = useState(false)
-  const [sentStatus, setSentStatus] = useState<{ sent: number; noMatch: number; errors: number } | null>(null)
+  const [sendResult, setSendResult] = useState<{ sent: number; noMatch: number; errors: number } | null>(null)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [showPrint, setShowPrint] = useState(false)
+  const tableRef = useRef<HTMLTableElement>(null)
 
-  function update(studentId: string, field: string, value: string) {
-    setResults(prev => ({
-      ...prev,
-      [studentId]: { ...prev[studentId], [field]: value },
-    }))
+  function set(id: string, field: keyof Row, value: string) {
+    setRows(prev => ({ ...prev, [id]: { ...prev[id], [field]: value } }))
   }
 
-  // Live leaderboard sorted by key metric
+  // Keyboard navigation: Enter/Tab moves to next input in reading order
+  const handleKey = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') return
+    e.preventDefault()
+    const inputs = tableRef.current?.querySelectorAll<HTMLInputElement>('input[data-nav]')
+    if (!inputs) return
+    const arr = Array.from(inputs)
+    const idx = arr.indexOf(e.currentTarget)
+    arr[idx + 1]?.focus()
+  }, [])
+
+  // Live leaderboard sorted by key metric (c)
   const leaderboard = useMemo(() => {
     return students
-      .map(s => {
-        const r = results[s.id]
-        const metric = isG12
-          ? safeInt((r as G12Result).maxClips)
-          : safeInt((r as G34Result).cranksImproved ?? (r as G34Result).cranksNoLoad)
-        return { student: s, metric }
-      })
+      .map(s => ({ student: s, metric: safeInt(rows[s.id].c) }))
       .filter(x => x.metric != null)
       .sort((a, b) =>
         isG12
-          ? (b.metric ?? 0) - (a.metric ?? 0)   // more clips = better for G1-2
-          : (a.metric ?? 999) - (b.metric ?? 999) // fewer cranks = better for G3-4
+          ? (b.metric ?? 0) - (a.metric ?? 0)       // more clips = better
+          : (a.metric ?? 999) - (b.metric ?? 999)    // fewer cranks = better
       )
-  }, [results, students, isG12])
+  }, [rows, students, isG12])
 
-  const maxMetric = leaderboard[0]?.metric ?? 1
+  const maxMetric = Math.max(...leaderboard.map(x => x.metric ?? 0), 1)
 
   async function sendToParents() {
     setSending(true)
+    setErrorMsg(null)
     try {
       const payload = {
         weekStartDate,
         buildTitle,
         gradeBand,
-        results: students.map(s => {
-          const r = results[s.id]
-          const base = { studentId: s.id, studentName: displayName(s) }
-          if (isG12) {
-            const g = r as G12Result
-            return { ...base, round1Clips: safeInt(g.round1Clips), round2Clips: safeInt(g.round2Clips), maxClips: safeInt(g.maxClips), note: g.note || undefined }
-          } else {
-            const g = r as G34Result
-            return { ...base, cranksNoLoad: safeInt(g.cranksNoLoad), cranksWithLoad: safeInt(g.cranksWithLoad), cranksImproved: safeInt(g.cranksImproved), note: g.note || undefined }
-          }
-        }).filter(r => {
-          if (isG12) return (r as any).maxClips != null || (r as any).round1Clips != null
-          return (r as any).cranksNoLoad != null || (r as any).cranksImproved != null
-        }),
+        results: students
+          .map(s => {
+            const r = rows[s.id]
+            const base = { studentId: s.id, studentName: display(s) }
+            if (isG12) {
+              return { ...base, round1Clips: safeInt(r.a), round2Clips: safeInt(r.b), maxClips: safeInt(r.c), note: r.note || undefined }
+            } else {
+              return { ...base, cranksNoLoad: safeInt(r.a), cranksWithLoad: safeInt(r.b), cranksImproved: safeInt(r.c), note: r.note || undefined }
+            }
+          })
+          .filter(r => isG12
+            ? (r as any).maxClips != null || (r as any).round1Clips != null
+            : (r as any).cranksImproved != null || (r as any).cranksNoLoad != null
+          ),
       }
+
       const res = await fetch('/api/v1/teacher/build-chart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      const data = await res.json()
-      if (data.ok) {
-        setSentStatus({ sent: data.data.sent, noMatch: data.data.noMatch, errors: data.data.errors })
+
+      let json: any
+      try { json = await res.json() } catch { json = null }
+
+      if (res.ok && json?.data) {
+        setSendResult({ sent: json.data.sent, noMatch: json.data.noMatch, errors: json.data.errors })
       } else {
-        alert('Error: ' + (data.error ?? 'Unknown error'))
+        setErrorMsg(json?.error ?? `Server error ${res.status}`)
       }
+    } catch (err: any) {
+      setErrorMsg(err?.message ?? 'Network error — check your connection')
     } finally {
       setSending(false)
     }
   }
 
-  if (showPrint) {
-    return <PrintView students={students} results={results} isG12={isG12} buildTitle={buildTitle} onBack={() => setShowPrint(false)} />
-  }
+  if (showPrint) return (
+    <PrintView
+      students={students} rows={rows} isG12={isG12}
+      buildTitle={buildTitle} onBack={() => setShowPrint(false)}
+    />
+  )
+
+  const colA = isG12 ? 'Round 1' : 'No cargo'
+  const colB = isG12 ? 'After fix' : '3 pennies'
+  const colC = isG12 ? 'MAX 🏆' : 'Best 🏆'
+  const unit  = isG12 ? 'clips' : 'cranks'
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -136,31 +135,30 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
             <h1 className="text-xl font-black">📊 Class Results Chart</h1>
             <p className="text-teal-200 text-sm">{buildTitle} · {isG12 ? 'Grades 1–2' : 'Grades 3–4'}</p>
           </div>
-          <a href={`/teacher`} className="text-teal-200 text-sm hover:text-white">← Dashboard</a>
+          <a href="/teacher" className="text-teal-200 text-sm hover:text-white">← Dashboard</a>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-6 space-y-6">
+      <main className="max-w-3xl mx-auto px-4 py-5 space-y-5">
 
-        {/* Live leaderboard */}
+        {/* Live leaderboard bar chart */}
         {leaderboard.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-            <h2 className="font-black text-gray-800 text-lg mb-3">
-              {isG12 ? '🏆 Max Paperclips Leaderboard' : '🏆 Fewest Cranks Leaderboard'}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+            <h2 className="font-black text-gray-700 text-sm mb-3 uppercase tracking-wide">
+              {isG12 ? '🏆 Most Paperclips' : '🏆 Fewest Cranks'}
             </h2>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
               {leaderboard.map((entry, i) => {
-                const pct = Math.max(8, Math.round(((entry.metric ?? 0) / Math.max(maxMetric, 1)) * 100))
+                const pct = isG12
+                  ? Math.max(6, Math.round(((entry.metric ?? 0) / maxMetric) * 100))
+                  : Math.max(6, Math.round((1 - (entry.metric ?? 0) / Math.max(maxMetric, 1)) * 100) + 10)
                 const barColor = i === 0 ? 'bg-yellow-400' : i === 1 ? 'bg-gray-300' : i === 2 ? 'bg-orange-300' : 'bg-teal-200'
                 return (
-                  <div key={entry.student.id} className="flex items-center gap-3">
-                    <span className="w-6 text-center text-sm font-black text-gray-400">{i + 1}</span>
-                    <span className="w-28 text-sm font-semibold text-gray-700 truncate">{displayName(entry.student)}</span>
-                    <div className="flex-1 h-7 bg-gray-100 rounded-lg overflow-hidden">
-                      <div
-                        className={`h-full rounded-lg flex items-center justify-end pr-2 transition-all duration-500 ${barColor}`}
-                        style={{ width: `${pct}%` }}
-                      >
+                  <div key={entry.student.id} className="flex items-center gap-2">
+                    <span className="w-5 text-xs font-black text-gray-400 text-right">{i + 1}</span>
+                    <span className="w-24 text-xs font-semibold text-gray-600 truncate">{display(entry.student)}</span>
+                    <div className="flex-1 h-6 bg-gray-100 rounded overflow-hidden">
+                      <div className={`h-full rounded flex items-center justify-end pr-2 transition-all duration-500 ${barColor}`} style={{ width: `${pct}%` }}>
                         <span className="text-xs font-black text-gray-700">{entry.metric}</span>
                       </div>
                     </div>
@@ -171,111 +169,93 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
           </div>
         )}
 
-        {/* Data entry table */}
+        {/* Compact data-entry table */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="bg-teal-50 border-b border-teal-100 px-5 py-3">
-            <h2 className="font-black text-teal-800 text-base">
-              {isG12 ? '📎 Enter Paperclip Counts' : '🔩 Enter Crank Counts'}
-            </h2>
-            <p className="text-teal-600 text-xs mt-0.5">
-              {isG12 ? 'Fill in each student\'s max cargo — leaderboard updates live.' : 'Fill in crank counts — leaderboard updates live as you type.'}
-            </p>
+          <div className="bg-teal-50 border-b border-teal-100 px-4 py-2.5 flex items-center justify-between">
+            <div>
+              <p className="font-black text-teal-800 text-sm">
+                {isG12 ? '📎 Enter Paperclip Counts' : '🔩 Enter Crank Counts'}
+              </p>
+              <p className="text-teal-500 text-xs">Press <kbd className="bg-teal-100 px-1 rounded">Enter</kbd> to jump to next field</p>
+            </div>
+            <span className="text-xs text-teal-500 font-semibold">{students.length} students</span>
           </div>
 
-          <div className="divide-y divide-gray-100">
-            {students.map(student => {
-              const r = results[student.id]
-              return (
-                <div key={student.id} className="px-4 py-4">
-                  <p className="font-bold text-gray-800 text-sm mb-2">{displayName(student)}</p>
-                  {isG12 ? (
-                    <div className="grid grid-cols-3 gap-2">
-                      <label className="flex flex-col gap-1">
-                        <span className="text-xs text-gray-500 font-semibold">Round 1 🔁</span>
+          <div className="overflow-x-auto">
+            <table ref={tableRef} className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100 bg-gray-50">
+                  <th className="text-left px-4 py-2 text-xs font-bold text-gray-500 w-32">Student</th>
+                  <th className="text-center px-2 py-2 text-xs font-bold text-gray-400 w-24">{colA}</th>
+                  <th className="text-center px-2 py-2 text-xs font-bold text-gray-400 w-24">{colB}</th>
+                  <th className="text-center px-2 py-2 text-xs font-bold text-teal-600 w-24">{colC}</th>
+                  <th className="text-left px-3 py-2 text-xs font-bold text-gray-400">Note (optional)</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {students.map(student => {
+                  const r = rows[student.id]
+                  const hasData = r.a || r.b || r.c
+                  return (
+                    <tr key={student.id} className={hasData ? 'bg-teal-50/30' : ''}>
+                      <td className="px-4 py-2 font-semibold text-gray-800 text-sm whitespace-nowrap">{display(student)}</td>
+                      {(['a', 'b', 'c'] as const).map(field => (
+                        <td key={field} className="px-2 py-1.5 text-center">
+                          <input
+                            data-nav
+                            type="number" min="0" inputMode="numeric"
+                            value={r[field]}
+                            onChange={e => set(student.id, field, e.target.value)}
+                            onFocus={e => e.currentTarget.select()}
+                            onKeyDown={handleKey}
+                            placeholder={unit}
+                            className={`w-20 text-center border rounded-lg px-1 py-1 text-sm focus:outline-none transition-colors
+                              ${field === 'c'
+                                ? 'border-teal-300 font-bold focus:border-teal-500 bg-teal-50'
+                                : 'border-gray-200 focus:border-teal-300'}`}
+                          />
+                        </td>
+                      ))}
+                      <td className="px-3 py-1.5">
                         <input
-                          type="number" min="0" inputMode="numeric"
-                          value={(r as G12Result).round1Clips}
-                          onChange={e => update(student.id, 'round1Clips', e.target.value)}
-                          placeholder="clips"
-                          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:border-teal-400"
+                          data-nav
+                          type="text"
+                          value={r.note}
+                          onChange={e => set(student.id, 'note', e.target.value)}
+                          onKeyDown={handleKey}
+                          placeholder="e.g. great improvement!"
+                          className="w-full border border-gray-100 rounded-lg px-2 py-1 text-xs text-gray-500 focus:outline-none focus:border-teal-300"
                         />
-                      </label>
-                      <label className="flex flex-col gap-1">
-                        <span className="text-xs text-gray-500 font-semibold">After Fix 🔧</span>
-                        <input
-                          type="number" min="0" inputMode="numeric"
-                          value={(r as G12Result).round2Clips}
-                          onChange={e => update(student.id, 'round2Clips', e.target.value)}
-                          placeholder="clips"
-                          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:border-teal-400"
-                        />
-                      </label>
-                      <label className="flex flex-col gap-1">
-                        <span className="text-xs font-bold text-teal-700">Max 🏆</span>
-                        <input
-                          type="number" min="0" inputMode="numeric"
-                          value={(r as G12Result).maxClips}
-                          onChange={e => update(student.id, 'maxClips', e.target.value)}
-                          placeholder="clips"
-                          className="border-2 border-teal-300 rounded-lg px-2 py-1.5 text-sm w-full font-bold focus:outline-none focus:border-teal-500"
-                        />
-                      </label>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-3 gap-2">
-                      <label className="flex flex-col gap-1">
-                        <span className="text-xs text-gray-500 font-semibold">No cargo 🪣</span>
-                        <input
-                          type="number" min="0" inputMode="numeric"
-                          value={(r as G34Result).cranksNoLoad}
-                          onChange={e => update(student.id, 'cranksNoLoad', e.target.value)}
-                          placeholder="cranks"
-                          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:border-teal-400"
-                        />
-                      </label>
-                      <label className="flex flex-col gap-1">
-                        <span className="text-xs text-gray-500 font-semibold">3 pennies 🪙</span>
-                        <input
-                          type="number" min="0" inputMode="numeric"
-                          value={(r as G34Result).cranksWithLoad}
-                          onChange={e => update(student.id, 'cranksWithLoad', e.target.value)}
-                          placeholder="cranks"
-                          className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm w-full focus:outline-none focus:border-teal-400"
-                        />
-                      </label>
-                      <label className="flex flex-col gap-1">
-                        <span className="text-xs font-bold text-teal-700">Improved 🏆</span>
-                        <input
-                          type="number" min="0" inputMode="numeric"
-                          value={(r as G34Result).cranksImproved}
-                          onChange={e => update(student.id, 'cranksImproved', e.target.value)}
-                          placeholder="cranks"
-                          className="border-2 border-teal-300 rounded-lg px-2 py-1.5 text-sm w-full font-bold focus:outline-none focus:border-teal-500"
-                        />
-                      </label>
-                    </div>
-                  )}
-                  <input
-                    type="text"
-                    value={(r as any).note}
-                    onChange={e => update(student.id, 'note', e.target.value)}
-                    placeholder="Optional note (e.g. great improvement!)"
-                    className="mt-2 w-full border border-gray-100 rounded-lg px-2 py-1 text-xs text-gray-500 focus:outline-none focus:border-teal-300"
-                  />
-                </div>
-              )
-            })}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Column legend */}
+          <div className="border-t border-gray-100 px-4 py-2 flex gap-6 text-xs text-gray-400">
+            <span><strong className="text-gray-500">{colA}:</strong> {isG12 ? 'First run, no changes' : 'No weight in bucket'}</span>
+            <span><strong className="text-gray-500">{colB}:</strong> {isG12 ? 'After student improved their build' : '3 pennies in bucket'}</span>
+            <span><strong className="text-teal-600">{colC}:</strong> {isG12 ? 'Their personal best — goes to parents' : 'After improvement — goes to parents'}</span>
           </div>
         </div>
 
-        {/* Action buttons */}
+        {/* Actions */}
         <div className="flex flex-col gap-3">
-          {sentStatus ? (
+          {errorMsg && (
+            <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-700 text-sm font-semibold">
+              ⚠️ {errorMsg}
+            </div>
+          )}
+          {sendResult ? (
             <div className="bg-green-50 border border-green-200 rounded-2xl p-4 text-center">
               <p className="text-green-800 font-black text-lg">✅ Sent to parents!</p>
               <p className="text-green-700 text-sm mt-1">
-                {sentStatus.sent} sent · {sentStatus.noMatch} no portal match · {sentStatus.errors} errors
+                {sendResult.sent} sent · {sendResult.noMatch} no portal match · {sendResult.errors} errors
               </p>
+              <button onClick={() => setSendResult(null)} className="mt-2 text-green-600 text-xs underline">Send again</button>
             </div>
           ) : (
             <button
@@ -286,12 +266,11 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
               {sending ? '📤 Sending…' : '📧 Send Results to Parents'}
             </button>
           )}
-
           <button
             onClick={() => setShowPrint(true)}
-            className="w-full min-h-[48px] rounded-2xl border-2 border-gray-300 text-gray-600 font-bold text-base transition-all hover:border-gray-400"
+            className="w-full min-h-[44px] rounded-2xl border-2 border-gray-200 text-gray-500 font-bold text-sm transition-all hover:border-gray-300"
           >
-            🖨️ Print Chart
+            🖨️ Print / Save as PDF
           </button>
         </div>
 
@@ -302,11 +281,9 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
 
 // ── Print view ────────────────────────────────────────────────────────────────
 
-function PrintView({
-  students, results, isG12, buildTitle, onBack,
-}: {
+function PrintView({ students, rows, isG12, buildTitle, onBack }: {
   students: Student[]
-  results: Record<string, Result>
+  rows: Record<string, Row>
   isG12: boolean
   buildTitle: string
   onBack: () => void
@@ -318,47 +295,28 @@ function PrintView({
         <button onClick={() => window.print()} className="bg-teal-600 text-white font-bold px-6 py-2 rounded-xl text-sm">🖨️ Print</button>
       </div>
       <h1 className="text-2xl font-black text-gray-800 mb-1">{buildTitle} — Class Results</h1>
-      <p className="text-gray-500 text-sm mb-6">KeenKids STEAM · {isG12 ? 'Grades 1–2' : 'Grades 3–4'} · {new Date().toLocaleDateString()}</p>
+      <p className="text-gray-500 text-sm mb-5">KeenKids STEAM · {isG12 ? 'Grades 1–2' : 'Grades 3–4'} · {new Date().toLocaleDateString()}</p>
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-3 py-2 text-left font-bold text-gray-700">Student</th>
-            {isG12 ? (
-              <>
-                <th className="border border-gray-300 px-3 py-2 text-center font-bold text-gray-700">Round 1 (clips)</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-bold text-gray-700">After Fix (clips)</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-bold text-gray-700">MAX (clips) 🏆</th>
-              </>
-            ) : (
-              <>
-                <th className="border border-gray-300 px-3 py-2 text-center font-bold text-gray-700">No Cargo (cranks)</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-bold text-gray-700">3 Pennies (cranks)</th>
-                <th className="border border-gray-300 px-3 py-2 text-center font-bold text-gray-700">Improved 🏆</th>
-              </>
-            )}
-            <th className="border border-gray-300 px-3 py-2 text-left font-bold text-gray-700">Notes</th>
+            <th className="border border-gray-300 px-3 py-2 text-left">Student</th>
+            <th className="border border-gray-300 px-3 py-2 text-center">{isG12 ? 'Round 1 (clips)' : 'No Cargo (cranks)'}</th>
+            <th className="border border-gray-300 px-3 py-2 text-center">{isG12 ? 'After Fix (clips)' : '3 Pennies (cranks)'}</th>
+            <th className="border border-gray-300 px-3 py-2 text-center font-black">{isG12 ? 'MAX 🏆' : 'Improved 🏆'}</th>
+            <th className="border border-gray-300 px-3 py-2 text-left">Notes</th>
           </tr>
         </thead>
         <tbody>
           {students.map((s, i) => {
-            const r = results[s.id]
+            const r = rows[s.id]
+            const name = s.displayName ?? s.name
             return (
-              <tr key={s.id} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="border border-gray-200 px-3 py-2 font-semibold">{displayName(s)}</td>
-                {isG12 ? (
-                  <>
-                    <td className="border border-gray-200 px-3 py-2 text-center">{(r as G12Result).round1Clips || '—'}</td>
-                    <td className="border border-gray-200 px-3 py-2 text-center">{(r as G12Result).round2Clips || '—'}</td>
-                    <td className="border border-gray-200 px-3 py-2 text-center font-black">{(r as G12Result).maxClips || '—'}</td>
-                  </>
-                ) : (
-                  <>
-                    <td className="border border-gray-200 px-3 py-2 text-center">{(r as G34Result).cranksNoLoad || '—'}</td>
-                    <td className="border border-gray-200 px-3 py-2 text-center">{(r as G34Result).cranksWithLoad || '—'}</td>
-                    <td className="border border-gray-200 px-3 py-2 text-center font-black">{(r as G34Result).cranksImproved || '—'}</td>
-                  </>
-                )}
-                <td className="border border-gray-200 px-3 py-2 text-gray-500 text-xs">{(r as any).note || ''}</td>
+              <tr key={s.id} className={i % 2 === 0 ? '' : 'bg-gray-50'}>
+                <td className="border border-gray-200 px-3 py-2 font-semibold">{name}</td>
+                <td className="border border-gray-200 px-3 py-2 text-center">{r.a || '—'}</td>
+                <td className="border border-gray-200 px-3 py-2 text-center">{r.b || '—'}</td>
+                <td className="border border-gray-200 px-3 py-2 text-center font-black">{r.c || '—'}</td>
+                <td className="border border-gray-200 px-3 py-2 text-gray-500 text-xs">{r.note}</td>
               </tr>
             )
           })}
