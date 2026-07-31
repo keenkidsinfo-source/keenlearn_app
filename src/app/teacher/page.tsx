@@ -47,15 +47,19 @@ export default async function TeacherDashboardPage({
         .orderBy(schools.name, classrooms.gradeLevel)
     : []
 
-  // Load classroom. A teacher should only ever own one classroom (enforced in
-  // assign-classroom, which clears any prior classroom before assigning a new
-  // one). orderBy + limit(1) here is only a defensive fallback in case stale
-  // data ever produces more than one row for a teacherId — it must NOT be
-  // relied on to pick the "right" classroom, since alphabetical order has no
-  // relationship to which school/classroom is actually current.
+  // Load classroom(s). In production each teacher has one classroom; in the
+  // test setup one teacher account may be assigned to multiple classrooms
+  // (e.g. both G1-2 and G3-4). We load all of the teacher's classrooms so we
+  // can show a grade-band switcher when more than one exists.
+  const teacherClassrooms = isAdmin
+    ? []  // admin uses allClassrooms picker above
+    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).orderBy(classrooms.name)
+
   const [classroom] = isAdmin && qClassroomId
     ? await db.select().from(classrooms).where(eq(classrooms.id, qClassroomId)).limit(1)
-    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).orderBy(classrooms.name).limit(1)
+    : qClassroomId && teacherClassrooms.some(c => c.id === qClassroomId)
+      ? teacherClassrooms.filter(c => c.id === qClassroomId)
+      : teacherClassrooms
 
   const [school] = classroom?.schoolId
     ? await db.select().from(schools).where(eq(schools.id, classroom.schoolId)).limit(1)
@@ -167,6 +171,28 @@ export default async function TeacherDashboardPage({
         </div>
 
       </header>
+
+      {/* Teacher grade-band switcher — only shown when teacher has multiple classrooms */}
+      {!isAdmin && teacherClassrooms.length > 1 && (
+        <div className="bg-keen-50 border-b border-keen-200 px-6 py-3">
+          <div className="max-w-3xl mx-auto flex items-center gap-3">
+            <span className="text-keen-700 text-xs font-bold uppercase tracking-wide">Grade:</span>
+            {teacherClassrooms.map(c => (
+              <Link
+                key={c.id}
+                href={`/teacher?classroomId=${c.id}`}
+                className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all ${
+                  (classroom?.id === c.id)
+                    ? 'bg-keen-700 text-white'
+                    : 'bg-white border border-keen-200 text-keen-700 hover:border-keen-400'
+                }`}
+              >
+                {c.gradeBand === 'g1-2' ? 'Grades 1–2' : 'Grades 3–4'}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Admin classroom picker — prominent banner */}
       {isAdmin && (

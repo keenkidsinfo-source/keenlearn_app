@@ -654,7 +654,7 @@ ${tx(840,152,'TURN',22,'middle',C.red,'bold')}
 ${tx(840,178,'to wind',18,'middle',C.red)}
 ${tx(840,200,'string!',18,'middle',C.red)}
 
-${callout(30,160,280,240,'Wheel & Axle:',['Crank = the WHEEL','(big radius)','','Skewer = the AXLE','(small radius)','','Big wheel, small axle','= MECHANICAL ADVANTAGE'],'#fff7ed',C.orange)}
+${callout(30,160,280,240,'Wheel &amp; Axle:',['Crank = the WHEEL','(big radius)','','Skewer = the AXLE','(small radius)','','Big wheel, small axle','= MECHANICAL ADVANTAGE'],'#fff7ed',C.orange)}
 
 ${badge(W/2,497,'The LONGER the crank handle, the easier it is to wind the string!',C.dark,'white',19)}
 `),
@@ -802,7 +802,7 @@ ${[
   return `${bx(x,y,230,56,'#ede9fe','none',0,8)}${tx(x+115,y+22,word,18,'middle',C.purple,'bold')}${tx(x+115,y+44,def,14,'middle','#6b21a8')}`
 }).join('')}
 
-${tx(W/2,498,'⚡  Real wells, cranes, fishing reels + winches all use Wheel & Axle!',19,'middle','#475569','bold')}
+${tx(W/2,498,'⚡  Real wells, cranes, fishing reels + winches all use Wheel &amp; Axle!',19,'middle','#475569','bold')}
 `),
 ]
 

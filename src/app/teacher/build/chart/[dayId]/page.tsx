@@ -38,11 +38,16 @@ export default async function BuildChartPage({ params }: Props) {
   const item = row.item
   const gradeBand = (item.gradeBand ?? 'g1-2') as GradeBand
 
-  // Load classroom
+  // Load the classroom that matches this content item's grade band.
+  // A teacher may have classrooms for multiple grade bands; we pick the one
+  // whose grade_band matches the build content so we get the right students.
   const [classroom] = await db
     .select()
     .from(classrooms)
-    .where(eq(classrooms.teacherId, session.sub))
+    .where(and(
+      eq(classrooms.teacherId, session.sub),
+      eq(classrooms.gradeBand, gradeBand),
+    ))
     .limit(1)
 
   if (!classroom) {
