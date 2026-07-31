@@ -140,8 +140,8 @@ const builds = [
       {
         emoji: '🪵',
         title: 'Add the uprights',
-        text: 'Push one popsicle stick firmly into the LEFT side of your cylinder so it stands 8-10cm above the top. Repeat on the RIGHT side. Then use a pencil tip to punch a small hole near the TOP of each stick — this is where the skewer will thread through.',
-        tip: 'Make the holes as horizontal and level as possible so the skewer sits straight across.',
+        text: 'Push one popsicle stick firmly into the LEFT side of your cylinder so it stands 8–10 cm above the top. Repeat on the RIGHT side. Then use a pencil tip to punch a small hole near the TOP of each stick — this is where the skewer will thread through.',
+        tip: 'Make the holes as level as possible on both sticks so the skewer sits straight across.',
       },
       {
         emoji: '🔩',
@@ -152,20 +152,20 @@ const builds = [
       {
         emoji: '🧵',
         title: 'Attach the string',
-        text: 'Put a small dot of glue on the CENTRE of the skewer. Press one end of the twine firmly into the glue and hold for 10 seconds. Once it grips, wind the twine around the skewer 4-5 times in the SAME direction. Let the rest hang down into the well.',
+        text: 'Put a small dot of glue on the CENTRE of the skewer. Press one end of the string firmly into the glue and hold for 10 seconds. Once it grips, wind the string around the skewer 4–5 times in the SAME direction. Let the rest hang down into the well.',
         tip: 'Winding in one direction means it unwinds cleanly when you reverse the crank.',
       },
       {
         emoji: '🪣',
         title: 'Make the bucket',
-        text: 'Roll the small corrugated piece into a mini cylinder and tape the seam. Bend a large paperclip into an S-hook shape. Hook one end through the TOP RIM of the bucket. Hook the other end onto the hanging end of your twine. The bucket should hang level below the well.',
+        text: 'Roll the small corrugated piece into a mini cylinder and tape the seam. Bend a large paperclip into an S-hook shape. Hook one end through the TOP RIM of the bucket. Hook the other end onto the hanging end of your string. The bucket should hang level below the well.',
         tip: 'If the bucket tilts, reposition the paperclip hook to a different spot on the rim until it balances.',
       },
       {
         emoji: '🎡',
         title: 'Add the crank',
-        text: 'Cut a strip of cardstock 2 cm wide and 15 cm long. Place one SHORT end of the strip against the tip of the skewer and tape it firmly — wrap tape around 2–3 times so it grips tightly. The strip should stick straight out like a flag. To turn the crank: pinch the FAR END of the strip and sweep it in a full circle. The skewer spins with it and winds up the string!',
-        tip: 'The strip must NOT spin loose from the skewer — if it slips, add more tape. The cardstock is stiff enough for light loads as long as the tape holds.',
+        text: 'Cut a strip of cardstock 2 cm wide and 15 cm long. Place one short end against the tip of the skewer and tape it firmly — wrap tape around 2–3 times so it grips. The strip sticks out straight like a flag. To use: pinch the FAR END and sweep it in a full circle. The skewer spins with it and winds up the string!',
+        tip: 'If the strip spins loose, add more tape. Cardstock is stiff enough for light loads as long as the tape holds.',
       },
       {
         emoji: '✅',
@@ -186,8 +186,8 @@ const builds = [
       {
         emoji: '🔧',
         title: 'Improve it — fewer cranks!',
-        text: 'Cut a NEW cardstock strip: same 2 cm wide but make it 25 cm long this time. Tape it to the same end of the skewer the same way — remove the old strip first. Now sweep the longer strip in a circle: your hand travels a bigger circle each turn, which winds more string per turn, so the bucket reaches the top in FEWER cranks. Count again and record your new number!',
-        tip: 'Longer strip = bigger circle = more string wound per turn = fewer cranks needed. The skewer (axle) stays exactly the same — only the cardstock strip length changes!',
+        text: 'Challenge: can you reduce the number of cranks to raise the bucket? Pick ONE change to try: (A) Pre-wind — wind extra string onto the skewer before you start, so the bucket has less distance to travel. (B) Longer crank — tape a longer cardstock strip to the skewer end so your hand sweeps a bigger circle each turn. (C) Wider axle — wrap extra tape around the centre of the skewer to make it thicker, so more string winds per turn. Make your one change and recount. Record your new number!',
+        tip: 'Only change ONE thing at a time — otherwise you won\'t know which change made the difference!',
       },
       {
         emoji: '🎤',
