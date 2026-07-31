@@ -508,6 +508,7 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
 export function TheoryViewer({ deck, buildDayId }: Props) {
   const router = useRouter()
   const [slide, setSlide] = useState(0)
+  const [notesOpen, setNotesOpen] = useState(false)
 
   const total = deck.slides.length
   const current = deck.slides[slide]
@@ -518,58 +519,66 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900">
-      {/* Header — thin */}
-      <header className={cn('text-white px-4 py-3 flex items-center gap-3', colors.badge)}>
-        <button onClick={() => router.push(`/build/day/${buildDayId}`)} className="text-white/70 text-xl">←</button>
-        <div className="flex-1 min-w-0">
-          <p className="font-black text-base leading-tight">{current.emoji} {current.title}</p>
-          <p className="text-white/60 text-xs">{deck.gradeBand === 'g1-2' ? 'Grades 1–2' : 'Grades 3–4'} · {deck.subject}</p>
-        </div>
-        {/* Dot navigation */}
+      {/* Thin header */}
+      <header className={cn('text-white px-4 py-2.5 flex items-center gap-3', colors.badge)}>
+        <button onClick={() => router.push(`/build/day/${buildDayId}`)} className="text-white/70 text-xl leading-none">←</button>
+        <p className="flex-1 font-black text-base truncate">{current.emoji} {current.title}</p>
+        {/* Dot nav */}
         <div className="flex gap-1.5 shrink-0">
           {Array.from({ length: total }, (_, i) => (
-            <button key={i} onClick={() => setSlide(i)}
-              className={cn('w-2.5 h-2.5 rounded-full transition-all', i === slide ? 'bg-white scale-125' : 'bg-white/40 hover:bg-white/60')}
+            <button key={i} onClick={() => { setSlide(i); setNotesOpen(false) }}
+              className={cn('w-2.5 h-2.5 rounded-full transition-all', i === slide ? 'bg-white scale-125' : 'bg-white/40')}
             />
           ))}
         </div>
+        <span className="text-white/50 text-xs shrink-0">{slide + 1}/{total}</span>
       </header>
 
-      {/* VISUAL — the star of the show */}
-      <div className="flex-1 flex flex-col bg-white">
-        <div className="flex-1 p-3 flex items-center justify-center">
-          {Visual ? (
-            <div className="w-full max-w-3xl aspect-[760/340]">
-              <Visual />
-            </div>
-          ) : (
-            <div className="text-9xl text-center">{current.emoji}</div>
-          )}
-        </div>
-
-        {/* Key points — minimal, below visual */}
-        <div className={cn('border-t-2 px-6 py-4', colors.border, colors.bg)}>
-          <p className={cn('font-black text-lg mb-2', colors.text)}>{current.headline}</p>
-          <div className="flex flex-wrap gap-x-6 gap-y-1">
-            {current.bullets.slice(0, 3).map((b, i) => (
-              <span key={i} className={cn('text-sm flex items-start gap-1.5', colors.text)}>
-                <span className={cn('shrink-0 font-black', colors.badge.replace('bg-', 'text-'))}>›</span>
-                <span dangerouslySetInnerHTML={{ __html: b.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>') }} />
-              </span>
-            ))}
+      {/* SLIDE — SVG takes the whole screen */}
+      <div className="flex-1 bg-white flex items-center justify-center p-2">
+        {Visual ? (
+          <div className="w-full max-w-4xl">
+            <Visual />
           </div>
-          {current.tryThis && (
-            <p className="mt-2 text-yellow-800 text-sm font-semibold bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
-              🙋 {current.tryThis}
-            </p>
-          )}
-        </div>
+        ) : (
+          <div className="text-9xl text-center">{current.emoji}</div>
+        )}
+      </div>
+
+      {/* Speaker notes — collapsed by default, teacher taps to peek */}
+      <div className="bg-gray-800 border-t border-gray-700">
+        <button
+          onClick={() => setNotesOpen(o => !o)}
+          className="w-full flex items-center justify-between px-4 py-2 text-gray-400 hover:text-white text-xs font-semibold transition-colors"
+        >
+          <span>📝 Speaker notes {notesOpen ? '▲' : '▼'}</span>
+          <span className="text-gray-600 text-xs">tap to {notesOpen ? 'hide' : 'show'}</span>
+        </button>
+
+        {notesOpen && (
+          <div className="px-4 pb-3 space-y-1.5">
+            <p className="text-white font-bold text-sm">{current.headline}</p>
+            <ul className="space-y-1">
+              {current.bullets.map((b, i) => (
+                <li key={i} className="flex items-start gap-2 text-gray-300 text-xs leading-snug">
+                  <span className="text-gray-500 shrink-0 mt-0.5">•</span>
+                  <span dangerouslySetInnerHTML={{ __html: b.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>') }} />
+                </li>
+              ))}
+            </ul>
+            {current.tryThis && (
+              <p className="text-yellow-300 text-xs font-semibold border border-yellow-700 rounded px-2 py-1 mt-1">
+                🙋 Ask: {current.tryThis}
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Navigation */}
       <div className="bg-gray-900 px-4 py-3 flex gap-3">
         <button
-          onClick={() => setSlide(s => Math.max(0, s - 1))}
+          onClick={() => { setSlide(s => Math.max(0, s - 1)); setNotesOpen(false) }}
           disabled={slide === 0}
           className="flex-1 min-h-[48px] rounded-xl border-2 border-gray-700 text-gray-300 font-bold disabled:opacity-20 active:scale-95 transition-all"
         >
@@ -585,7 +594,7 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
           </button>
         ) : (
           <button
-            onClick={() => setSlide(s => s + 1)}
+            onClick={() => { setSlide(s => s + 1); setNotesOpen(false) }}
             className={cn('min-h-[48px] px-8 rounded-xl text-white font-bold active:scale-95 transition-all shadow', colors.badge)}
             style={{ flex: 2 }}
           >
