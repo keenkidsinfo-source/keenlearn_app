@@ -141,7 +141,7 @@ export default async function DashboardPage({
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
-        <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned} />
+        <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned || !!nearestBuildDayId} />
 
         {/* Build Day — students only enter results, teacher runs the steps */}
         {nearestBuildDayId && (

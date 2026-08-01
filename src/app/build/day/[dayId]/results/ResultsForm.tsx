@@ -85,7 +85,7 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
     return (
       <div className="min-h-screen bg-teal-50 flex flex-col">
         <header className="bg-teal-700 text-white px-4 py-4 flex items-center gap-3">
-          <button onClick={() => router.push(`/build/day/${dayId}`)} className="text-teal-200 text-2xl">←</button>
+          <button onClick={() => router.push('/dashboard')} className="text-teal-200 text-2xl">←</button>
           <div>
             <h1 className="font-black text-lg">📊 Class Results</h1>
             <p className="text-teal-200 text-sm">{buildTitle}</p>
@@ -151,8 +151,8 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
             <button onClick={() => setSaved(false)} className="w-full py-3 rounded-2xl border-2 border-teal-300 text-teal-700 font-bold text-sm">
               ✏️ Update my numbers
             </button>
-            <button onClick={() => router.push(`/build/day/${dayId}`)} className="w-full py-3 rounded-2xl bg-orange-500 text-white font-black">
-              ← Back to Build Steps
+            <button onClick={() => router.push('/dashboard')} className="w-full py-3 rounded-2xl bg-orange-500 text-white font-black">
+              ← Back to Dashboard
             </button>
           </div>
         </main>
@@ -163,7 +163,7 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
   return (
     <div className="min-h-screen bg-teal-50 flex flex-col">
       <header className="bg-teal-700 text-white px-4 py-4 flex items-center gap-3">
-        <button onClick={() => router.push(`/build/day/${dayId}`)} className="text-teal-200 text-2xl">←</button>
+        <button onClick={() => router.push('/dashboard')} className="text-teal-200 text-2xl">←</button>
         <div>
           <h1 className="font-black text-lg">📊 My Results</h1>
           <p className="text-teal-200 text-sm">{buildTitle}</p>
