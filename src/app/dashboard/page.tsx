@@ -143,8 +143,8 @@ export default async function DashboardPage({
       <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
         <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned || !!nearestBuildDayId} />
 
-        {/* Build Day — students only enter results, teacher runs the steps */}
-        {nearestBuildDayId && (
+        {/* Build Day card — only shown when the build day isn't already visible as a tile in the current week */}
+        {nearestBuildDayId && !weekDays.some(d => d.subject === 'build' && d.dayId) && (
           <Link
             href={`/build/day/${nearestBuildDayId}/results`}
             className="flex items-center gap-4 bg-teal-600 hover:bg-teal-500 text-white rounded-3xl p-5 shadow-md hover:shadow-lg transition-all active:scale-95"

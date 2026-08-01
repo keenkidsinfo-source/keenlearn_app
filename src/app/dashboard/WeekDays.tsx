@@ -95,10 +95,12 @@ export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
             .filter(d => d.dow === todayIndex && d.subject)
             .map(({ dow, subject, dayId, theme }) => {
               const colors = SUBJECT_COLORS[subject as Subject]
+              const isBuild = subject === 'build'
+              const href = isBuild && dayId ? `/build/day/${dayId}/results` : dayId ? `/${subject}/day/${dayId}` : '#'
               return (
                 <div key={dow} className={`${colors.light} border-2 ${colors.border} rounded-3xl p-6 mb-6`}>
                   <p className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-1">Today</p>
-                  <Link href={dayId ? `/${subject}/day/${dayId}` : '#'} className="block">
+                  <Link href={href} className="block">
                     <div className="flex items-center gap-4">
                       <span className="text-5xl">{SUBJECT_EMOJI[subject as Subject]}</span>
                       <div>
@@ -106,8 +108,8 @@ export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
                         {theme && <p className="text-gray-600 mt-0.5">{theme}</p>}
                       </div>
                     </div>
-                    <div className={`mt-4 btn-subject ${colors.bg} text-white w-full text-center`}>
-                      Let&apos;s go! →
+                    <div className={`mt-4 btn-subject ${isBuild ? 'bg-teal-600' : colors.bg} text-white w-full text-center`}>
+                      {isBuild ? '📊 Enter My Results →' : 'Let\'s go! →'}
                     </div>
                   </Link>
                 </div>
@@ -125,10 +127,12 @@ export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
               const isToday = isCurrentWeek && dow === todayIndex
               // Past days: earlier this week, OR any day in a past week
               const isPast  = isCurrentWeek ? (dow < todayIndex) : true
+              const isBuild = subject === 'build'
+              const href = isBuild && dayId ? `/build/day/${dayId}/results` : dayId ? `/${subject}/day/${dayId}` : '#'
               return (
                 <Link
                   key={dow}
-                  href={dayId ? `/${subject}/day/${dayId}` : '#'}
+                  href={href}
                   className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all
                     ${isToday ? `${colors.light} ${colors.border} shadow-md` : 'bg-white border-gray-100 hover:border-gray-300'}
                     ${isPast && !isToday ? 'opacity-60' : ''}`}
@@ -138,6 +142,9 @@ export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
                     <p className="font-bold text-gray-700">{DAY_LABELS[dow]}</p>
                     <p className={`font-semibold ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</p>
                     {theme && <p className="text-sm text-gray-400">{theme}</p>}
+                    {isBuild && dayId && (
+                      <p className="text-xs font-bold text-teal-600 mt-0.5">📊 Enter My Results →</p>
+                    )}
                   </div>
                   {isToday && <span className="text-xs font-bold bg-keen-600 text-white px-2 py-1 rounded-full">TODAY</span>}
                   {isPast && !isToday && <span className="text-xl">✅</span>}
