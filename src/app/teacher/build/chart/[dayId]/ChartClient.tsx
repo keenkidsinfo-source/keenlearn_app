@@ -69,7 +69,7 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
           ? (b.metric ?? 0) - (a.metric ?? 0)
           : (a.metric ?? 999) - (b.metric ?? 999)
       )
-  }, [rows, students, isG12])
+  }, [rows, students, isG12, resultFields.leaderboard])
 
   const maxMetric = Math.max(...leaderboard.map(x => x.metric ?? 0), 1)
 

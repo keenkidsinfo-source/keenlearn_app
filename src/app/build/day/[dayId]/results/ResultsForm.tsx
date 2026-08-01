@@ -99,7 +99,7 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
             <p className="text-teal-200 text-sm font-semibold mb-1">Your result</p>
             <p className="text-5xl font-black">{c || '—'}</p>
             <p className="text-teal-200 text-sm mt-1">{unit}</p>
-            {note && <p className="text-teal-100 text-xs mt-2 italic">"{note}"</p>}
+            {note && <p className="text-teal-100 text-xs mt-2 italic">&ldquo;{note}&rdquo;</p>}
           </div>
 
           {/* Leaderboard — only shown if showLeaderboard is true */}
@@ -133,7 +133,7 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
                         <div className="ml-9 h-4 bg-gray-100 rounded overflow-hidden">
                           <div className={`h-full rounded transition-all duration-700 ${barColor}`} style={{ width: `${pct}%` }} />
                         </div>
-                        {entry.note && <p className="ml-9 text-xs text-gray-400 italic mt-1">"{entry.note}"</p>}
+                        {entry.note && <p className="ml-9 text-xs text-gray-400 italic mt-1">&ldquo;{entry.note}&rdquo;</p>}
                       </div>
                     )
                   })}
