@@ -41,6 +41,16 @@ const builds = [
     title: 'Cable Car',
     simpleMachine: 'Pulley',
     tagline: 'Build a paper cup that slides down a zip line and carries cargo!',
+    // resultFields defines the student submission form labels for this project.
+    // Copy this block into every future seed script and customise for that build.
+    resultFields: {
+      a:               { label: 'Round 1 — paperclips carried',     key: 'round1Clips'   },
+      b:               { label: 'After your fix — clips carried',    key: 'afterFixClips' },
+      c:               { label: 'Your BEST — maximum paperclips 🏆', key: 'maxClips'      },
+      unit:            'clips',
+      leaderboard:     'more',   // 'more' = higher score wins, 'less' = lower score wins
+      showLeaderboard: false,    // hide for G1-2
+    },
     steps: [
       {
         emoji: '🚡',
@@ -119,6 +129,14 @@ const builds = [
     title: 'Well Pulley',
     simpleMachine: 'Wheel & Axle',
     tagline: 'Build a working well with a crank that raises and lowers a bucket!',
+    resultFields: {
+      a:               { label: 'No cargo — how many cranks?',        key: 'cranksNoLoad'   },
+      b:               { label: '3 pennies in bucket — cranks?',      key: 'cranksWithLoad' },
+      c:               { label: 'After improvement — cranks 🏆',      key: 'cranksImproved' },
+      unit:            'cranks',
+      leaderboard:     'less',   // fewer cranks = better engineering
+      showLeaderboard: true,
+    },
     steps: [
       {
         emoji: '⚙️',
@@ -233,6 +251,7 @@ async function run() {
     const metadata = {
       simpleMachine: build.simpleMachine,
       tagline: build.tagline,
+      resultFields: build.resultFields,
       steps: stepsWithImages,
     }
     const stepCount = stepsWithImages.length

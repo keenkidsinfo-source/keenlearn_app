@@ -72,18 +72,12 @@ export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
           </p>
           <p className="text-sm font-bold text-gray-700">{formatWeekLabel(weekStart)}</p>
         </div>
-        {isCurrentWeek ? (
-          <span className="flex items-center gap-1 text-sm font-bold px-3 py-1.5 rounded-xl text-gray-300 cursor-default select-none">
-            Next week →
-          </span>
-        ) : (
-          <Link
-            href={`/dashboard?week=${nextWeek}`}
-            className="flex items-center gap-1 text-sm font-bold px-3 py-1.5 rounded-xl text-gray-500 hover:text-keen-600 hover:bg-gray-100 transition-all"
-          >
-            Next week →
-          </Link>
-        )}
+        <Link
+          href={`/dashboard?week=${nextWeek}`}
+          className="flex items-center gap-1 text-sm font-bold px-3 py-1.5 rounded-xl text-gray-500 hover:text-keen-600 hover:bg-gray-100 transition-all"
+        >
+          Next week →
+        </Link>
       </div>
 
       {!hasContent ? (

@@ -8,6 +8,7 @@ import {
   type GradeBand,
 } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
+import { getResultFields } from '@/lib/build-result-fields'
 import { ResultsForm } from './ResultsForm'
 
 interface Props { params: Promise<{ dayId: string }> }
@@ -18,11 +19,9 @@ export default async function BuildResultsPage({ params }: Props) {
 
   const { dayId } = await params
 
-  // Load the day
   const [day] = await db.select().from(curriculumDays).where(eq(curriculumDays.id, dayId)).limit(1)
   if (!day || day.subject !== 'build') notFound()
 
-  // Load content item
   const [row] = await db
     .select({ item: contentItems })
     .from(curriculumContent)
@@ -34,8 +33,10 @@ export default async function BuildResultsPage({ params }: Props) {
 
   const item = row.item
   const gradeBand = (item.gradeBand ?? 'g1-2') as GradeBand
+  const meta = (item.metadata ?? {}) as Record<string, any>
+  const resultFields = getResultFields(meta, gradeBand)
 
-  // Load student's existing submission (if any)
+  // Load student's existing submission (for pre-population)
   const [existingSession] = await db
     .select()
     .from(studentSessions)
@@ -48,27 +49,20 @@ export default async function BuildResultsPage({ params }: Props) {
   const sd = (existingSession?.sessionData ?? {}) as Record<string, any>
   const br = (sd.buildResults ?? {}) as Record<string, any>
 
-  const initial = gradeBand === 'g1-2'
-    ? {
-        a: br.round1Clips != null ? String(br.round1Clips) : '',
-        b: br.afterFixClips != null ? String(br.afterFixClips) : '',
-        c: br.maxClips != null ? String(br.maxClips) : '',
-        note: br.note ?? '',
-      }
-    : {
-        a: br.cranksNoLoad != null ? String(br.cranksNoLoad) : '',
-        b: br.cranksWithLoad != null ? String(br.cranksWithLoad) : '',
-        c: br.cranksImproved != null ? String(br.cranksImproved) : '',
-        note: br.note ?? '',
-      }
+  const initial = {
+    a: br[resultFields.a.key] != null ? String(br[resultFields.a.key]) : '',
+    b: br[resultFields.b.key] != null ? String(br[resultFields.b.key]) : '',
+    c: br[resultFields.c.key] != null ? String(br[resultFields.c.key]) : '',
+    note: br.note ?? '',
+  }
 
   return (
     <ResultsForm
       contentItemId={item.id}
       dayId={dayId}
-      gradeBand={gradeBand}
       buildTitle={item.title}
       myStudentId={session.sub}
+      resultFields={resultFields}
       initial={initial}
     />
   )

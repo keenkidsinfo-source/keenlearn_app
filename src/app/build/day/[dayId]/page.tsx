@@ -60,10 +60,12 @@ export default async function BuildDayPage({ params }: Props) {
   const r2Urls = stepCount > 0 && r2Key
     ? await getStepImageUrls(r2Key.replace(/\/$/, ''), stepCount)
     : []
-  // Build step images are for teacher/admin only — students follow along with the teacher
+  // Build steps are teacher/admin only — students go straight to results entry
   const isTeacher = session.role === 'teacher' || session.role === 'admin'
+  if (!isTeacher) redirect(`/build/day/${dayId}/results`)
+
   const rawStepUrls = metaImageUrls.some(u => u) ? metaImageUrls : r2Urls
-  const stepUrls = isTeacher ? rawStepUrls : []
+  const stepUrls = rawStepUrls
 
   return (
     <StepViewer
@@ -76,7 +78,6 @@ export default async function BuildDayPage({ params }: Props) {
       initialStep={lastStep}
       completed={sessionData?.completed ?? false}
       gradeBand={(item.gradeBand as GradeBand | null) ?? null}
-      isTeacher={isTeacher}
     />
   )
 }

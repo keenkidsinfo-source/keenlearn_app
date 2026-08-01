@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef, useCallback } from 'react'
 import type { GradeBand } from '@/lib/db/schema'
+import type { ResultFields } from '@/lib/build-result-fields'
 
 interface Student {
   id: string
@@ -24,13 +25,14 @@ interface Props {
   buildTitle: string
   buildDayId: string
   weekStartDate: string
+  resultFields: ResultFields
   initialRows?: Record<string, { a: string; b: string; c: string; note: string }>
 }
 
 function display(s: Student) { return s.displayName ?? s.name }
 function safeInt(v: string) { const n = parseInt(v, 10); return isNaN(n) ? undefined : Math.max(0, n) }
 
-export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekStartDate, initialRows = {} }: Props) {
+export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekStartDate, resultFields, initialRows = {} }: Props) {
   const isG12 = gradeBand === 'g1-2'
 
   const [rows, setRows] = useState<Record<string, Row>>(
@@ -63,9 +65,9 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
       .map(s => ({ student: s, metric: safeInt(rows[s.id].c) }))
       .filter(x => x.metric != null)
       .sort((a, b) =>
-        isG12
-          ? (b.metric ?? 0) - (a.metric ?? 0)       // more clips = better
-          : (a.metric ?? 999) - (b.metric ?? 999)    // fewer cranks = better
+        resultFields.leaderboard === 'more'
+          ? (b.metric ?? 0) - (a.metric ?? 0)
+          : (a.metric ?? 999) - (b.metric ?? 999)
       )
   }, [rows, students, isG12])
 
@@ -123,10 +125,10 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
     />
   )
 
-  const colA = isG12 ? 'Round 1' : 'No cargo'
-  const colB = isG12 ? 'After fix' : '3 pennies'
-  const colC = isG12 ? 'MAX 🏆' : 'Best 🏆'
-  const unit  = isG12 ? 'clips' : 'cranks'
+  const colA = resultFields.a.label
+  const colB = resultFields.b.label
+  const colC = resultFields.c.label
+  const unit  = resultFields.unit
 
   return (
     <div className="min-h-screen bg-gray-50">

@@ -6,9 +6,9 @@ export const dynamic = 'force-dynamic'
 import { db } from '@/lib/db'
 import {
   classrooms, classroomCurriculum, curriculum,
-  curriculumDays, schoolSchedule, schools, users,
+  curriculumDays, curriculumContent, schoolSchedule, schools, users,
 } from '@/lib/db/schema'
-import { eq, and } from 'drizzle-orm'
+import { eq, and, desc } from 'drizzle-orm'
 import Link from 'next/link'
 import type { Subject } from '@/lib/db/schema'
 import { WeekDays } from './WeekDays'
@@ -99,6 +99,22 @@ export default async function DashboardPage({
     return { dow, subject, dayId: currDay?.id ?? null, theme: currDay?.theme ?? null }
   })
 
+  // Find the nearest build day for this student's classroom (current or upcoming)
+  const nearestBuildRows = classroom
+    ? await db
+        .select({ dayId: curriculumDays.id })
+        .from(curriculumDays)
+        .innerJoin(curriculumContent, eq(curriculumContent.curriculumDayId, curriculumDays.id))
+        .innerJoin(classroomCurriculum, eq(classroomCurriculum.curriculumId, curriculumDays.curriculumId))
+        .where(and(
+          eq(classroomCurriculum.classroomId, classroom.id),
+          eq(curriculumDays.subject, 'build'),
+        ))
+        .orderBy(desc(classroomCurriculum.weekStartDate))
+        .limit(1)
+    : []
+  const nearestBuildDayId = nearestBuildRows[0]?.dayId ?? null
+
   const labToShow = getLabForDashboard()
 
   return (
@@ -126,6 +142,22 @@ export default async function DashboardPage({
 
       <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
         <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned} />
+
+        {/* Build Day — students only enter results, teacher runs the steps */}
+        {nearestBuildDayId && (
+          <Link
+            href={`/build/day/${nearestBuildDayId}/results`}
+            className="flex items-center gap-4 bg-teal-600 hover:bg-teal-500 text-white rounded-3xl p-5 shadow-md hover:shadow-lg transition-all active:scale-95"
+          >
+            <span className="text-5xl">📊</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-teal-200 uppercase tracking-wide mb-0.5">🏗️ Build Day</p>
+              <h3 className="text-lg font-black">Enter My Results</h3>
+              <p className="text-teal-200 text-sm">Submit your numbers to the class chart</p>
+            </div>
+            <span className="text-2xl shrink-0">→</span>
+          </Link>
+        )}
 
         {/* Science Lab card — shown when a lab is current or upcoming */}
         {labToShow && (

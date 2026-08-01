@@ -11,6 +11,7 @@ import { eq, and, isNull, inArray } from 'drizzle-orm'
 import { getMondayStr } from '@/lib/teacher-dashboard'
 import { ChartClient } from './ChartClient'
 import type { GradeBand } from '@/lib/db/schema'
+import { getResultFields } from '@/lib/build-result-fields'
 
 interface Props { params: Promise<{ dayId: string }> }
 
@@ -37,6 +38,8 @@ export default async function BuildChartPage({ params }: Props) {
 
   const item = row.item
   const gradeBand = (item.gradeBand ?? 'g1-2') as GradeBand
+  const meta = (item.metadata ?? {}) as Record<string, any>
+  const resultFields = getResultFields(meta, gradeBand)
 
   // Load the classroom that matches this content item's grade band.
   // A teacher may have classrooms for multiple grade bands; we pick the one
@@ -78,25 +81,16 @@ export default async function BuildChartPage({ params }: Props) {
         ))
     : []
 
-  // Build initial rows from student submissions
+  // Build initial rows from student submissions (keys come from resultFields)
   const initialRows: Record<string, { a: string; b: string; c: string; note: string }> = {}
   for (const s of existingSessions) {
     const sd = (s.sessionData ?? {}) as Record<string, any>
     const br = (sd.buildResults ?? {}) as Record<string, any>
-    if (isG12) {
-      initialRows[s.studentId] = {
-        a: br.round1Clips != null ? String(br.round1Clips) : '',
-        b: br.afterFixClips != null ? String(br.afterFixClips) : '',
-        c: br.maxClips != null ? String(br.maxClips) : '',
-        note: br.note ?? '',
-      }
-    } else {
-      initialRows[s.studentId] = {
-        a: br.cranksNoLoad != null ? String(br.cranksNoLoad) : '',
-        b: br.cranksWithLoad != null ? String(br.cranksWithLoad) : '',
-        c: br.cranksImproved != null ? String(br.cranksImproved) : '',
-        note: br.note ?? '',
-      }
+    initialRows[s.studentId] = {
+      a: br[resultFields.a.key] != null ? String(br[resultFields.a.key]) : '',
+      b: br[resultFields.b.key] != null ? String(br[resultFields.b.key]) : '',
+      c: br[resultFields.c.key] != null ? String(br[resultFields.c.key]) : '',
+      note: br.note ?? '',
     }
   }
 
@@ -120,6 +114,7 @@ export default async function BuildChartPage({ params }: Props) {
       buildTitle={item.title}
       buildDayId={dayId}
       weekStartDate={weekStartDate}
+      resultFields={resultFields}
       initialRows={initialRows}
     />
   )
