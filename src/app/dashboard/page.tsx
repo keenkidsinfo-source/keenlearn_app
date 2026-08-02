@@ -8,7 +8,7 @@ import {
   classrooms, classroomCurriculum, curriculum,
   curriculumDays, curriculumContent, schoolSchedule, schools, users,
 } from '@/lib/db/schema'
-import { eq, and, desc } from 'drizzle-orm'
+import { eq, and, desc, lte } from 'drizzle-orm'
 import Link from 'next/link'
 import type { Subject } from '@/lib/db/schema'
 import { WeekDays } from './WeekDays'
@@ -99,7 +99,8 @@ export default async function DashboardPage({
     return { dow, subject, dayId: currDay?.id ?? null, theme: currDay?.theme ?? null }
   })
 
-  // Find the nearest build day for this student's classroom (current or upcoming)
+  // Find the most recent build day that has already started (weekStartDate <= today's Monday)
+  // Don't surface future build weeks before they begin
   const nearestBuildRows = classroom
     ? await db
         .select({ dayId: curriculumDays.id })
@@ -109,6 +110,7 @@ export default async function DashboardPage({
         .where(and(
           eq(classroomCurriculum.classroomId, classroom.id),
           eq(curriculumDays.subject, 'build'),
+          lte(classroomCurriculum.weekStartDate, mondayStr),
         ))
         .orderBy(desc(classroomCurriculum.weekStartDate))
         .limit(1)

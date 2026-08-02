@@ -134,8 +134,8 @@ export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
                   key={dow}
                   href={href}
                   className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all
-                    ${isToday ? `${colors.light} ${colors.border} shadow-md` : 'bg-white border-gray-100 hover:border-gray-300'}
-                    ${isPast && !isToday ? 'opacity-60' : ''}`}
+                    ${isToday ? `${colors.light} ${colors.border} shadow-md` : isBuild && dayId ? 'bg-teal-50 border-teal-200 hover:border-teal-300' : 'bg-white border-gray-100 hover:border-gray-300'}
+                    ${isPast && !isToday && !(isBuild && dayId) ? 'opacity-60' : ''}`}
                 >
                   <span className="text-3xl w-10 text-center">{SUBJECT_EMOJI[subject as Subject]}</span>
                   <div className="flex-1">
