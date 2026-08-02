@@ -15,6 +15,7 @@ interface Props {
   weekDays: WeekDay[]
   weekStart: string   // YYYY-MM-DD Monday passed from server
   hasContent: boolean
+  canEnterResults?: boolean  // false for G1-2 — teacher handles their data
 }
 
 function addDays(dateStr: string, days: number): string {
@@ -46,7 +47,7 @@ function formatWeekLabel(mondayStr: string): string {
   return `${month} ${d.getDate()} – ${endMonth} ${friday.getDate()}`
 }
 
-export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
+export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = true }: Props) {
   // Use browser's local clock — avoids Vercel UTC vs user timezone mismatch
   const localDow    = new Date().getDay()           // 0=Sun … 6=Sat
   const todayIndex  = localDow === 0 ? 5 : localDow // clamp Sunday → show Friday
@@ -95,7 +96,7 @@ export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
             .filter(d => d.dow === todayIndex && d.subject)
             .map(({ dow, subject, dayId, theme }) => {
               const colors = SUBJECT_COLORS[subject as Subject]
-              const isBuild = subject === 'build'
+              const isBuild = subject === 'build' && canEnterResults
               const href = isBuild && dayId ? `/build/day/${dayId}/results` : dayId ? `/${subject}/day/${dayId}` : '#'
               return (
                 <div key={dow} className={`${colors.light} border-2 ${colors.border} rounded-3xl p-6 mb-6`}>
@@ -127,7 +128,7 @@ export function WeekDays({ weekDays, weekStart, hasContent }: Props) {
               const isToday = isCurrentWeek && dow === todayIndex
               // Past days: earlier this week, OR any day in a past week
               const isPast  = isCurrentWeek ? (dow < todayIndex) : true
-              const isBuild = subject === 'build'
+              const isBuild = subject === 'build' && canEnterResults
               const href = isBuild && dayId ? `/build/day/${dayId}/results` : dayId ? `/${subject}/day/${dayId}` : '#'
               return (
                 <Link

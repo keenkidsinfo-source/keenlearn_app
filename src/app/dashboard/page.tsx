@@ -99,9 +99,12 @@ export default async function DashboardPage({
     return { dow, subject, dayId: currDay?.id ?? null, theme: currDay?.theme ?? null }
   })
 
+  // G1-2 students don't self-enter results — teacher handles their data via the chart page
+  const canEnterResults = classroom?.gradeBand !== 'g1-2'
+
   // Find the most recent build day that has already started (weekStartDate <= today's Monday)
   // Don't surface future build weeks before they begin
-  const nearestBuildRows = classroom
+  const nearestBuildRows = canEnterResults && classroom
     ? await db
         .select({ dayId: curriculumDays.id })
         .from(curriculumDays)
@@ -143,7 +146,7 @@ export default async function DashboardPage({
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
-        <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned || !!nearestBuildDayId} />
+        <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned || !!nearestBuildDayId} canEnterResults={canEnterResults} />
 
         {/* Build Day card — only shown when the build day isn't already visible as a tile in the current week */}
         {nearestBuildDayId && !weekDays.some(d => d.subject === 'build' && d.dayId) && (
