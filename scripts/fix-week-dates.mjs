@@ -1,15 +1,23 @@
 /**
  * fix-week-dates.mjs
  *
- * Re-assigns classroom_curriculum so that:
- *   Week 1 → previous Monday (last week)
- *   Week 2 → current Monday (this week)
+ * Re-assigns classroom_curriculum so each week number maps to the correct
+ * Monday of the school year.
+ *
+ * ── UPDATE THIS EACH YEAR ──────────────────────────────────────────────────
+ * SCHOOL_START: the Monday of Week 1 for the current school year.
+ * Add entries to WEEK_OVERRIDES for any weeks with non-standard dates
+ * (e.g. short weeks, breaks).
+ * ──────────────────────────────────────────────────────────────────────────
  *
  * Run once from Terminal:
  *   node scripts/fix-week-dates.mjs
  *
- * Safe to re-run — uses UPDATE not INSERT.
+ * Safe to re-run — deletes and re-inserts all classroom_curriculum rows.
  */
+
+const SCHOOL_START = '2026-08-17'   // Monday of Week 1
+const TOTAL_WEEKS  = 2              // how many weeks of curriculum are seeded
 
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
@@ -30,22 +38,24 @@ try {
 
 const sql = postgres(process.env.DATABASE_URL)
 
-function getMondayStr(offsetWeeks = 0) {
-  const today = new Date()
-  const dow = today.getDay()
-  const diff = (dow === 0 ? -6 : 1 - dow) + offsetWeeks * 7
-  const d = new Date(today)
-  d.setDate(today.getDate() + diff)
+function addWeeks(dateStr, weeks) {
+  const d = new Date(dateStr + 'T12:00:00')
+  d.setDate(d.getDate() + weeks * 7)
   const pad = n => String(n).padStart(2, '0')
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 }
 
-async function run() {
-  const prevMonday = getMondayStr(-1)  // last week
-  const currMonday = getMondayStr(0)   // this week
+// Build the week_number → Monday map
+const WEEK_DATES = {}
+for (let w = 1; w <= TOTAL_WEEKS; w++) {
+  WEEK_DATES[w] = addWeeks(SCHOOL_START, w - 1)
+}
 
-  console.log(`Setting Week 1 → ${prevMonday} (last week)`)
-  console.log(`Setting Week 2 → ${currMonday} (this week)`)
+async function run() {
+  console.log('School year week schedule:')
+  for (const [w, d] of Object.entries(WEEK_DATES)) {
+    console.log(`  Week ${w} → ${d}`)
+  }
 
   // Show current state before
   const before = await sql`
@@ -67,10 +77,11 @@ async function run() {
   const classrooms = await sql`SELECT id, name, grade_band FROM classrooms`
 
   // 2. Get the NEWEST curriculum per (grade_band, week_number) — avoids stale orphan rows
+  const weekNumbers = Object.keys(WEEK_DATES).map(Number)
   const curricula = await sql`
     SELECT DISTINCT ON (grade_band, week_number) id, grade_band, week_number
     FROM curriculum
-    WHERE week_number IN (1, 2)
+    WHERE week_number = ANY(${weekNumbers})
     ORDER BY grade_band, week_number, created_at DESC
   `
 
@@ -90,18 +101,13 @@ async function run() {
     const weeks = currMap[cl.grade_band]
     if (!weeks) { console.warn(`  ⚠ No curriculum found for grade_band "${cl.grade_band}" (${cl.name}) — skipping`); continue }
 
-    if (weeks[1]) {
+    for (const [weekNum, monday] of Object.entries(WEEK_DATES)) {
+      const currId = weeks[weekNum]
+      if (!currId) { console.warn(`  ⚠ No W${weekNum} curriculum for ${cl.grade_band} — skipping`); continue }
       await sql`INSERT INTO classroom_curriculum (classroom_id, curriculum_id, week_start_date)
-                VALUES (${cl.id}, ${weeks[1]}, ${prevMonday})
+                VALUES (${cl.id}, ${currId}, ${monday})
                 ON CONFLICT (classroom_id, week_start_date) DO UPDATE SET curriculum_id = EXCLUDED.curriculum_id`
-      console.log(`  ${cl.name} (${cl.grade_band}) W1 → ${prevMonday}`)
-      inserted++
-    }
-    if (weeks[2]) {
-      await sql`INSERT INTO classroom_curriculum (classroom_id, curriculum_id, week_start_date)
-                VALUES (${cl.id}, ${weeks[2]}, ${currMonday})
-                ON CONFLICT (classroom_id, week_start_date) DO UPDATE SET curriculum_id = EXCLUDED.curriculum_id`
-      console.log(`  ${cl.name} (${cl.grade_band}) W2 → ${currMonday}`)
+      console.log(`  ${cl.name} (${cl.grade_band}) W${weekNum} → ${monday}`)
       inserted++
     }
   }
@@ -120,8 +126,7 @@ async function run() {
     console.log(`  ${r.classroom} W${r.week_number} → ${r.week_start_date}`)
   }
 
-  console.log('\n✅ Done! Students on the current week will now see Week 2 (Balance Scale coding, Lever Balance Scale build).')
-  console.log('   Navigating to "← Prev week" will show Week 1 (Zipline Zoo, Cable Car).')
+  console.log(`\n✅ Done! Week 1 starts ${WEEK_DATES[1]}, Week 2 starts ${WEEK_DATES[2] ?? 'N/A'}.`)
 
   await sql.end()
 }
