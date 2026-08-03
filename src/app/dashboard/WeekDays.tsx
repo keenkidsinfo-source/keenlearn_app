@@ -97,7 +97,11 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
             .map(({ dow, subject, dayId, theme }) => {
               const colors = SUBJECT_COLORS[subject as Subject]
               const isBuild = subject === 'build' && canEnterResults
-              const href = isBuild && dayId ? `/build/day/${dayId}/results` : dayId ? `/${subject}/day/${dayId}` : '#'
+              const href = isBuild && dayId
+                ? `/build/day/${dayId}/results`
+                : subject === 'build'
+                  ? '#'           // G1-2: build tile is display-only, not clickable
+                  : dayId ? `/${subject}/day/${dayId}` : '#'
               return (
                 <div key={dow} className={`${colors.light} border-2 ${colors.border} rounded-3xl p-6 mb-6`}>
                   <p className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-1">Today</p>
@@ -129,7 +133,11 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
               // Past days: earlier this week, OR any day in a past week
               const isPast  = isCurrentWeek ? (dow < todayIndex) : true
               const isBuild = subject === 'build' && canEnterResults
-              const href = isBuild && dayId ? `/build/day/${dayId}/results` : dayId ? `/${subject}/day/${dayId}` : '#'
+              const href = isBuild && dayId
+                ? `/build/day/${dayId}/results`
+                : subject === 'build'
+                  ? '#'           // G1-2: build tile is display-only, not clickable
+                  : dayId ? `/${subject}/day/${dayId}` : '#'
               return (
                 <Link
                   key={dow}

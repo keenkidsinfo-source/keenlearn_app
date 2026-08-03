@@ -4,7 +4,7 @@ import { redirect, notFound } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
 import {
-  curriculumDays, curriculumContent, contentItems, studentSessions,
+  curriculumDays, curriculumContent, contentItems, studentSessions, classrooms,
   type GradeBand,
 } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
@@ -16,6 +16,13 @@ interface Props { params: Promise<{ dayId: string }> }
 export default async function BuildResultsPage({ params }: Props) {
   const session = await getSession()
   if (!session) redirect('/login')
+
+  // G1-2 students don't self-enter results — redirect them to dashboard
+  if (session.classroomId) {
+    const [classroom] = await db.select({ gradeBand: classrooms.gradeBand })
+      .from(classrooms).where(eq(classrooms.id, session.classroomId)).limit(1)
+    if (classroom?.gradeBand === 'g1-2') redirect('/dashboard')
+  }
 
   const { dayId } = await params
 
