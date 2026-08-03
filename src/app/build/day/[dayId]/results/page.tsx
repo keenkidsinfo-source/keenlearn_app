@@ -21,7 +21,7 @@ export default async function BuildResultsPage({ params }: Props) {
   if (session.classroomId) {
     const [classroom] = await db.select({ gradeBand: classrooms.gradeBand })
       .from(classrooms).where(eq(classrooms.id, session.classroomId)).limit(1)
-    if (classroom?.gradeBand === 'g1-2') redirect('/dashboard')
+    if (classroom?.gradeBand === 'g1-2') redirect(`/build/day/${(await params).dayId}/watch`)
   }
 
   const { dayId } = await params

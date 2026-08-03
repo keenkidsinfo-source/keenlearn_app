@@ -97,26 +97,42 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
             .map(({ dow, subject, dayId, theme }) => {
               const colors = SUBJECT_COLORS[subject as Subject]
               const isBuild = subject === 'build' && canEnterResults
+              const isG12Build = subject === 'build' && !canEnterResults
               const href = isBuild && dayId
                 ? `/build/day/${dayId}/results`
-                : subject === 'build'
-                  ? '#'           // G1-2: build tile is display-only, not clickable
-                  : dayId ? `/${subject}/day/${dayId}` : '#'
+                : isG12Build && dayId
+                  ? `/build/day/${dayId}/watch`
+                  : dayId && subject !== 'build' ? `/${subject}/day/${dayId}` : '#'
               return (
                 <div key={dow} className={`${colors.light} border-2 ${colors.border} rounded-3xl p-6 mb-6`}>
                   <p className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-1">Today</p>
-                  <Link href={href} className="block">
-                    <div className="flex items-center gap-4">
-                      <span className="text-5xl">{SUBJECT_EMOJI[subject as Subject]}</span>
-                      <div>
-                        <h2 className={`text-2xl font-black ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</h2>
-                        {theme && <p className="text-gray-600 mt-0.5">{theme}</p>}
+                  {isG12Build ? (
+                    <div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-5xl">{SUBJECT_EMOJI[subject as Subject]}</span>
+                        <div>
+                          <h2 className={`text-2xl font-black ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</h2>
+                          {theme && <p className="text-gray-600 mt-0.5">{theme}</p>}
+                        </div>
+                      </div>
+                      <div className="mt-4 rounded-2xl bg-orange-100 border border-orange-200 text-orange-700 font-bold text-center py-3 px-4">
+                        🏗️ Your teacher will record your score today!
                       </div>
                     </div>
-                    <div className={`mt-4 btn-subject ${isBuild ? 'bg-teal-600' : colors.bg} text-white w-full text-center`}>
-                      {isBuild ? '📊 Enter My Results →' : 'Let\'s go! →'}
-                    </div>
-                  </Link>
+                  ) : (
+                    <Link href={href} className="block">
+                      <div className="flex items-center gap-4">
+                        <span className="text-5xl">{SUBJECT_EMOJI[subject as Subject]}</span>
+                        <div>
+                          <h2 className={`text-2xl font-black ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</h2>
+                          {theme && <p className="text-gray-600 mt-0.5">{theme}</p>}
+                        </div>
+                      </div>
+                      <div className={`mt-4 btn-subject ${isBuild ? 'bg-teal-600' : colors.bg} text-white w-full text-center`}>
+                        {isBuild ? '📊 Enter My Results →' : "Let's go! →"}
+                      </div>
+                    </Link>
+                  )}
                 </div>
               )
             })}
@@ -130,22 +146,22 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
               if (!subject) return null
               const colors  = SUBJECT_COLORS[subject as Subject]
               const isToday = isCurrentWeek && dow === todayIndex
-              // Past days: earlier this week, OR any day in a past week
               const isPast  = isCurrentWeek ? (dow < todayIndex) : true
               const isBuild = subject === 'build' && canEnterResults
+              // G1-2 build tile: display-only (teacher records their score)
+              const isG12Build = subject === 'build' && !canEnterResults && !!dayId
               const href = isBuild && dayId
                 ? `/build/day/${dayId}/results`
-                : subject === 'build'
-                  ? '#'           // G1-2: build tile is display-only, not clickable
-                  : dayId ? `/${subject}/day/${dayId}` : '#'
-              return (
-                <Link
-                  key={dow}
-                  href={href}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all
-                    ${isToday ? `${colors.light} ${colors.border} shadow-md` : isBuild && dayId ? 'bg-teal-50 border-teal-200 hover:border-teal-300' : 'bg-white border-gray-100 hover:border-gray-300'}
-                    ${isPast && !isToday && !(isBuild && dayId) ? 'opacity-60' : ''}`}
-                >
+                : isG12Build
+                  ? `/build/day/${dayId}/watch`
+                  : subject !== 'build' && dayId ? `/${subject}/day/${dayId}` : undefined
+
+              const tileClass = `flex items-center gap-4 p-4 rounded-2xl border-2 transition-all
+                ${isToday ? `${colors.light} ${colors.border} shadow-md` : isBuild && dayId ? 'bg-teal-50 border-teal-200 hover:border-teal-300' : isG12Build ? 'bg-orange-50 border-orange-200' : 'bg-white border-gray-100 hover:border-gray-300'}
+                ${isPast && !isToday && !(isBuild && dayId) && !isG12Build ? 'opacity-60' : ''}`
+
+              const inner = (
+                <>
                   <span className="text-3xl w-10 text-center">{SUBJECT_EMOJI[subject as Subject]}</span>
                   <div className="flex-1">
                     <p className="font-bold text-gray-700">{DAY_LABELS[dow]}</p>
@@ -154,11 +170,16 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                     {isBuild && dayId && (
                       <p className="text-xs font-bold text-teal-600 mt-0.5">📊 Enter My Results →</p>
                     )}
+                    {isG12Build && (
+                      <p className="text-xs font-semibold text-orange-500 mt-0.5">🏗️ Watch the big screen! →</p>
+                    )}
                   </div>
                   {isToday && <span className="text-xs font-bold bg-keen-600 text-white px-2 py-1 rounded-full">TODAY</span>}
                   {isPast && !isToday && <span className="text-xl">✅</span>}
-                </Link>
+                </>
               )
+
+              return <Link key={dow} href={href ?? '#'} className={tileClass}>{inner}</Link>
             })}
           </div>
         </>
