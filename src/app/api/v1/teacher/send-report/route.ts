@@ -45,7 +45,8 @@ function matchChild(
 ) {
   const last  = student.name.trim().toLowerCase()
   const first = (student.displayName ?? '').trim().toLowerCase()
-  const full  = first ? `${first} ${last}` : last
+  // If displayName === name, they're the same field — use it as the full name directly
+  const full  = (first && first !== last) ? `${first} ${last}` : last
 
   // Filter to same school first (loose match — portal school_name may differ slightly)
   const schoolSlug = schoolName.toLowerCase().replace(/[^a-z0-9]/g, '')
@@ -55,8 +56,16 @@ function matchChild(
   })
   const pool = sameSchool.length > 0 ? sameSchool : children
 
-  // Exact full-name match only
-  return pool.find(c => c.full_name.trim().toLowerCase() === full) ?? null
+  // Exact full-name match first
+  const exact = pool.find(c => c.full_name.trim().toLowerCase() === full)
+  if (exact) return exact
+
+  // First-name-only fallback: student "Krisha" matches portal "Krisha Praveen"
+  // Safe because we're already filtered to the same school
+  return pool.find(c => {
+    const portalFirst = c.full_name.trim().toLowerCase().split(/\s+/)[0]
+    return portalFirst === full || c.full_name.trim().toLowerCase().startsWith(full + ' ')
+  }) ?? null
 }
 
 // ── Schema ────────────────────────────────────────────────────────────────────
