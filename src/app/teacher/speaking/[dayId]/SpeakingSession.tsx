@@ -72,6 +72,186 @@ const PILLAR_COLOR: Record<string, string> = {
   'Mind':  'bg-amber-500',
 }
 
+// ── Card content for fullscreen projection ────────────────────────────────────
+const CARD_CONTENT: Record<string, { bg: string; lines: string[] }> = {
+  'Three Pillars Poster': {
+    bg: 'bg-teal-600',
+    lines: ['🎙 VOICE', 'Volume · Pace · Clarity · Expression', '', '🧍 BODY', 'Posture · Eye Contact · Gestures · Space', '', '🧠 MIND', 'Courage · Preparation · Focus · Purpose'],
+  },
+  'Voice Dial': {
+    bg: 'bg-sky-600',
+    lines: ['🎚 VOICE DIAL', '', '1 — Whisper', '2 — Quiet (indoors)', '3 — Normal conversation', '4 — Speaking to the class ✅', '5 — Outside / projecting'],
+  },
+  'Hook Types Card': {
+    bg: 'bg-amber-500',
+    lines: ['🎣 THE 3 HOOK TYPES', '', '1️⃣  ASK A QUESTION', '"Have you ever wondered…?"', '', '2️⃣  WOW FACT', '"Did you know…?"', '', '3️⃣  TINY STORY', '"One morning I woke up and…"'],
+  },
+  'Three-Part Train': {
+    bg: 'bg-purple-600',
+    lines: ['🚂 THE SPEECH TRAIN', '', '🚂  HOOK (engine)', '', '🚃  THING 1', '🚃  THING 2', '🚃  THING 3', '', '🚃  BIG FINISH (caboose)'],
+  },
+  'Story Mountain': {
+    bg: 'bg-green-600',
+    lines: ['⛰ STORY MOUNTAIN', '', '🌄  BEGINNING — who, where, when', '⚡  PROBLEM — something goes wrong', '💪  ACTION — what happened next', '🏁  END — how it resolved', '💭  SO WHAT — what you learned'],
+  },
+  'Brave Breathing Card': {
+    bg: 'bg-indigo-600',
+    lines: ['🌬 BRAVE BREATHING', '', 'IN  · · · 2 · · · 3 · · · 4', '', 'HOLD · 2 · · · 3 · · · 4', '', 'OUT · · 2 · · · 3 · · · 4 · · · 5 · · · 6', '', 'Repeat × 3'],
+  },
+  'Pre-Speech Ritual Card': {
+    bg: 'bg-teal-700',
+    lines: ['✨ PRE-SPEECH RITUAL', '', '1️⃣  Brave Breath × 1', '2️⃣  Power Pose — 5 seconds', '3️⃣  "I know my speech. I am ready."', '4️⃣  Walk up · Plant feet · Pause · Begin'],
+  },
+  'Body Check Card': {
+    bg: 'bg-purple-700',
+    lines: ['🧍 BODY CHECK', '', '👟  FEET — hip-width, planted', '💪  CORE — tall, not stiff', '✋  HANDS — loose at your sides', '😊  FACE — open, forward', '👁  EYES — scanning the room'],
+  },
+  'Power 4 Card': {
+    bg: 'bg-purple-600',
+    lines: ['💥 POWER 4', '', '1️⃣  STAND TALL', '2️⃣  HANDS READY', '3️⃣  EYES OUT', '4️⃣  TAKE UP SPACE'],
+  },
+  'Feedback Sandwich Card': {
+    bg: 'bg-orange-500',
+    lines: ['🥪 FEEDBACK SANDWICH', '', '🍞  TOP BREAD', '"What I liked was… [specific thing] because [why it worked]"', '', '🥬  FILLING', '"One thing to try next time: [one suggestion]"', '', '🍞  BOTTOM BREAD', '"I\'m excited to see you…"'],
+  },
+  'Hook Types Card (G3-4)': {
+    bg: 'bg-amber-500',
+    lines: ['🎣 HOOK TYPES', '', '❓  QUESTION — make them think', '📊  WOW FACT — surprise them', '📖  TINY STORY — pull them in', '🎭  BOLD STATEMENT — take a position', '🔮  SCENARIO — "Imagine if…"'],
+  },
+  'PIE Card': {
+    bg: 'bg-blue-600',
+    lines: ['🥧 PIE PARAGRAPH', '', '📌  POINT', 'State your argument clearly', '', '📖  ILLUSTRATE', 'Give a specific fact, story, or example', '', '💡  EXPLAIN', '"This shows that [Your Point]…"'],
+  },
+  'Conclusion Formula Card': {
+    bg: 'bg-green-700',
+    lines: ['🏁 CONCLUSION FORMULA', '', '🔄  Echo the Hook — close the loop', '📌  Restate Your Point — rephrase it', '📋  Remind Your Plan — "We have seen…"', '💥  Lasting Impression — challenge / vision / call to action'],
+  },
+  'PREP Framework Card': {
+    bg: 'bg-teal-700',
+    lines: ['⚡ PREP FRAMEWORK', '', '📌  P — POINT', 'Take a position in sentence 1', '', '💡  R — REASON', '"The reason I believe this is…"', '', '📖  E — EXAMPLE', '"For instance…"', '', '🔁  P — POINT again (with a twist)'],
+  },
+  'Persuasion Triangle': {
+    bg: 'bg-red-600',
+    lines: ['🔺 PERSUASION TRIANGLE', '', '🎓  ETHOS — credibility', '"I know this because…"', '', '❤️  PATHOS — emotion', '"Imagine feeling…"', '', '📊  LOGOS — logic', '"Studies show… / The data reveals…"'],
+  },
+  'C-R-C Model Card': {
+    bg: 'bg-orange-600',
+    lines: ['🥪 C-R-C EVALUATION', '', '⭐  COMMENDATION', '"What you did well — specifically — and WHY it worked"', '', '💡  RECOMMENDATION', '"One thing to try — and HOW to do it"', '', '⭐  COMMENDATION', '"What I\'m excited to see you do next"'],
+  },
+  'Evaluator\'s Checklist': {
+    bg: 'bg-slate-700',
+    lines: ['🔍 EVALUATOR CHECKLIST', '', '🎙  VOICE — volume, pace, expression', '🧍  BODY — posture, eye contact, gesture', '🗺  STRUCTURE — all parts present?', '💡  CONTENT — specific evidence?', '💥  IMPACT — did it move you?'],
+  },
+  'Showcase Checklist': {
+    bg: 'bg-teal-700',
+    lines: ['✅ SHOWCASE CHECKLIST', '', '🎣  Hook — grabbed attention?', '📌  Three Things — clear structure?', '👁  Eye Contact — connected with audience?', '🔊  Volume — heard from the back?', '🏁  Big Finish — stuck the landing?'],
+  },
+  'Sensory Detail Card': {
+    bg: 'bg-green-600',
+    lines: ['🔬 SENSORY DETAILS', '', '👁  SIGHT — what did it look like?', '👂  SOUND — what did you hear?', '👃  SMELL — what was in the air?', '👅  TASTE — was there a flavour?', '✋  TOUCH — what did it feel like?', '', 'Use at least 3 senses per story.'],
+  },
+  'Comedic Techniques Card': {
+    bg: 'bg-yellow-500',
+    lines: ['😂 COMEDIC TECHNIQUES', '', '3️⃣  RULE OF THREE', '"I need: food, water, and excellent Wi-Fi."', '', '🔁  CALLBACK', 'Return to your opening — with a twist', '', '😐  UNDERSTATEMENT', 'Describe something extreme as minor'],
+  },
+  'Pause Power Card': {
+    bg: 'bg-slate-800',
+    lines: ['⏸ THE PAUSE', '', 'The pause is the punchline.', '', 'Say the funny line.', '', 'STOP.', '', 'Wait for the room.', '', 'THEN continue.'],
+  },
+  'Inform vs. Persuade Card': {
+    bg: 'bg-blue-700',
+    lines: ['🎯 INFORM vs. PERSUADE', '', '📚  INFORM', 'Hook → Facts × 3 → Conclusion', 'Goal: CLARITY', '', '📣  PERSUADE', 'Hook → Point → Logos → Pathos → Ethos → Call to Action', 'Goal: ACTION'],
+  },
+  'Full Speech Map': {
+    bg: 'bg-slate-700',
+    lines: ['🗺 FULL FORMAL SPEECH', '', '🎣  Hook', '📌  Your Point', '📋  Your Plan', '🥧  PIE 1 — Logos', '🥧  PIE 2 — Pathos', '🥧  PIE 3 — Ethos', '🏁  Conclusion'],
+  },
+  'Feeling Faces': {
+    bg: 'bg-pink-500',
+    lines: ['😊 FEELING FACES', '', '😄  Excited', '😰  Nervous', '😤  Frustrated', '😢  Sad', '😮  Surprised', '😊  Proud', '😂  Happy', '😌  Calm'],
+  },
+}
+
+function PictureCardsPanel({ cards }: { cards: { name: string; emoji: string; use: string }[] }) {
+  const [projecting, setProjecting] = useState<{ name: string; emoji: string; use: string } | null>(null)
+
+  useEffect(() => {
+    if (!projecting) return
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setProjecting(null) }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [projecting])
+
+  const content = projecting ? CARD_CONTENT[projecting.name] : null
+
+  return (
+    <>
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+        <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-3">📇 Picture Cards This Week</p>
+        <div className="space-y-2">
+          {cards.map((card, ci) => (
+            <div key={ci} className="flex items-start gap-3 p-2.5 bg-yellow-50 rounded-xl border border-yellow-200">
+              <span className="text-2xl shrink-0">{card.emoji}</span>
+              <div className="flex-1 min-w-0">
+                <p className="font-black text-sm text-gray-800">{card.name}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{card.use}</p>
+              </div>
+              <button
+                onClick={() => setProjecting(card)}
+                className="shrink-0 text-xs font-bold bg-teal-600 hover:bg-teal-500 text-white px-2.5 py-1 rounded-lg active:scale-95 transition-all"
+              >
+                🖥 Project
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Fullscreen projection overlay */}
+      {projecting && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center cursor-pointer"
+          style={{ backgroundColor: content ? undefined : '#1e293b' }}
+          onClick={() => setProjecting(null)}
+        >
+          <div className={`w-full h-full flex flex-col items-center justify-center p-12 ${content?.bg ?? 'bg-slate-800'}`}>
+            <div className="text-center max-w-3xl w-full">
+              <div className="text-8xl mb-6">{projecting.emoji}</div>
+              {content ? (
+                <div className="space-y-2">
+                  {content.lines.map((line, i) => {
+                    if (line === '') return <div key={i} className="h-3" />
+                    const isTitle = i === 0
+                    const isSubhead = !isTitle && (line.charCodeAt(0) > 127)
+                    return (
+                      <p
+                        key={i}
+                        className={`text-white leading-snug ${
+                          isTitle   ? 'text-4xl font-black mb-2' :
+                          isSubhead ? 'text-2xl font-black mt-3' :
+                                      'text-xl text-white/75'
+                        }`}
+                      >
+                        {line}
+                      </p>
+                    )
+                  })}
+                </div>
+              ) : (
+                <>
+                  <p className="text-5xl font-black text-white mb-4">{projecting.name}</p>
+                  <p className="text-2xl text-white/80">{projecting.use}</p>
+                </>
+              )}
+              <p className="text-white/40 text-sm mt-12">Tap or press Esc to close</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
 export function SpeakingSession({ contentItemId, meta, students, initialDoneIds }: Props) {
   const [phase, setPhase]           = useState<Phase>('plan')
   const [doneIds, setDoneIds]       = useState<Set<string>>(new Set(initialDoneIds))
@@ -336,53 +516,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
 
           {/* Picture cards */}
           {meta.pictureCards && meta.pictureCards.length > 0 && (
-            <div className="bg-white rounded-2xl shadow-sm p-5">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-black text-gray-400 uppercase tracking-wide">📇 Picture Cards This Week</p>
-                <a
-                  href="/SpeakUp_PictureCards_G12.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-teal-600 font-bold hover:underline"
-                >
-                  Open full PDF ↗
-                </a>
-              </div>
-              <div className="space-y-2">
-                {meta.pictureCards.map((card, ci) => {
-                  // Map known card names to their PDF page numbers
-                  const PAGE_MAP: Record<string, number> = {
-                    'Three Pillars Poster': 1,
-                    'Feeling Faces': 2,
-                    'Voice Dial': 3,
-                    'Body Check Card': 4,
-                    'Hook Types Card': 5,
-                    'Three-Part Train': 6,
-                    'Story Mountain': 7,
-                    'Feedback Sandwich': 8,
-                    'Pre-Speech Ritual Card': 9,
-                  }
-                  const page = PAGE_MAP[card.name]
-                  const href = `/SpeakUp_PictureCards_G12.pdf${page ? `#page=${page}` : ''}`
-                  return (
-                    <a
-                      key={ci}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-start gap-3 p-2.5 bg-yellow-50 rounded-xl border border-yellow-200 hover:bg-yellow-100 hover:border-yellow-400 transition-colors cursor-pointer group"
-                    >
-                      <span className="text-2xl shrink-0">{card.emoji}</span>
-                      <div className="flex-1">
-                        <p className="font-black text-sm text-gray-800 group-hover:text-teal-700">{card.name}</p>
-                        <p className="text-xs text-gray-500 mt-0.5">{card.use}</p>
-                      </div>
-                      <span className="text-gray-300 group-hover:text-teal-500 text-sm shrink-0 mt-0.5">↗</span>
-                    </a>
-                  )
-                })}
-              </div>
-            </div>
+            <PictureCardsPanel cards={meta.pictureCards} />
           )}
 
           <button
