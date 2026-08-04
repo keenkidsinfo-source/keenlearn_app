@@ -121,7 +121,7 @@ export async function GET(req: NextRequest) {
     }
   })
 
-  return apiOk({ weekStartDate, preview })
+  return apiOk({ weekStartDate, preview, _debug: { portalChildCount: portalChildren.length, schoolName } })
 }
 
 // ── POST /api/v1/teacher/send-report ─────────────────────────────────────────
