@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import { db } from '@/lib/db'
 import {
   users, classrooms, classroomCurriculum, curriculum,
@@ -60,9 +60,10 @@ export async function POST(req: NextRequest) {
   if (!session) return apiError('Unauthorized', 'UNAUTHORIZED', 401)
   if (session.role === 'student') return apiError('Forbidden', 'FORBIDDEN', 403)
 
-  const RESEND_API_KEY = process.env.RESEND_API_KEY ?? ''
-  if (!RESEND_API_KEY) {
-    return apiError('RESEND_API_KEY env var is not set.', 'CONFIG_ERROR', 500)
+  const GMAIL_USER = process.env.GMAIL_USER ?? ''
+  const GMAIL_PASS = process.env.GMAIL_APP_PASSWORD ?? ''
+  if (!GMAIL_USER || !GMAIL_PASS) {
+    return apiError('GMAIL_USER and GMAIL_APP_PASSWORD env vars are not set.', 'CONFIG_ERROR', 500)
   }
 
   const body = await req.json().catch(() => null)
@@ -71,11 +72,19 @@ export async function POST(req: NextRequest) {
 
   const { weekStartDate, classroomId: adminClassroomId } = parsed.data
 
-  // ── 1. Load classroom ────────────────────────────────────────────────────────
+  // ── 1. Load classroom + teacher email ───────────────────────────────────────
   const [classroom] = session.role === 'admin' && adminClassroomId
     ? await db.select().from(classrooms).where(eq(classrooms.id, adminClassroomId)).limit(1)
     : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).limit(1)
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
+
+  const [teacher] = await db
+    .select({ name: users.name, email: users.email })
+    .from(users)
+    .where(eq(users.id, classroom.teacherId!))
+    .limit(1)
+  const teacherEmail = teacher?.email ?? GMAIL_USER
+  const teacherName  = teacher?.name  ?? 'Your Teacher'
 
   const [school] = classroom.schoolId
     ? await db.select({ name: schools.name }).from(schools).where(eq(schools.id, classroom.schoolId)).limit(1)
@@ -139,7 +148,10 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 6. Send emails ──────────────────────────────────────────────────────────
-  const resend  = new Resend(RESEND_API_KEY)
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: GMAIL_USER, pass: GMAIL_PASS },
+  })
   const results: { student: string; status: 'sent' | 'no_email' | 'error'; parentEmail?: string }[] = []
 
   const SUBJECT_LABEL: Record<string, string> = {
@@ -216,12 +228,13 @@ export async function POST(req: NextRequest) {
   ${scienceHtml}
   ${attendanceHtml}
   <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb"/>
-  <p style="color:#6b7280;font-size:12px">Sent by KeenKids Enrichment. Questions? Reply to your teacher.</p>
+  <p style="color:#6b7280;font-size:12px">Sent by KeenKids Enrichment. Questions? Reply to this email and it will go directly to ${teacherName}.</p>
 </div>`
 
     try {
-      await resend.emails.send({
-        from:    'KeenKids <reports@keenkidsenrichment.com>',
+      await transporter.sendMail({
+        from:    `"KeenKids Enrichment" <${GMAIL_USER}>`,
+        replyTo: `"${teacherName}" <${teacherEmail}>`,
         to:      student.parentEmail,
         subject: `${studentName}'s KeenKids Week — ${weekRow.title}`,
         html,
