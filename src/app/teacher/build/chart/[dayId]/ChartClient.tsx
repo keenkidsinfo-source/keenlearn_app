@@ -38,8 +38,8 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
   const [rows, setRows] = useState<Record<string, Row>>(
     () => Object.fromEntries(students.map(s => [s.id, initialRows[s.id] ?? { a: '', b: '', c: '', note: '' }]))
   )
-  const [sending, setSending] = useState(false)
-  const [sendResult, setSendResult] = useState<{ sent: number; noMatch: number; errors: number } | null>(null)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [showPrint, setShowPrint] = useState(false)
   const tableRef = useRef<HTMLTableElement>(null)
@@ -73,8 +73,9 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
 
   const maxMetric = Math.max(...leaderboard.map(x => x.metric ?? 0), 1)
 
-  async function sendToParents() {
-    setSending(true)
+  async function saveResults() {
+    setSaving(true)
+    setSaved(false)
     setErrorMsg(null)
     try {
       const payload = {
@@ -106,15 +107,15 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
       let json: any
       try { json = await res.json() } catch { json = null }
 
-      if (res.ok && json?.data) {
-        setSendResult({ sent: json.data.sent, noMatch: json.data.noMatch, errors: json.data.errors })
+      if (res.ok) {
+        setSaved(true)
       } else {
         setErrorMsg(json?.error ?? `Server error ${res.status}`)
       }
     } catch (err: any) {
       setErrorMsg(err?.message ?? 'Network error — check your connection')
     } finally {
-      setSending(false)
+      setSaving(false)
     }
   }
 
@@ -252,23 +253,18 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
               ⚠️ {errorMsg}
             </div>
           )}
-          {sendResult ? (
-            <div className="bg-green-50 border border-green-200 rounded-2xl p-4 text-center">
-              <p className="text-green-800 font-black text-lg">✅ Sent to parents!</p>
-              <p className="text-green-700 text-sm mt-1">
-                {sendResult.sent} sent · {sendResult.noMatch} no portal match · {sendResult.errors} errors
-              </p>
-              <button onClick={() => setSendResult(null)} className="mt-2 text-green-600 text-xs underline">Send again</button>
+          {saved && (
+            <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-green-700 text-sm font-semibold text-center">
+              ✅ Results saved — they&apos;ll appear in this week&apos;s parent email.
             </div>
-          ) : (
-            <button
-              onClick={sendToParents}
-              disabled={sending}
-              className="w-full min-h-[56px] rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-black text-lg transition-all disabled:opacity-50 shadow"
-            >
-              {sending ? '📤 Sending…' : '📧 Send Results to Parents'}
-            </button>
           )}
+          <button
+            onClick={saveResults}
+            disabled={saving}
+            className="w-full min-h-[56px] rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-black text-lg transition-all disabled:opacity-50 shadow"
+          >
+            {saving ? '💾 Saving…' : '💾 Save Results'}
+          </button>
           <button
             onClick={() => setShowPrint(true)}
             className="w-full min-h-[44px] rounded-2xl border-2 border-gray-200 text-gray-500 font-bold text-sm transition-all hover:border-gray-300"
