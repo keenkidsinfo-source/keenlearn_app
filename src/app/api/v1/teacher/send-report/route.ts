@@ -152,7 +152,7 @@ export async function POST(req: NextRequest) {
     service: 'gmail',
     auth: { user: GMAIL_USER, pass: GMAIL_PASS },
   })
-  const results: { student: string; status: 'sent' | 'no_email' | 'error'; parentEmail?: string }[] = []
+  const results: { student: string; status: 'sent' | 'no_email' | 'error'; parentEmail?: string; errorMsg?: string }[] = []
 
   const SUBJECT_LABEL: Record<string, string> = {
     science:         'Science',
