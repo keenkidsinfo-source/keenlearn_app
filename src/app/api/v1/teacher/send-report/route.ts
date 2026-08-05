@@ -180,50 +180,77 @@ export async function POST(req: NextRequest) {
     const cards: string[] = []
 
     for (const [itemId, subject] of Array.from(subjectByItem.entries())) {
+      if (subject === 'math') continue // not loaded yet
+
       const sess = studentSess.get(itemId)
       const data = sess?.sessionData as Record<string, unknown> | null
+      const done = sess?.completed === true
+      const started = !!sess && !done
 
-      if (subject === 'build' && sess?.completed && data) {
-        const gradeBand  = data.gradeBand as string ?? ''
-        const buildTitle = data.buildTitle as string ?? 'Build Project'
-        if (gradeBand === 'g1-2') {
-          const r1  = data.round1Clips != null ? `Round 1: ${data.round1Clips} paperclips` : ''
-          const r2  = data.round2Clips != null ? `After improvements: ${data.round2Clips} paperclips` : ''
-          const max = data.maxClips    != null ? `<strong>Best: ${data.maxClips} paperclips! 🎉</strong>` : ''
-          const note = data.note ? `<br/><em>${data.note}</em>` : ''
-          cards.push(card('🔨', `Build — ${buildTitle}`,
-            '#f59e0b',
-            [r1, r2, max, note].filter(Boolean).join('<br/>') || 'Completed ✅'
-          ))
+      if (subject === 'build') {
+        // G3-4 students self-submit results; shape: { buildResults: { cranksNoLoad, ... } }
+        const studentBuildData = data?.buildResults as Record<string, unknown> | undefined
+        // Teacher-submitted results have gradeBand at top level
+        const teacherSubmitted = done && data && ('gradeBand' in data)
+        const hasAnyResults    = teacherSubmitted || !!studentBuildData
+
+        if (hasAnyResults) {
+          const gradeBand  = (data?.gradeBand as string) ?? classroom.gradeBand ?? ''
+          const buildTitle = (data?.buildTitle as string) ?? 'Build Project'
+          if (gradeBand === 'g1-2') {
+            const r1  = data!.round1Clips != null ? `Round 1: ${data!.round1Clips} paperclips` : ''
+            const r2  = data!.round2Clips != null ? `After improvements: ${data!.round2Clips} paperclips` : ''
+            const max = data!.maxClips    != null ? `<strong>Best: ${data!.maxClips} paperclips! 🎉</strong>` : ''
+            const note = data!.note ? `<br/><em>${data!.note}</em>` : ''
+            cards.push(card('🔨', `Build — ${buildTitle}`, '#f59e0b',
+              [r1, r2, max, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
+          } else {
+            // G3-4: student-submitted (nested under buildResults) or teacher-submitted (flat)
+            const src = studentBuildData ?? data!
+            const c1  = src.cranksNoLoad   != null ? `Without cargo: ${src.cranksNoLoad} cranks` : ''
+            const c2  = src.cranksWithLoad != null ? `With 3-penny load: ${src.cranksWithLoad} cranks` : ''
+            const c3  = src.cranksImproved != null ? `<strong>After improvement: ${src.cranksImproved} cranks 🎉</strong>` : ''
+            const note = (src.note as string) ? `<br/><em>${src.note}</em>` : ''
+            cards.push(card('🔨', `Build — ${buildTitle}`, '#f59e0b',
+              [c1, c2, c3, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
+          }
         } else {
-          const c1  = data.cranksNoLoad   != null ? `Without cargo: ${data.cranksNoLoad} cranks` : ''
-          const c2  = data.cranksWithLoad != null ? `With 3-penny load: ${data.cranksWithLoad} cranks` : ''
-          const c3  = data.cranksImproved != null ? `<strong>After improvement: ${data.cranksImproved} cranks 🎉</strong>` : ''
-          const note = data.note ? `<br/><em>${data.note}</em>` : ''
-          cards.push(card('🔨', `Build — ${buildTitle}`,
-            '#f59e0b',
-            [c1, c2, c3, note].filter(Boolean).join('<br/>') || 'Completed ✅'
-          ))
+          cards.push(card('🔨', 'Build', '#d1d5db', started
+            ? 'In progress — results will be added by the teacher after class. 🔄'
+            : 'Not recorded yet — the teacher will submit build results after class. ⬜'))
         }
-      } else if (subject === 'build' && !sess?.completed) {
-        // omit — not done yet
-      } else if (subject === 'science' && sess?.completed && data) {
-        const vote = data.vote === 'up' ? '👍 Yes!' : data.vote === 'down' ? '👎 No' : data.vote === 'maybe' ? '🤔 Not sure' : ''
-        const rows = [
-          vote               ? `<strong>My prediction:</strong> ${vote}` : '',
-          data.observations  ? `<strong>I observed:</strong> ${data.observations}` : '',
-          data.whatHappened  ? `<strong>What happened:</strong> ${data.whatHappened}` : '',
-          data.whatILearned  ? `<strong>I learned:</strong> ${data.whatILearned}` : '',
-        ].filter(Boolean).join('<br/>')
-        cards.push(card('🔬', 'Science Lab', '#06b6d4', rows || 'Completed ✅'))
-      } else if (subject === 'coding' && sess?.completed) {
-        cards.push(card('💻', 'Coding', '#8b5cf6', `Finished their coding project this week! Great job debugging and creating. ✅`))
-      } else if (subject === 'coding' && sess) {
-        cards.push(card('💻', 'Coding', '#8b5cf6', `Started their coding project — still in progress. 🔄`))
-      } else if (subject === 'public_speaking' && sess?.completed) {
-        cards.push(card('🎤', 'Public Speaking', '#ec4899', `Practiced speaking in front of the class this week — a big deal! ✅`))
+      } else if (subject === 'science') {
+        if (done && data) {
+          const vote = data.vote === 'up' ? '👍 Yes!' : data.vote === 'down' ? '👎 No' : data.vote === 'maybe' ? '🤔 Not sure' : ''
+          const rows = [
+            vote              ? `<strong>My prediction:</strong> ${vote}` : '',
+            data.observations ? `<strong>I observed:</strong> ${data.observations}` : '',
+            data.whatHappened ? `<strong>What happened:</strong> ${data.whatHappened}` : '',
+            data.whatILearned ? `<strong>I learned:</strong> ${data.whatILearned}` : '',
+          ].filter(Boolean).join('<br/>')
+          cards.push(card('🔬', 'Science Lab', '#06b6d4', rows || 'Completed ✅'))
+        } else {
+          cards.push(card('🔬', 'Science Lab', '#d1d5db', started
+            ? `Started — waiting for ${studentName} to submit their observations. 🔄`
+            : `Not completed yet — ${studentName} will record their observations during class. ⬜`))
+        }
+      } else if (subject === 'coding') {
+        if (done) {
+          cards.push(card('💻', 'Coding', '#8b5cf6', `Finished their coding project this week! Great job debugging and creating. ✅`))
+        } else {
+          cards.push(card('💻', 'Coding', '#d1d5db', started
+            ? `In progress — ${studentName} has started but hasn't finished yet. 🔄`
+            : `Not started yet — ${studentName} will work on their coding project in class. ⬜`))
+        }
+      } else if (subject === 'public_speaking') {
+        if (done) {
+          cards.push(card('🎤', 'Public Speaking', '#ec4899', `Practiced speaking in front of the class this week — a big deal! ✅`))
+        } else {
+          cards.push(card('🎤', 'Public Speaking', '#d1d5db', started
+            ? `In progress. 🔄`
+            : `Not recorded yet — the teacher marks this after speaking class. ⬜`))
+        }
       }
-      // skip math (not loaded yet) and anything else not done
     }
 
     const loggedInThisWeek = student.lastActiveAt
