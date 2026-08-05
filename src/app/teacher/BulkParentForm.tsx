@@ -155,7 +155,7 @@ export function BulkParentForm({ students, onSaved, onClose }: Props) {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-indigo-500 mt-2">Column names don't need to match exactly — we'll detect them automatically.</p>
+          <p className="text-xs text-indigo-500 mt-2">Column names don&apos;t need to match exactly &mdash; we&apos;ll detect them automatically.</p>
         </div>
 
         {/* Drop zone */}
