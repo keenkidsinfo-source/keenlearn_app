@@ -20,6 +20,7 @@ type ResultRow = {
   student: string
   status: 'sent' | 'no_email' | 'error'
   parentEmail?: string
+  errorMsg?: string
 }
 
 type SendResult = {
@@ -182,7 +183,7 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
               <span className="font-semibold text-gray-700">{r.student}</span>
               {r.status === 'sent'     && <span className="text-green-600">sent to {r.parentEmail}</span>}
               {r.status === 'no_email' && <span className="text-orange-500">skipped — no email</span>}
-              {r.status === 'error'    && <span className="text-red-500">failed</span>}
+              {r.status === 'error'    && <span className="text-red-500">failed{r.errorMsg ? ` — ${r.errorMsg}` : ''}</span>}
             </div>
           ))}
         </div>

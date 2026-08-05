@@ -240,9 +240,9 @@ export async function POST(req: NextRequest) {
         html,
       })
       results.push({ student: studentName, status: 'sent', parentEmail: student.parentEmail })
-    } catch (err) {
+    } catch (err: any) {
       console.error(`[send-report] email failed for ${studentName}:`, err)
-      results.push({ student: studentName, status: 'error', parentEmail: student.parentEmail })
+      results.push({ student: studentName, status: 'error', parentEmail: student.parentEmail, errorMsg: err?.message ?? String(err) })
     }
   }
 
