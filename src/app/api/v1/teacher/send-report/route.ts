@@ -108,8 +108,9 @@ export async function GET(req: NextRequest) {
     .where(and(eq(users.classroomId, classroom.id), eq(users.role, 'student'), isNull(users.deletedAt)))
 
   const childrenRes = await supabaseFetch('/children?select=id,full_name,school_name')
-  if (!childrenRes.ok) return apiError('Failed to fetch portal children', 'SUPABASE_ERROR', 502)
-  const portalChildren: { id: string; full_name: string; school_name: string }[] = await childrenRes.json()
+  const childrenRaw = await childrenRes.text()
+  if (!childrenRes.ok) return apiError(`Supabase error ${childrenRes.status}: ${childrenRaw}`, 'SUPABASE_ERROR', 502)
+  const portalChildren: { id: string; full_name: string; school_name: string }[] = JSON.parse(childrenRaw)
 
   const preview = students.map(s => {
     const match = matchChild(s, portalChildren, schoolName)
@@ -121,7 +122,16 @@ export async function GET(req: NextRequest) {
     }
   })
 
-  return apiOk({ weekStartDate, preview, _debug: { portalChildCount: portalChildren.length, schoolName } })
+  return apiOk({
+    weekStartDate,
+    preview,
+    _debug: {
+      portalChildCount: portalChildren.length,
+      portalChildren,
+      schoolName,
+      supabaseUrl: SUPABASE_URL.slice(0, 40),
+    },
+  })
 }
 
 // ── POST /api/v1/teacher/send-report ─────────────────────────────────────────
