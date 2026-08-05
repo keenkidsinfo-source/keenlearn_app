@@ -281,11 +281,10 @@ export async function POST(req: NextRequest) {
   ${cardsHtml}
 
   <!-- Attendance -->
+  ${loggedInThisWeek ? `
   <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:14px;color:#166534">
-    ${loggedInThisWeek
-      ? `✅ <strong>${studentName} logged in this week</strong> — great to see them engaged!`
-      : `📅 We didn't see a login this week. Encourage ${studentName} to explore the app at home!`}
-  </div>
+    ✅ <strong>${studentName} attended class this week</strong>
+  </div>` : ''}
 
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
   <p style="font-size:12px;color:#9ca3af;margin:0">
