@@ -54,6 +54,14 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     updates.avatarId = body.avatarId
   }
 
+  if ('parentName' in body) {
+    updates.parentName = body.parentName?.trim() || null
+  }
+
+  if ('parentEmail' in body) {
+    updates.parentEmail = body.parentEmail?.trim().toLowerCase() || null
+  }
+
   if (Object.keys(updates).length === 0) {
     return apiError('Nothing to update', 'EMPTY_UPDATE', 400)
   }

@@ -49,14 +49,15 @@ const SESSIONS_G12 = [
     { startMin:0, endMin:8, label:'WARM-UP', emoji:'🎭', title:'Stand Up & Say Hi',
       steps:[
         {time:'0:00',action:'Stand at the front with a big smile. "Welcome to SpeakUp! Today you are all going to speak in front of the group. We\'re going to practise the most important skill in the world — sharing your voice." Set a warm, excited tone.'},
-        {time:'1:00',action:'Model the warm-up yourself first. Stand tall, say your name and one fun fact. Then point to the "Where We Speak" picture cards on the wall: "Before we start, I want you to look at these pictures. Has anyone been to a place like this? Have you ever seen someone talk in front of people?"'},
+        {time:'1:00',action:'Model the warm-up yourself first. Stand tall, say your name and one fun fact. Keep it genuine and a little funny — students relax when the teacher goes first.'},
         {time:'2:30',action:'Go around the circle quickly — each student stands, says their name and one fun fact. Class snaps or claps after each. If a student freezes, offer a lifeline: "Your name and one thing you love — anything at all." Keep the pace light and fast. No more than 10 seconds each.'},
         {time:'7:00',action:'Celebrate: "You all just spoke in front of the whole group! That IS public speaking. You\'re already doing it."'},
       ]},
-    { startMin:8, endMin:52, label:'MAIN ACTIVITY', emoji:'🎤', title:'Picture Gallery Walk → 3 Pillars → First Try',
+    { startMin:8, endMin:52, label:'MAIN ACTIVITY', emoji:'🎤', title:'You Already Do This → 3 Pillars → First Try',
       steps:[
-        {time:'8:00',action:'PICTURE GALLERY WALK. Point to the 6-8 pictures posted around the room: classroom, stage, campfire, dinner table, sports sideline, school assembly. "Walk with a partner. For each picture, talk about: What is happening? Are there a few people or many?" Give pairs 5-6 minutes to walk the gallery.'},
-        {time:'14:00',action:'Whole-group share. Bring everyone back together. Ask: "Which picture surprised you? Which feels scary? Which feels easy?" Take 4-5 responses. Accept all answers — this is about noticing, not judging. "These are all places where people give speeches. Today, THIS classroom is our stage."'},
+        {time:'8:00',action:'YOU ALREADY DO THIS. "Before we start — I have three questions. Raise your hand if you have ever explained something to a friend." Wait for hands. "Raise your hand if you have ever told a story at dinner." Hands again. "Raise your hand if you have ever argued for something you wanted." Hands. Then: "That is a speech. You have already done it. Today we just do it on purpose."'},
+        {time:'10:00',action:'"So where do speeches happen?" Take 4-5 answers from students — let them name real places (classroom, sports, dinner table, etc.). Accept everything. "Exactly — speeches happen everywhere. Today, THIS classroom is our stage."'},
+        {time:'14:00',action:'Leave a 6-minute gap here for the natural discussion to breathe, then move on.'},
         {time:'20:00',action:'THE 3 PILLARS. Write on the board or reveal the Pillar Poster. "Every great speaker uses three things." Touch your throat: "VOICE — speak so everyone can hear." Stretch arms wide: "BODY — stand strong, look at people." Tap your head: "MIND — be brave, be ready." Ask the class to do the three actions with you. Repeat together twice.'},
         {time:'24:00',action:'Point to each pillar and ask students to name one example: "What does VOICE mean? What does a strong BODY look like? What does a brave MIND feel like?" Take 1-2 answers per pillar. Write key words under each one. This anchors the vocabulary for the whole year.'},
         {time:'28:00',action:'FIRST TRY. "Now it\'s your turn. I\'m going to ask you ONE question. You stand up, say your answer out loud, and sit down. That\'s it. One sentence. No wrong answers." Write the question on the board: "What is one place YOU would like to give a speech someday?"'},
@@ -73,7 +74,6 @@ const SESSIONS_G12 = [
       ]},
   ],
   pictureCards:[
-    {name:'Where We Speak',emoji:'🏛️',use:'Post 6-8 around the room before class — classroom, stage, campfire, dinner table, sports sideline, school assembly'},
     {name:'Three Pillars Poster',emoji:'3️⃣',use:'Reveal at 20:00 to introduce Voice·Body·Mind framework — keep posted all year'},
   ],
 },
@@ -1613,6 +1613,44 @@ async function run() {
   // Find mattos school
   const [mattos] = await sql`SELECT id FROM schools WHERE slug = 'mattos'`
 
+  // ── RECOVERY: restore classroom_curriculum to enrichment curriculum rows ──
+  // The previous seed run may have overwritten classroom_curriculum to point to
+  // speaking-only curriculum rows (week_number 101-116). Restore them to the
+  // original enrichment curriculum rows (week_number 1-16) so build/science/coding
+  // days are accessible again.
+  for (const classroom of [clG12, clG34]) {
+    if (!classroom) continue
+    // Find enrichment curriculum rows (week_number < 100) for this grade band
+    const enrichmentRows = await sql`
+      SELECT c.id, c.week_number, cc.week_start_date
+      FROM curriculum c
+      JOIN classroom_curriculum cc ON cc.curriculum_id = c.id
+      WHERE cc.classroom_id = ${classroom.id} AND c.week_number < 100
+    `
+    // Also find orphaned enrichment rows not currently assigned
+    const orphaned = await sql`
+      SELECT c.id, c.week_number
+      FROM curriculum c
+      WHERE c.grade_band = ${classroom.grade_band} AND c.week_number BETWEEN 1 AND 16
+      AND c.id NOT IN (
+        SELECT curriculum_id FROM classroom_curriculum WHERE classroom_id = ${classroom.id}
+      )
+    `
+    if (orphaned.length > 0) {
+      console.log(`  Restoring ${orphaned.length} orphaned enrichment curriculum rows for ${classroom.grade_band}...`)
+      for (const row of orphaned) {
+        const weekStart = WEEK_STARTS[row.week_number - 1]
+        if (!weekStart) continue
+        await sql`
+          INSERT INTO classroom_curriculum (classroom_id, curriculum_id, week_start_date)
+          VALUES (${classroom.id}, ${row.id}, ${weekStart})
+          ON CONFLICT (classroom_id, week_start_date) DO UPDATE SET curriculum_id = EXCLUDED.curriculum_id
+        `
+        console.log(`  ✓ Restored ${classroom.grade_band} W${row.week_number} → enrichment curriculum`)
+      }
+    }
+  }
+
   for (const [sessions, gradeBand, classroom] of [
     [SESSIONS_G12, 'g1-2', clG12],
     [SESSIONS_G34, 'g3-4', clG34],
@@ -1624,29 +1662,37 @@ async function run() {
       const weekNum = i + 1
       const weekStart = WEEK_STARTS[i]
 
-      // Upsert curriculum row
-      const [cur] = await sql`
-        INSERT INTO curriculum (title, grade_band, week_number, theme, is_active)
-        VALUES (${s.title}, ${gradeBand}, ${weekNum + 100}, ${s.pillar + ' — SpeakUp'}, true)
-        ON CONFLICT DO NOTHING
-        RETURNING id
+      // Find the curriculum already assigned to this classroom for this week
+      // (the enrichment curriculum that has build/science/coding days)
+      const [cc] = await sql`
+        SELECT curriculum_id FROM classroom_curriculum
+        WHERE classroom_id = ${classroom.id} AND week_start_date = ${weekStart}
       `
-      let curId = cur?.id
-      if (!curId) {
-        const [existing] = await sql`SELECT id FROM curriculum WHERE grade_band = ${gradeBand} AND week_number = ${weekNum + 100}`
-        curId = existing?.id
-        if (!curId) {
-          // Use week_number offset 100+ to avoid conflict with existing enrichment weeks
-          const [ins] = await sql`
-            INSERT INTO curriculum (title, grade_band, week_number, theme, is_active)
-            VALUES (${s.title}, ${gradeBand}, ${weekNum + 100}, ${s.pillar + ' — SpeakUp'}, true)
-            RETURNING id
-          `
-          curId = ins.id
-        }
-      }
+      let curId = cc?.curriculum_id
 
-      // Upsert curriculum_day (Wednesday = day 3)
+      if (!curId) {
+        // No curriculum assigned yet — create a new one and assign it
+        const [ins] = await sql`
+          INSERT INTO curriculum (title, grade_band, week_number, theme, is_active)
+          VALUES (${s.title}, ${gradeBand}, ${weekNum + 100}, ${s.pillar + ' — SpeakUp'}, true)
+          ON CONFLICT DO NOTHING
+          RETURNING id
+        `
+        curId = ins?.id
+        if (!curId) {
+          const [ex] = await sql`SELECT id FROM curriculum WHERE grade_band = ${gradeBand} AND week_number = ${weekNum + 100}`
+          curId = ex.id
+        }
+        await sql`
+          INSERT INTO classroom_curriculum (classroom_id, curriculum_id, week_start_date)
+          VALUES (${classroom.id}, ${curId}, ${weekStart})
+          ON CONFLICT DO NOTHING
+        `
+      }
+      // If a curriculum already exists for this week, we attach the speaking day TO it
+      // (never overwrite classroom_curriculum — keeps build/science/coding intact)
+
+      // Upsert speaking curriculum_day within the existing curriculum
       const [existingDay] = await sql`SELECT id FROM curriculum_days WHERE curriculum_id = ${curId} AND subject = 'public_speaking'`
       let dayId = existingDay?.id
       if (!dayId) {
@@ -1656,6 +1702,8 @@ async function run() {
           RETURNING id
         `
         dayId = day.id
+      } else {
+        await sql`UPDATE curriculum_days SET theme = ${s.title} WHERE id = ${dayId}`
       }
 
       // Upsert content_item
@@ -1669,9 +1717,9 @@ async function run() {
         pictureCards: s.pictureCards,
       }
       const [existingItem] = await sql`
-        SELECT ci.id FROM curriculum_content cc
-        JOIN content_items ci ON ci.id = cc.content_item_id
-        WHERE cc.curriculum_day_id = ${dayId}
+        SELECT ci.id FROM curriculum_content cc2
+        JOIN content_items ci ON ci.id = cc2.content_item_id
+        WHERE cc2.curriculum_day_id = ${dayId}
       `
       let itemId = existingItem?.id
       if (!itemId) {
@@ -1685,13 +1733,6 @@ async function run() {
       } else {
         await sql`UPDATE content_items SET title = ${s.title}, metadata = ${meta} WHERE id = ${itemId}`
       }
-
-      // Assign to classroom for this week
-      await sql`
-        INSERT INTO classroom_curriculum (classroom_id, curriculum_id, week_start_date)
-        VALUES (${classroom.id}, ${curId}, ${weekStart})
-        ON CONFLICT (classroom_id, week_start_date) DO NOTHING
-      `
 
       console.log(`✓ ${gradeBand} W${weekNum} [${weekStart}]: ${s.title.slice(0,50)}`)
     }

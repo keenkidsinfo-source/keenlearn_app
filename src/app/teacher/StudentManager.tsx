@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { BulkParentForm } from './BulkParentForm'
 
 const AVATARS = ['🦊','🐼','🦁','🐸','🦋','🐬','🦄','🐉']
 
@@ -9,6 +10,8 @@ interface Student {
   name: string
   displayName: string | null
   avatarId: number | null
+  parentName: string | null
+  parentEmail: string | null
 }
 
 interface Props {
@@ -18,7 +21,9 @@ interface Props {
 type Modal =
   | { type: 'add' }
   | { type: 'edit-pin'; student: Student }
+  | { type: 'edit-parent'; student: Student }
   | { type: 'delete'; student: Student }
+  | { type: 'bulk-parents' }
   | null
 
 export function StudentManager({ initialStudents }: Props) {
@@ -28,19 +33,24 @@ export function StudentManager({ initialStudents }: Props) {
   const [error, setError]       = useState('')
 
   // ── Add student form state
-  const [newName, setNewName]       = useState('')
-  const [newPin, setNewPin]         = useState('')
-  const [newAvatar, setNewAvatar]   = useState(1)
+  const [newName, setNewName]               = useState('')
+  const [newPin, setNewPin]                 = useState('')
+  const [newAvatar, setNewAvatar]           = useState(1)
+  const [newParentName, setNewParentName]   = useState('')
+  const [newParentEmail, setNewParentEmail] = useState('')
   // ── Edit PIN form state
-  const [newPinEdit, setNewPinEdit] = useState('')
+  const [newPinEdit, setNewPinEdit]         = useState('')
+  // ── Edit parent form state
+  const [editParentName, setEditParentName]   = useState('')
+  const [editParentEmail, setEditParentEmail] = useState('')
 
   function closeModal() {
     setModal(null)
     setError('')
-    setNewName('')
-    setNewPin('')
-    setNewAvatar(1)
+    setNewName(''); setNewPin(''); setNewAvatar(1)
+    setNewParentName(''); setNewParentEmail('')
     setNewPinEdit('')
+    setEditParentName(''); setEditParentEmail('')
   }
 
   async function addStudent() {
@@ -48,10 +58,14 @@ export function StudentManager({ initialStudents }: Props) {
     if (newPin.length !== 4 || isNaN(Number(newPin))) { setError('PIN must be 4 digits'); return }
     setLoading(true); setError('')
     try {
-      const res  = await fetch('/api/v1/teacher/students', {
+      const res = await fetch('/api/v1/teacher/students', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newName.trim(), pin: newPin, avatarId: newAvatar }),
+        body: JSON.stringify({
+          name: newName.trim(), pin: newPin, avatarId: newAvatar,
+          parentName: newParentName.trim() || null,
+          parentEmail: newParentEmail.trim() || null,
+        }),
       })
       const json = await res.json()
       if (!res.ok) { setError(json.error ?? 'Failed to add student'); return }
@@ -74,6 +88,31 @@ export function StudentManager({ initialStudents }: Props) {
         body: JSON.stringify({ pin: newPinEdit }),
       })
       if (!res.ok) { setError('Failed to update PIN'); return }
+      closeModal()
+    } catch {
+      setError('Network error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function saveParent(studentId: string) {
+    setLoading(true); setError('')
+    try {
+      const res = await fetch(`/api/v1/teacher/students/${studentId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          parentName:  editParentName.trim()  || null,
+          parentEmail: editParentEmail.trim() || null,
+        }),
+      })
+      if (!res.ok) { setError('Failed to save parent info'); return }
+      setStudents(prev => prev.map(s =>
+        s.id === studentId
+          ? { ...s, parentName: editParentName.trim() || null, parentEmail: editParentEmail.trim() || null }
+          : s
+      ))
       closeModal()
     } catch {
       setError('Network error')
@@ -110,15 +149,29 @@ export function StudentManager({ initialStudents }: Props) {
             </span>
             <div className="flex-1 min-w-0">
               <p className="font-bold text-gray-800 truncate">{student.displayName ?? student.name}</p>
-              <p className="text-xs text-gray-400">PIN: ●●●●</p>
+              {student.parentEmail
+                ? <p className="text-xs text-green-600 truncate">📧 {student.parentEmail}</p>
+                : <p className="text-xs text-orange-400">No parent email</p>}
             </div>
             <div className="flex gap-2 flex-shrink-0">
+              <button
+                onClick={() => {
+                  setEditParentName(student.parentName ?? '')
+                  setEditParentEmail(student.parentEmail ?? '')
+                  setModal({ type: 'edit-parent', student })
+                  setError('')
+                }}
+                className="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2 py-1.5 rounded-lg transition-all"
+                title="Edit parent info"
+              >
+                👪
+              </button>
               <button
                 onClick={() => { setModal({ type: 'edit-pin', student }); setError('') }}
                 className="text-xs font-bold text-keen-600 hover:text-keen-800 bg-keen-50 hover:bg-keen-100 px-2 py-1.5 rounded-lg transition-all"
                 title="Change PIN"
               >
-                🔑 PIN
+                🔑
               </button>
               <button
                 onClick={() => { setModal({ type: 'delete', student }); setError('') }}
@@ -132,18 +185,37 @@ export function StudentManager({ initialStudents }: Props) {
         ))}
       </div>
 
-      {/* Add student button */}
-      <button
-        onClick={() => setModal({ type: 'add' })}
-        className="mt-4 w-full border-2 border-dashed border-keen-300 text-keen-600 font-bold py-3 rounded-xl hover:border-keen-500 hover:bg-keen-50 transition-all text-sm"
-      >
-        + Add Student
-      </button>
+      {/* Add student + bulk upload buttons */}
+      <div className="mt-4 flex gap-2">
+        <button
+          onClick={() => setModal({ type: 'add' })}
+          className="flex-1 border-2 border-dashed border-keen-300 text-keen-600 font-bold py-3 rounded-xl hover:border-keen-500 hover:bg-keen-50 transition-all text-sm"
+        >
+          + Add Student
+        </button>
+        {students.length > 0 && (
+          <button
+            onClick={() => setModal({ type: 'bulk-parents' })}
+            className="flex-1 border-2 border-dashed border-indigo-300 text-indigo-600 font-bold py-3 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition-all text-sm"
+          >
+            📊 Upload Parent Contacts
+          </button>
+        )}
+      </div>
 
       {/* ── Modal overlay ── */}
       {modal && (
         <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6">
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+
+            {/* BULK PARENT UPLOAD */}
+            {modal.type === 'bulk-parents' && (
+              <BulkParentForm
+                students={students}
+                onSaved={updated => { setStudents(updated); setModal(null) }}
+                onClose={closeModal}
+              />
+            )}
 
             {/* ADD STUDENT */}
             {modal.type === 'add' && (
@@ -151,12 +223,12 @@ export function StudentManager({ initialStudents }: Props) {
                 <h3 className="text-xl font-black text-gray-800 mb-4">Add Student</h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-bold text-gray-600 mb-1 block">Name</label>
+                    <label className="text-sm font-bold text-gray-600 mb-1 block">Student Name</label>
                     <input
                       type="text"
                       value={newName}
                       onChange={e => setNewName(e.target.value)}
-                      placeholder="e.g. Alice"
+                      placeholder="e.g. Alice Smith"
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg font-bold focus:border-keen-400 focus:outline-none"
                       autoFocus
                     />
@@ -191,6 +263,33 @@ export function StudentManager({ initialStudents }: Props) {
                       ))}
                     </div>
                   </div>
+
+                  <div className="border-t border-gray-100 pt-4">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Parent Info (optional)</p>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-sm font-bold text-gray-600 mb-1 block">Parent Name</label>
+                        <input
+                          type="text"
+                          value={newParentName}
+                          onChange={e => setNewParentName(e.target.value)}
+                          placeholder="e.g. Jane Smith"
+                          className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-indigo-400 focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-bold text-gray-600 mb-1 block">Parent Email</label>
+                        <input
+                          type="email"
+                          value={newParentEmail}
+                          onChange={e => setNewParentEmail(e.target.value)}
+                          placeholder="e.g. jane@example.com"
+                          className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-indigo-400 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   {error && <p className="text-red-500 text-sm font-semibold">{error}</p>}
                   <div className="flex gap-3 pt-2">
                     <button onClick={closeModal} className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:bg-gray-50">
@@ -202,6 +301,52 @@ export function StudentManager({ initialStudents }: Props) {
                       className="flex-1 py-3 rounded-xl bg-keen-600 text-white font-bold hover:bg-keen-500 disabled:opacity-60"
                     >
                       {loading ? 'Adding…' : 'Add Student'}
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* EDIT PARENT */}
+            {modal.type === 'edit-parent' && (
+              <>
+                <h3 className="text-xl font-black text-gray-800 mb-1">Parent Info</h3>
+                <p className="text-gray-500 text-sm mb-4">
+                  {AVATARS[((modal.student.avatarId ?? 1) - 1) % 8]} {modal.student.displayName ?? modal.student.name}
+                </p>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-bold text-gray-600 mb-1 block">Parent Name</label>
+                    <input
+                      type="text"
+                      value={editParentName}
+                      onChange={e => setEditParentName(e.target.value)}
+                      placeholder="e.g. Jane Smith"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-indigo-400 focus:outline-none"
+                      autoFocus
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-bold text-gray-600 mb-1 block">Parent Email</label>
+                    <input
+                      type="email"
+                      value={editParentEmail}
+                      onChange={e => setEditParentEmail(e.target.value)}
+                      placeholder="e.g. jane@example.com"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-indigo-400 focus:outline-none"
+                    />
+                  </div>
+                  {error && <p className="text-red-500 text-sm font-semibold">{error}</p>}
+                  <div className="flex gap-3 pt-2">
+                    <button onClick={closeModal} className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:bg-gray-50">
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => saveParent(modal.student.id)}
+                      disabled={loading}
+                      className="flex-1 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-500 disabled:opacity-60"
+                    >
+                      {loading ? 'Saving…' : 'Save'}
                     </button>
                   </div>
                 </div>

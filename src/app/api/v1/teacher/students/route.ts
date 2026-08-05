@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
   if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
 
   const body = await req.json()
-  const { name, pin, avatarId } = body
+  const { name, pin, avatarId, parentName, parentEmail } = body
 
   if (!name?.trim()) return apiError('Name is required', 'MISSING_NAME', 400)
   if (!pin || String(pin).length !== 4 || isNaN(Number(pin))) {
@@ -45,8 +45,10 @@ export async function POST(req: NextRequest) {
       role:        'student',
       avatarId:    avatarId ?? 1,
       pinHash,
+      parentName:  parentName?.trim() || null,
+      parentEmail: parentEmail?.trim().toLowerCase() || null,
     })
-    .returning({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId })
+    .returning({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId, parentName: users.parentName, parentEmail: users.parentEmail })
 
   return apiOk(student, 201)
 }

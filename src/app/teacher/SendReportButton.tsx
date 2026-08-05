@@ -6,34 +6,35 @@ interface Props {
   weekStartDate: string
   weekTitle: string
   studentCount: number
-  classroomId?: string  // passed by admin when viewing another classroom
+  classroomId?: string
 }
 
 type PreviewRow = {
   studentName: string
   matched: boolean
-  portalName: string | null
+  parentName: string | null
+  parentEmail: string | null
 }
 
 type ResultRow = {
   student: string
-  status: 'sent' | 'no_match' | 'error'
-  portalName?: string
+  status: 'sent' | 'no_email' | 'error'
+  parentEmail?: string
 }
 
 type SendResult = {
   weekTitle: string
   sent: number
-  noMatch: number
+  noEmail: number
   errors: number
   results: ResultRow[]
 }
 
 export function SendReportButton({ weekStartDate, weekTitle, studentCount, classroomId }: Props) {
-  const [state, setState]       = useState<'idle' | 'previewing' | 'preview' | 'sending' | 'done' | 'error'>('idle')
-  const [preview, setPreview]   = useState<PreviewRow[]>([])
-  const [result, setResult]     = useState<SendResult | null>(null)
-  const [errMsg, setErrMsg]     = useState('')
+  const [state, setState]     = useState<'idle' | 'previewing' | 'preview' | 'sending' | 'done' | 'error'>('idle')
+  const [preview, setPreview] = useState<PreviewRow[]>([])
+  const [result, setResult]   = useState<SendResult | null>(null)
+  const [errMsg, setErrMsg]   = useState('')
 
   async function loadPreview() {
     setState('previewing')
@@ -84,47 +85,53 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
   if (state === 'previewing') {
     return (
       <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-center">
-        <p className="text-indigo-600 text-sm animate-pulse">Checking portal matches…</p>
+        <p className="text-indigo-600 text-sm animate-pulse">Loading student emails…</p>
       </div>
     )
   }
 
   // ── Preview ───────────────────────────────────────────────────────────────
   if (state === 'preview') {
-    const matchCount = preview.filter(p => p.matched).length
+    const emailCount = preview.filter(p => p.matched).length
+    const missing    = preview.filter(p => !p.matched)
     return (
       <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-xl p-4">
         <p className="font-bold text-indigo-800 text-sm mb-1">📤 Ready to send — {weekTitle}</p>
         <p className="text-indigo-600 text-xs mb-3">
-          {matchCount} of {preview.length} students matched in the parent portal.
-          Unmatched students will be skipped.
+          {emailCount} of {preview.length} students have a parent email on file.
         </p>
 
         <div className="flex flex-col gap-1.5 mb-4">
           {preview.map((row, i) => (
             <div key={i} className="flex items-center gap-2 text-xs bg-white rounded-lg px-3 py-2 border border-indigo-100">
-              <span className="text-base">{row.matched ? '✅' : '🔍'}</span>
+              <span className="text-base">{row.matched ? '✅' : '📧'}</span>
               <span className="font-semibold text-gray-800 flex-1">{row.studentName}</span>
               {row.matched
-                ? <span className="text-green-600 font-medium">→ {row.portalName}</span>
-                : <span className="text-orange-500">No match in portal</span>}
+                ? <span className="text-green-600 font-medium">{row.parentEmail}</span>
+                : <span className="text-orange-500">No email on file</span>}
             </div>
           ))}
         </div>
 
-        {matchCount === 0 ? (
+        {missing.length > 0 && (
           <p className="text-orange-600 text-xs mb-3">
-            No students matched — check that children are registered in the parent portal with matching names.
+            {missing.map(r => r.studentName).join(', ')} {missing.length === 1 ? 'has' : 'have'} no parent email — add it in your student list to include them.
+          </p>
+        )}
+
+        {emailCount === 0 ? (
+          <p className="text-orange-600 text-xs font-semibold mb-3">
+            No parent emails on file yet — edit each student to add one.
           </p>
         ) : null}
 
         <div className="flex gap-2">
           <button
             onClick={send}
-            disabled={matchCount === 0}
+            disabled={emailCount === 0}
             className="flex-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-bold py-2 rounded-xl text-sm active:scale-95 transition-all"
           >
-            Send to {matchCount} {matchCount === 1 ? 'parent' : 'parents'} →
+            Send to {emailCount} {emailCount === 1 ? 'parent' : 'parents'} →
           </button>
           <button
             onClick={() => setState('idle')}
@@ -141,7 +148,7 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
   if (state === 'sending') {
     return (
       <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-center">
-        <p className="text-indigo-700 text-sm font-semibold animate-pulse">📤 Sending to parent portal…</p>
+        <p className="text-indigo-700 text-sm font-semibold animate-pulse">📤 Sending emails…</p>
       </div>
     )
   }
@@ -164,17 +171,17 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
         <div className="flex items-center gap-2 mb-3">
           <span className="text-xl">✅</span>
           <p className="font-bold text-green-800 text-sm">
-            {result.sent} {result.sent === 1 ? 'report' : 'reports'} sent to parent portal
+            {result.sent} {result.sent === 1 ? 'email' : 'emails'} sent to parents
           </p>
         </div>
 
         <div className="flex flex-col gap-1 mb-3">
           {result.results.map((r, i) => (
             <div key={i} className="flex items-center gap-2 text-xs">
-              <span>{r.status === 'sent' ? '✅' : r.status === 'no_match' ? '🔍' : '⚠️'}</span>
+              <span>{r.status === 'sent' ? '✅' : r.status === 'no_email' ? '📧' : '⚠️'}</span>
               <span className="font-semibold text-gray-700">{r.student}</span>
-              {r.status === 'sent'     && <span className="text-green-600">sent</span>}
-              {r.status === 'no_match' && <span className="text-orange-500">skipped — no match</span>}
+              {r.status === 'sent'     && <span className="text-green-600">sent to {r.parentEmail}</span>}
+              {r.status === 'no_email' && <span className="text-orange-500">skipped — no email</span>}
               {r.status === 'error'    && <span className="text-red-500">failed</span>}
             </div>
           ))}
