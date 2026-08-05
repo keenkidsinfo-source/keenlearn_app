@@ -3,7 +3,10 @@ export const dynamic = 'force-dynamic'
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/lib/db'
-import { users, classrooms, schools } from '@/lib/db/schema'
+import {
+  users, classrooms, schools,
+  classroomCurriculum, curriculum, curriculumDays, curriculumContent, studentSessions,
+} from '@/lib/db/schema'
 import { eq, and, isNull } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import { getSession } from '@/lib/auth/jwt'
@@ -105,6 +108,54 @@ export async function POST(req: NextRequest) {
     .select({ id: users.id, name: users.name, displayName: users.displayName })
     .from(users)
     .where(and(eq(users.classroomId, classroom.id), eq(users.role, 'student'), isNull(users.deletedAt)))
+
+  // ── Save chart results to our own DB (studentSessions) ──────────────────────
+  // Find the build content item for this week
+  const [weekRow] = await db
+    .select({ curriculumId: classroomCurriculum.curriculumId })
+    .from(classroomCurriculum)
+    .where(and(
+      eq(classroomCurriculum.classroomId, classroom.id),
+      eq(classroomCurriculum.weekStartDate, weekStartDate),
+    ))
+    .limit(1)
+
+  if (weekRow) {
+    const buildDays = await db
+      .select({ contentItemId: curriculumContent.contentItemId })
+      .from(curriculumDays)
+      .innerJoin(curriculumContent, eq(curriculumContent.curriculumDayId, curriculumDays.id))
+      .where(and(
+        eq(curriculumDays.curriculumId, weekRow.curriculumId),
+        eq(curriculumDays.subject, 'build'),
+      ))
+      .limit(1)
+
+    const buildItemId = buildDays[0]?.contentItemId
+    if (buildItemId) {
+      for (const result of results) {
+        const student = students.find(s => s.id === result.studentId)
+        if (!student) continue
+        await db
+          .insert(studentSessions)
+          .values({
+            studentId:     student.id,
+            contentItemId: buildItemId,
+            completed:     true,
+            progressPct:   100,
+            sessionData:   { ...result, gradeBand, buildTitle },
+          })
+          .onConflictDoUpdate({
+            target: [studentSessions.studentId, studentSessions.contentItemId],
+            set: {
+              completed:   true,
+              progressPct: 100,
+              sessionData: { ...result, gradeBand, buildTitle },
+            },
+          })
+      }
+    }
+  }
 
   // Fetch portal children
   const childrenRes = await supabaseFetch('/children?select=id,full_name,school_name')

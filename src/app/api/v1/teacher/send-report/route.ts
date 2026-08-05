@@ -154,17 +154,19 @@ export async function POST(req: NextRequest) {
   })
   const results: { student: string; status: 'sent' | 'no_email' | 'error'; parentEmail?: string; errorMsg?: string }[] = []
 
-  const SUBJECT_LABEL: Record<string, string> = {
-    science:         'Science',
-    coding:          'Coding',
-    math:            'Math',
-    public_speaking: 'Speaking',
-    build:           'Build',
-    arts:            'Arts',
-  }
-
   const weekEnd = new Date(weekStartDate)
   weekEnd.setDate(weekEnd.getDate() + 7)
+
+  // Format date nicely e.g. "August 17, 2026"
+  const weekLabel = new Date(weekStartDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+
+  function card(emoji: string, title: string, color: string, body: string) {
+    return `
+    <div style="background:#fff;border:1px solid #e5e7eb;border-left:4px solid ${color};border-radius:8px;padding:14px 16px;margin-bottom:12px">
+      <p style="margin:0 0 6px;font-size:15px;font-weight:700;color:#111">${emoji} ${title}</p>
+      <div style="font-size:14px;color:#374151;line-height:1.6">${body}</div>
+    </div>`
+  }
 
   for (const student of students) {
     const studentName = (student.displayName ?? student.name).trim()
@@ -175,60 +177,94 @@ export async function POST(req: NextRequest) {
     }
 
     const studentSess = sessionsByStudent.get(student.id) ?? new Map()
-    const completed: string[] = []
-    const inProgress: string[] = []
-    let scienceNotes = ''
+    const cards: string[] = []
 
     for (const [itemId, subject] of Array.from(subjectByItem.entries())) {
-      const sess  = studentSess.get(itemId)
-      const label = SUBJECT_LABEL[subject] ?? subject
+      const sess = studentSess.get(itemId)
+      const data = sess?.sessionData as Record<string, unknown> | null
 
-      if (sess?.completed) {
-        if (subject === 'math') {
-          const data  = sess.sessionData as Record<string, unknown> | null
-          const score = typeof data?.score === 'number' ? data.score : null
-          const total = typeof data?.total === 'number' ? data.total : null
-          completed.push(score !== null && total !== null ? `Math ${score}/${total} ✅` : 'Math ✅')
-        } else if (subject === 'science') {
-          const data = sess.sessionData as Record<string, unknown> | null
-          if (data) {
-            const parts: string[] = []
-            if (data.vote)         parts.push(`Prediction: ${data.vote === 'up' ? 'Yes!' : data.vote === 'down' ? 'No' : 'Not sure'}`)
-            if (data.observations) parts.push(`Observed: ${data.observations}`)
-            if (data.whatHappened) parts.push(`Explained: ${data.whatHappened}`)
-            if (data.whatILearned) parts.push(`Learned: ${data.whatILearned}`)
-            scienceNotes = parts.join('<br/>')
-          }
-          completed.push('Science ✅')
+      if (subject === 'build' && sess?.completed && data) {
+        const gradeBand  = data.gradeBand as string ?? ''
+        const buildTitle = data.buildTitle as string ?? 'Build Project'
+        if (gradeBand === 'g1-2') {
+          const r1  = data.round1Clips != null ? `Round 1: ${data.round1Clips} paperclips` : ''
+          const r2  = data.round2Clips != null ? `After improvements: ${data.round2Clips} paperclips` : ''
+          const max = data.maxClips    != null ? `<strong>Best: ${data.maxClips} paperclips! 🎉</strong>` : ''
+          const note = data.note ? `<br/><em>${data.note}</em>` : ''
+          cards.push(card('🔨', `Build — ${buildTitle}`,
+            '#f59e0b',
+            [r1, r2, max, note].filter(Boolean).join('<br/>') || 'Completed ✅'
+          ))
         } else {
-          completed.push(`${label} ✅`)
+          const c1  = data.cranksNoLoad   != null ? `Without cargo: ${data.cranksNoLoad} cranks` : ''
+          const c2  = data.cranksWithLoad != null ? `With 3-penny load: ${data.cranksWithLoad} cranks` : ''
+          const c3  = data.cranksImproved != null ? `<strong>After improvement: ${data.cranksImproved} cranks 🎉</strong>` : ''
+          const note = data.note ? `<br/><em>${data.note}</em>` : ''
+          cards.push(card('🔨', `Build — ${buildTitle}`,
+            '#f59e0b',
+            [c1, c2, c3, note].filter(Boolean).join('<br/>') || 'Completed ✅'
+          ))
         }
-      } else if (sess) {
-        inProgress.push(`${label} 🔄`)
+      } else if (subject === 'build' && !sess?.completed) {
+        // omit — not done yet
+      } else if (subject === 'science' && sess?.completed && data) {
+        const vote = data.vote === 'up' ? '👍 Yes!' : data.vote === 'down' ? '👎 No' : data.vote === 'maybe' ? '🤔 Not sure' : ''
+        const rows = [
+          vote               ? `<strong>My prediction:</strong> ${vote}` : '',
+          data.observations  ? `<strong>I observed:</strong> ${data.observations}` : '',
+          data.whatHappened  ? `<strong>What happened:</strong> ${data.whatHappened}` : '',
+          data.whatILearned  ? `<strong>I learned:</strong> ${data.whatILearned}` : '',
+        ].filter(Boolean).join('<br/>')
+        cards.push(card('🔬', 'Science Lab', '#06b6d4', rows || 'Completed ✅'))
+      } else if (subject === 'coding' && sess?.completed) {
+        cards.push(card('💻', 'Coding', '#8b5cf6', `Finished their coding project this week! Great job debugging and creating. ✅`))
+      } else if (subject === 'coding' && sess) {
+        cards.push(card('💻', 'Coding', '#8b5cf6', `Started their coding project — still in progress. 🔄`))
+      } else if (subject === 'public_speaking' && sess?.completed) {
+        cards.push(card('🎤', 'Public Speaking', '#ec4899', `Practiced speaking in front of the class this week — a big deal! ✅`))
       }
+      // skip math (not loaded yet) and anything else not done
     }
 
     const loggedInThisWeek = student.lastActiveAt
       ? new Date(student.lastActiveAt) >= new Date(weekStartDate) && new Date(student.lastActiveAt) < weekEnd
       : false
 
-    const parentGreeting = student.parentName ? `Hi ${student.parentName},` : 'Hi there,'
-    const completedHtml  = completed.length  ? `<p><strong>Completed:</strong> ${completed.join(' &nbsp; ')}</p>` : ''
-    const progressHtml   = inProgress.length ? `<p><strong>In Progress:</strong> ${inProgress.join(' &nbsp; ')}</p>` : ''
-    const scienceHtml    = scienceNotes      ? `<p><strong>Science Notes:</strong><br/>${scienceNotes}</p>` : ''
-    const attendanceHtml = `<p><strong>Logged in this week:</strong> ${loggedInThisWeek ? 'Yes ✅' : 'Not yet'}</p>`
+    const greeting = student.parentName ? `Hi ${student.parentName},` : 'Hi there,'
+    const cardsHtml = cards.length
+      ? cards.join('')
+      : `<p style="color:#6b7280">No activities recorded yet this week.</p>`
 
     const html = `
-<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
-  <h2 style="color:#0d9488">KeenKids Weekly Report</h2>
-  <p>${parentGreeting}</p>
-  <p>Here's <strong>${studentName}</strong>'s progress for <strong>${weekRow.title}</strong> (week of ${weekStartDate}) at ${schoolName}.</p>
-  ${completedHtml}
-  ${progressHtml}
-  ${scienceHtml}
-  ${attendanceHtml}
-  <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb"/>
-  <p style="color:#6b7280;font-size:12px">Sent by KeenKids Enrichment. Questions? Reply to this email and it will go directly to ${teacherName}.</p>
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;margin:0 auto;background:#f9fafb;padding:24px">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#0d9488,#0891b2);border-radius:12px;padding:24px;margin-bottom:20px;text-align:center">
+    <p style="margin:0;font-size:13px;color:#99f6e4;text-transform:uppercase;letter-spacing:1px">KeenKids Enrichment</p>
+    <h1 style="margin:8px 0 4px;font-size:24px;color:#fff">🌟 ${studentName}'s Week</h1>
+    <p style="margin:0;font-size:13px;color:#ccfbf1">${weekRow.title} &nbsp;·&nbsp; ${weekLabel}</p>
+    <p style="margin:6px 0 0;font-size:13px;color:#ccfbf1">${schoolName}</p>
+  </div>
+
+  <!-- Greeting -->
+  <p style="margin:0 0 16px;font-size:15px;color:#111">${greeting}</p>
+  <p style="margin:0 0 20px;font-size:15px;color:#374151">Here's what <strong>${studentName}</strong> got up to in enrichment this week!</p>
+
+  <!-- Activity cards -->
+  ${cardsHtml}
+
+  <!-- Attendance -->
+  <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:14px;color:#166534">
+    ${loggedInThisWeek
+      ? `✅ <strong>${studentName} logged in this week</strong> — great to see them engaged!`
+      : `📅 We didn't see a login this week. Encourage ${studentName} to explore the app at home!`}
+  </div>
+
+  <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
+  <p style="font-size:12px;color:#9ca3af;margin:0">
+    Sent by <strong>KeenKids Enrichment</strong> · ${schoolName}<br/>
+    Questions? Reply to this email — it goes straight to ${teacherName}.
+  </p>
 </div>`
 
     try {
