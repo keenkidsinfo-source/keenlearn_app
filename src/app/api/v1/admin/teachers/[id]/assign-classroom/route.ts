@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
-import { users, classrooms } from '@/lib/db/schema'
+import { users, classrooms, classroomTeachers } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import { getSession } from '@/lib/auth/jwt'
@@ -34,23 +34,26 @@ export async function POST(
     if (!cls) return apiError('Classroom not found', 'NOT_FOUND', 404)
   }
 
-  // A teacher may only own one classroom at a time. Clear any classroom(s)
-  // currently pointing at this teacher before (re)assigning, so stale rows
-  // never linger and a dashboard lookup by teacherId is always unambiguous.
-  await db.update(classrooms)
-    .set({ teacherId: null })
-    .where(eq(classrooms.teacherId, id))
+  // Remove this teacher as primary from any existing classrooms
+  await db.update(classrooms).set({ teacherId: null }).where(eq(classrooms.teacherId, id))
+  // Remove from junction table (primary rows only; non-primary co-teacher rows are kept)
+  await db.delete(classroomTeachers).where(
+    eq(classroomTeachers.teacherId, id)
+  )
 
   if (classroomId) {
-    // Set the new classroom's teacherId
-    await db.update(classrooms)
-      .set({ teacherId: id })
-      .where(eq(classrooms.id, classroomId))
+    // Set primary teacherId on classroom (backward compat)
+    await db.update(classrooms).set({ teacherId: id }).where(eq(classrooms.id, classroomId))
+    // Upsert into junction table as primary
+    await db.insert(classroomTeachers)
+      .values({ classroomId, teacherId: id, isPrimary: true })
+      .onConflictDoUpdate({
+        target: [classroomTeachers.classroomId, classroomTeachers.teacherId],
+        set: { isPrimary: true },
+      })
   }
 
-  await db.update(users)
-    .set({ classroomId: classroomId })
-    .where(eq(users.id, id))
+  await db.update(users).set({ classroomId: classroomId }).where(eq(users.id, id))
 
   return apiOk({ assigned: true })
 }

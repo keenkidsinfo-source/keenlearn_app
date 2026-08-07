@@ -10,6 +10,7 @@ import {
 import { eq, and, inArray, isNull } from 'drizzle-orm'
 import Link from 'next/link'
 import { SpeakingSession } from './SpeakingSession'
+import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 interface Props { params: Promise<{ dayId: string }> }
 
@@ -52,12 +53,7 @@ export default async function TeacherSpeakingPage({ params }: Props) {
   const item = items[0]
 
   // Load teacher's classroom
-  const [classroom] = await db
-    .select({ id: classrooms.id, name: classrooms.name, gradeBand: classrooms.gradeBand })
-    .from(classrooms)
-    .where(eq(classrooms.teacherId, session.sub))
-    .limit(1)
-
+  const classroom = await getTeacherClassroom(session.sub)
   if (!classroom) redirect('/teacher')
 
   // Load students

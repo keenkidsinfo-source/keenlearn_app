@@ -5,12 +5,14 @@ import {
   users, classrooms, schools, studentSessions,
   classroomCurriculum, curriculum, curriculumDays, curriculumContent, contentItems,
 } from '@/lib/db/schema'
+import { getTeacherClassrooms } from '@/lib/teacher-classroom'
 import { eq, and, isNull, inArray, gte } from 'drizzle-orm'
 import Link from 'next/link'
 import { SUBJECT_EMOJI, SUBJECT_LABEL } from '@/lib/utils'
 import type { Subject } from '@/lib/db/schema'
 import { StudentManager } from './StudentManager'
 import { SendReportButton } from './SendReportButton'
+import { CoTeacherPanel } from './CoTeacherPanel'
 import { getMondayStr, addDays, formatWeekLabel, summarizeClassProgress } from '@/lib/teacher-dashboard'
 
 const AVATARS = ['🦊','🐼','🦁','🐸','🦋','🐬','🦄','🐉']
@@ -47,13 +49,10 @@ export default async function TeacherDashboardPage({
         .orderBy(schools.name, classrooms.gradeLevel)
     : []
 
-  // Load classroom(s). In production each teacher has one classroom; in the
-  // test setup one teacher account may be assigned to multiple classrooms
-  // (e.g. both G1-2 and G3-4). We load all of the teacher's classrooms so we
-  // can show a grade-band switcher when more than one exists.
+  // Load classroom(s) for teacher via junction table (supports multiple teachers per classroom).
   const teacherClassrooms = isAdmin
     ? []  // admin uses allClassrooms picker above
-    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).orderBy(classrooms.name)
+    : await getTeacherClassrooms(session.sub)
 
   const [classroom] = isAdmin && qClassroomId
     ? await db.select().from(classrooms).where(eq(classrooms.id, qClassroomId)).limit(1)
@@ -495,6 +494,7 @@ export default async function TeacherDashboardPage({
               parentEmail: s.parentEmail ?? null,
             }))}
           />
+          <CoTeacherPanel />
         </div>
 
       </main>

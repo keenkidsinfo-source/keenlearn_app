@@ -8,18 +8,14 @@ import {
 import { eq, and, inArray } from 'drizzle-orm'
 import Link from 'next/link'
 import { CurriculumBrowser } from './CurriculumBrowser'
+import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 export default async function TeacherCurriculumPage() {
   const session = await getSession()
   if (!session) redirect('/login')
   if (session.role === 'student') redirect('/dashboard')
 
-  const [classroom] = await db
-    .select()
-    .from(classrooms)
-    .where(eq(classrooms.teacherId, session.sub))
-    .limit(1)
-
+  const classroom = await getTeacherClassroom(session.sub)
   if (!classroom) redirect('/teacher')
 
   const gradeBand = classroom.gradeBand

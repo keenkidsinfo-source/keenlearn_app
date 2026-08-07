@@ -6,6 +6,7 @@ import { users, classrooms } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import bcrypt from 'bcryptjs'
+import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 // POST /api/v1/teacher/students — add a student to teacher's classroom
 export async function POST(req: NextRequest) {
@@ -17,12 +18,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Find teacher's classroom
-  const [classroom] = await db
-    .select()
-    .from(classrooms)
-    .where(eq(classrooms.teacherId, teacherId!))
-    .limit(1)
-
+  const classroom = await getTeacherClassroom(teacherId!)
   if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
 
   const body = await req.json()

@@ -11,6 +11,7 @@ import {
 import { eq, and, inArray, isNull } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import { getSession } from '@/lib/auth/jwt'
+import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 
@@ -33,9 +34,7 @@ export async function GET(req: NextRequest) {
   }
 
   const adminClassroomId = req.nextUrl.searchParams.get('classroomId')
-  const [classroom] = session.role === 'admin' && adminClassroomId
-    ? await db.select().from(classrooms).where(eq(classrooms.id, adminClassroomId)).limit(1)
-    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).limit(1)
+  const classroom = await getTeacherClassroom(session.sub, session.role === 'admin' ? adminClassroomId : undefined)
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
 
   const students = await db
@@ -73,9 +72,7 @@ export async function POST(req: NextRequest) {
   const { weekStartDate, classroomId: adminClassroomId } = parsed.data
 
   // ── 1. Load classroom + teacher email ───────────────────────────────────────
-  const [classroom] = session.role === 'admin' && adminClassroomId
-    ? await db.select().from(classrooms).where(eq(classrooms.id, adminClassroomId)).limit(1)
-    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).limit(1)
+  const classroom = await getTeacherClassroom(session.sub, session.role === 'admin' ? adminClassroomId : undefined)
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
 
   const [teacher] = await db

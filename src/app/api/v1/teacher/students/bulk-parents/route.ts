@@ -6,6 +6,7 @@ import { users, classrooms } from '@/lib/db/schema'
 import { eq, and, isNull } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import { getSession } from '@/lib/auth/jwt'
+import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 // POST /api/v1/teacher/students/bulk-parents
 // Body: { rows: [{ studentName, parentName, parentEmail }] }
@@ -16,11 +17,7 @@ export async function POST(req: NextRequest) {
   if (!session) return apiError('Unauthorized', 'UNAUTHORIZED', 401)
   if (session.role === 'student') return apiError('Forbidden', 'FORBIDDEN', 403)
 
-  const [classroom] = await db
-    .select()
-    .from(classrooms)
-    .where(eq(classrooms.teacherId, session.sub))
-    .limit(1)
+  const classroom = await getTeacherClassroom(session.sub)
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
 
   const students = await db

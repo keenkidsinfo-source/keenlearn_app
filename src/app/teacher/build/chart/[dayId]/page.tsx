@@ -4,7 +4,7 @@ import { redirect, notFound } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
 import {
-  users, classrooms, curriculumDays, curriculumContent, contentItems,
+  users, classrooms, classroomTeachers, curriculumDays, curriculumContent, contentItems,
   classroomCurriculum, studentSessions,
 } from '@/lib/db/schema'
 import { eq, and, isNull, inArray } from 'drizzle-orm'
@@ -41,17 +41,17 @@ export default async function BuildChartPage({ params }: Props) {
   const meta = (item.metadata ?? {}) as Record<string, any>
   const resultFields = getResultFields(meta, gradeBand)
 
-  // Load the classroom that matches this content item's grade band.
-  // A teacher may have classrooms for multiple grade bands; we pick the one
-  // whose grade_band matches the build content so we get the right students.
-  const [classroom] = await db
-    .select()
-    .from(classrooms)
+  // Load the classroom via junction table, filtered by grade band.
+  const [classroomRow] = await db
+    .select({ classroom: classrooms })
+    .from(classroomTeachers)
+    .innerJoin(classrooms, eq(classroomTeachers.classroomId, classrooms.id))
     .where(and(
-      eq(classrooms.teacherId, session.sub),
+      eq(classroomTeachers.teacherId, session.sub),
       eq(classrooms.gradeBand, gradeBand),
     ))
     .limit(1)
+  const classroom = classroomRow?.classroom
 
   if (!classroom) {
     return (

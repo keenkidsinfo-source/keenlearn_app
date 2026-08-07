@@ -158,10 +158,23 @@ export const achievements = pgTable('achievements', {
   metadata:  jsonb('metadata'),
 })
 
+// ─── classroom_teachers ──────────────────────────────────────────────────────
+// Junction table: multiple teachers can be assigned to one classroom
+export const classroomTeachers = pgTable('classroom_teachers', {
+  id:          uuid('id').primaryKey().defaultRandom(),
+  classroomId: uuid('classroom_id').notNull().references(() => classrooms.id, { onDelete: 'cascade' }),
+  teacherId:   uuid('teacher_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  isPrimary:   boolean('is_primary').default(false).notNull(),
+  assignedAt:  timestamp('assigned_at').defaultNow().notNull(),
+}, (t) => ({
+  uniqueClassroomTeacher: uniqueIndex('uq_classroom_teacher').on(t.classroomId, t.teacherId),
+}))
+
 // ─── Relations ───────────────────────────────────────────────────────────────
 export const classroomsRelations = relations(classrooms, ({ many }) => ({
   users:                many(users),
   classroomCurriculum:  many(classroomCurriculum),
+  classroomTeachers:    many(classroomTeachers),
 }))
 
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -197,5 +210,6 @@ export type Subject   = 'science' | 'coding' | 'build' | 'math' | 'arts' | 'read
 export type GradeBand = 'g1-2' | 'g3-4' | 'both'
 export type Language  = 'scratch' | 'python' | 'blocks'
 
-export type School         = typeof schools.$inferSelect
-export type SchoolSchedule = typeof schoolSchedule.$inferSelect
+export type School            = typeof schools.$inferSelect
+export type SchoolSchedule    = typeof schoolSchedule.$inferSelect
+export type ClassroomTeacher  = typeof classroomTeachers.$inferSelect

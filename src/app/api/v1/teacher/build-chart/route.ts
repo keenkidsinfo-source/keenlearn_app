@@ -10,6 +10,7 @@ import {
 import { eq, and, isNull } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import { getSession } from '@/lib/auth/jwt'
+import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 const SUPABASE_URL         = process.env.SUPABASE_URL ?? ''
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY ?? ''
@@ -93,9 +94,7 @@ export async function POST(req: NextRequest) {
   const { weekStartDate, buildTitle, gradeBand, classroomId: bodyClassroomId, results } = parsed.data
 
   // Load classroom
-  const [classroom] = session.role === 'admin' && bodyClassroomId
-    ? await db.select().from(classrooms).where(eq(classrooms.id, bodyClassroomId)).limit(1)
-    : await db.select().from(classrooms).where(eq(classrooms.teacherId, session.sub)).limit(1)
+  const classroom = await getTeacherClassroom(session.sub, session.role === 'admin' ? bodyClassroomId : undefined)
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
 
   const [school] = classroom.schoolId

@@ -6,6 +6,7 @@ import { users, classrooms } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import bcrypt from 'bcryptjs'
+import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 interface Props { params: { studentId: string } }
 
@@ -18,12 +19,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     return apiError('Forbidden', 'FORBIDDEN', 403)
   }
 
-  const [classroom] = await db
-    .select()
-    .from(classrooms)
-    .where(eq(classrooms.teacherId, teacherId!))
-    .limit(1)
-
+  const classroom = await getTeacherClassroom(teacherId!)
   if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
 
   // Verify student belongs to this classroom
@@ -80,18 +76,13 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     return apiError('Forbidden', 'FORBIDDEN', 403)
   }
 
-  const [classroom] = await db
-    .select()
-    .from(classrooms)
-    .where(eq(classrooms.teacherId, teacherId!))
-    .limit(1)
-
-  if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
+  const classroom2 = await getTeacherClassroom(teacherId!)
+  if (!classroom2) return apiError('No classroom found', 'NO_CLASSROOM', 404)
 
   const [student] = await db
     .select()
     .from(users)
-    .where(and(eq(users.id, params.studentId), eq(users.classroomId, classroom.id)))
+    .where(and(eq(users.id, params.studentId), eq(users.classroomId, classroom2.id)))
     .limit(1)
 
   if (!student) return apiError('Student not found', 'NOT_FOUND', 404)
