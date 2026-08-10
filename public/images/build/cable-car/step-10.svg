@@ -1,28 +1,7 @@
 <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
 <rect width="960" height="540" fill="#f0f4f8"/>
-<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
-<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🔧  Step 10 — Fix time!</text>
-
-<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Why did it stop? Make ONE change and retest.</text>
-
-<rect x="30" y="130" width="410" height="310" fill="#fef2f2" stroke="#dc2626" stroke-width="2" rx="12"/>
-<text x="235" y="165" font-size="21" text-anchor="middle" fill="#dc2626" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">❌  Common problems:</text>
-<text x="120" y="200" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Cup is tilting sideways</text>
-<text x="120" y="230" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Tape is touching the straw</text>
-<text x="120" y="260" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Cargo is piled on one side</text>
-<text x="120" y="290" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  String is caught on something</text>
-<text x="120" y="320" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Cup is too heavy (too many clips)</text>
-<text x="120" y="350" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Zip line has too much sag</text>
-
-<rect x="490" y="130" width="440" height="310" fill="#f0fdf4" stroke="#16a34a" stroke-width="2" rx="12"/>
-<text x="710" y="165" font-size="21" text-anchor="middle" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">✅  Try these fixes:</text>
-<text x="580" y="200" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Re-centre cargo evenly</text>
-<text x="580" y="230" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Remove 1-2 paperclips</text>
-<text x="580" y="260" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Loosen tape near straw</text>
-<text x="580" y="290" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Re-thread so cup is level</text>
-<text x="580" y="320" font-size="19" text-anchor="left" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">•  Ask teacher to tighten line</text>
-<text x="580" y="350" font-size="19" text-anchor="left" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">•  Try just ONE fix at a time!</text>
-
-<rect x="168.07999999999998" y="474" width="623.84" height="37" fill="#ea580c" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">FRICTION is slowing it down. Less friction = more cargo!</text>
-
+<rect width="960" height="66" fill="#1e293b"/><text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">🧪  Step 10 — Round 1 — release the empty cup</text>
+<text x="480" y="97" font-size="18" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Put the EMPTY cup at the HIGH end and let go. Does it slide all the way down?</text><line x1="80" y1="170" x2="880" y2="240" stroke="#374151" stroke-width="4" stroke-dasharray="8,4"/><rect x="100" y="160" width="140" height="22" fill="#a3c96e" stroke="#1e293b" stroke-width="2" rx="11"/><line x1="127" y1="182" x2="127" y2="235" stroke="#6b7280" stroke-width="3"/><line x1="217" y1="182" x2="217" y2="235" stroke="#6b7280" stroke-width="3"/><polygon points="90,235 255,235 240,300 105,300" fill="#d4956a" stroke="#1e293b" stroke-width="2"/><line x1="90" y1="235" x2="255" y2="235" stroke="#1e293b" stroke-width="3"/><text x="175" y="152" font-size="14" text-anchor="middle" fill="#374151" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">HIGH end</text><rect x="430" y="193" width="100" height="18" fill="#a3c96e" stroke="#1e293b" stroke-width="2" rx="9" opacity="0.6"/><text x="480" y="186" font-size="14" text-anchor="middle" fill="#ef4444" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">STOPS HERE (empty cup)</text><text x="480" y="228" font-size="22" text-anchor="middle" fill="#ef4444" font-family="system-ui,-apple-system,sans-serif">STOP</text><text x="480" y="330" font-size="17" text-anchor="middle" fill="#374151" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Most empty cups STOP in the middle — that is CORRECT!</text><text x="480" y="355" font-size="16" text-anchor="middle" fill="#374151" font-family="system-ui,-apple-system,sans-serif">GRAVITY pulls the cup down. FRICTION holds the straw. With no cargo, friction wins!</text><text x="480" y="380" font-size="16" text-anchor="middle" fill="#374151" font-family="system-ui,-apple-system,sans-serif">Record YES or NO on the class chart — did it reach the end?</text><rect x="30" y="408" width="900" height="80" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="12"/>
+<text x="480" y="438" font-size="18" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">Gravity vs Friction. The cup is too light for gravity to overcome the straw</text>
+<text x="480" y="464" font-size="18" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">friction. Adding rocks will tip the balance!</text>
 </svg>

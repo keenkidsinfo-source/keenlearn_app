@@ -1,26 +1,7 @@
 <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
 <rect width="960" height="540" fill="#f0f4f8"/>
-<rect x="0" y="0" width="960" height="66" fill="#1e293b"/>
-<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">📎  Step 8 — Cargo Challenge Round 1</text>
-
-<text x="480" y="103" font-size="21" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Drop 3 paperclips INTO your cup. Test the zip line again!</text>
-
-<line x1="65" y1="165" x2="830" y2="415" stroke="#1e293b" stroke-width="5" stroke-linecap="round"/>
-<text x="65" y="153" font-size="18" text-anchor="left" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">🔝 START</text>
-
-<g transform="rotate(27 435 280)">
-  <rect x="397" y="269" width="78" height="22" fill="#4ade80" stroke="#1e293b" stroke-width="3" rx="11"/>
-</g>
-<polygon points="375,294 495,294 479,396 391,396" fill="#d4956a" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
-<line x1="400" y1="286" x2="382" y2="294" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-<line x1="470" y1="286" x2="488" y2="294" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-<text x="435" y="330" font-size="30" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">📎  📎  📎</text>
-<text x="435" y="363" font-size="18" text-anchor="middle" fill="#475569" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">3 paperclips</text>
-
-<line x1="275" y1="220" x2="395" y2="284" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/><polygon points="395,284 374.88235294117646,283.4705882352941 383.3529411764706,267.5882352941176" fill="#dc2626"/>
-
-<rect x="615" y="150" width="310" height="250" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2" rx="10"/><text x="770" y="182" font-size="20" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">📋  Class chart:</text><text x="770" y="212" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Name: __________</text><text x="770" y="238" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Cargo: 3 clips</text><text x="770" y="264" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">Made it to end?</text><text x="770" y="290" font-size="18" text-anchor="middle" fill="#1e293b" font-weight="normal" font-family="system-ui,-apple-system,sans-serif">⬜ YES    ⬜ NO</text>
-
-<rect x="173.39999999999998" y="474" width="613.2" height="37" fill="#1d4ed8" stroke="none" stroke-width="0" rx="10"/><text x="480" y="505" font-size="19" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">💡  GRAVITY pulls the cargo down — heavier = more pull!</text>
-
+<rect width="960" height="66" fill="#1e293b"/><text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">⚖️  Step 8 — Check the cup hangs level</text>
+<text x="480" y="97" font-size="18" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Look at the cup from the side. Is it hanging flat and level? Fix it if it tilts!</text><rect x="80" y="135" width="340" height="25" fill="#a3c96e" stroke="#1e293b" stroke-width="2" rx="12"/><line x1="120" y1="160" x2="120" y2="220" stroke="#6b7280" stroke-width="3"/><line x1="390" y1="160" x2="390" y2="220" stroke="#6b7280" stroke-width="3"/><polygon points="80,220 420,220 405,285 95,285" fill="#d4956a" stroke="#1e293b" stroke-width="2"/><line x1="80" y1="220" x2="420" y2="220" stroke="#1e293b" stroke-width="3"/><circle cx="100" cy="220" r="7" fill="#16a34a" stroke="#1e293b" stroke-width="2"/><circle cx="400" cy="220" r="7" fill="#16a34a" stroke="#1e293b" stroke-width="2"/><text x="250" y="125" font-size="18" text-anchor="middle" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">GOOD — hangs level</text><rect x="550" y="135" width="340" height="25" fill="#a3c96e" stroke="#1e293b" stroke-width="2" rx="12"/><line x1="590" y1="160" x2="590" y2="195" stroke="#6b7280" stroke-width="3"/><line x1="860" y1="160" x2="860" y2="245" stroke="#6b7280" stroke-width="3"/><polygon points="550,205 875,255 853,320 573,270" fill="#d4956a" stroke="#ef4444" stroke-width="2"/><text x="720" y="125" font-size="18" text-anchor="middle" fill="#ef4444" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">FIX — tilted!</text><text x="720" y="340" font-size="15" text-anchor="middle" fill="#ef4444" font-family="system-ui,-apple-system,sans-serif">Re-thread the lower string so the knot</text><text x="720" y="358" font-size="15" text-anchor="middle" fill="#ef4444" font-family="system-ui,-apple-system,sans-serif">is slightly deeper inside the cup.</text><rect x="30" y="380" width="900" height="95" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="12"/>
+<text x="480" y="410" font-size="18" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">To level the cup: on the LOW side, untie the inside knot, pull the string a tiny</text>
+<text x="480" y="436" font-size="18" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">bit LESS through the hole, re-knot. This shortens that side.</text>
 </svg>
