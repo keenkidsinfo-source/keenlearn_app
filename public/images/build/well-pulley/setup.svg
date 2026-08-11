@@ -1,0 +1,62 @@
+<svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" width="960" height="540">
+<rect width="960" height="540" fill="#f0f4f8"/>
+<rect width="960" height="66" fill="#1e293b"/>
+<text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">⚙️  Well Pulley — Materials &amp; Prep Checklist</text>
+
+<!-- Left column: Materials per group -->
+<rect x="30" y="82" width="430" height="340" fill="white" rx="12" stroke="#94a3b8" stroke-width="2"/>
+<rect x="30" y="82" width="430" height="44" fill="#0f766e" rx="12"/>
+<rect x="30" y="110" width="430" height="16" fill="#0f766e"/>
+<text x="245" y="110" font-size="17" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">📦 Materials per group (2–3 students)</text>
+
+<!-- Material list items -->
+<text x="60" y="152" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">📄  2 large corrugated cardboard pieces (~20×30 cm)</text>
+<text x="60" y="178" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">⬜  1 flat cardboard square (base, ~15×15 cm)</text>
+<text x="60" y="204" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">🪵  2 popsicle sticks (uprights)</text>
+<text x="60" y="230" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">📏  1 wooden skewer (axle, ~25 cm)</text>
+<text x="60" y="256" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">🧵  1 piece of string, ~40 cm</text>
+<text x="60" y="282" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">📦  1 small corrugated piece (bucket, ~8×12 cm)</text>
+<text x="60" y="308" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">📄  1 cardstock strip, 2 cm × 15 cm (crank)</text>
+<text x="60" y="334" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">🪙  3 pennies (cargo for testing)</text>
+<text x="60" y="360" font-size="15" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">✂️  Scissors &amp; tape at each station</text>
+
+<!-- Right column: Teacher prep steps -->
+<rect x="500" y="82" width="430" height="340" fill="white" rx="12" stroke="#94a3b8" stroke-width="2"/>
+<rect x="500" y="82" width="430" height="44" fill="#7c3aed" rx="12"/>
+<rect x="500" y="110" width="430" height="16" fill="#7c3aed"/>
+<text x="715" y="110" font-size="17" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">✅ Before Kids Arrive</text>
+
+<!-- Step circles + text -->
+<circle cx="525" cy="152" r="13" fill="#7c3aed"/>
+<text x="525" y="157" font-size="13" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">1</text>
+<text x="548" y="157" font-size="14" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Pre-cut cardboard to sizes above.</text>
+
+<circle cx="525" cy="188" r="13" fill="#7c3aed"/>
+<text x="525" y="193" font-size="13" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">2</text>
+<text x="548" y="193" font-size="14" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Cut strings to 40 cm per group.</text>
+
+<circle cx="525" cy="224" r="13" fill="#7c3aed"/>
+<text x="525" y="229" font-size="13" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">3</text>
+<text x="548" y="229" font-size="14" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Cut crank strips: 2 cm × 15 cm.</text>
+
+<circle cx="525" cy="260" r="13" fill="#7c3aed"/>
+<text x="525" y="265" font-size="13" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">4</text>
+<text x="548" y="265" font-size="14" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Bag materials per group. Put on desks.</text>
+
+<circle cx="525" cy="296" r="13" fill="#7c3aed"/>
+<text x="525" y="301" font-size="13" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">5</text>
+<text x="548" y="301" font-size="14" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Build one demo well yourself first.</text>
+
+<circle cx="525" cy="332" r="13" fill="#7c3aed"/>
+<text x="525" y="337" font-size="13" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">6</text>
+<text x="548" y="337" font-size="14" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Write crank-count chart on board.</text>
+
+<circle cx="525" cy="368" r="13" fill="#7c3aed"/>
+<text x="525" y="373" font-size="13" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">7</text>
+<text x="548" y="373" font-size="14" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Have extra tape + pencils accessible.</text>
+
+<!-- Bottom tip banner -->
+<rect x="30" y="440" width="900" height="70" fill="#ede9fe" stroke="#7c3aed" stroke-width="2" rx="12"/>
+<text x="480" y="468" font-size="17" font-weight="bold" text-anchor="middle" fill="#6d28d9" font-family="system-ui,-apple-system,sans-serif">💡 Key Teaching Point — Wheel &amp; Axle</text>
+<text x="480" y="492" font-size="14" text-anchor="middle" fill="#5b21b6" font-family="system-ui,-apple-system,sans-serif">Crank (wheel) + skewer (axle) → spinning the big part lifts the bucket. Same science as water wells, fishing reels &amp; winches!</text>
+</svg>

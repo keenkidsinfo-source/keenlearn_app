@@ -66,6 +66,100 @@ function fmt(secs: number) {
   return `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`
 }
 
+// Parse "DO ... "SAY" ... DO" format — split quoted parts as SAY, rest as DO
+function parseAction(action: string) {
+  const parts: { kind: 'say' | 'do'; text: string }[] = []
+  const re = /"([^"]+)"/g
+  let last = 0, m: RegExpExecArray | null
+  while ((m = re.exec(action)) !== null) {
+    const before = action.slice(last, m.index).replace(/^\s*[-–:]\s*/, '').trim()
+    if (before) parts.push({ kind: 'do', text: before })
+    parts.push({ kind: 'say', text: m[1] })
+    last = m.index + m[0].length
+  }
+  const after = action.slice(last).replace(/^\s*[-–:]\s*/, '').trim()
+  if (after) parts.push({ kind: 'do', text: after })
+  if (parts.length === 0) parts.push({ kind: 'do', text: action })
+  return parts
+}
+
+// Segment color theme
+type SegColor = { bg: string; light: string; border: string; text: string; timebg: string }
+function segColorFor(label: string): SegColor {
+  if (label === 'WARM-UP')     return { bg: 'bg-orange-500', light: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', timebg: 'bg-orange-100' }
+  if (label === 'MAIN ACTIVITY') return { bg: 'bg-teal-600',   light: 'bg-teal-50',   border: 'border-teal-200',   text: 'text-teal-700',   timebg: 'bg-teal-100'   }
+  return                               { bg: 'bg-purple-600', light: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', timebg: 'bg-purple-100' }
+}
+
+// Reusable step renderer used in both Warm-Up and Session tabs
+function SessionPlanSegments({ segments }: { segments: SessionSegment[] }) {
+  const [collapsed, setCollapsed] = useState(false)
+  return (
+    <div className="space-y-3">
+      <button
+        onClick={() => setCollapsed(c => !c)}
+        className="w-full text-xs font-black text-gray-400 uppercase tracking-wide text-left flex items-center gap-1.5"
+      >
+        <span>{collapsed ? '▶' : '▼'}</span>
+        {collapsed ? 'Show session plan steps' : 'Hide session plan steps'}
+      </button>
+      {!collapsed && segments.map((seg, si) => {
+        const c = segColorFor(seg.label)
+        const duration = seg.endMin - seg.startMin
+        return (
+          <div key={si} className={cn('rounded-2xl border-2 overflow-hidden', c.border)}>
+            <div className={cn('px-4 py-3 flex items-center justify-between', c.bg)}>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">{seg.emoji}</span>
+                <div>
+                  <p className="text-white font-black text-sm">{seg.label}</p>
+                  {seg.title && <p className="text-white/80 text-xs">{seg.title}</p>}
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-white/90 text-xs font-bold tabular-nums">min {seg.startMin} – {seg.endMin}</p>
+                <p className="text-white/60 text-xs">{duration} min</p>
+              </div>
+            </div>
+            {seg.steps && seg.steps.length > 0 && (
+              <div className={cn('p-3 space-y-3', c.light)}>
+                {seg.steps.map((step, ti) => {
+                  const parsed = parseAction(step.action)
+                  return (
+                    <div key={ti} className="flex gap-2.5 items-start">
+                      <div className="shrink-0 text-center">
+                        <span className={cn('text-xs font-black px-1.5 py-0.5 rounded block tabular-nums', c.timebg, c.text)}>
+                          {step.time}
+                        </span>
+                        <span className="text-gray-300 text-xs">min</span>
+                      </div>
+                      <div className="space-y-1.5 flex-1">
+                        {parsed.map((part, pi) =>
+                          part.kind === 'say' ? (
+                            <div key={pi} className="bg-white border border-gray-200 rounded-xl px-3 py-2 flex items-start gap-2">
+                              <span className="text-xs font-black text-teal-600 uppercase tracking-wide shrink-0 mt-0.5 leading-none">SAY</span>
+                              <p className="text-gray-800 text-sm leading-snug italic">&ldquo;{part.text}&rdquo;</p>
+                            </div>
+                          ) : (
+                            <div key={pi} className="flex items-start gap-2">
+                              <span className="text-xs font-black text-gray-400 uppercase tracking-wide shrink-0 mt-0.5 leading-none">DO</span>
+                              <p className="text-gray-600 text-sm leading-snug">{part.text}</p>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 const PILLAR_COLOR: Record<string, string> = {
   'Voice': 'bg-teal-600',
   'Body':  'bg-purple-600',
@@ -425,35 +519,13 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
           {/* Minute-by-minute plan */}
           {meta.sessionPlan && meta.sessionPlan.length > 0 ? (
             <div className="space-y-3">
-              {meta.sessionPlan.map((seg, si) => {
-                const segColor = seg.label === 'WARM-UP'
-                  ? { bg: 'bg-orange-500', light: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', timebg: 'bg-orange-100' }
-                  : seg.label === 'MAIN ACTIVITY'
-                  ? { bg: 'bg-teal-600', light: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-700', timebg: 'bg-teal-100' }
-                  : { bg: 'bg-purple-600', light: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', timebg: 'bg-purple-100' }
-
-                // Parse an action string: split quoted ("...") parts as SAY, rest as DO
-                function parseAction(action: string) {
-                  const parts: { kind: 'say' | 'do'; text: string }[] = []
-                  const re = /"([^"]+)"/g
-                  let last = 0, m: RegExpExecArray | null
-                  while ((m = re.exec(action)) !== null) {
-                    const before = action.slice(last, m.index).replace(/^\s*[-–:]\s*/, '').trim()
-                    if (before) parts.push({ kind: 'do', text: before })
-                    parts.push({ kind: 'say', text: m[1] })
-                    last = m.index + m[0].length
-                  }
-                  const after = action.slice(last).replace(/^\s*[-–:]\s*/, '').trim()
-                  if (after) parts.push({ kind: 'do', text: after })
-                  if (parts.length === 0) parts.push({ kind: 'do', text: action })
-                  return parts
-                }
-
+              {meta.sessionPlan.map((seg: SessionSegment, si: number) => {
+                const c = segColorFor(seg.label)
                 const duration = seg.endMin - seg.startMin
                 return (
-                  <div key={si} className={cn('rounded-2xl border-2 overflow-hidden', segColor.border)}>
+                  <div key={si} className={cn('rounded-2xl border-2 overflow-hidden', c.border)}>
                     {/* Segment header */}
-                    <div className={cn('px-4 py-3 flex items-center justify-between', segColor.bg)}>
+                    <div className={cn('px-4 py-3 flex items-center justify-between', c.bg)}>
                       <div className="flex items-center gap-2">
                         <span className="text-xl">{seg.emoji}</span>
                         <div>
@@ -471,14 +543,14 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
 
                     {/* Steps */}
                     {seg.steps && seg.steps.length > 0 && (
-                      <div className={cn('p-3 space-y-3', segColor.light)}>
-                        {seg.steps.map((step, ti) => {
+                      <div className={cn('p-3 space-y-3', c.light)}>
+                        {seg.steps.map((step: PlanStep, ti: number) => {
                           const parsed = parseAction(step.action)
                           return (
                             <div key={ti} className="flex gap-2.5 items-start">
                               {/* Minute badge */}
                               <div className="shrink-0 text-center">
-                                <span className={cn('text-xs font-black px-1.5 py-0.5 rounded block tabular-nums', segColor.timebg, segColor.text)}>
+                                <span className={cn('text-xs font-black px-1.5 py-0.5 rounded block tabular-nums', c.timebg, c.text)}>
                                   {step.time}
                                 </span>
                                 <span className="text-gray-300 text-xs">min</span>
@@ -531,33 +603,75 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
       {/* ════════════════════ WARM-UP ════════════════════ */}
       {phase === 'warmup' && (
         <>
-          {meta.improvGame ? (
-            <div className="bg-white rounded-2xl shadow-sm p-5">
-              <div className="mb-4">
-                <p className="text-xs font-black text-teal-500 uppercase tracking-wide mb-1">Today&apos;s Warm-Up Game</p>
-                <h2 className="text-2xl font-black text-gray-800">{meta.improvGame.name}</h2>
-                <p className="text-gray-500 text-sm mt-1">{meta.improvGame.description}</p>
+          {/* Quick reference card */}
+          {meta.improvGame && (
+            <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl px-4 py-3 flex items-start gap-3">
+              <span className="text-xl shrink-0">🎭</span>
+              <div>
+                <p className="text-xs font-black text-orange-700 uppercase tracking-wide mb-0.5">{meta.improvGame.name}</p>
+                <p className="text-sm text-orange-900">{meta.improvGame.description}</p>
               </div>
-
-              <div className="bg-teal-50 rounded-xl p-4">
-                <p className="text-xs font-black text-teal-600 uppercase tracking-wide mb-3">How to run it</p>
-                <ol className="space-y-3">
-                  {meta.improvGame.instructions.map((step, i) => (
-                    <li key={i} className="flex gap-3 items-start">
-                      <span className="bg-teal-600 text-white text-xs font-black rounded-full w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
-                        {i + 1}
-                      </span>
-                      <span className="text-gray-700 text-sm leading-relaxed">{step}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          ) : (
-            <div className="bg-white rounded-2xl shadow-sm p-5 text-center text-gray-400">
-              <p>No warm-up game set for this week.</p>
             </div>
           )}
+
+          {/* Timed plan steps for WARM-UP segment */}
+          {(() => {
+            const warmupSeg = meta.sessionPlan?.find((s: SessionSegment) => s.label === 'WARM-UP')
+            if (!warmupSeg) return (
+              <div className="bg-white rounded-2xl shadow-sm p-5 text-center text-gray-400">
+                <p className="text-sm">No warm-up steps set for this week.</p>
+              </div>
+            )
+            return (
+              <div className="rounded-2xl border-2 border-orange-200 overflow-hidden">
+                <div className="px-4 py-3 flex items-center justify-between bg-orange-500">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{warmupSeg.emoji}</span>
+                    <div>
+                      <p className="text-white font-black text-sm">WARM-UP</p>
+                      {warmupSeg.title && <p className="text-white/80 text-xs">{warmupSeg.title}</p>}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-white/90 text-xs font-bold tabular-nums">min {warmupSeg.startMin} – {warmupSeg.endMin}</p>
+                    <p className="text-white/60 text-xs">{warmupSeg.endMin - warmupSeg.startMin} min</p>
+                  </div>
+                </div>
+                {warmupSeg.steps && warmupSeg.steps.length > 0 && (
+                  <div className="p-3 space-y-3 bg-orange-50">
+                    {warmupSeg.steps.map((step: PlanStep, ti: number) => {
+                      const parsed = parseAction(step.action)
+                      return (
+                        <div key={ti} className="flex gap-2.5 items-start">
+                          <div className="shrink-0 text-center">
+                            <span className="text-xs font-black px-1.5 py-0.5 rounded block tabular-nums bg-orange-100 text-orange-700">
+                              {step.time}
+                            </span>
+                            <span className="text-gray-300 text-xs">min</span>
+                          </div>
+                          <div className="space-y-1.5 flex-1">
+                            {parsed.map((part, pi) =>
+                              part.kind === 'say' ? (
+                                <div key={pi} className="bg-white border border-gray-200 rounded-xl px-3 py-2 flex items-start gap-2">
+                                  <span className="text-xs font-black text-teal-600 uppercase tracking-wide shrink-0 mt-0.5 leading-none">SAY</span>
+                                  <p className="text-gray-800 text-sm leading-snug italic">&ldquo;{part.text}&rdquo;</p>
+                                </div>
+                              ) : (
+                                <div key={pi} className="flex items-start gap-2">
+                                  <span className="text-xs font-black text-gray-400 uppercase tracking-wide shrink-0 mt-0.5 leading-none">DO</span>
+                                  <p className="text-gray-600 text-sm leading-snug">{part.text}</p>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )
+          })()}
 
           <button
             onClick={() => setPhase('session')}
@@ -571,6 +685,11 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
       {/* ════════════════════ SESSION ════════════════════ */}
       {phase === 'session' && (
         <>
+          {/* Main Activity + Wrap-Up steps from session plan */}
+          {meta.sessionPlan && meta.sessionPlan.filter((s: SessionSegment) => s.label !== 'WARM-UP').length > 0 && (
+            <SessionPlanSegments segments={meta.sessionPlan.filter((s: SessionSegment) => s.label !== 'WARM-UP')} />
+          )}
+
           {/* Word of the Day */}
           {meta.weekWord && (
             <div className="bg-white rounded-2xl shadow-sm p-5">

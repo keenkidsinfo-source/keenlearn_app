@@ -38,6 +38,19 @@ const PREP_INFO: Record<string, { image: string; steps: string[]; warning: strin
       'Have your demo cable car built and ready. 2 groups of 6–7 kids per zip line.',
     ],
   },
+  'Well Pulley': {
+    image: '/images/build/well-pulley/setup.svg',
+    warning: '⚠️ Pre-cut ALL materials before kids arrive — cutting cardboard mid-class kills momentum!',
+    steps: [
+      'Cut 2 large corrugated cardboard pieces (~20×30 cm) per group of 2–3 students.',
+      'Cut 1 flat cardboard square (~15×15 cm) per group for the base.',
+      'Cut string to 40 cm per group. Cut crank strips: 2 cm × 15 cm from cardstock.',
+      'Cut small corrugated pieces (~8×12 cm) for the bucket, one per group.',
+      'Bag materials per group and place on desks. Have pennies, tape & scissors accessible.',
+      'Build one complete demo well yourself so you can troubleshoot (skewer must spin freely!).',
+      'Write a 2-column crank-count chart on the board: "Empty" and "3 Pennies" columns.',
+    ],
+  },
 }
 
 export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand }: Props) {
