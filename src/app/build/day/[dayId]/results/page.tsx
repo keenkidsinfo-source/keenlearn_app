@@ -59,7 +59,7 @@ export default async function BuildResultsPage({ params }: Props) {
   const initial = {
     a: br[resultFields.a.key] != null ? String(br[resultFields.a.key]) : '',
     b: br[resultFields.b.key] != null ? String(br[resultFields.b.key]) : '',
-    c: br[resultFields.c.key] != null ? String(br[resultFields.c.key]) : '',
+    c: resultFields.c && br[resultFields.c.key] != null ? String(br[resultFields.c.key]) : '',
     note: br.note ?? '',
   }
 

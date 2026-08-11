@@ -25,14 +25,19 @@ interface LeaderEntry {
 export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, resultFields, initial }: Props) {
   const router = useRouter()
   const { unit, leaderboard: leaderDir, showLeaderboard } = resultFields
+  const hasC = !!resultFields.c
 
   const [a, setA] = useState(initial.a)
   const [b, setB] = useState(initial.b)
   const [c, setC] = useState(initial.c)
   const [note, setNote] = useState(initial.note)
   const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState(!!initial.c)
+  // Consider saved if any primary field has data
+  const [saved, setSaved] = useState(!!(initial.a || initial.b || initial.c))
   const [board, setBoard] = useState<LeaderEntry[]>([])
+
+  // Key metric for leaderboard: c if present, else b
+  const myMetric = hasC ? c : b
 
   const fetchBoard = useCallback(async () => {
     if (!showLeaderboard) return
@@ -43,8 +48,8 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
       const entries: LeaderEntry[] = json.data ?? []
       entries.sort((x, y) =>
         leaderDir === 'more'
-          ? (y.c ?? 0) - (x.c ?? 0)
-          : (x.c ?? 999) - (y.c ?? 999)
+          ? (y.c ?? y.b ?? 0) - (x.c ?? x.b ?? 0)
+          : (x.c ?? x.b ?? 999) - (y.c ?? y.b ?? 999)
       )
       setBoard(entries)
     } catch {}
@@ -64,8 +69,10 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
       const buildResults: Record<string, any> = {
         [resultFields.a.key]: parseInt(a) || null,
         [resultFields.b.key]: parseInt(b) || null,
-        [resultFields.c.key]: parseInt(c) || null,
         note,
+      }
+      if (hasC && resultFields.c) {
+        buildResults[resultFields.c.key] = parseInt(c) || null
       }
       await fetch(`/api/v1/sessions/${contentItemId}`, {
         method: 'PUT',
@@ -78,7 +85,15 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
     }
   }
 
-  const maxMetric = Math.max(...board.map(e => e.c ?? 0), 1)
+  // Fields to render — always A and B, C only when defined
+  type FieldKey = 'a' | 'b' | 'c'
+  const fields: Array<[FieldKey, string, React.Dispatch<React.SetStateAction<string>>]> = [
+    ['a', a, setA],
+    ['b', b, setB],
+    ...(hasC ? [['c', c, setC] as [FieldKey, string, React.Dispatch<React.SetStateAction<string>>]] : []),
+  ]
+
+  const maxMetric = Math.max(...board.map(e => e.c ?? e.b ?? 0), 1)
   const medal = ['🥇', '🥈', '🥉']
 
   if (saved) {
@@ -97,7 +112,7 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
           {/* My result */}
           <div className="bg-teal-600 text-white rounded-2xl p-5 text-center shadow">
             <p className="text-teal-200 text-sm font-semibold mb-1">Your result</p>
-            <p className="text-5xl font-black">{c || '—'}</p>
+            <p className="text-5xl font-black">{myMetric || '—'}</p>
             <p className="text-teal-200 text-sm mt-1">{unit}</p>
             {note && <p className="text-teal-100 text-xs mt-2 italic">&ldquo;{note}&rdquo;</p>}
           </div>
@@ -114,10 +129,11 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
                 </div>
                 <div className="flex flex-col divide-y divide-gray-50">
                   {board.map((entry, i) => {
+                    const metric = entry.c ?? entry.b ?? 0
                     const isMe = entry.studentId === myStudentId
                     const pct = leaderDir === 'more'
-                      ? Math.max(8, Math.round(((entry.c ?? 0) / maxMetric) * 100))
-                      : Math.max(8, Math.round((1 - ((entry.c ?? 0) / Math.max(maxMetric, 1))) * 94) + 8)
+                      ? Math.max(8, Math.round((metric / maxMetric) * 100))
+                      : Math.max(8, Math.round((1 - (metric / Math.max(maxMetric, 1))) * 94) + 8)
                     const barColor = i === 0 ? 'bg-yellow-400' : i === 1 ? 'bg-gray-300' : i === 2 ? 'bg-orange-300' : 'bg-teal-200'
                     return (
                       <div key={entry.studentId} className={`px-4 py-3 ${isMe ? 'bg-teal-50' : ''}`}>
@@ -127,7 +143,7 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
                             {entry.name}{isMe ? ' (you)' : ''}
                           </span>
                           <span className={`text-sm font-black ${isMe ? 'text-teal-600' : 'text-gray-600'}`}>
-                            {entry.c} {unit}
+                            {metric} {unit}
                           </span>
                         </div>
                         <div className="ml-9 h-4 bg-gray-100 rounded overflow-hidden">
@@ -174,10 +190,10 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
         <div className="bg-white rounded-2xl shadow-sm p-5 flex flex-col gap-4">
           <p className="text-sm text-gray-500">Enter your numbers — your teacher will see them on the class chart.</p>
 
-          {([['a', a, setA], ['b', b, setB], ['c', c, setC]] as const).map(([field, val, setter]) => (
+          {fields.map(([field, val, setter]) => (
             <div key={field}>
               <label className={`block text-sm font-bold mb-1 ${field === 'c' ? 'text-teal-700' : 'text-gray-600'}`}>
-                {resultFields[field].label}
+                {resultFields[field]!.label}
               </label>
               <input
                 type="number" min="0" inputMode="numeric"
@@ -204,7 +220,7 @@ export function ResultsForm({ contentItemId, dayId, buildTitle, myStudentId, res
 
         <button
           onClick={submit}
-          disabled={saving || !c}
+          disabled={saving || !(a || b || c)}
           className="w-full min-h-[56px] rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-black text-lg disabled:opacity-40 shadow transition-all"
         >
           {saving ? '📤 Saving…' : showLeaderboard ? '📊 Submit & See Class Results' : '📊 Submit My Results'}
