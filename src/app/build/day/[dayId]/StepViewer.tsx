@@ -182,17 +182,17 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
         ))}
       </div>
 
-      {/* Instructor Prep panel — slides down when 🔧 Setup is tapped */}
+      {/* Instructor Prep panel — takes over the full content area when open */}
       {prep && showPrep && (
-        <div className="bg-yellow-50 border-b-2 border-yellow-300 px-4 py-4 overflow-y-auto max-h-[70vh]">
-          <div className="max-w-lg mx-auto space-y-3">
+        <div className="flex-1 overflow-y-auto bg-yellow-50 px-4 py-4">
+          <div className="max-w-lg mx-auto space-y-3 pb-4">
             <div className="bg-yellow-400 text-yellow-900 rounded-xl px-4 py-2 font-bold text-sm text-center">
               {prep.warning}
             </div>
-            {/* Zip line setup image */}
+            {/* Setup image */}
             <div className="w-full bg-white rounded-xl shadow overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={prep.image} alt="Zip line setup diagram" className="w-full object-contain" />
+              <img src={prep.image} alt="Setup diagram" className="w-full object-contain" />
             </div>
             {/* Setup steps */}
             <ol className="space-y-2">
@@ -207,7 +207,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
             </ol>
             <button
               onClick={() => setShowPrep(false)}
-              className="w-full py-2.5 rounded-xl bg-orange-500 text-white font-bold text-sm"
+              className="w-full py-3 rounded-xl bg-orange-500 text-white font-bold text-sm shadow"
             >
               ✅ Setup done — show build steps
             </button>
@@ -215,7 +215,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
         </div>
       )}
 
-      <main className="flex-1 overflow-y-auto flex flex-col items-center p-4 gap-3 max-w-lg mx-auto w-full">
+      <main className={cn('flex-1 overflow-y-auto flex flex-col items-center p-4 gap-3 max-w-lg mx-auto w-full', prep && showPrep && 'hidden')}>
 
         {/* Illustration image — use plain <img> so SVGs aren't routed through Next.js
             image optimizer (which refuses SVGs in production) */}
@@ -257,8 +257,8 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
         {saving && <p className="text-orange-400 text-sm">Saving…</p>}
       </main>
 
-      {/* Navigation */}
-      <footer className="p-4 pb-8 flex gap-3 max-w-lg mx-auto w-full">
+      {/* Navigation — hidden while setup panel is open */}
+      <footer className={cn('p-4 pb-8 flex gap-3 max-w-lg mx-auto w-full', prep && showPrep && 'hidden')}>
         <button
           onClick={goPrev}
           disabled={step === 0}
