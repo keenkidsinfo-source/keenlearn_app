@@ -595,6 +595,182 @@ function SvgRealWorld() {
   )
 }
 
+function SvgBigBattle() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fff1f2" rx="16"/>
+      <text x="380" y="32" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">The Big Battle! ⚔️</text>
+      <text x="380" y="54" textAnchor="middle" fontSize="13" fill="#64748b">Whoever wins decides what our cable car does!</text>
+
+      {/* GRAVITY side — left */}
+      <rect x="20" y="68" width="300" height="195" rx="16" fill="#fef2f2" stroke="#ef4444" strokeWidth="3"/>
+      <rect x="20" y="68" width="300" height="44" rx="16" fill="#ef4444"/>
+      <rect x="20" y="98" width="300" height="14" fill="#ef4444"/>
+      <text x="170" y="98" textAnchor="middle" fontSize="18" fontWeight="bold" fill="white">🌍 GRAVITY</text>
+      <text x="170" y="126" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#dc2626">WANTS TO...</text>
+      <text x="170" y="148" textAnchor="middle" fontSize="14" fill="#374151">Pull the cup</text>
+      <text x="170" y="168" textAnchor="middle" fontSize="14" fill="#374151">DOWN the zip line</text>
+      <line x1="170" y1="178" x2="170" y2="222" stroke="#ef4444" strokeWidth="5"/>
+      <polygon points="158,220 182,220 170,236" fill="#ef4444"/>
+      <text x="170" y="254" textAnchor="middle" fontSize="28">🚡💨</text>
+
+      {/* VS */}
+      <text x="380" y="178" textAnchor="middle" fontSize="40" fontWeight="black" fill="#7c3aed">VS</text>
+
+      {/* FRICTION side — right */}
+      <rect x="440" y="68" width="300" height="195" rx="16" fill="#fff7ed" stroke="#f97316" strokeWidth="3"/>
+      <rect x="440" y="68" width="300" height="44" rx="16" fill="#f97316"/>
+      <rect x="440" y="98" width="300" height="14" fill="#f97316"/>
+      <text x="590" y="98" textAnchor="middle" fontSize="18" fontWeight="bold" fill="white">🛑 FRICTION</text>
+      <text x="590" y="126" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#ea580c">WANTS TO...</text>
+      <text x="590" y="148" textAnchor="middle" fontSize="14" fill="#374151">Hold the straw in</text>
+      <text x="590" y="168" textAnchor="middle" fontSize="14" fill="#374151">place and STOP it</text>
+      <text x="590" y="220" textAnchor="middle" fontSize="40">✋</text>
+
+      {/* Bottom outcome boxes */}
+      <rect x="20" y="278" width="340" height="50" rx="10" fill="#dcfce7" stroke="#16a34a" strokeWidth="2"/>
+      <text x="190" y="299" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#15803d">Gravity wins →</text>
+      <text x="190" y="318" textAnchor="middle" fontSize="13" fill="#15803d">Cup slides ALL THE WAY! 🎉</text>
+
+      <rect x="400" y="278" width="340" height="50" rx="10" fill="#fee2e2" stroke="#ef4444" strokeWidth="2"/>
+      <text x="570" y="299" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#dc2626">Friction wins →</text>
+      <text x="570" y="318" textAnchor="middle" fontSize="13" fill="#dc2626">Cup stops in the middle 😢</text>
+    </svg>
+  )
+}
+
+function SvgRealWorldCableCars() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#eff6ff" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="19" fontWeight="bold" fill="#1e293b">Real World Cable Cars! 🌎</text>
+      <text x="380" y="50" textAnchor="middle" fontSize="13" fill="#64748b">The same science YOU discovered is used in real engineering!</text>
+
+      {/* San Francisco */}
+      <rect x="18" y="62" width="348" height="118" rx="14" fill="white" stroke="#f97316" strokeWidth="2.5"/>
+      <text x="50" y="94" fontSize="36">🚡</text>
+      <text x="100" y="88" fontSize="14" fontWeight="bold" fill="#1e293b">San Francisco</text>
+      <text x="100" y="108" fontSize="12" fill="#64748b">Famous cable cars carry people</text>
+      <text x="100" y="124" fontSize="12" fill="#64748b">up steep hills since</text>
+      <text x="100" y="140" fontSize="14" fontWeight="bold" fill="#f97316">1873! 🎉</text>
+
+      {/* Ski Resorts */}
+      <rect x="394" y="62" width="348" height="118" rx="14" fill="white" stroke="#3b82f6" strokeWidth="2.5"/>
+      <text x="426" y="94" fontSize="36">⛷️</text>
+      <text x="476" y="88" fontSize="14" fontWeight="bold" fill="#1e293b">Ski Resorts</text>
+      <text x="476" y="108" fontSize="12" fill="#64748b">Gondola lifts carry skiers up</text>
+      <text x="476" y="124" fontSize="12" fill="#64748b">mountains all around</text>
+      <text x="476" y="140" fontSize="14" fontWeight="bold" fill="#3b82f6">the world! 🏔️</text>
+
+      {/* Swiss Alps */}
+      <rect x="18" y="196" width="348" height="118" rx="14" fill="white" stroke="#7c3aed" strokeWidth="2.5"/>
+      <text x="50" y="228" fontSize="36">🏔️</text>
+      <text x="100" y="222" fontSize="14" fontWeight="bold" fill="#1e293b">Swiss Alps</text>
+      <text x="100" y="242" fontSize="12" fill="#64748b">The longest cable car in the</text>
+      <text x="100" y="258" fontSize="12" fill="#64748b">world is</text>
+      <text x="100" y="274" fontSize="14" fontWeight="bold" fill="#7c3aed">30 km long! 😲</text>
+
+      {/* Zip Lines */}
+      <rect x="394" y="196" width="348" height="118" rx="14" fill="white" stroke="#16a34a" strokeWidth="2.5"/>
+      <text x="426" y="228" fontSize="36">🎢</text>
+      <text x="476" y="222" fontSize="14" fontWeight="bold" fill="#1e293b">Theme Parks &amp; Zip Lines</text>
+      <text x="476" y="242" fontSize="12" fill="#64748b">Zip lines use the exact same</text>
+      <text x="476" y="258" fontSize="12" fill="#64748b">pulley + gravity science</text>
+      <text x="476" y="274" fontSize="14" fontWeight="bold" fill="#16a34a">that YOU learned! 🚀</text>
+    </svg>
+  )
+}
+
+function SvgNewWords() {
+  const words = [
+    { word: 'PULLEY', line1: 'A wheel that helps things', line2: 'move along a rope or string', color: '#f97316', bg: '#fff7ed' },
+    { word: 'GRAVITY', line1: 'An invisible force that pulls', line2: 'everything downward', color: '#16a34a', bg: '#f0fdf4' },
+    { word: 'FRICTION', line1: 'A force that slows things down', line2: 'when surfaces rub together', color: '#ef4444', bg: '#fef2f2' },
+    { word: 'LOAD', line1: 'The cargo or weight', line2: 'that is being carried', color: '#3b82f6', bg: '#eff6ff' },
+    { word: 'FORCE', line1: 'A push or pull that makes', line2: 'things move or stop', color: '#7c3aed', bg: '#f5f3ff' },
+  ]
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#f8fafc" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="19" fontWeight="bold" fill="#1e293b">New Words We Learned! 📚</text>
+      {words.map((w, i) => {
+        const x = i < 3 ? 12 + i * 246 : 135 + (i - 3) * 246
+        const y = i < 3 ? 44 : 196
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width={234} height={128} rx="12" fill={w.bg} stroke={w.color} strokeWidth="2.5"/>
+            <rect x={x} y={y} width={234} height={34} rx="12" fill={w.color}/>
+            <rect x={x} y={y + 20} width={234} height={14} fill={w.color}/>
+            <text x={x + 117} y={y + 23} textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">{w.word}</text>
+            <text x={x + 117} y={y + 62} textAnchor="middle" fontSize="12" fill="#374151">{w.line1}</text>
+            <text x={x + 117} y={y + 80} textAnchor="middle" fontSize="12" fill="#374151">{w.line2}</text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
+function SvgReview() {
+  const qa = [
+    { q: 'What simple machine did the STRAW act as?', a: 'A PULLEY!', color: '#f97316' },
+    { q: 'What force pulled our cup DOWN the string?', a: 'GRAVITY!', color: '#16a34a' },
+    { q: 'What force tried to STOP our cup sliding?', a: 'FRICTION!', color: '#ef4444' },
+    { q: 'Why did MORE rocks make it slide further?', a: 'More weight = more gravity = beats friction!', color: '#7c3aed' },
+  ]
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fffbeb" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="19" fontWeight="bold" fill="#1e293b">{"Let's Review! 🙋"}</text>
+      {qa.map((item, i) => {
+        const y = 48 + i * 72
+        return (
+          <g key={i}>
+            <rect x="18" y={y} width="724" height="62" rx="12" fill="white" stroke={item.color} strokeWidth="2"/>
+            <rect x="18" y={y} width="36" height="62" rx="12" fill={item.color}/>
+            <rect x="42" y={y} width="12" height="62" fill={item.color}/>
+            <text x="36" y={y + 37} textAnchor="middle" fontSize="18" fontWeight="bold" fill="white">?</text>
+            <text x="68" y={y + 22} fontSize="12" fill="#374151">{item.q}</text>
+            <text x="68" y={y + 44} fontSize="14" fontWeight="bold" fill={item.color}>{"→ " + item.a}</text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
+function SvgEngineers() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#1e293b" rx="16"/>
+      <text x="380" y="44" textAnchor="middle" fontSize="26" fontWeight="bold" fill="#fbbf24">You are ENGINEERS! 🔬</text>
+      <text x="380" y="70" textAnchor="middle" fontSize="14" fill="#94a3b8">You built it. You tested it. You figured out WHY. {"That's"} science!</text>
+
+      {[
+        { icon: '🔄', label: 'PULLEY', desc: 'A wheel that helps', desc2: 'things move', color: '#f97316' },
+        { icon: '🌍', label: 'GRAVITY', desc: 'Pulls things down —', desc2: 'our engine', color: '#22c55e' },
+        { icon: '🛑', label: 'FRICTION', desc: 'Slows things down —', desc2: 'our challenge', color: '#ef4444' },
+        { icon: '🏆', label: 'DISCOVERY', desc: 'More weight =', desc2: 'gravity wins = slides!', color: '#a855f7' },
+      ].map((item, i) => {
+        const x = 18 + i * 183
+        return (
+          <g key={i}>
+            <rect x={x} y={90} width={170} height={160} rx="14" fill="#0f172a" stroke={item.color} strokeWidth="2.5"/>
+            <text x={x + 85} y={137} textAnchor="middle" fontSize="40">{item.icon}</text>
+            <text x={x + 85} y={168} textAnchor="middle" fontSize="13" fontWeight="bold" fill={item.color}>{item.label}</text>
+            <text x={x + 85} y={188} textAnchor="middle" fontSize="11" fill="#94a3b8">{item.desc}</text>
+            <text x={x + 85} y={204} textAnchor="middle" fontSize="11" fill="#94a3b8">{item.desc2}</text>
+          </g>
+        )
+      })}
+
+      <rect x="60" y="268" width="640" height="56" rx="14" fill="#fbbf24"/>
+      <text x="380" y="291" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#1e293b">Tell someone at home:</text>
+      <text x="380" y="312" textAnchor="middle" fontSize="13" fill="#1e293b">{'"I built a cable car and discovered that gravity beats friction!"'}</text>
+    </svg>
+  )
+}
+
 // Map grade+slideIndex → SVG component
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g1-2': {
@@ -602,7 +778,12 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
     1: SvgPulleyRealWorld,
     2: SvgGravity,
     3: SvgFriction,
-    4: SvgBigDiscovery,
+    4: SvgBigBattle,
+    5: SvgBigDiscovery,
+    6: SvgRealWorldCableCars,
+    7: SvgNewWords,
+    8: SvgReview,
+    9: SvgEngineers,
   },
   'g3-4': {
     0: SvgSimpleMachinesG34,
