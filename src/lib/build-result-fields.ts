@@ -9,7 +9,7 @@ export interface ResultField {
 export interface ResultFields {
   a:               ResultField
   b:               ResultField
-  c:               ResultField
+  c?:              ResultField   // optional — some builds only have 2 data points
   unit:            string
   leaderboard:     'more' | 'less'  // 'more' = higher is better, 'less' = lower is better
   showLeaderboard: boolean

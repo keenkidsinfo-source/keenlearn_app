@@ -10,12 +10,10 @@ interface Student {
   displayName: string | null
 }
 
-// G1-2 Cable Car: rounds 1 + 2 + max clips
-// G3-4 Well Pulley: no-load + with-load + improved cranks
 interface Row {
-  a: string   // Round 1 clips  /  Cranks no-load
-  b: string   // After fix clips /  Cranks with-load
-  c: string   // Max clips       /  Cranks improved ← the KEY metric
+  a: string
+  b: string
+  c: string   // empty string when c is not used
   note: string
 }
 
@@ -34,6 +32,13 @@ function safeInt(v: string) { const n = parseInt(v, 10); return isNaN(n) ? undef
 
 export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekStartDate, resultFields, initialRows = {} }: Props) {
   const isG12 = gradeBand === 'g1-2'
+
+  // Derive column labels — must be before any useMemo that references them
+  const colA  = resultFields.a.label
+  const colB  = resultFields.b.label
+  const colC  = resultFields.c?.label ?? null   // null = hide the C column
+  const unit  = resultFields.unit
+  const hasC  = colC !== null
 
   const [rows, setRows] = useState<Record<string, Row>>(
     () => Object.fromEntries(students.map(s => [s.id, initialRows[s.id] ?? { a: '', b: '', c: '', note: '' }]))
@@ -59,17 +64,17 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
     arr[idx + 1]?.focus()
   }, [])
 
-  // Live leaderboard sorted by key metric (c)
+  // Live leaderboard sorted by key metric (c if present, else b)
   const leaderboard = useMemo(() => {
     return students
-      .map(s => ({ student: s, metric: safeInt(rows[s.id].c) }))
+      .map(s => ({ student: s, metric: safeInt(hasC ? rows[s.id].c : rows[s.id].b) }))
       .filter(x => x.metric != null)
       .sort((a, b) =>
         resultFields.leaderboard === 'more'
           ? (b.metric ?? 0) - (a.metric ?? 0)
           : (a.metric ?? 999) - (b.metric ?? 999)
       )
-  }, [rows, students, isG12, resultFields.leaderboard])
+  }, [rows, students, hasC, resultFields.leaderboard])
 
   const maxMetric = Math.max(...leaderboard.map(x => x.metric ?? 0), 1)
 
@@ -86,16 +91,23 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
           .map(s => {
             const r = rows[s.id]
             const base = { studentId: s.id, studentName: display(s) }
-            if (isG12) {
-              return { ...base, round1Clips: safeInt(r.a), round2Clips: safeInt(r.b), maxClips: safeInt(r.c), note: r.note || undefined }
-            } else {
-              return { ...base, cranksNoLoad: safeInt(r.a), cranksWithLoad: safeInt(r.b), cranksImproved: safeInt(r.c), note: r.note || undefined }
+            const result: Record<string, any> = {
+              ...base,
+              [resultFields.a.key]: safeInt(r.a),
+              [resultFields.b.key]: safeInt(r.b),
+              note: r.note || undefined,
             }
+            if (hasC && resultFields.c) {
+              result[resultFields.c.key] = safeInt(r.c)
+            }
+            return result
           })
-          .filter(r => isG12
-            ? (r as any).maxClips != null || (r as any).round1Clips != null
-            : (r as any).cranksImproved != null || (r as any).cranksNoLoad != null
-          ),
+          .filter(r => {
+            const aVal = r[resultFields.a.key]
+            const bVal = r[resultFields.b.key]
+            const cVal = hasC && resultFields.c ? r[resultFields.c.key] : undefined
+            return aVal != null || bVal != null || cVal != null
+          }),
       }
 
       const res = await fetch('/api/v1/teacher/build-chart', {
@@ -121,15 +133,12 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
 
   if (showPrint) return (
     <PrintView
-      students={students} rows={rows} isG12={isG12}
+      students={students} rows={rows} hasC={hasC}
+      colA={colA} colB={colB} colC={colC}
       buildTitle={buildTitle} onBack={() => setShowPrint(false)}
+      isG12={isG12}
     />
   )
-
-  const colA = resultFields.a.label
-  const colB = resultFields.b.label
-  const colC = resultFields.c.label
-  const unit  = resultFields.unit
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -149,11 +158,11 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
         {leaderboard.length > 0 && (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
             <h2 className="font-black text-gray-700 text-sm mb-3 uppercase tracking-wide">
-              {isG12 ? '🏆 Most Paperclips' : '🏆 Fewest Cranks'}
+              {resultFields.leaderboard === 'more' ? '🏆 Most' : '🏆 Fewest'} {unit}
             </h2>
             <div className="flex flex-col gap-1.5">
               {leaderboard.map((entry, i) => {
-                const pct = isG12
+                const pct = resultFields.leaderboard === 'more'
                   ? Math.max(6, Math.round(((entry.metric ?? 0) / maxMetric) * 100))
                   : Math.max(6, Math.round((1 - (entry.metric ?? 0) / Math.max(maxMetric, 1)) * 100) + 10)
                 const barColor = i === 0 ? 'bg-yellow-400' : i === 1 ? 'bg-gray-300' : i === 2 ? 'bg-orange-300' : 'bg-teal-200'
@@ -192,34 +201,58 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
                   <th className="text-left px-4 py-2 text-xs font-bold text-gray-500 w-32">Student</th>
                   <th className="text-center px-2 py-2 text-xs font-bold text-gray-400 w-24">{colA}</th>
                   <th className="text-center px-2 py-2 text-xs font-bold text-gray-400 w-24">{colB}</th>
-                  <th className="text-center px-2 py-2 text-xs font-bold text-teal-600 w-24">{colC}</th>
+                  {hasC && <th className="text-center px-2 py-2 text-xs font-bold text-teal-600 w-24">{colC}</th>}
                   <th className="text-left px-3 py-2 text-xs font-bold text-gray-400">Note (optional)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {students.map(student => {
                   const r = rows[student.id]
-                  const hasData = r.a || r.b || r.c
+                  const hasData = r.a || r.b || (hasC && r.c)
                   return (
                     <tr key={student.id} className={hasData ? 'bg-teal-50/30' : ''}>
                       <td className="px-4 py-2 font-semibold text-gray-800 text-sm whitespace-nowrap">{display(student)}</td>
-                      {(['a', 'b', 'c'] as const).map(field => (
-                        <td key={field} className="px-2 py-1.5 text-center">
+                      {/* Column A */}
+                      <td className="px-2 py-1.5 text-center">
+                        <input
+                          data-nav
+                          type="number" min="0" inputMode="numeric"
+                          value={r.a}
+                          onChange={e => set(student.id, 'a', e.target.value)}
+                          onFocus={e => e.currentTarget.select()}
+                          onKeyDown={handleKey}
+                          placeholder={unit}
+                          className="w-20 text-center border border-gray-200 rounded-lg px-1 py-1 text-sm focus:outline-none focus:border-teal-300 transition-colors"
+                        />
+                      </td>
+                      {/* Column B */}
+                      <td className="px-2 py-1.5 text-center">
+                        <input
+                          data-nav
+                          type="number" min="0" inputMode="numeric"
+                          value={r.b}
+                          onChange={e => set(student.id, 'b', e.target.value)}
+                          onFocus={e => e.currentTarget.select()}
+                          onKeyDown={handleKey}
+                          placeholder={unit}
+                          className="w-20 text-center border border-gray-200 rounded-lg px-1 py-1 text-sm focus:outline-none focus:border-teal-300 transition-colors"
+                        />
+                      </td>
+                      {/* Column C — only shown when hasC */}
+                      {hasC && (
+                        <td className="px-2 py-1.5 text-center">
                           <input
                             data-nav
                             type="number" min="0" inputMode="numeric"
-                            value={r[field]}
-                            onChange={e => set(student.id, field, e.target.value)}
+                            value={r.c}
+                            onChange={e => set(student.id, 'c', e.target.value)}
                             onFocus={e => e.currentTarget.select()}
                             onKeyDown={handleKey}
                             placeholder={unit}
-                            className={`w-20 text-center border rounded-lg px-1 py-1 text-sm focus:outline-none transition-colors
-                              ${field === 'c'
-                                ? 'border-teal-300 font-bold focus:border-teal-500 bg-teal-50'
-                                : 'border-gray-200 focus:border-teal-300'}`}
+                            className="w-20 text-center border border-teal-300 font-bold rounded-lg px-1 py-1 text-sm focus:outline-none focus:border-teal-500 bg-teal-50 transition-colors"
                           />
                         </td>
-                      ))}
+                      )}
                       <td className="px-3 py-1.5">
                         <input
                           data-nav
@@ -239,10 +272,12 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
           </div>
 
           {/* Column legend */}
-          <div className="border-t border-gray-100 px-4 py-2 flex gap-6 text-xs text-gray-400">
-            <span><strong className="text-gray-500">{colA}:</strong> {isG12 ? 'First run, no changes' : 'No weight in bucket'}</span>
-            <span><strong className="text-gray-500">{colB}:</strong> {isG12 ? 'After student improved their build' : '3 pennies in bucket'}</span>
-            <span><strong className="text-teal-600">{colC}:</strong> {isG12 ? 'Their personal best — goes to parents' : 'After improvement — goes to parents'}</span>
+          <div className="border-t border-gray-100 px-4 py-2 flex flex-wrap gap-4 text-xs text-gray-400">
+            <span><strong className="text-gray-500">{colA}:</strong> first measurement</span>
+            <span><strong className="text-gray-500">{colB}:</strong> after adjustment</span>
+            {hasC && colC && (
+              <span><strong className="text-teal-600">{colC}:</strong> key metric — goes to parents</span>
+            )}
           </div>
         </div>
 
@@ -280,12 +315,16 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
 
 // ── Print view ────────────────────────────────────────────────────────────────
 
-function PrintView({ students, rows, isG12, buildTitle, onBack }: {
+function PrintView({ students, rows, hasC, colA, colB, colC, buildTitle, onBack, isG12 }: {
   students: Student[]
   rows: Record<string, Row>
-  isG12: boolean
+  hasC: boolean
+  colA: string
+  colB: string
+  colC: string | null
   buildTitle: string
   onBack: () => void
+  isG12: boolean
 }) {
   return (
     <div className="min-h-screen bg-white p-8 print:p-4">
@@ -299,9 +338,9 @@ function PrintView({ students, rows, isG12, buildTitle, onBack }: {
         <thead>
           <tr className="bg-gray-100">
             <th className="border border-gray-300 px-3 py-2 text-left">Student</th>
-            <th className="border border-gray-300 px-3 py-2 text-center">{isG12 ? 'Round 1 (clips)' : 'No Cargo (cranks)'}</th>
-            <th className="border border-gray-300 px-3 py-2 text-center">{isG12 ? 'After Fix (clips)' : '3 Pennies (cranks)'}</th>
-            <th className="border border-gray-300 px-3 py-2 text-center font-black">{isG12 ? 'MAX 🏆' : 'Improved 🏆'}</th>
+            <th className="border border-gray-300 px-3 py-2 text-center">{colA}</th>
+            <th className="border border-gray-300 px-3 py-2 text-center">{colB}</th>
+            {hasC && <th className="border border-gray-300 px-3 py-2 text-center font-black">{colC} 🏆</th>}
             <th className="border border-gray-300 px-3 py-2 text-left">Notes</th>
           </tr>
         </thead>
@@ -314,7 +353,7 @@ function PrintView({ students, rows, isG12, buildTitle, onBack }: {
                 <td className="border border-gray-200 px-3 py-2 font-semibold">{name}</td>
                 <td className="border border-gray-200 px-3 py-2 text-center">{r.a || '—'}</td>
                 <td className="border border-gray-200 px-3 py-2 text-center">{r.b || '—'}</td>
-                <td className="border border-gray-200 px-3 py-2 text-center font-black">{r.c || '—'}</td>
+                {hasC && <td className="border border-gray-200 px-3 py-2 text-center font-black">{r.c || '—'}</td>}
                 <td className="border border-gray-200 px-3 py-2 text-gray-500 text-xs">{r.note}</td>
               </tr>
             )
