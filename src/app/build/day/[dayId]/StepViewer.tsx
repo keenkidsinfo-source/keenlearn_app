@@ -45,11 +45,12 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
   const [step, setStep]         = useState(Math.max(0, initialStep))
   const [isDone, setIsDone]     = useState(completed)
   const [saving, setSaving]     = useState(false)
-  const [showPrep, setShowPrep] = useState(false)
-
   // Detect if this build has instructor prep
   const prepKey = Object.keys(PREP_INFO).find(k => title.includes(k))
   const prep = prepKey ? PREP_INFO[prepKey] : null
+
+  // Auto-open setup panel on first load if this build has prep info
+  const [showPrep, setShowPrep] = useState(!!prep)
 
   const totalSteps = steps?.length ?? stepUrls.length
 
