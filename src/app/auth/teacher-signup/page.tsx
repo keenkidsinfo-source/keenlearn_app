@@ -1,9 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-
-interface School { id: string; name: string }
 
 export default function TeacherSignupPage() {
   const router = useRouter()
@@ -15,14 +13,6 @@ export default function TeacherSignupPage() {
   const [loading, setLoading]       = useState(false)
   const [error, setError]           = useState('')
   const [done, setDone]             = useState(false)
-  const [schools, setSchools]       = useState<School[]>([])
-
-  useEffect(() => {
-    fetch('/api/v1/schools')
-      .then(r => r.json())
-      .then(j => setSchools(j.data ?? []))
-      .catch(() => {})
-  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -110,18 +100,12 @@ export default function TeacherSignupPage() {
             </div>
 
             <div>
-              <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 block">School</label>
-              <select
-                value={schoolName} onChange={e => setSchoolName(e.target.value)}
-                className="w-full border-2 border-gray-200 rounded-2xl p-3.5 text-base focus:outline-none focus:border-keen-400 bg-white"
-                required
-              >
-                <option value="">Select your school…</option>
-                {schools.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
-                {schools.length === 0 && (
-                  <option disabled>Loading schools…</option>
-                )}
-              </select>
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1 block">School <span className="text-gray-300 font-normal">(optional)</span></label>
+              <input
+                type="text" value={schoolName} onChange={e => setSchoolName(e.target.value)}
+                placeholder="e.g. Lincoln Elementary"
+                className="w-full border-2 border-gray-200 rounded-2xl p-3.5 text-base focus:outline-none focus:border-keen-400"
+              />
             </div>
 
             <div>

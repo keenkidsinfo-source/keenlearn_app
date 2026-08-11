@@ -12,8 +12,8 @@ const schema = z.object({
   name:       z.string().min(2).max(80),
   email:      z.string().email(),
   password:   z.string().min(8),
-  schoolName: z.string().min(2).max(100),
-  gradeLevel: z.string().min(1).max(10),
+  schoolName: z.string().max(100).optional().default(''),
+  gradeLevel: z.string().max(10).optional().default(''),
 })
 
 export async function POST(req: NextRequest) {
@@ -44,8 +44,8 @@ export async function POST(req: NextRequest) {
     role:         'teacher',
     schoolId:     matchedSchool?.id ?? null,
     // approvedAt is null → pending until admin approves
-    // Store school name + grade in displayName temporarily if no school match
-    displayName:  matchedSchool ? gradeLevel : `${schoolName} · Grade ${gradeLevel}`,
+    // Store grade/school in displayName for admin reference
+    displayName:  [schoolName, gradeLevel ? `Grade ${gradeLevel}` : ''].filter(Boolean).join(' · ') || null,
   })
 
   return apiOk({ message: 'Account created. Awaiting admin approval.' })
