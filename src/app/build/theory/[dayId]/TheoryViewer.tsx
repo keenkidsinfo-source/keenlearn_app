@@ -136,7 +136,7 @@ function SvgGravity() {
     <svg viewBox="0 0 760 340" className="w-full h-full">
       <rect width="760" height="340" fill="#f0fdf4" rx="16"/>
       <text x="380" y="34" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Force #1: GRAVITY 🌍</text>
-      <text x="380" y="56" textAnchor="middle" fontSize="14" fill="#15803d">Gravity pulls EVERYTHING downward — it is our cable car's engine!</text>
+      <text x="380" y="56" textAnchor="middle" fontSize="14" fill="#15803d">Gravity pulls EVERYTHING downward — it is our cable car&apos;s engine!</text>
 
       {/* 4 falling objects */}
       {[100, 250, 430, 600].map((x, i) => {

@@ -177,6 +177,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
             </div>
             {/* Zip line setup image */}
             <div className="w-full bg-white rounded-xl shadow overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={prep.image} alt="Zip line setup diagram" className="w-full object-contain" />
             </div>
             {/* Setup steps */}
@@ -206,6 +207,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
             image optimizer (which refuses SVGs in production) */}
         {currentUrl && (
           <div className="w-full bg-white rounded-2xl shadow-md overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={currentUrl}
               alt={`Step ${step + 1}`}
