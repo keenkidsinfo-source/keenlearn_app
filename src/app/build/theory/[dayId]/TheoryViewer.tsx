@@ -10,100 +10,123 @@ interface Props { deck: TheoryDeck; buildDayId: string }
 
 // ── Inline SVG diagrams ────────────────────────────────────────────────────────
 
-// G1-2 slides
-function SvgSimpleMachines() {
+// G1-2 slides — updated to match PPTX KeenKids_CableCar_Theory_G12_v4
+function SvgWhatDidWeBuild() {
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
-      <rect width="760" height="340" fill="#f0f4ff" rx="16"/>
-      {/* Title */}
-      <text x="380" y="36" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">6 Types of Simple Machines</text>
+      <rect width="760" height="340" fill="#eff6ff" rx="16"/>
+      <text x="380" y="34" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What Did We Build? 🚡</text>
 
-      {/* LEVER */}
-      <g transform="translate(50,70)">
-        <rect x="0" y="0" width="110" height="100" rx="10" fill="white" stroke="#cbd5e1" strokeWidth="2"/>
-        <text x="55" y="18" textAnchor="middle" fontSize="11" fill="#64748b">Lever</text>
-        <line x1="10" y1="70" x2="100" y2="70" stroke="#64748b" strokeWidth="4" strokeLinecap="round"/>
-        <polygon points="55,45 45,70 65,70" fill="#94a3b8"/>
-        <rect x="8" y="52" width="18" height="18" rx="3" fill="#3b82f6"/>
-      </g>
+      {/* ZIP LINE scene: tall chair left, short chair right */}
+      {/* Tall chair (high end) */}
+      <rect x="42" y="80" width="18" height="120" rx="4" fill="#92400e"/>
+      <rect x="30" y="200" width="42" height="14" rx="3" fill="#92400e"/>
+      <rect x="32" y="214" width="8" height="40" rx="3" fill="#78350f"/>
+      <rect x="62" y="214" width="8" height="40" rx="3" fill="#78350f"/>
+      <rect x="30" y="72" width="42" height="12" rx="3" fill="#92400e"/>
+      <text x="51" y="265" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#92400e">HIGH</text>
 
-      {/* WHEEL & AXLE */}
-      <g transform="translate(180,70)">
-        <rect x="0" y="0" width="110" height="100" rx="10" fill="white" stroke="#cbd5e1" strokeWidth="2"/>
-        <text x="55" y="18" textAnchor="middle" fontSize="11" fill="#64748b">Wheel &amp; Axle</text>
-        <circle cx="55" cy="60" r="28" fill="none" stroke="#64748b" strokeWidth="4"/>
-        <circle cx="55" cy="60" r="9" fill="#94a3b8"/>
-        <line x1="55" y1="32" x2="55" y2="88" stroke="#475569" strokeWidth="3"/>
-        <line x1="27" y1="60" x2="83" y2="60" stroke="#475569" strokeWidth="3"/>
-      </g>
+      {/* Short chair (low end) */}
+      <rect x="700" y="130" width="30" height="10" rx="3" fill="#ec4899"/>
+      <rect x="698" y="140" width="8" height="30" rx="2" fill="#db2777"/>
+      <rect x="724" y="140" width="8" height="30" rx="2" fill="#db2777"/>
+      <rect x="694" y="170" width="40" height="8" rx="2" fill="#ec4899"/>
+      <text x="714" y="220" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#db2777">LOW</text>
 
-      {/* PULLEY — highlighted */}
-      <g transform="translate(310,55)">
-        <rect x="0" y="0" width="130" height="120" rx="12" fill="#fff7ed" stroke="#f97316" strokeWidth="4"/>
-        <rect x="0" y="0" width="130" height="26" rx="12" fill="#f97316"/>
-        <text x="65" y="18" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">⭐ PULLEY</text>
-        <text x="65" y="36" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#ea580c">← Today!</text>
-        <circle cx="65" cy="78" r="28" fill="none" stroke="#f97316" strokeWidth="5"/>
-        <circle cx="65" cy="78" r="9" fill="#fed7aa"/>
-        <line x1="65" y1="50" x2="65" y2="34" stroke="#64748b" strokeWidth="3"/>
-        <path d="M37,78 Q37,50 65,50" fill="none" stroke="#3b82f6" strokeWidth="3" strokeDasharray="4,3"/>
-        <path d="M93,78 Q93,106 100,115" fill="none" stroke="#3b82f6" strokeWidth="3"/>
-        <rect x="93" y="108" width="16" height="16" rx="3" fill="#3b82f6"/>
-      </g>
+      {/* String / zip line */}
+      <line x1="51" y1="80" x2="714" y2="130" stroke="#374151" strokeWidth="3" strokeDasharray="8,4"/>
 
-      {/* INCLINED PLANE */}
-      <g transform="translate(465,70)">
-        <rect x="0" y="0" width="110" height="100" rx="10" fill="white" stroke="#cbd5e1" strokeWidth="2"/>
-        <text x="55" y="18" textAnchor="middle" fontSize="11" fill="#64748b">Inclined Plane</text>
-        <polygon points="10,85 100,85 100,35" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="3"/>
-        <rect x="90" y="28" width="16" height="16" rx="3" fill="#22c55e"/>
-      </g>
+      {/* Straw on string */}
+      <rect x="330" y="95" width="90" height="16" rx="8" fill="#4ade80" stroke="#16a34a" strokeWidth="2"/>
+      <text x="375" y="88" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">STRAW</text>
 
-      {/* WEDGE */}
-      <g transform="translate(595,70)">
-        <rect x="0" y="0" width="110" height="100" rx="10" fill="white" stroke="#cbd5e1" strokeWidth="2"/>
-        <text x="55" y="18" textAnchor="middle" fontSize="11" fill="#64748b">Wedge &amp; Screw</text>
-        <polygon points="55,35 30,80 80,80" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="3"/>
-        <line x1="55" y1="35" x2="55" y2="80" stroke="#94a3b8" strokeWidth="2" strokeDasharray="3,2"/>
-      </g>
+      {/* Strings from straw to cup */}
+      <line x1="348" y1="111" x2="348" y2="150" stroke="#6b7280" strokeWidth="2"/>
+      <line x1="402" y1="111" x2="402" y2="150" stroke="#6b7280" strokeWidth="2"/>
 
-      {/* Bottom label */}
-      <text x="380" y="315" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#f97316">Today we use the PULLEY! 🚡</text>
+      {/* Cup */}
+      <polygon points="338,150 412,150 400,198 350,198" fill="#d4956a" stroke="#92400e" strokeWidth="2"/>
+      <line x1="338" y1="150" x2="412" y2="150" stroke="#92400e" strokeWidth="2"/>
+      {/* rocks in cup */}
+      <circle cx="360" cy="178" r="8" fill="#78716c" stroke="#57534e" strokeWidth="1.5"/>
+      <circle cx="376" cy="182" r="7" fill="#57534e" stroke="#57534e" strokeWidth="1.5"/>
+      <circle cx="391" cy="176" r="7" fill="#78716c" stroke="#57534e" strokeWidth="1.5"/>
+
+      {/* 4 labeled callout cards */}
+      <rect x="30" y="270" width="155" height="56" rx="10" fill="#1d4ed8" stroke="#1e40af" strokeWidth="1.5"/>
+      <text x="107" y="291" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">① STRING</text>
+      <text x="107" y="308" textAnchor="middle" fontSize="11" fill="#bfdbfe">zip line between</text>
+      <text x="107" y="322" textAnchor="middle" fontSize="11" fill="#bfdbfe">two chairs</text>
+
+      <rect x="200" y="270" width="155" height="56" rx="10" fill="#16a34a" stroke="#15803d" strokeWidth="1.5"/>
+      <text x="277" y="291" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">② STRAW</text>
+      <text x="277" y="308" textAnchor="middle" fontSize="11" fill="#bbf7d0">slides along the</text>
+      <text x="277" y="322" textAnchor="middle" fontSize="11" fill="#bbf7d0">string = PULLEY</text>
+
+      <rect x="370" y="270" width="155" height="56" rx="10" fill="#d97706" stroke="#b45309" strokeWidth="1.5"/>
+      <text x="447" y="291" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">③ CUP</text>
+      <text x="447" y="308" textAnchor="middle" fontSize="11" fill="#fef3c7">paper cup hangs</text>
+      <text x="447" y="322" textAnchor="middle" fontSize="11" fill="#fef3c7">below the straw</text>
+
+      <rect x="540" y="270" width="185" height="56" rx="10" fill="#7c3aed" stroke="#6d28d9" strokeWidth="1.5"/>
+      <text x="632" y="291" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">④ ROCKS</text>
+      <text x="632" y="308" textAnchor="middle" fontSize="11" fill="#e9d5ff">small rocks = cargo</text>
+      <text x="632" y="322" textAnchor="middle" fontSize="11" fill="#e9d5ff">weight inside cup</text>
     </svg>
   )
 }
 
-function SvgPulleyDiagram() {
+function SvgPulleyRealWorld() {
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
-      <rect width="760" height="340" fill="#eff6ff" rx="16"/>
-      {/* ZIP LINE */}
-      <line x1="60" y1="60" x2="700" y2="180" stroke="#94a3b8" strokeWidth="6" strokeLinecap="round"/>
-      {/* support posts */}
-      <line x1="60" y1="60" x2="60" y2="320" stroke="#78716c" strokeWidth="8" strokeLinecap="round"/>
-      <line x1="700" y1="180" x2="700" y2="320" stroke="#78716c" strokeWidth="8" strokeLinecap="round"/>
-      {/* STRAW = pulley */}
-      <ellipse cx="380" cy="120" rx="30" ry="11" fill="#4ade80" stroke="#16a34a" strokeWidth="3"/>
-      <text x="380" y="108" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#16a34a">STRAW = PULLEY</text>
-      {/* arrow on straw */}
-      <path d="M380,131 L380,195" stroke="#3b82f6" strokeWidth="4" strokeDasharray="5,3"/>
-      {/* Cup */}
-      <path d="M355,195 Q355,245 365,250 L395,250 Q405,245 405,195 Z" fill="#d4956a" stroke="#92400e" strokeWidth="3"/>
-      <line x1="355" y1="195" x2="405" y2="195" stroke="#92400e" strokeWidth="3"/>
-      {/* paperclips */}
-      <text x="380" y="232" textAnchor="middle" fontSize="20">📎📎📎</text>
-      {/* LOAD label */}
-      <rect x="415" y="205" width="90" height="28" rx="8" fill="#3b82f6"/>
-      <text x="460" y="223" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">LOAD</text>
-      <line x1="405" y1="225" x2="415" y2="220" stroke="#3b82f6" strokeWidth="2"/>
-      {/* GRAVITY arrow */}
-      <line x1="310" y1="195" x2="310" y2="260" stroke="#ef4444" strokeWidth="4" markerEnd="url(#arr)"/>
-      <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#ef4444"/></marker></defs>
-      <rect x="210" y="225" width="90" height="28" rx="8" fill="#ef4444"/>
-      <text x="255" y="243" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">GRAVITY</text>
-      <line x1="300" y1="235" x2="310" y2="235" stroke="#ef4444" strokeWidth="2"/>
-      {/* direction arrows */}
-      <text x="380" y="300" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#1e293b">Straw rolls along string → cup glides to the bottom!</text>
+      <rect width="760" height="340" fill="#fff7ed" rx="16"/>
+      <text x="380" y="32" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What is a Pulley? 🔄</text>
+      <text x="380" y="54" textAnchor="middle" fontSize="14" fill="#64748b">A wheel that helps things move along a rope or string</text>
+
+      {/* 3 real world examples */}
+      {/* Cable Car */}
+      <rect x="20" y="70" width="220" height="185" rx="14" fill="white" stroke="#f97316" strokeWidth="3"/>
+      <rect x="20" y="70" width="220" height="38" rx="14" fill="#f97316"/>
+      <rect x="20" y="94" width="220" height="14" fill="#f97316"/>
+      <text x="130" y="96" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🚡 Cable Car</text>
+      {/* mini cable car drawing */}
+      <line x1="40" y1="140" x2="220" y2="175" stroke="#94a3b8" strokeWidth="3" strokeDasharray="5,3"/>
+      <rect x="108" y="132" width="44" height="12" rx="6" fill="#4ade80" stroke="#16a34a" strokeWidth="2"/>
+      <polygon points="113,144 151,144 146,168 118,168" fill="#d4956a" stroke="#92400e" strokeWidth="2"/>
+      <line x1="113" y1="144" x2="151" y2="144" stroke="#92400e" strokeWidth="2"/>
+      <text x="130" y="200" textAnchor="middle" fontSize="11" fill="#374151">Carries people up</text>
+      <text x="130" y="215" textAnchor="middle" fontSize="11" fill="#374151">steep hills in SF</text>
+      <text x="130" y="232" textAnchor="middle" fontSize="10" fontStyle="italic" fill="#f97316">since 1873!</text>
+
+      {/* Ski Gondola */}
+      <rect x="270" y="70" width="220" height="185" rx="14" fill="white" stroke="#3b82f6" strokeWidth="3"/>
+      <rect x="270" y="70" width="220" height="38" rx="14" fill="#3b82f6"/>
+      <rect x="270" y="94" width="220" height="14" fill="#3b82f6"/>
+      <text x="380" y="96" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">⛷️ Ski Gondola</text>
+      {/* mini gondola */}
+      <line x1="290" y1="130" x2="470" y2="165" stroke="#94a3b8" strokeWidth="3" strokeDasharray="5,3"/>
+      <rect x="355" y="122" width="50" height="12" rx="6" fill="#60a5fa" stroke="#2563eb" strokeWidth="2"/>
+      <rect x="358" y="134" width="44" height="26" rx="4" fill="#93c5fd" stroke="#2563eb" strokeWidth="2"/>
+      <text x="380" y="200" textAnchor="middle" fontSize="11" fill="#374151">Carries skiers up</text>
+      <text x="380" y="215" textAnchor="middle" fontSize="11" fill="#374151">mountains worldwide</text>
+
+      {/* Flagpole */}
+      <rect x="520" y="70" width="220" height="185" rx="14" fill="white" stroke="#22c55e" strokeWidth="3"/>
+      <rect x="520" y="70" width="220" height="38" rx="14" fill="#22c55e"/>
+      <rect x="520" y="94" width="220" height="14" fill="#22c55e"/>
+      <text x="630" y="96" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🏳️ Flagpole</text>
+      {/* mini flagpole */}
+      <line x1="610" y1="115" x2="610" y2="240" stroke="#64748b" strokeWidth="5" strokeLinecap="round"/>
+      <circle cx="610" cy="120" r="6" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2"/>
+      <path d="M610,120 Q610,105 605,105 Q605,115 610,115" fill="none" stroke="#64748b" strokeWidth="2" strokeDasharray="3,2"/>
+      <rect x="610" y="128" width="40" height="26" fill="#ef4444"/>
+      <text x="630" y="200" textAnchor="middle" fontSize="11" fill="#374151">Pulley raises and</text>
+      <text x="630" y="215" textAnchor="middle" fontSize="11" fill="#374151">lowers the flag</text>
+
+      {/* Bottom callout */}
+      <rect x="60" y="272" width="640" height="56" rx="12" fill="#1e293b"/>
+      <text x="380" y="296" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#fbbf24">In our cable car:</text>
+      <text x="380" y="317" textAnchor="middle" fontSize="14" fill="white">The STRAW is the pulley wheel · The STRING is the rope! 🌟</text>
     </svg>
   )
 }
@@ -112,26 +135,36 @@ function SvgGravity() {
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
       <rect width="760" height="340" fill="#f0fdf4" rx="16"/>
-      {/* Earth */}
-      <circle cx="380" cy="290" r="55" fill="#22c55e" stroke="#16a34a" strokeWidth="4"/>
-      <text x="380" y="297" textAnchor="middle" fontSize="28">🌍</text>
-      {/* Objects falling */}
-      {[120, 240, 380, 520, 640].map((x, i) => {
-        const icons = ['🍎', '🪣', '📎', '🎒', '🔧']
+      <text x="380" y="34" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Force #1: GRAVITY 🌍</text>
+      <text x="380" y="56" textAnchor="middle" fontSize="14" fill="#15803d">Gravity pulls EVERYTHING downward — it is our cable car's engine!</text>
+
+      {/* 4 falling objects */}
+      {[100, 250, 430, 600].map((x, i) => {
+        const items = [
+          { icon: '🍎', label: 'Apple falls', sub: 'from tree' },
+          { icon: '⚽', label: 'Ball drops', sub: 'to ground' },
+          { icon: '🌧️', label: 'Rain falls', sub: 'downward' },
+          { icon: '🚡', label: 'Cable car', sub: 'slides DOWN' },
+        ]
+        const it = items[i]
         return (
           <g key={i}>
-            <text x={x} y={70} textAnchor="middle" fontSize="36">{icons[i]}</text>
-            <line x1={x} y1={105} x2={x} y2={220} stroke="#ef4444" strokeWidth="3" strokeDasharray="6,4"/>
-            <polygon points={`${x-8},218 ${x+8},218 ${x},232`} fill="#ef4444"/>
+            <text x={x} y={105} textAnchor="middle" fontSize="42">{it.icon}</text>
+            <line x1={x} y1={115} x2={x} y2={198} stroke="#ef4444" strokeWidth="3" strokeDasharray="6,4"/>
+            <polygon points={`${x-9},196 ${x+9},196 ${x},213`} fill="#ef4444"/>
+            <text x={x} y={232} textAnchor="middle" fontSize="13" fontWeight="bold" fill="#1e293b">{it.label}</text>
+            <text x={x} y={248} textAnchor="middle" fontSize="12" fill="#64748b">{it.sub}</text>
           </g>
         )
       })}
-      {/* Label */}
-      <rect x="100" y="138" width="560" height="40" rx="12" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
-      <text x="380" y="162" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#1e293b">Everything falls DOWN toward Earth</text>
+
+      {/* Earth at bottom */}
+      <ellipse cx="380" cy="278" rx="340" ry="22" fill="#dcfce7" stroke="#22c55e" strokeWidth="2"/>
+      <text x="380" y="285" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#15803d">🌍  EARTH — gravity always pulls toward here</text>
+
       {/* Key insight */}
-      <rect x="155" y="245" width="450" height="34" rx="10" fill="#dcfce7" stroke="#22c55e" strokeWidth="2"/>
-      <text x="380" y="267" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#15803d">💡 Cup always hangs straight down — even on a diagonal zip line!</text>
+      <rect x="100" y="305" width="560" height="30" rx="10" fill="#1e293b"/>
+      <text x="380" y="325" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">More rocks = MORE gravity pulling the cup down the string!</text>
     </svg>
   )
 }
@@ -139,85 +172,145 @@ function SvgGravity() {
 function SvgFriction() {
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
-      <rect width="760" height="340" fill="#fff7ed" rx="16"/>
-      {/* Left: smooth = wins */}
-      <rect x="30" y="20" width="330" height="300" rx="14" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
-      <text x="195" y="50" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#16a34a">✅ SMOOTH STRAW + STRING</text>
-      {/* zip line */}
-      <line x1="55" y1="110" x2="330" y2="200" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round"/>
-      <ellipse cx="300" cy="194" rx="18" ry="8" fill="#4ade80" stroke="#16a34a" strokeWidth="2"/>
-      <path d="M285,202 Q285,230 292,235 L308,235 Q315,230 315,202 Z" fill="#d4956a" stroke="#92400e" strokeWidth="2"/>
-      <text x="300" y="225" textAnchor="middle" fontSize="14">📎📎📎📎📎</text>
+      <rect width="760" height="340" fill="#fef2f2" rx="16"/>
+      <text x="380" y="32" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Force #2: FRICTION 🛑</text>
+      <text x="380" y="54" textAnchor="middle" fontSize="13" fill="#64748b">Friction slows things down when two surfaces rub together</text>
+
+      {/* 3 friction examples */}
+      {/* Socks on carpet — SLOW */}
+      <rect x="18" y="68" width="220" height="192" rx="14" fill="white" stroke="#ef4444" strokeWidth="2.5"/>
+      <text x="128" y="96" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#1e293b">🧦 Socks on Carpet</text>
+      {/* carpet lines */}
+      <rect x="38" y="175" width="180" height="18" rx="4" fill="#d1d5db"/>
+      {[45,60,75,90,105,120,135,150,155,165,175,185,195,200,205].map((x,i) => (
+        <line key={i} x1={x} y1={175} x2={x} y2={193} stroke="#9ca3af" strokeWidth="1.5"/>
+      ))}
+      {/* foot / sock */}
+      <ellipse cx="128" cy="168" rx="28" ry="12" fill="#fbbf24" stroke="#d97706" strokeWidth="2"/>
+      {/* SLOW badge */}
+      <rect x="68" y="210" width="120" height="32" rx="10" fill="#ef4444"/>
+      <text x="128" y="231" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">= SLOW</text>
+      <text x="128" y="248" textAnchor="middle" fontSize="11" fill="#64748b">lots of friction!</text>
+
+      {/* Ice skates — FAST */}
+      <rect x="270" y="68" width="220" height="192" rx="14" fill="white" stroke="#22c55e" strokeWidth="2.5"/>
+      <text x="380" y="96" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#1e293b">⛸️ Ice Skates on Ice</text>
+      {/* ice surface */}
+      <rect x="290" y="172" width="180" height="16" rx="4" fill="#bae6fd" stroke="#7dd3fc" strokeWidth="1.5"/>
+      {/* skate blade */}
+      <ellipse cx="380" cy="172" rx="35" ry="6" fill="#94a3b8" stroke="#64748b" strokeWidth="2"/>
+      <rect x="370" y="148" width="20" height="24" rx="4" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="1.5"/>
       {/* speed lines */}
-      <line x1="250" y1="178" x2="230" y2="172" stroke="#22c55e" strokeWidth="3" strokeLinecap="round"/>
-      <line x1="255" y1="188" x2="233" y2="184" stroke="#22c55e" strokeWidth="3" strokeLinecap="round"/>
-      <text x="195" y="270" textAnchor="middle" fontSize="24">🏁</text>
-      <rect x="75" y="278" width="240" height="28" rx="8" fill="#22c55e"/>
-      <text x="195" y="296" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Makes it all the way! 🎉</text>
+      <line x1="310" y1="162" x2="283" y2="158" stroke="#22c55e" strokeWidth="3" strokeLinecap="round"/>
+      <line x1="312" y1="172" x2="284" y2="170" stroke="#22c55e" strokeWidth="2" strokeLinecap="round"/>
+      {/* FAST badge */}
+      <rect x="320" y="210" width="120" height="32" rx="10" fill="#22c55e"/>
+      <text x="380" y="231" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">= FAST</text>
+      <text x="380" y="248" textAnchor="middle" fontSize="11" fill="#64748b">less friction!</text>
 
-      {/* Right: heavy = stops */}
-      <rect x="400" y="20" width="330" height="300" rx="14" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
-      <text x="565" y="50" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#ef4444">❌ TOO MUCH WEIGHT</text>
-      {/* zip line */}
-      <line x1="425" y1="110" x2="700" y2="200" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round"/>
-      {/* straw stopped halfway */}
-      <ellipse cx="540" cy="152" rx="18" ry="8" fill="#fca5a5" stroke="#ef4444" strokeWidth="2"/>
-      <path d="M525,160 Q525,188 532,193 L548,193 Q555,188 555,160 Z" fill="#d4956a" stroke="#92400e" strokeWidth="2"/>
-      <text x="540" y="182" textAnchor="middle" fontSize="11">📎📎📎📎📎📎📎📎</text>
-      {/* STOP sign */}
-      <text x="540" y="110" textAnchor="middle" fontSize="30">🛑</text>
-      <rect x="445" y="278" width="240" height="28" rx="8" fill="#ef4444"/>
-      <text x="565" y="296" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Friction wins → stops early!</text>
+      {/* Straw on string — our cable car */}
+      <rect x="522" y="68" width="220" height="192" rx="14" fill="#fff7ed" stroke="#f97316" strokeWidth="3"/>
+      <rect x="522" y="68" width="220" height="30" rx="14" fill="#f97316"/>
+      <rect x="522" y="84" width="220" height="14" fill="#f97316"/>
+      <text x="632" y="90" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">🚡 Straw on String</text>
+      {/* zip line + straw stopped */}
+      <line x1="542" y1="130" x2="722" y2="170" stroke="#94a3b8" strokeWidth="4" strokeDasharray="6,3"/>
+      <rect x="588" y="122" width="60" height="14" rx="7" fill="#fca5a5" stroke="#ef4444" strokeWidth="2"/>
+      {/* stop icon */}
+      <text x="618" y="115" textAnchor="middle" fontSize="20">🛑</text>
+      {/* cup */}
+      <polygon points="600,136 636,136 630,158 606,158" fill="#d4956a" stroke="#92400e" strokeWidth="1.5"/>
+      <line x1="600" y1="136" x2="636" y2="136" stroke="#92400e" strokeWidth="1.5"/>
+      <text x="632" y="195" textAnchor="middle" fontSize="11" fill="#374151">Straw rubs on string</text>
+      <text x="632" y="210" textAnchor="middle" fontSize="11" fill="#374151">= friction slows cup!</text>
+      {/* SLOW badge */}
+      <rect x="572" y="222" width="120" height="28" rx="9" fill="#f97316"/>
+      <text x="632" y="241" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">= SLOW or STOP</text>
 
-      {/* VS */}
-      <text x="380" y="175" textAnchor="middle" fontSize="22" fontWeight="black" fill="#f97316">VS</text>
+      {/* Bottom summary */}
+      <rect x="40" y="277" width="680" height="52" rx="12" fill="#1e293b"/>
+      <text x="380" y="298" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">In our cable car: if FRICTION beats GRAVITY → cup stops before the end!</text>
+      <text x="380" y="320" textAnchor="middle" fontSize="13" fill="#e2e8f0">We need enough rocks so gravity wins!</text>
     </svg>
   )
 }
 
-function SvgCableCarFull() {
+function SvgBigDiscovery() {
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
-      <rect width="760" height="340" fill="#fff7ed" rx="16"/>
-      {/* Title */}
-      <text x="380" y="32" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">The Science of Your Cable Car</text>
-      {/* ZIP LINE */}
-      <line x1="80" y1="80" x2="680" y2="230" stroke="#94a3b8" strokeWidth="7" strokeLinecap="round"/>
-      <line x1="80" y1="80" x2="80" y2="310" stroke="#78716c" strokeWidth="10" strokeLinecap="round"/>
-      <line x1="680" y1="230" x2="680" y2="310" stroke="#78716c" strokeWidth="10" strokeLinecap="round"/>
-      {/* STRAW */}
-      <ellipse cx="360" cy="155" rx="32" ry="12" fill="#4ade80" stroke="#16a34a" strokeWidth="3"/>
-      {/* string */}
-      <line x1="360" y1="167" x2="360" y2="210" stroke="#3b82f6" strokeWidth="3"/>
-      {/* CUP */}
-      <path d="M338,210 Q338,250 346,256 L374,256 Q382,250 382,210 Z" fill="#d4956a" stroke="#92400e" strokeWidth="3"/>
-      <line x1="338" y1="210" x2="382" y2="210" stroke="#92400e" strokeWidth="3"/>
-      <text x="360" y="242" textAnchor="middle" fontSize="16">📎📎</text>
+      <rect width="760" height="340" fill="#faf5ff" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Our Big Discovery! 🏆</text>
 
-      {/* Label: PULLEY */}
-      <rect x="190" y="128" width="100" height="26" rx="8" fill="#16a34a"/>
-      <text x="240" y="144" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">PULLEY (straw)</text>
-      <line x1="330" y1="152" x2="292" y2="147" stroke="#16a34a" strokeWidth="2"/>
+      {/* 3 states side by side */}
+      {/* State 1: Empty cup — friction wins */}
+      <rect x="18" y="48" width="218" height="218" rx="14" fill="white" stroke="#ef4444" strokeWidth="3"/>
+      <rect x="18" y="48" width="218" height="36" rx="14" fill="#ef4444"/>
+      <rect x="18" y="70" width="218" height="14" fill="#ef4444"/>
+      <text x="127" y="73" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">😢 Empty Cup</text>
+      <text x="127" y="94" textAnchor="middle" fontSize="11" fill="#374151">No rocks</text>
+      {/* mini zip line, straw stopped at start */}
+      <line x1="30" y1="130" x2="225" y2="168" stroke="#94a3b8" strokeWidth="3" strokeDasharray="5,3"/>
+      <rect x="40" y="122" width="48" height="12" rx="6" fill="#fca5a5" stroke="#ef4444" strokeWidth="2"/>
+      <text x="64" y="118" textAnchor="middle" fontSize="16">🛑</text>
+      <polygon points="46,134 82,134 78,154 50,154" fill="#d4956a" stroke="#92400e" strokeWidth="1.5"/>
+      <line x1="46" y1="134" x2="82" y2="134" stroke="#92400e" strokeWidth="1.5"/>
+      {/* GRAVITY WEAK */}
+      <rect x="28" y="175" width="200" height="22" rx="6" fill="#fee2e2"/>
+      <text x="128" y="190" textAnchor="middle" fontSize="11" fill="#dc2626">GRAVITY = weak</text>
+      <rect x="28" y="200" width="200" height="22" rx="6" fill="#dcfce7"/>
+      <text x="128" y="215" textAnchor="middle" fontSize="11" fill="#15803d">FRICTION = wins! 🏆</text>
+      <rect x="38" y="232" width="178" height="26" rx="8" fill="#ef4444"/>
+      <text x="127" y="249" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">STOPS in middle</text>
 
-      {/* Label: GRAVITY */}
-      <line x1="430" y1="210" x2="430" y2="260" stroke="#ef4444" strokeWidth="4"/>
-      <polygon points="422,258 438,258 430,272" fill="#ef4444"/>
-      <rect x="440" y="228" width="90" height="26" rx="8" fill="#ef4444"/>
-      <text x="485" y="244" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">GRAVITY ↓</text>
+      {/* State 2: Few rocks — tied */}
+      <rect x="271" y="48" width="218" height="218" rx="14" fill="white" stroke="#f59e0b" strokeWidth="3"/>
+      <rect x="271" y="48" width="218" height="36" rx="14" fill="#f59e0b"/>
+      <rect x="271" y="70" width="218" height="14" fill="#f59e0b"/>
+      <text x="380" y="73" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">😐 Few Rocks</text>
+      <text x="380" y="94" textAnchor="middle" fontSize="11" fill="#374151">1–2 rocks</text>
+      {/* straw halfway */}
+      <line x1="283" y1="130" x2="478" y2="168" stroke="#94a3b8" strokeWidth="3" strokeDasharray="5,3"/>
+      <rect x="365" y="143" width="48" height="12" rx="6" fill="#fde68a" stroke="#d97706" strokeWidth="2"/>
+      <polygon points="372,155 408,155 404,175 376,175" fill="#d4956a" stroke="#92400e" strokeWidth="1.5"/>
+      <line x1="372" y1="155" x2="408" y2="155" stroke="#92400e" strokeWidth="1.5"/>
+      <circle cx="384" cy="168" r="5" fill="#78716c" stroke="#57534e" strokeWidth="1"/>
+      {/* TIED */}
+      <rect x="281" y="175" width="200" height="22" rx="6" fill="#fef3c7"/>
+      <text x="381" y="190" textAnchor="middle" fontSize="11" fill="#92400e">GRAVITY = medium</text>
+      <rect x="281" y="200" width="200" height="22" rx="6" fill="#fef3c7"/>
+      <text x="381" y="215" textAnchor="middle" fontSize="11" fill="#92400e">FRICTION = tied!</text>
+      <rect x="291" y="232" width="178" height="26" rx="8" fill="#f59e0b"/>
+      <text x="380" y="249" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">MIGHT stop halfway</text>
 
-      {/* Label: FRICTION */}
-      <rect x="470" y="128" width="95" height="26" rx="8" fill="#f97316"/>
-      <text x="517" y="144" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">FRICTION ≈</text>
-      <line x1="470" y1="142" x2="395" y2="155" stroke="#f97316" strokeWidth="2"/>
+      {/* State 3: Enough rocks — gravity wins! */}
+      <rect x="524" y="48" width="218" height="218" rx="14" fill="#f0fdf4" stroke="#16a34a" strokeWidth="4"/>
+      <rect x="524" y="48" width="218" height="36" rx="14" fill="#16a34a"/>
+      <rect x="524" y="70" width="218" height="14" fill="#16a34a"/>
+      <text x="633" y="73" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">🎉 Enough Rocks!</text>
+      <text x="633" y="94" textAnchor="middle" fontSize="11" fill="#374151">minimum threshold</text>
+      {/* straw at low end */}
+      <line x1="536" y1="130" x2="731" y2="168" stroke="#94a3b8" strokeWidth="3" strokeDasharray="5,3"/>
+      <rect x="682" y="160" width="48" height="12" rx="6" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
+      <polygon points="688,172 724,172 720,192 692,192" fill="#d4956a" stroke="#92400e" strokeWidth="1.5"/>
+      <line x1="688" y1="172" x2="724" y2="172" stroke="#92400e" strokeWidth="1.5"/>
+      <circle cx="700" cy="183" r="5" fill="#78716c" stroke="#57534e" strokeWidth="1"/>
+      <circle cx="712" cy="185" r="4" fill="#57534e" stroke="#57534e" strokeWidth="1"/>
+      <circle cx="706" cy="177" r="4" fill="#6b7280" stroke="#57534e" strokeWidth="1"/>
+      {/* speed lines */}
+      <line x1="626" y1="155" x2="596" y2="151" stroke="#22c55e" strokeWidth="3" strokeLinecap="round"/>
+      <line x1="628" y1="163" x2="597" y2="161" stroke="#22c55e" strokeWidth="2" strokeLinecap="round"/>
+      <text x="633" y="190" textAnchor="middle" fontSize="11" fill="#15803d">GRAVITY = strong!</text>
+      <rect x="534" y="175" width="200" height="22" rx="6" fill="#dcfce7"/>
+      <text x="634" y="190" textAnchor="middle" fontSize="11" fill="#15803d">GRAVITY = strong! 💪</text>
+      <rect x="534" y="200" width="200" height="22" rx="6" fill="#fee2e2"/>
+      <text x="634" y="215" textAnchor="middle" fontSize="11" fill="#dc2626">FRICTION = loses!</text>
+      <rect x="544" y="232" width="178" height="26" rx="8" fill="#16a34a"/>
+      <text x="633" y="249" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">SLIDES ALL THE WAY! 🚀</text>
 
-      {/* Label: LOAD */}
-      <rect x="190" y="235" width="80" height="26" rx="8" fill="#3b82f6"/>
-      <text x="230" y="251" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">LOAD 📎</text>
-      <line x1="270" y1="248" x2="338" y2="240" stroke="#3b82f6" strokeWidth="2"/>
-
-      {/* bottom summary */}
-      <rect x="80" y="288" width="600" height="36" rx="10" fill="#1e293b"/>
-      <text x="380" y="310" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">PULLEY + GRAVITY + FRICTION + LOAD → your experiment!</text>
+      {/* Bottom callout */}
+      <rect x="30" y="282" width="700" height="48" rx="12" fill="#1e293b"/>
+      <text x="380" y="303" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">💡 Once gravity beats friction, MORE rocks = even FASTER!</text>
+      <text x="380" y="322" textAnchor="middle" fontSize="12" fill="#e2e8f0">The cup NEVER stops once you have enough weight on a taut zip line.</text>
     </svg>
   )
 }
@@ -505,11 +598,11 @@ function SvgRealWorld() {
 // Map grade+slideIndex → SVG component
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g1-2': {
-    0: SvgSimpleMachines,
-    1: SvgPulleyDiagram,
+    0: SvgWhatDidWeBuild,
+    1: SvgPulleyRealWorld,
     2: SvgGravity,
     3: SvgFriction,
-    4: SvgCableCarFull,
+    4: SvgBigDiscovery,
   },
   'g3-4': {
     0: SvgSimpleMachinesG34,

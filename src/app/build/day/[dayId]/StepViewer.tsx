@@ -24,11 +24,32 @@ interface Props {
   gradeBand: GradeBand | null
 }
 
+// Instructor prep data keyed by title keyword
+const PREP_INFO: Record<string, { image: string; steps: string[]; warning: string }> = {
+  'Cable Car': {
+    image: '/images/build/cable-car/zipline_setup.png',
+    warning: '⚠️ Set up zip lines BEFORE kids arrive. String must be pulled TIGHT — no sag!',
+    steps: [
+      'Set up 2 zip lines. HIGH end: tie string to the very top of the tall brown dining chair back.',
+      'LOW end: tie string to the seat of the small pink kids chair. Big height difference is essential.',
+      'Pull string TIGHT — no sag at all. A saggy line = cups that stop halfway.',
+      'Thread 7 wide straws onto EACH line BEFORE tying the far end.',
+      'Test with rocks: add one at a time until cup slides all the way. Note the minimum count as your class threshold.',
+      'Have your demo cable car built and ready. 2 groups of 6–7 kids per zip line.',
+    ],
+  },
+}
+
 export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand }: Props) {
   const router = useRouter()
   const [step, setStep]         = useState(Math.max(0, initialStep))
   const [isDone, setIsDone]     = useState(completed)
   const [saving, setSaving]     = useState(false)
+  const [showPrep, setShowPrep] = useState(false)
+
+  // Detect if this build has instructor prep
+  const prepKey = Object.keys(PREP_INFO).find(k => title.includes(k))
+  const prep = prepKey ? PREP_INFO[prepKey] : null
 
   const totalSteps = steps?.length ?? stepUrls.length
 
@@ -113,6 +134,18 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
             >
               📖 Theory
             </button>
+            {prep && (
+              <button
+                onClick={() => setShowPrep(o => !o)}
+                className={cn(
+                  'text-xs font-bold px-2 py-0.5 rounded-full transition-all',
+                  showPrep ? 'bg-yellow-300 text-yellow-900' : 'bg-yellow-500 text-white hover:bg-yellow-400'
+                )}
+                title="Instructor setup"
+              >
+                🔧 Setup
+              </button>
+            )}
           </div>
           <h1 className={`font-black truncate ${isG12 ? 'text-xl' : 'text-lg'}`}>🔨 {title}</h1>
           {theme && <p className="text-orange-200 text-sm">{theme}</p>}
@@ -134,6 +167,38 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
           />
         ))}
       </div>
+
+      {/* Instructor Prep panel — slides down when 🔧 Setup is tapped */}
+      {prep && showPrep && (
+        <div className="bg-yellow-50 border-b-2 border-yellow-300 px-4 py-4 overflow-y-auto max-h-[70vh]">
+          <div className="max-w-lg mx-auto space-y-3">
+            <div className="bg-yellow-400 text-yellow-900 rounded-xl px-4 py-2 font-bold text-sm text-center">
+              {prep.warning}
+            </div>
+            {/* Zip line setup image */}
+            <div className="w-full bg-white rounded-xl shadow overflow-hidden">
+              <img src={prep.image} alt="Zip line setup diagram" className="w-full object-contain" />
+            </div>
+            {/* Setup steps */}
+            <ol className="space-y-2">
+              {prep.steps.map((s, i) => (
+                <li key={i} className="flex items-start gap-3 bg-white rounded-xl px-3 py-2.5 shadow-sm">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500 text-white font-black text-xs flex items-center justify-center mt-0.5">
+                    {i + 1}
+                  </span>
+                  <span className="text-sm text-gray-800 leading-snug">{s}</span>
+                </li>
+              ))}
+            </ol>
+            <button
+              onClick={() => setShowPrep(false)}
+              className="w-full py-2.5 rounded-xl bg-orange-500 text-white font-bold text-sm"
+            >
+              ✅ Setup done — show build steps
+            </button>
+          </div>
+        </div>
+      )}
 
       <main className="flex-1 overflow-y-auto flex flex-col items-center p-4 gap-3 max-w-lg mx-auto w-full">
 
