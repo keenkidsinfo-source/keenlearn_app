@@ -13,10 +13,10 @@ async function touchLastActive(userId: string) {
 
 const studentSchema = z.object({
   type:       z.literal('student'),
-  accessCode: z.string().length(6),
+  accessCode: z.string().length(6).optional(), // no longer required — kept for backwards compat
   lastName:   z.string().min(1).max(50).optional(),
-  pin:        z.string().length(4).optional(),       // set in PIN step
-  userId:     z.string().uuid().optional(),           // set after name lookup or disambiguation
+  pin:        z.string().length(4).optional(),
+  userId:     z.string().uuid().optional(),
 })
 
 const teacherSchema = z.object({
@@ -27,7 +27,14 @@ const teacherSchema = z.object({
 
 const schema = z.discriminatedUnion('type', [studentSchema, teacherSchema])
 
-async function issueStudentToken(student: any, classroom: any) {
+async function issueStudentToken(student: any) {
+  // Load classroom from student's record
+  const [classroom] = await db
+    .select().from(classrooms)
+    .where(eq(classrooms.id, student.classroomId))
+    .limit(1)
+  if (!classroom) return apiError('Classroom not found', 'CLASSROOM_NOT_FOUND', 401)
+
   await touchLastActive(student.id)
   const token = await signToken({
     sub:         student.id,
@@ -57,38 +64,28 @@ export async function POST(req: NextRequest) {
   const data = parsed.data
 
   if (data.type === 'student') {
-    // 1. Find classroom
-    const [classroom] = await db
-      .select().from(classrooms)
-      .where(eq(classrooms.accessCode, data.accessCode.toUpperCase()))
-      .limit(1)
-    if (!classroom) return apiError('Invalid class code. Try again!', 'INVALID_ACCESS_CODE', 401)
-
-    // 2. PIN step — userId + pin provided: verify PIN and issue token
+    // 1. PIN step — userId + pin provided: verify PIN and issue token
     if (data.userId && data.pin) {
       const [student] = await db.select().from(users)
         .where(and(
           eq(users.id, data.userId),
-          eq(users.classroomId, classroom.id),
           eq(users.role, 'student'),
           isNull(users.deletedAt),
         )).limit(1)
       if (!student) return apiError('Student not found', 'STUDENT_NOT_FOUND', 401)
 
-      // Verify PIN if one is set; skip check for legacy accounts without a PIN
       if (student.pinHash) {
         const pinValid = await comparePin(data.pin, student.pinHash)
         if (!pinValid) return apiError('Wrong PIN. Try again!', 'INVALID_PIN', 401)
       }
-      return issueStudentToken(student, classroom)
+      return issueStudentToken(student)
     }
 
-    // 3. Disambiguation chosen but no PIN yet — ask for PIN
+    // 2. Disambiguation chosen but no PIN yet — ask for PIN
     if (data.userId && !data.pin) {
       const [student] = await db.select().from(users)
         .where(and(
           eq(users.id, data.userId),
-          eq(users.classroomId, classroom.id),
           eq(users.role, 'student'),
           isNull(users.deletedAt),
         )).limit(1)
@@ -96,11 +93,10 @@ export async function POST(req: NextRequest) {
       return apiOk({ needsPin: true, userId: student.id, firstName: student.displayName ?? student.name })
     }
 
-    // 4. Match by last name (case-insensitive) — suffix match so "Praveen" finds "Krisha Praveen"
+    // 3. Match by last name across all students (no class code needed)
     if (!data.lastName) return apiError('Last name is required', 'MISSING_NAME', 400)
     const matches = await db.select().from(users)
       .where(and(
-        eq(users.classroomId, classroom.id),
         eq(users.role, 'student'),
         isNull(users.deletedAt),
         ilike(users.name, `%${data.lastName.trim()}`),
@@ -110,12 +106,12 @@ export async function POST(req: NextRequest) {
       return apiError('Name not found. Check your last name and try again!', 'STUDENT_NOT_FOUND', 401)
     }
 
-    // 5. Unique match — go straight to PIN step
+    // 4. Unique match — go straight to PIN step
     if (matches.length === 1) {
       return apiOk({ needsPin: true, userId: matches[0].id, firstName: matches[0].displayName ?? matches[0].name })
     }
 
-    // 6. Multiple matches — show name picker first, then PIN
+    // 5. Multiple matches — show name picker
     return apiOk({
       needsDisambiguation: true,
       options: matches.map(s => ({

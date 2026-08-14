@@ -12,8 +12,8 @@ export interface JWTPayload {
 
 const secret = () => new TextEncoder().encode(process.env.JWT_SECRET!)
 
-const STUDENT_EXPIRY = '8h'
-const TEACHER_EXPIRY = '24h'
+const STUDENT_EXPIRY = '12h'
+const TEACHER_EXPIRY = '30d'
 
 export async function signToken(payload: JWTPayload): Promise<string> {
   const expiry = payload.role === 'student' ? STUDENT_EXPIRY : TEACHER_EXPIRY
@@ -42,7 +42,7 @@ export async function getSession(): Promise<JWTPayload | null> {
 }
 
 export function setTokenCookie(token: string, role: Role) {
-  const maxAge = role === 'student' ? 60 * 60 * 8 : 60 * 60 * 24 // 8h or 24h
+  const maxAge = role === 'student' ? 60 * 60 * 12 : 60 * 60 * 24 * 30 // 12h students, 30d teachers
   return {
     name: 'kk_token',
     value: token,

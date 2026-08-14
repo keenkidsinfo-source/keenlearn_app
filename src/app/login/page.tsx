@@ -1,19 +1,17 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
-type LoginStep = 'select-type' | 'access-code' | 'enter-name' | 'disambiguate' | 'enter-pin' | 'teacher-form'
+type LoginStep = 'select-type' | 'enter-name' | 'disambiguate' | 'enter-pin' | 'teacher-form'
 
 interface NameOption { id: string; firstName: string }
 
 function LoginForm() {
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const [step, setStep]               = useState<LoginStep>('select-type')
-  const [accessCode, setAccessCode]   = useState('')
   const [lastName, setLastName]       = useState('')
   const [options, setOptions]         = useState<NameOption[]>([])
   const [pendingUserId, setPendingUserId] = useState('')
@@ -26,15 +24,6 @@ function LoginForm() {
   const [email, setEmail]         = useState('')
   const [password, setPassword]   = useState('')
 
-  // Pre-fill access code from URL ?code=KEEN01
-  useEffect(() => {
-    const code = searchParams.get('code')
-    if (code && code.length === 6) {
-      setAccessCode(code.toUpperCase())
-      setStep('enter-name')
-    }
-  }, [searchParams])
-
   async function handleNameSubmit() {
     if (!lastName.trim()) return
     setLoading(true)
@@ -43,7 +32,7 @@ function LoginForm() {
       const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'student', accessCode, lastName: lastName.trim() }),
+        body: JSON.stringify({ type: 'student', lastName: lastName.trim() }),
       })
       const json = await res.json()
       if (!res.ok) { setError(json.error ?? 'Something went wrong.'); return }
@@ -71,7 +60,7 @@ function LoginForm() {
       const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'student', accessCode, userId }),
+        body: JSON.stringify({ type: 'student', userId }),
       })
       const json = await res.json()
       if (!res.ok) { setError(json.error ?? 'Something went wrong.'); return }
@@ -97,7 +86,7 @@ function LoginForm() {
       const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'student', accessCode, userId: pendingUserId, pin }),
+        body: JSON.stringify({ type: 'student', userId: pendingUserId, pin }),
       })
       const json = await res.json()
       if (!res.ok) { setError(json.error ?? 'Something went wrong.'); setPin(''); return }
@@ -155,7 +144,7 @@ function LoginForm() {
         {/* ── Step: select type ── */}
         {step === 'select-type' && (
           <div className="flex flex-col gap-4">
-            <button onClick={() => setStep('access-code')}
+            <button onClick={() => setStep('enter-name')}
               className="subject-card bg-keen-50 border-2 border-keen-200 hover:border-keen-400">
               <span className="text-4xl">👦👧</span>
               <span className="text-xl font-bold text-keen-700">I&apos;m a Student</span>
@@ -165,30 +154,6 @@ function LoginForm() {
               <span className="text-4xl">👩‍🏫</span>
               <span className="text-xl font-bold text-gray-700">I&apos;m a Teacher</span>
             </button>
-          </div>
-        )}
-
-        {/* ── Step: access code ── */}
-        {step === 'access-code' && (
-          <div className="bg-white rounded-3xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-center mb-6">Enter your class code</h2>
-            <input
-              type="text"
-              maxLength={6}
-              value={accessCode}
-              onChange={e => setAccessCode(e.target.value.toUpperCase())}
-              placeholder="e.g. KEEN01"
-              className="w-full text-center text-3xl font-black tracking-[0.3em] border-4 border-keen-200 rounded-2xl p-4 focus:outline-none focus:border-keen-500 uppercase"
-              autoFocus
-            />
-            <button
-              onClick={() => { setError(''); setStep('enter-name') }}
-              disabled={accessCode.length !== 6}
-              className="btn-primary w-full mt-6 disabled:opacity-50"
-            >
-              Next →
-            </button>
-            <button onClick={() => setStep('select-type')} className="w-full mt-3 text-gray-400 text-sm">← Back</button>
           </div>
         )}
 
@@ -213,9 +178,9 @@ function LoginForm() {
               disabled={!lastName.trim() || loading}
               className="btn-primary w-full mt-6 disabled:opacity-50"
             >
-              {loading ? 'Checking...' : 'Log In →'}
+              {loading ? 'Checking...' : 'Next →'}
             </button>
-            <button onClick={() => { setStep('access-code'); setLastName('') }} className="w-full mt-3 text-gray-400 text-sm">← Back</button>
+            <button onClick={() => { setStep('select-type'); setLastName('') }} className="w-full mt-3 text-gray-400 text-sm">← Back</button>
           </div>
         )}
 
@@ -236,7 +201,7 @@ function LoginForm() {
                 </button>
               ))}
             </div>
-            <button onClick={() => { setStep('enter-name'); setOptions([]) }} className="w-full mt-4 text-gray-400 text-sm">← Back</button>
+            <button onClick={() => { setStep('enter-name'); setOptions([]); setLastName('') }} className="w-full mt-4 text-gray-400 text-sm">← Back</button>
           </div>
         )}
 

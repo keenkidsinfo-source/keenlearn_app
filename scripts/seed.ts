@@ -60,10 +60,10 @@ async function seed() {
     { day: 5, subject: 'free_build' },
   ]
   const sinnottSchedule = [
-    { day: 1, subject: 'coding' },
-    { day: 2, subject: 'build' },
+    { day: 1, subject: 'coding' },          // Monday = Coding
+    { day: 2, subject: 'build' },           // Tuesday = Build
     { day: 3, subject: 'public_speaking' },
-    { day: 4, subject: 'math' },
+    { day: 4, subject: 'science' },         // Thursday = Science
     { day: 5, subject: 'free_build' },
   ]
 

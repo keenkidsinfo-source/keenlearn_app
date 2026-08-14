@@ -19,6 +19,7 @@ export interface TheorySlide {
 
 export interface TheoryDeck {
   gradeBand: 'g1-2' | 'g3-4'
+  weekNumber: number
   title: string
   subject: string
   slides: TheorySlide[]
@@ -28,6 +29,7 @@ export interface TheoryDeck {
 
 const cableCarDeck: TheoryDeck = {
   gradeBand: 'g1-2',
+  weekNumber: 1,
   title: 'Cable Car Science!',
   subject: 'Motion & Transportation',
   slides: [
@@ -171,6 +173,7 @@ const cableCarDeck: TheoryDeck = {
 
 const wellPulleyDeck: TheoryDeck = {
   gradeBand: 'g3-4',
+  weekNumber: 1,
   title: 'Well Pulley Theory',
   subject: 'Simple Machines: Wheel & Axle',
   slides: [
@@ -243,8 +246,9 @@ const wellPulleyDeck: TheoryDeck = {
 
 export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck]
 
-export function getTheoryDeck(gradeBand: string): TheoryDeck | null {
-  return theoryDecks.find(d => d.gradeBand === gradeBand) ?? null
+// Returns null if no deck exists for that week — caller should hide the Theory button
+export function getTheoryDeck(gradeBand: string, weekNumber: number): TheoryDeck | null {
+  return theoryDecks.find(d => d.gradeBand === gradeBand && d.weekNumber === weekNumber) ?? null
 }
 
 export const SLIDE_COLORS: Record<string, { bg: string; border: string; text: string; badge: string; headlineBg: string }> = {

@@ -179,7 +179,7 @@ export const scienceLabs: ScienceLab[] = [
     safetyNotes:
       'Always have a glass of water nearby. Keep candles away from paper, curtains and displays. Use long matches. Never leave candles unattended. Have a responsible adult nearby at all times during the candle phase.',
     referenceVideo:
-      'Search "baking soda vinegar fire extinguisher candle science experiment" on YouTube. Your saved video (Video 8) shows the exact technique. Watch it at least twice before class.',
+      'https://www.youtube.com/watch?v=Ten3PJDldcg',
   },
 
   {
@@ -322,7 +322,7 @@ export const scienceLabs: ScienceLab[] = [
     safetyNotes:
       'Neodymium magnets are very strong. Keep them away from phones, credit cards and electronic devices. Do not let small kids put them near their mouths. If two magnets snap together they can pinch fingers — supervise closely when kids handle them.',
     referenceVideo:
-      'Watch your saved video (Video 10) before class. The key technique is aligning the magnet poles correctly — if the pen sticks instead of floats, you have the poles the wrong way. Flip one magnet. Practice at home until you can make it float and spin reliably before class.',
+      'https://www.youtube.com/watch?v=QeYaoI8t1ws',
   },
 ]
 
