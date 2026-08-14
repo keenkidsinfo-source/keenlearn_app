@@ -105,29 +105,41 @@ export function SpeakingActivity({ title, theme, gradeBand, completed, meta }: P
           </div>
         )}
 
-        {/* Today's Prompt */}
-        <div className="bg-teal-600 rounded-2xl p-5 text-white">
-          <p className="text-xs font-black text-teal-200 uppercase tracking-wide mb-2">💬 Today&apos;s Prompt</p>
-          <p className="text-xl font-black leading-snug">{prompt}</p>
-          <p className="text-teal-200 text-xs mt-3">
-            ⏱ {fmt(timeLimit)} to speak
-          </p>
-        </div>
+        {/* Today's Prompt + Structure — G3-4 only (G1-2 is teacher-led) */}
+        {gradeBand === 'g3-4' && (
+          <>
+            <div className="bg-teal-600 rounded-2xl p-5 text-white">
+              <p className="text-xs font-black text-teal-200 uppercase tracking-wide mb-2">💬 Today&apos;s Prompt</p>
+              <p className="text-xl font-black leading-snug">{prompt}</p>
+              <p className="text-teal-200 text-xs mt-3">
+                ⏱ {fmt(timeLimit)} to speak
+              </p>
+            </div>
 
-        {/* Speaking Structure */}
-        <div className="bg-white rounded-2xl shadow-sm p-5">
-          <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-3">Your Speaking Plan</p>
-          <div className="space-y-2">
-            {structure.map((step, i) => (
-              <div key={i} className="flex gap-3 items-start">
-                <span className="bg-teal-100 text-teal-700 font-black text-xs rounded-full w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
-                  {i + 1}
-                </span>
-                <p className="text-gray-700 text-sm">{step}</p>
+            <div className="bg-white rounded-2xl shadow-sm p-5">
+              <p className="text-xs font-black text-gray-400 uppercase tracking-wide mb-3">Your Speaking Plan</p>
+              <div className="space-y-2">
+                {structure.map((step, i) => (
+                  <div key={i} className="flex gap-3 items-start">
+                    <span className="bg-teal-100 text-teal-700 font-black text-xs rounded-full w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">
+                      {i + 1}
+                    </span>
+                    <p className="text-gray-700 text-sm">{step}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+          </>
+        )}
+
+        {/* G1-2: teacher-led — just encourage the student */}
+        {gradeBand === 'g1-2' && (
+          <div className="bg-teal-600 rounded-2xl p-5 text-white text-center">
+            <p className="text-4xl mb-3">🎤</p>
+            <p className="text-xl font-black leading-snug mb-1">Your teacher is running the show!</p>
+            <p className="text-teal-200 text-sm">Listen carefully. When it&apos;s your turn — stand tall, speak out, and go for it!</p>
           </div>
-        </div>
+        )}
 
         {/* Tip */}
         <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex gap-3 items-start">

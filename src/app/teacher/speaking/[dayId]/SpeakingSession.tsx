@@ -170,7 +170,7 @@ const PILLAR_COLOR: Record<string, string> = {
 const CARD_CONTENT: Record<string, { bg: string; lines: string[] }> = {
   'Three Pillars Poster': {
     bg: 'bg-teal-600',
-    lines: ['🎙 VOICE', 'Volume · Pace · Clarity · Expression', '', '🧍 BODY', 'Posture · Eye Contact · Gestures · Space', '', '🧠 MIND', 'Courage · Preparation · Focus · Purpose'],
+    lines: ['THE THREE PILLARS', '🎙 VOICE', 'Volume · Pace · Clarity · Expression', '', '🧍 BODY', 'Posture · Eye Contact · Gestures · Space', '', '🧠 MIND', 'Courage · Preparation · Focus · Purpose'],
   },
   'Voice Dial': {
     bg: 'bg-sky-600',
@@ -483,7 +483,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
                   <div className="space-y-1.5">
                     {meta.objectives.map((obj, i) => (
                       <div key={i} className="flex items-start gap-2">
-                        <span className="text-teal-500 font-black text-sm shrink-0 mt-0.5">✓</span>
+                        <span className="text-sm shrink-0 mt-0.5">🎯</span>
                         <p className="text-gray-700 text-sm">{obj}</p>
                       </div>
                     ))}

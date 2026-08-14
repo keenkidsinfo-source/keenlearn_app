@@ -50,6 +50,7 @@ const SESSIONS_G12 = [
       steps:[
         {time:'0:00',action:'Stand at the front with a big smile. "Welcome to SpeakUp! Today you are all going to speak in front of the group. We\'re going to practise the most important skill in the world — sharing your voice." Set a warm, excited tone.'},
         {time:'1:00',action:'Model the warm-up yourself first. Stand tall, say your name and one fun fact. Keep it genuine and a little funny — students relax when the teacher goes first.'},
+        {time:'2:00',action:'Set the one rule before we begin: "When your classmate is standing and speaking, it is THEIR moment. Our rule: stay quiet during peer turns — no talking, no side comments. When they finish, we snap or clap. Ready?" Thumbs up from the class.'},
         {time:'2:30',action:'Go around the circle quickly — each student stands, says their name and one fun fact. Class snaps or claps after each. If a student freezes, offer a lifeline: "Your name and one thing you love — anything at all." Keep the pace light and fast. No more than 10 seconds each.'},
         {time:'7:00',action:'Celebrate: "You all just spoke in front of the whole group! That IS public speaking. You\'re already doing it."'},
       ]},
@@ -57,9 +58,10 @@ const SESSIONS_G12 = [
       steps:[
         {time:'8:00',action:'YOU ALREADY DO THIS. "Before we start — I have three questions. Raise your hand if you have ever explained something to a friend." Wait for hands. "Raise your hand if you have ever told a story at dinner." Hands again. "Raise your hand if you have ever argued for something you wanted." Hands. Then: "That is a speech. You have already done it. Today we just do it on purpose."'},
         {time:'10:00',action:'"So where do speeches happen?" Take 4-5 answers from students — let them name real places (classroom, sports, dinner table, etc.). Accept everything. "Exactly — speeches happen everywhere. Today, THIS classroom is our stage."'},
-        {time:'14:00',action:'Leave a 6-minute gap here for the natural discussion to breathe, then move on.'},
+        {time:'14:00',action:'If discussion slows, use one of these backup prompts to keep momentum: "Has anyone seen a speech at a wedding, graduation, assembly, or on TV — what were they talking about?" / "If YOU had a microphone for 60 seconds right now, what would you say?" / "Where do you feel most comfortable talking — at home with family, with friends, or somewhere else?" Pick whichever fits the energy. You only need one.'},
         {time:'20:00',action:'THE 3 PILLARS. Write on the board or reveal the Pillar Poster. "Every great speaker uses three things." Touch your throat: "VOICE — speak so everyone can hear." Stretch arms wide: "BODY — stand strong, look at people." Tap your head: "MIND — be brave, be ready." Ask the class to do the three actions with you. Repeat together twice.'},
         {time:'24:00',action:'Point to each pillar and ask students to name one example: "What does VOICE mean? What does a strong BODY look like? What does a brave MIND feel like?" Take 1-2 answers per pillar. Write key words under each one. This anchors the vocabulary for the whole year.'},
+        {time:'27:00',action:'SHAKE IT OUT. "Stand up — everyone up! Shake your hands like there\'s water on them. Now shake your whole body — shake those nerves out! 5, 4, 3, 2, 1 — FREEZE! Great. Sit back down. We are READY."'},
         {time:'28:00',action:'FIRST TRY. "Now it\'s your turn. I\'m going to ask you ONE question. You stand up, say your answer out loud, and sit down. That\'s it. One sentence. No wrong answers." Write the question on the board: "What is one place YOU would like to give a speech someday?"'},
         {time:'30:00',action:'Model your own answer first. Keep it genuine — somewhere real. "One place I\'d like to give a speech is at my family\'s dinner table, because I want everyone to listen to me for once!" Students often laugh and relax when the teacher is funny and human.'},
         {time:'32:00',action:'Go around the room one by one. Each student stands, answers the question, sits. Audience snaps or claps after each. If a student freezes, offer quietly: "One place is..." and let them fill in the blank. Don\'t rush them — a 5-second pause is fine. Celebrate whatever they say.'},
@@ -69,7 +71,7 @@ const SESSIONS_G12 = [
       steps:[
         {time:'52:00',action:'"Quick quiz — what are the Three Pillars?" Point to three different students. Build to a whole-class response: VOICE — BODY — MIND! Do the three actions together one more time.'},
         {time:'54:00',action:'Star of the Day: pick one student who showed courage — especially someone who looked nervous but answered anyway. Be specific: "I\'m choosing [name] because they took a breath, stood up, and went for it. That is brave speaking."'},
-        {time:'55:30',action:'"Next week we learn VOICE — how to make your voice big enough to fill this whole room. Start practising at home: talk loud enough that someone two rooms away can hear every word."'},
+        {time:'55:30',action:'"Next week we learn VOICE — how to make your voice big enough to fill this whole room. Tonight\'s challenge: try it once at dinner! Tell someone at the table the ONE place you\'d like to give a speech someday."'},
         {time:'57:00',action:'Closing ritual — use this every single week. "Repeat after me: I — AM — A — SPEAKER!" Class shouts it back. End with a fist bump or high five as students leave.'},
       ]},
   ],
@@ -815,7 +817,6 @@ const SESSIONS_G34 = [
 {
   title: 'SpeakUp! Week 1 — Introduction to Public Speaking', pillar: 'All',
   weekWord: 'Pillar', weekWordDef: 'a fundamental support — Voice, Body, and Mind are the three pillars of great public speaking',
-  tip: 'The first session sets the emotional tone for the whole year. Be warm, generous, and willing to be vulnerable — modeling courage is the job.', tipIcon: '🛠️',
   objectives: ['Every student stands up and speaks in front of the class on Day 1','Students identify where public speaking lives in the real world','Students learn the 3 Pillars framework through live teacher demos','Students co-create class norms they will own all year'],
   improvGame: {
     name: '30-Second Introductions',
@@ -837,8 +838,8 @@ const SESSIONS_G34 = [
       steps:[
         {time:'0:00',action:'Clear a speaking spot at the front and set a visible 30-second timer. Tell students: "I\'m going to go first. When I finish, give me snaps — that\'s how we show appreciation in this room. Snaps after every speaker, every time."'},
         {time:'0:30',action:'Model the intro yourself: name + one surprising fact + why public speaking matters to you. Aim for 25–30 seconds. Stop when the timer ends.'},
-        {time:'1:00',action:'State ground rules before the first student stands: "Audience is silent while someone speaks. Snaps after every speaker. No coaching, no laughing — today we are just building the muscle of standing up front."'},
-        {time:'1:30',action:'Call students one at a time. Set timer to 30 sec. Student stands, faces class, delivers intro. Class snaps. Teacher says only: "Thank you, [name]." No feedback yet.'},
+        {time:'1:00',action:'Before calling anyone up, write three sentence starters on the board — keep them visible for the whole round:\n\n  • "My name is ___"\n  • "One surprising fact about me is ___"\n  • "I\'m here because ___"\n\nTell the class: "These are your lifelines — use all three, or just start with the first one if you freeze. The board stays up for everyone." Then set the ground rules: "Audience stays silent while someone speaks. Snaps after every speaker. No coaching, no laughing — today is only about building the muscle of standing up front."'},
+        {time:'1:30',action:'Call students one at a time. Set timer to 30 sec. Student stands, faces the class, and uses the board lines as needed. Class snaps after each. Teacher says only: "Thank you, [name]." No feedback yet. If a student freezes beyond 5 seconds, point calmly to the board and say quietly: "Start with the first line."'},
         {time:'7:00',action:'After everyone has gone: "You just did something many adults avoid their whole lives. That is where we start — and we go further from here every single week."'},
       ]},
     { startMin:8, endMin:52, label:'MAIN ACTIVITY', emoji:'🎤', title:'Where People Speak · The 3 Pillars · Class Norms',
