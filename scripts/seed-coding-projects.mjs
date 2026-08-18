@@ -27,6 +27,7 @@ const projects = [
       language: 'scratch',
       challenge: 'Welcome to Scratch!',
       tagline: 'Explore Scratch and make something move — anything goes!',
+      starterUrl: '/scratch-starters/g1-2-w1-starter.sb3',
       steps: [
         // W1: Welcome to Scratch! — Explore interface, meet sprites (slow & playful)
         '🐱 You\'re in Scratch! See the orange cat on the white screen? That\'s a SPRITE. The white area is called the STAGE.',
@@ -42,8 +43,11 @@ const projects = [
         '🖼️ Pick a backdrop! Click the backdrop picture at the bottom-right → choose any scene you like (nature, space, city!).',
         '💬 Make your sprite talk! Click "Looks" (purple) → find "say [Hello!] for 2 secs" → snap it under the move block → click the flag.',
         '😄 Click the "Hello!" text and change it to anything you want your sprite to say!',
-        '🔊 Add a sound! Click "Sounds" at the top → "Choose a Sound" → pick something fun → drag "play sound" into your code.',
+        '🔊 Add a sound! Click "Sounds" at the top — you\'ll see Pop, Meow, Boing, Drum, Zap, and Cheer are already loaded! Drag "play sound [Pop]" into your code and change it to any sound.',
         '⭐ EXPLORE: Click every coloured button on the left and drag blocks to see what they do. Make your sprite do ANYTHING — there are no wrong answers today!',
+        '🌈 BONUS: Make your sprite change colour! Click "Looks" → "change [colour] effect by 25" → snap it inside a "forever" loop and click the flag. Rainbow time! 🌈',
+        '📏 BONUS: Make your sprite grow! "Looks" → "change size by 10" inside a forever loop. Can you make it shrink back with "change size by -10"?',
+        '🎭 BONUS: Switch backdrops with a key! Events → "when [space] key pressed" → Looks → "next backdrop". Press space to travel through every scene!',
       ],
     },
   },
@@ -85,6 +89,7 @@ const projects = [
     metadata: {
       language: 'scratch',
       challenge: 'Moving Car',
+      starterUrl: '/scratch-starters/g1-2-w1-starter.sb3',
       tagline: 'Build a driveable car and discover how wheels are a simple machine!',
       steps: [
         '🔬 SCIENCE FIRST: A WHEEL is a simple machine! Wheels + axles let things roll instead of slide — much less friction. Today you\'ll code one! 🚗',
@@ -100,7 +105,7 @@ const projects = [
         '🛣️ Add a road! Click the backdrop → paint icon → use the Line tool to draw road lines and a horizon.',
         '🧱 Add an obstacle! Paint a new sprite (a red rectangle) → place it on your road. When the car touches it, it should bounce back: Sensing → "touching [obstacle]?" → Motion → "change x by -20".',
         '📊 Track distance! Variables → "Make a Variable" → call it "Distance" → in your right-arrow code, add "change Distance by 1". How far can you drive?',
-        '🎵 Add an engine sound! Sounds → choose a sound like "Motor" or "Zap" → play it when the right arrow is pressed.',
+        '🎵 Add an engine sound! Click "Sounds" at the top — Zap and Drum are already loaded. Drag "play sound [Zap]" into your right-arrow code so it plays every time you accelerate!',
         '⭐ CHALLENGE + SCIENCE: Real wheels have TREADS for grip. Add 3 obstacles on your road and try to drive through them without touching. This simulates tires gripping a rough road!',
       ],
     },

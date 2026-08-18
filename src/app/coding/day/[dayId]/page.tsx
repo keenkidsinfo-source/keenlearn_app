@@ -65,6 +65,7 @@ export default async function CodingDayPage({ params }: Props) {
       language={language}
       projectId={project?.id ?? null}
       projectUrl={projectUrl}
+      starterUrl={meta?.starterUrl ?? null}
       savedCode={savedCode}
       gradeBand={session.gradeBand ?? null}
       challenge={meta?.challenge}
