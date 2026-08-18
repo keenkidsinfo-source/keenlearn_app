@@ -255,17 +255,17 @@ export function CodingSandbox({
   }, [])
 
   // ── Auto-save every 10 seconds ─────────────────────────────────────────────
-  // Guards: (1) project row must exist, (2) TurboWarp must have finished loading
-  // the student's project. Without guard 2, auto-save fires during the ~2s window
-  // while the .sb3 is loading and overwrites the real project with empty VM state.
+  // Guard: TurboWarp must have finished loading the student's project (projectReadyRef).
+  // We no longer require currentProjectId — if none exists yet, saveScratch does a POST
+  // to create the project row automatically, so kids never need to click "Save first!".
   useEffect(() => {
     if (language === 'scratch') {
       autoSaveTimer.current = setInterval(() => {
-        if (currentProjectId.current && projectReadyRef.current) saveScratch()
+        if (projectReadyRef.current) saveScratch()
       }, 10_000)
     } else {
       autoSaveTimer.current = setInterval(() => {
-        if (currentProjectId.current) savePython()
+        savePython()
       }, 10_000)
     }
     return () => { if (autoSaveTimer.current) clearInterval(autoSaveTimer.current) }
