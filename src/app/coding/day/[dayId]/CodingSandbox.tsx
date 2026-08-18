@@ -84,10 +84,11 @@ export function CodingSandbox({
   // For saved projects: start null — don't render the iframe until kk_project is
   // in localStorage. This eliminates the T0/T1 double-load race where T0 (empty
   // default project) could cache an empty __kkLastSb3 before T1 (real project) loads.
-  // For new projects with a starterUrl: also start null, load starter .sb3 first.
-  // For brand-new projects with no starter: load immediately.
+  // For brand-new projects with a starterUrl (no prior project row): also start null,
+  // load starter .sb3 first. If a project row already exists (projectId), skip the
+  // starter even if projectData is empty — treat as blank editor, not a first visit.
   const [iframeSrc, setIframeSrc] = useState<string | null>(
-    (projectUrl || starterUrl) ? null : `/scratch/editor.html?kk=${Date.now()}`
+    (projectUrl || (starterUrl && !projectId)) ? null : `/scratch/editor.html?kk=${Date.now()}`
   )
 
   // ── KeeBot state ──────────────────────────────────────────────────────────
@@ -296,11 +297,12 @@ export function CodingSandbox({
   // ── New project: clear stale localStorage so TurboWarp starts blank ─────────
   // Without this, TurboWarp reads kk_project from a previous week and loads the
   // wrong project. Auto-save then overwrites the new week's project with old data.
-  // Skip if starterUrl — that useEffect will write the starter into localStorage.
+  // Skip only if starterUrl AND no prior project row — the starter effect handles it.
   useEffect(() => {
-    if (language !== 'scratch' || projectUrl || starterUrl) return
+    if (language !== 'scratch' || projectUrl) return
+    if (starterUrl && !projectId) return  // starter effect will write localStorage
     localStorage.removeItem('kk_project')
-  }, [language, projectUrl, starterUrl])
+  }, [language, projectUrl, starterUrl, projectId])
 
   // ── Fetch saved project in parent frame → localStorage → TurboWarp reads it ─
   // (Fetching here avoids any auth issues inside the TurboWarp iframe)
@@ -323,9 +325,9 @@ export function CodingSandbox({
   // ── Load starter .sb3 for brand-new projects ──────────────────────────────
   // Fetch the pre-seeded .sb3 (binary), base64-encode it, store as kk_project.
   // This gives students pre-loaded sounds without needing the Scratch CDN.
-  // Only runs when there's no saved project yet.
+  // Only runs when there is truly no prior project — no projectId row in the DB.
   useEffect(() => {
-    if (!starterUrl || projectUrl) return
+    if (!starterUrl || projectId) return
     let cancelled = false
     fetch(starterUrl)
       .then(r => r.ok ? r.arrayBuffer() : null)
@@ -346,7 +348,7 @@ export function CodingSandbox({
         if (!cancelled) setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
       })
     return () => { cancelled = true }
-  }, [starterUrl, projectUrl])
+  }, [starterUrl, projectId])
 
   // ── Shared header content ───────────────────────────────────────────────────
   const headerStatus = (
