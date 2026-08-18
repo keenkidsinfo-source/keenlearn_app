@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { NextRequest } from 'next/server'
 import { db } from '@/lib/db'
-import { users, classrooms } from '@/lib/db/schema'
+import { users, classrooms, classroomTeachers } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import bcrypt from 'bcryptjs'
@@ -17,12 +17,24 @@ export async function POST(req: NextRequest) {
     return apiError('Forbidden', 'FORBIDDEN', 403)
   }
 
-  // Find teacher's classroom
-  const classroom = await getTeacherClassroom(teacherId!)
-  if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
-
   const body = await req.json()
-  const { name, pin, avatarId, parentName, parentEmail } = body
+  const { name, pin, avatarId, parentName, parentEmail, classroomId: requestedClassroomId } = body
+
+  // If a specific classroomId was requested, validate the teacher is assigned to it
+  let classroom = null
+  if (requestedClassroomId && role !== 'admin') {
+    const [row] = await db
+      .select({ classroom: classrooms })
+      .from(classroomTeachers)
+      .innerJoin(classrooms, eq(classroomTeachers.classroomId, classrooms.id))
+      .where(and(eq(classroomTeachers.teacherId, teacherId!), eq(classroomTeachers.classroomId, requestedClassroomId)))
+      .limit(1)
+    classroom = row?.classroom ?? null
+    if (!classroom) return apiError('No access to that classroom', 'FORBIDDEN', 403)
+  } else {
+    classroom = await getTeacherClassroom(teacherId!, role === 'admin' ? requestedClassroomId : undefined)
+  }
+  if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
 
   if (!name?.trim()) return apiError('Name is required', 'MISSING_NAME', 400)
   if (!pin || String(pin).length !== 4 || isNaN(Number(pin))) {

@@ -81,10 +81,6 @@ export async function POST(req: NextRequest) {
   if (!session) return apiError('Unauthorized', 'UNAUTHORIZED', 401)
   if (session.role === 'student') return apiError('Forbidden', 'FORBIDDEN', 403)
 
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
-    return apiError('SUPABASE_URL and SUPABASE_SERVICE_KEY env vars are not set.', 'CONFIG_ERROR', 500)
-  }
-
   const body = await req.json().catch(() => null)
   const parsed = bodySchema.safeParse(body)
   if (!parsed.success) {
@@ -154,6 +150,19 @@ export async function POST(req: NextRequest) {
           })
       }
     }
+  }
+
+  // If parent portal env vars aren't configured, stop here — DB save already succeeded
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+    return apiOk({
+      weekStartDate,
+      buildTitle,
+      results: results.map(r => ({ student: r.studentName, status: 'no_match' as const })),
+      sent: 0,
+      noMatch: results.length,
+      errors: 0,
+      note: 'Results saved to KeenKids DB. Parent portal sync not configured.',
+    })
   }
 
   // Fetch portal children

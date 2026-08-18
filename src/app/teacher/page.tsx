@@ -1,12 +1,14 @@
+export const dynamic = 'force-dynamic'
+
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
 import {
   users, classrooms, schools, studentSessions,
   classroomCurriculum, curriculum, curriculumDays, curriculumContent, contentItems,
+  classroomTeachers,
 } from '@/lib/db/schema'
-import { getTeacherClassrooms } from '@/lib/teacher-classroom'
-import { eq, and, isNull, inArray, gte } from 'drizzle-orm'
+import { eq, and, isNull, inArray } from 'drizzle-orm'
 import Link from 'next/link'
 import { SUBJECT_EMOJI, SUBJECT_LABEL } from '@/lib/utils'
 import type { Subject } from '@/lib/db/schema'
@@ -49,10 +51,23 @@ export default async function TeacherDashboardPage({
         .orderBy(schools.name, classrooms.gradeLevel)
     : []
 
-  // Load classroom(s) for teacher via junction table (supports multiple teachers per classroom).
+  // Load classroom(s) for teacher via junction table — join school name for tab labels
   const teacherClassrooms = isAdmin
     ? []  // admin uses allClassrooms picker above
-    : await getTeacherClassrooms(session.sub)
+    : await db
+        .select({
+          id:         classrooms.id,
+          name:       classrooms.name,
+          gradeLevel: classrooms.gradeLevel,
+          gradeBand:  classrooms.gradeBand,
+          schoolId:   classrooms.schoolId,
+          accessCode: classrooms.accessCode,
+          schoolName: schools.name,
+        })
+        .from(classroomTeachers)
+        .innerJoin(classrooms, eq(classroomTeachers.classroomId, classrooms.id))
+        .leftJoin(schools, eq(classrooms.schoolId, schools.id))
+        .where(eq(classroomTeachers.teacherId, session.sub))
 
   const [classroom] = isAdmin && qClassroomId
     ? await db.select().from(classrooms).where(eq(classrooms.id, qClassroomId)).limit(1)
@@ -177,19 +192,23 @@ export default async function TeacherDashboardPage({
         <div className="bg-keen-50 border-b border-keen-200 px-6 py-3">
           <div className="max-w-3xl mx-auto flex items-center gap-3">
             <span className="text-keen-700 text-xs font-bold uppercase tracking-wide">Grade:</span>
-            {teacherClassrooms.map(c => (
-              <Link
-                key={c.id}
-                href={`/teacher?classroomId=${c.id}`}
-                className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all ${
-                  (classroom?.id === c.id)
-                    ? 'bg-keen-700 text-white'
-                    : 'bg-white border border-keen-200 text-keen-700 hover:border-keen-400'
-                }`}
-              >
-                {c.gradeBand === 'g1-2' ? 'Grades 1–2' : 'Grades 3–4'}
-              </Link>
-            ))}
+            {teacherClassrooms.map(c => {
+              const gradeLabel = c.gradeBand === 'g1-2' ? 'Gr 1–2' : 'Gr 3–4'
+              const label = c.schoolName ? `${c.schoolName} ${gradeLabel}` : gradeLabel
+              return (
+                <Link
+                  key={c.id}
+                  href={`/teacher?classroomId=${c.id}`}
+                  className={`px-4 py-1.5 rounded-full text-sm font-bold transition-all ${
+                    (classroom?.id === c.id)
+                      ? 'bg-keen-700 text-white'
+                      : 'bg-white border border-keen-200 text-keen-700 hover:border-keen-400'
+                  }`}
+                >
+                  {label}
+                </Link>
+              )
+            })}
           </div>
         </div>
       )}
@@ -485,6 +504,8 @@ export default async function TeacherDashboardPage({
             <span className="ml-2 text-sm font-normal text-gray-400">({students.length})</span>
           </h2>
           <StudentManager
+            key={classroom?.id}
+            classroomId={classroom?.id}
             initialStudents={students.map(s => ({
               id: s.id,
               name: s.name,

@@ -16,17 +16,19 @@ interface Student {
 
 interface Props {
   initialStudents: Student[]
+  classroomId?: string
 }
 
 type Modal =
   | { type: 'add' }
+  | { type: 'edit-name'; student: Student }
   | { type: 'edit-pin'; student: Student }
   | { type: 'edit-parent'; student: Student }
   | { type: 'delete'; student: Student }
   | { type: 'bulk-parents' }
   | null
 
-export function StudentManager({ initialStudents }: Props) {
+export function StudentManager({ initialStudents, classroomId }: Props) {
   const [students, setStudents] = useState<Student[]>(initialStudents)
   const [modal, setModal]       = useState<Modal>(null)
   const [loading, setLoading]   = useState(false)
@@ -38,6 +40,8 @@ export function StudentManager({ initialStudents }: Props) {
   const [newAvatar, setNewAvatar]           = useState(1)
   const [newParentName, setNewParentName]   = useState('')
   const [newParentEmail, setNewParentEmail] = useState('')
+  // ── Edit name form state
+  const [editName, setEditName]             = useState('')
   // ── Edit PIN form state
   const [newPinEdit, setNewPinEdit]         = useState('')
   // ── Edit parent form state
@@ -49,6 +53,7 @@ export function StudentManager({ initialStudents }: Props) {
     setError('')
     setNewName(''); setNewPin(''); setNewAvatar(1)
     setNewParentName(''); setNewParentEmail('')
+    setEditName('')
     setNewPinEdit('')
     setEditParentName(''); setEditParentEmail('')
   }
@@ -65,11 +70,33 @@ export function StudentManager({ initialStudents }: Props) {
           name: newName.trim(), pin: newPin, avatarId: newAvatar,
           parentName: newParentName.trim() || null,
           parentEmail: newParentEmail.trim() || null,
+          classroomId: classroomId ?? null,
         }),
       })
       const json = await res.json()
       if (!res.ok) { setError(json.error ?? 'Failed to add student'); return }
       setStudents(prev => [...prev, json.data].sort((a, b) => a.name.localeCompare(b.name)))
+      closeModal()
+    } catch {
+      setError('Network error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  async function saveName(studentId: string) {
+    if (!editName.trim()) { setError('Enter a name'); return }
+    setLoading(true); setError('')
+    try {
+      const res = await fetch(`/api/v1/teacher/students/${studentId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: editName.trim() }),
+      })
+      if (!res.ok) { setError('Failed to update name'); return }
+      setStudents(prev => prev.map(s =>
+        s.id === studentId ? { ...s, name: editName.trim(), displayName: editName.trim() } : s
+      ).sort((a, b) => (a.displayName ?? a.name).localeCompare(b.displayName ?? b.name)))
       closeModal()
     } catch {
       setError('Network error')
@@ -154,6 +181,17 @@ export function StudentManager({ initialStudents }: Props) {
                 : <p className="text-xs text-orange-400">No parent email</p>}
             </div>
             <div className="flex gap-2 flex-shrink-0">
+              <button
+                onClick={() => {
+                  setEditName(student.displayName ?? student.name)
+                  setModal({ type: 'edit-name', student })
+                  setError('')
+                }}
+                className="text-xs font-bold text-gray-600 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 px-2 py-1.5 rounded-lg transition-all"
+                title="Edit name"
+              >
+                ✏️
+              </button>
               <button
                 onClick={() => {
                   setEditParentName(student.parentName ?? '')
@@ -301,6 +339,42 @@ export function StudentManager({ initialStudents }: Props) {
                       className="flex-1 py-3 rounded-xl bg-keen-600 text-white font-bold hover:bg-keen-500 disabled:opacity-60"
                     >
                       {loading ? 'Adding…' : 'Add Student'}
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* EDIT NAME */}
+            {modal.type === 'edit-name' && (
+              <>
+                <h3 className="text-xl font-black text-gray-800 mb-1">Rename Student</h3>
+                <p className="text-gray-500 text-sm mb-4">
+                  {AVATARS[((modal.student.avatarId ?? 1) - 1) % 8]} currently: <strong>{modal.student.displayName ?? modal.student.name}</strong>
+                </p>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-bold text-gray-600 mb-1 block">New Name</label>
+                    <input
+                      type="text"
+                      value={editName}
+                      onChange={e => setEditName(e.target.value)}
+                      placeholder="e.g. Alice Smith"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-lg font-bold focus:border-keen-400 focus:outline-none"
+                      autoFocus
+                    />
+                  </div>
+                  {error && <p className="text-red-500 text-sm font-semibold">{error}</p>}
+                  <div className="flex gap-3 pt-2">
+                    <button onClick={closeModal} className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:bg-gray-50">
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => saveName(modal.student.id)}
+                      disabled={loading}
+                      className="flex-1 py-3 rounded-xl bg-keen-600 text-white font-bold hover:bg-keen-500 disabled:opacity-60"
+                    >
+                      {loading ? 'Saving…' : 'Save Name'}
                     </button>
                   </div>
                 </div>

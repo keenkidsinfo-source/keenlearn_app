@@ -119,7 +119,18 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
           <button onClick={() => router.push('/dashboard')} className="btn-primary bg-orange-500">
             Back to Home
           </button>
-          <button onClick={startOver} className="text-orange-500 font-bold text-sm underline">
+          <button
+            onClick={async () => {
+              const last = Math.max(0, totalSteps - 1)
+              setStep(last)
+              setIsDone(false)
+              await saveProgress(last, false)
+            }}
+            className="border-2 border-orange-400 text-orange-600 font-bold py-2.5 rounded-xl hover:bg-orange-100 transition-all text-sm"
+          >
+            ← Back to Last Step
+          </button>
+          <button onClick={startOver} className="text-orange-400 font-bold text-sm underline">
             Start over from Step 1
           </button>
         </div>
