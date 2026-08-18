@@ -166,83 +166,100 @@ export async function POST(req: NextRequest) {
     })
   }
 
-  // Fetch portal children
-  const childrenRes = await supabaseFetch('/children?select=id,full_name,school_name')
-  if (!childrenRes.ok) return apiError('Failed to fetch portal children', 'SUPABASE_ERROR', 502)
-  const portalChildren: { id: string; full_name: string; school_name: string }[] = await childrenRes.json()
+  // ── Parent portal sync (best-effort — DB save already done above) ────────────
+  try {
+    const childrenRes = await supabaseFetch('/children?select=id,full_name,school_name')
+    if (!childrenRes.ok) {
+      console.error('[build-chart] Supabase children fetch failed:', await childrenRes.text().catch(() => ''))
+      return apiOk({
+        weekStartDate, buildTitle,
+        results: results.map(r => ({ student: r.studentName, status: 'no_match' as const })),
+        sent: 0, noMatch: results.length, errors: 0,
+        note: 'Results saved to KeenKids DB. Parent portal sync unavailable.',
+      })
+    }
+    const portalChildren: { id: string; full_name: string; school_name: string }[] = await childrenRes.json()
 
-  const sentResults: { student: string; status: 'sent' | 'no_match' | 'error'; portalName?: string }[] = []
+    const sentResults: { student: string; status: 'sent' | 'no_match' | 'error'; portalName?: string }[] = []
 
-  for (const result of results) {
-    // Find matching student record
-    const student = students.find(s => s.id === result.studentId)
-    if (!student) {
-      sentResults.push({ student: result.studentName, status: 'no_match' })
-      continue
+    for (const result of results) {
+      const student = students.find(s => s.id === result.studentId)
+      if (!student) {
+        sentResults.push({ student: result.studentName, status: 'no_match' })
+        continue
+      }
+
+      const match = matchChild(student, portalChildren, schoolName)
+      if (!match) {
+        sentResults.push({ student: result.studentName, status: 'no_match' })
+        continue
+      }
+
+      let win: string | null = null
+      let notes: string | null = null
+
+      if (gradeBand === 'g1-2') {
+        const parts: string[] = []
+        if (result.maxClips != null) parts.push(`Cable Car max cargo: **${result.maxClips} paperclips** ✅`)
+        if (result.round1Clips != null) parts.push(`Round 1: ${result.round1Clips} clips`)
+        if (result.round2Clips != null) parts.push(`After improvement: ${result.round2Clips} clips`)
+        win = parts[0] ?? null
+        notes = parts.slice(1).join('\n') || null
+      } else {
+        const parts: string[] = []
+        if (result.cranksNoLoad != null) parts.push(`Well Pulley — cranks (no cargo): ${result.cranksNoLoad}`)
+        if (result.cranksWithLoad != null) parts.push(`Cranks (3-penny load): ${result.cranksWithLoad}`)
+        if (result.cranksImproved != null) parts.push(`After improvement: ${result.cranksImproved} cranks ✅`)
+        win = result.cranksImproved != null ? `Well Pulley improved to ${result.cranksImproved} cranks ✅` : (parts[0] ?? null)
+        notes = parts.join('\n') || null
+      }
+
+      if (result.note) notes = notes ? `${notes}\nNote: ${result.note}` : `Note: ${result.note}`
+
+      const progressRow = {
+        child_id:   match.id,
+        week_theme: buildTitle,
+        week_key:   weekStartDate,
+        week_date:  weekStartDate,
+        win,
+        fail:       null,
+        notes,
+        attendance: true,
+      }
+
+      const upsertRes = await supabaseFetch('/progress', {
+        method:  'POST',
+        body:    JSON.stringify(progressRow),
+        headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+      })
+
+      if (!upsertRes.ok) {
+        const errText = await upsertRes.text().catch(() => '')
+        console.error(`[build-chart] Supabase upsert failed for ${result.studentName}:`, errText)
+        sentResults.push({ student: result.studentName, status: 'error', portalName: match.full_name })
+      } else {
+        sentResults.push({ student: result.studentName, status: 'sent', portalName: match.full_name })
+      }
     }
 
-    const match = matchChild(student, portalChildren, schoolName)
-    if (!match) {
-      sentResults.push({ student: result.studentName, status: 'no_match' })
-      continue
-    }
-
-    // Build the win/notes strings based on grade band
-    let win: string | null = null
-    let notes: string | null = null
-
-    if (gradeBand === 'g1-2') {
-      const parts: string[] = []
-      if (result.maxClips != null) parts.push(`Cable Car max cargo: **${result.maxClips} paperclips** ✅`)
-      if (result.round1Clips != null) parts.push(`Round 1: ${result.round1Clips} clips`)
-      if (result.round2Clips != null) parts.push(`After improvement: ${result.round2Clips} clips`)
-      win = parts[0] ?? null
-      notes = parts.slice(1).join('\n') || null
-    } else {
-      const parts: string[] = []
-      if (result.cranksNoLoad != null) parts.push(`Well Pulley — cranks (no cargo): ${result.cranksNoLoad}`)
-      if (result.cranksWithLoad != null) parts.push(`Cranks (3-penny load): ${result.cranksWithLoad}`)
-      if (result.cranksImproved != null) parts.push(`After improvement: ${result.cranksImproved} cranks ✅`)
-      win = result.cranksImproved != null ? `Well Pulley improved to ${result.cranksImproved} cranks ✅` : (parts[0] ?? null)
-      notes = parts.join('\n') || null
-    }
-
-    if (result.note) notes = notes ? `${notes}\nNote: ${result.note}` : `Note: ${result.note}`
-
-    const progressRow = {
-      child_id:   match.id,
-      week_theme: buildTitle,
-      week_key:   weekStartDate,
-      week_date:  weekStartDate,
-      win,
-      fail:       null,
-      notes,
-      attendance: true,
-    }
-
-    const upsertRes = await supabaseFetch('/progress', {
-      method:  'POST',
-      body:    JSON.stringify(progressRow),
-      headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+    return apiOk({
+      weekStartDate,
+      buildTitle,
+      results: sentResults,
+      sent:    sentResults.filter(r => r.status === 'sent').length,
+      noMatch: sentResults.filter(r => r.status === 'no_match').length,
+      errors:  sentResults.filter(r => r.status === 'error').length,
     })
-
-    if (!upsertRes.ok) {
-      const errText = await upsertRes.text().catch(() => '')
-      console.error(`[build-chart] Supabase upsert failed for ${result.studentName}:`, errText)
-      sentResults.push({ student: result.studentName, status: 'error', portalName: match.full_name })
-    } else {
-      sentResults.push({ student: result.studentName, status: 'sent', portalName: match.full_name })
-    }
+  } catch (supaErr: unknown) {
+    const msg = supaErr instanceof Error ? supaErr.message : String(supaErr)
+    console.error('[build-chart] Supabase sync error (results saved to DB):', supaErr)
+    return apiOk({
+      weekStartDate, buildTitle,
+      results: results.map(r => ({ student: r.studentName, status: 'no_match' as const })),
+      sent: 0, noMatch: results.length, errors: 0,
+      note: `Results saved to KeenKids DB. Parent portal sync error: ${msg}`,
+    })
   }
-
-  return apiOk({
-    weekStartDate,
-    buildTitle,
-    results: sentResults,
-    sent:    sentResults.filter(r => r.status === 'sent').length,
-    noMatch: sentResults.filter(r => r.status === 'no_match').length,
-    errors:  sentResults.filter(r => r.status === 'error').length,
-  })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error('[build-chart] Unhandled error:', err)

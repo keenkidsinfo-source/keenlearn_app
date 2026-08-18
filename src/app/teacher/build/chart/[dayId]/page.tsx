@@ -102,13 +102,13 @@ export default async function BuildChartPage({ params }: Props) {
     // Build initial rows from student submissions (keys come from resultFields)
     const initialRows: Record<string, { a: string; b: string; c: string; note: string }> = {}
     for (const s of existingSessions) {
+      // sessionData is saved as { ...result, gradeBand, buildTitle } — no nested wrapper
       const sd = (s.sessionData ?? {}) as Record<string, any>
-      const br = (sd.buildResults ?? {}) as Record<string, any>
       initialRows[s.studentId] = {
-        a: br[resultFields.a.key] != null ? String(br[resultFields.a.key]) : '',
-        b: br[resultFields.b.key] != null ? String(br[resultFields.b.key]) : '',
-        c: resultFields.c && br[resultFields.c.key] != null ? String(br[resultFields.c.key]) : '',
-        note: br.note ?? '',
+        a: sd[resultFields.a.key] != null ? String(sd[resultFields.a.key]) : '',
+        b: sd[resultFields.b.key] != null ? String(sd[resultFields.b.key]) : '',
+        c: resultFields.c && sd[resultFields.c.key] != null ? String(sd[resultFields.c.key]) : '',
+        note: sd.note ?? '',
       }
     }
 
