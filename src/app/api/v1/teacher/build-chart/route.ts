@@ -77,6 +77,7 @@ export type StudentResult = z.infer<typeof StudentResultSchema>
  * Accepts student build results and upserts them into the Supabase portal progress table.
  */
 export async function POST(req: NextRequest) {
+  try {
   const session = await getSession()
   if (!session) return apiError('Unauthorized', 'UNAUTHORIZED', 401)
   if (session.role === 'student') return apiError('Forbidden', 'FORBIDDEN', 403)
@@ -89,8 +90,8 @@ export async function POST(req: NextRequest) {
 
   const { weekStartDate, buildTitle, gradeBand, classroomId: bodyClassroomId, results } = parsed.data
 
-  // Load classroom
-  const classroom = await getTeacherClassroom(session.sub, session.role === 'admin' ? bodyClassroomId : undefined)
+  // Load classroom — admins can pass classroomId, teachers can too (to handle multi-classroom case)
+  const classroom = await getTeacherClassroom(session.sub, bodyClassroomId ?? undefined)
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
 
   const [school] = classroom.schoolId
@@ -242,4 +243,9 @@ export async function POST(req: NextRequest) {
     noMatch: sentResults.filter(r => r.status === 'no_match').length,
     errors:  sentResults.filter(r => r.status === 'error').length,
   })
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[build-chart] Unhandled error:', err)
+    return apiError(`Build chart error: ${msg}`, 'INTERNAL_ERROR', 500)
+  }
 }

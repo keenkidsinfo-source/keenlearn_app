@@ -132,6 +132,7 @@ export default async function BuildChartPage({ params }: Props) {
         buildTitle={item.title}
         buildDayId={dayId}
         weekStartDate={weekStartDate}
+        classroomId={classroom.id}
         resultFields={resultFields}
         initialRows={initialRows}
       />

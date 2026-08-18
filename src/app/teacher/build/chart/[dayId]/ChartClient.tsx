@@ -23,6 +23,7 @@ interface Props {
   buildTitle: string
   buildDayId: string
   weekStartDate: string
+  classroomId: string
   resultFields: ResultFields
   initialRows?: Record<string, { a: string; b: string; c: string; note: string }>
 }
@@ -30,7 +31,7 @@ interface Props {
 function display(s: Student) { return s.displayName ?? s.name }
 function safeInt(v: string) { const n = parseInt(v, 10); return isNaN(n) ? undefined : Math.max(0, n) }
 
-export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekStartDate, resultFields, initialRows = {} }: Props) {
+export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekStartDate, classroomId, resultFields, initialRows = {} }: Props) {
   const isG12 = gradeBand === 'g1-2'
 
   // Derive column labels — must be before any useMemo that references them
@@ -87,6 +88,7 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
         weekStartDate,
         buildTitle,
         gradeBand,
+        classroomId,
         results: students
           .map(s => {
             const r = rows[s.id]
