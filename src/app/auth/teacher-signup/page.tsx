@@ -115,11 +115,9 @@ export default function TeacherSignupPage() {
                 className="w-full border-2 border-gray-200 rounded-2xl p-3.5 text-base focus:outline-none focus:border-keen-400 bg-white"
                 required
               >
-                <option value="">Select grade…</option>
-                <option value="1">Grade 1</option>
-                <option value="2">Grade 2</option>
-                <option value="3">Grade 3</option>
-                <option value="4">Grade 4</option>
+                <option value="">Select grade group…</option>
+                <option value="g1-2">Grades 1–2</option>
+                <option value="g3-4">Grades 3–4</option>
               </select>
             </div>
 

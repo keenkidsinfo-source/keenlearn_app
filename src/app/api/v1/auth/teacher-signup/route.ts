@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     schoolId:     matchedSchool?.id ?? null,
     // approvedAt is null → pending until admin approves
     // Store grade/school in displayName for admin reference
-    displayName:  [schoolName, gradeLevel ? `Grade ${gradeLevel}` : ''].filter(Boolean).join(' · ') || null,
+    displayName:  [schoolName, gradeLevel === 'g1-2' ? 'Grades 1–2' : gradeLevel === 'g3-4' ? 'Grades 3–4' : gradeLevel ? `Grade ${gradeLevel}` : ''].filter(Boolean).join(' · ') || null,
   })
 
   return apiOk({ message: 'Account created. Awaiting admin approval.' })

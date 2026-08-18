@@ -54,7 +54,7 @@ export async function POST(
     Your KeenKids teacher account has been approved. You can now log in and access your classroom dashboard.
   </p>
   <div style="text-align:center;margin:28px 0">
-    <a href="${process.env.NEXT_PUBLIC_APP_URL ?? 'https://keenkids.app'}/login"
+    <a href="${process.env.NEXT_PUBLIC_APP_URL ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://keenkids.app')}/login"
        style="background:#0d9488;color:#ffffff;text-decoration:none;font-weight:bold;font-size:15px;padding:12px 28px;border-radius:8px;display:inline-block">
       Log in to KeenKids →
     </a>

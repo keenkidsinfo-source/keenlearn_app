@@ -64,7 +64,7 @@ export default function AdminPage() {
   const [loading,     setLoading]     = useState(true)
   const [tab,         setTab]         = useState<'pending' | 'teachers' | 'classrooms' | 'admins' | 'schools'>('pending')
   const [toast,       setToast]       = useState('')
-  const [newClassroom, setNewClassroom] = useState({ name: '', gradeLevel: '1', gradeBand: 'g1-2', schoolId: '' })
+  const [newClassroom, setNewClassroom] = useState({ name: '', gradeLevel: '1-2', gradeBand: 'g1-2', schoolId: '' })
   const [creating,    setCreating]    = useState(false)
 
   // New admin form
@@ -298,7 +298,7 @@ export default function AdminPage() {
                         <option value="">No classroom yet</option>
                         {classrooms.map(c => (
                           <option key={c.id} value={c.id}>
-                            {c.schoolName ?? 'School'} — {c.name} (G{c.gradeLevel})
+                            {c.schoolName ?? 'School'} — {c.name} ({c.gradeBand === 'g1-2' ? 'Gr 1–2' : 'Gr 3–4'})
                           </option>
                         ))}
                       </select>
@@ -347,7 +347,7 @@ export default function AdminPage() {
                           <option value="">No classroom</option>
                           {classrooms.map(c => (
                             <option key={c.id} value={c.id}>
-                              {c.schoolName ?? 'School'} — {c.name} (G{c.gradeLevel})
+                              {c.schoolName ?? 'School'} — {c.name} ({c.gradeBand === 'g1-2' ? 'Gr 1–2' : 'Gr 3–4'})
                             </option>
                           ))}
                         </select>
@@ -459,23 +459,21 @@ export default function AdminPage() {
                       />
                     </div>
                     <div>
-                      <label className="text-xs font-bold text-gray-400 block mb-1">Grade</label>
+                      <label className="text-xs font-bold text-gray-400 block mb-1">Grade Group</label>
                       <select
-                        value={newClassroom.gradeLevel}
+                        value={newClassroom.gradeBand}
                         onChange={e => {
-                          const gl = e.target.value
+                          const gb = e.target.value as 'g1-2' | 'g3-4'
                           setNewClassroom(p => ({
                             ...p,
-                            gradeLevel: gl,
-                            gradeBand: ['1','2'].includes(gl) ? 'g1-2' : 'g3-4',
+                            gradeBand: gb,
+                            gradeLevel: gb === 'g1-2' ? '1-2' : '3-4',
                           }))
                         }}
                         className="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-keen-400"
                       >
-                        <option value="1">Grade 1</option>
-                        <option value="2">Grade 2</option>
-                        <option value="3">Grade 3</option>
-                        <option value="4">Grade 4</option>
+                        <option value="g1-2">Grades 1–2</option>
+                        <option value="g3-4">Grades 3–4</option>
                       </select>
                     </div>
                     <div>
@@ -515,7 +513,7 @@ export default function AdminPage() {
                       <div className="flex flex-wrap items-start gap-4 mb-4">
                         <div className="flex-1 min-w-0">
                           <div className="font-black text-gray-800 text-lg truncate">{cls.name}</div>
-                          <div className="text-gray-500 text-sm">{cls.schoolName ?? 'No school'} · Grade {cls.gradeLevel} · <span className="font-mono font-bold text-keen-600">{cls.accessCode}</span></div>
+                          <div className="text-gray-500 text-sm">{cls.schoolName ?? 'No school'} · {cls.gradeBand === 'g1-2' ? 'Gr 1–2' : 'Gr 3–4'} ·<span className="font-mono font-bold text-keen-600">{cls.accessCode}</span></div>
                           {cls.teacherName
                             ? <div className="text-green-600 text-xs mt-1">👩‍🏫 {cls.teacherName} ({cls.teacherEmail})</div>
                             : <div className="text-gray-400 text-xs mt-1">No teacher assigned</div>
