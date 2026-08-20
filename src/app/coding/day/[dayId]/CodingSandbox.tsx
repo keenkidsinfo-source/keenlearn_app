@@ -90,7 +90,7 @@ export function CodingSandbox({
   // starter even if projectData is empty — treat as blank editor, not a first visit.
   // For saved projects: start null until kk_project is in localStorage (prevents double-load race).
   // For new projects (with or without starter): start TurboWarp immediately; starter is injected
-  // after KK_PROJECT_LOADED via vm.loadProject(), bypassing localStorage entirely.
+  // after KK_PROJECT_LOADED by writing to localStorage and reloading the iframe.
   const [iframeSrc, setIframeSrc] = useState<string | null>(
     projectUrl ? null : `/scratch/editor.html?kk=${Date.now()}`
   )
@@ -248,10 +248,11 @@ export function CodingSandbox({
   }, [uploadProject])
 
   // ── Listen for TurboWarp "project fully loaded" signal ─────────────────────
-  // For brand-new projects with a starterUrl: on the FIRST KK_PROJECT_LOADED we inject
-  // the starter .sb3 via vm.loadProject(ArrayBuffer) — no localStorage needed.
-  // TurboWarp fires a second KK_PROJECT_LOADED after loadProject completes, and that
-  // second signal sets projectReadyRef so auto-save can begin.
+  // For brand-new projects with a starterUrl: on the FIRST KK_PROJECT_LOADED we write
+  // the starter .sb3 to localStorage and reload the iframe. This is reliable because:
+  //   1. TurboWarp has already initialised (it just sent KK_PROJECT_LOADED)
+  //   2. localStorage is written before the new iframe load starts — no race
+  //   3. The second KK_PROJECT_LOADED (after the reload) sets projectReadyRef
   useEffect(() => {
     const handler = async (e: MessageEvent) => {
       if (e.data?.type !== 'KK_PROJECT_LOADED') return
@@ -261,18 +262,20 @@ export function CodingSandbox({
         try {
           const res = await fetch(`${starterUrl}?v=3`)
           if (!res.ok) throw new Error(`fetch ${res.status}`)
-          const buf = await res.arrayBuffer()
-          const vm = (iframeRef.current?.contentWindow as any)?.vm
-          if (vm) {
-            console.log('[KK] injecting starter via vm.loadProject, size:', buf.byteLength)
-            await vm.loadProject(buf)
-            // vm.loadProject fires a second KK_PROJECT_LOADED — projectReadyRef set there
-            return
-          }
+          const blob = await res.blob()
+          const base64 = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onload = () => resolve((reader.result as string).replace(/^data:[^;]+;base64,/, ''))
+            reader.onerror = reject
+            reader.readAsDataURL(blob)
+          })
+          localStorage.setItem('kk_project', base64)
+          console.log('[KK] starter written to localStorage, reloading iframe')
+          setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
+          return  // wait for second KK_PROJECT_LOADED to set projectReadyRef
         } catch (err) {
-          console.warn('[KK] starter inject failed, using default project', err)
+          console.warn('[KK] starter load failed, using default project', err)
         }
-        // Injection failed — still mark ready so auto-save works
       }
 
       projectReadyRef.current = true
@@ -348,7 +351,7 @@ export function CodingSandbox({
     return () => { cancelled = true }
   }, [projectUrl])
 
-  // (Starter injection now happens in the KK_PROJECT_LOADED handler via vm.loadProject)
+  // (Starter injection now happens in the KK_PROJECT_LOADED handler via localStorage + iframe reload)
 
   // ── Shared header content ───────────────────────────────────────────────────
   const headerStatus = (
