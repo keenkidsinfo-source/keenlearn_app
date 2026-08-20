@@ -324,25 +324,33 @@ export function CodingSandbox({
 
   // ── Load starter .sb3 for brand-new projects ──────────────────────────────
   // Fetch the pre-seeded .sb3 (binary), base64-encode it, store as kk_project.
-  // This gives students pre-loaded sounds without needing the Scratch CDN.
+  // Uses FileReader.readAsDataURL — the standard browser API for binary→base64,
+  // far more reliable than the btoa(String.fromCharCode) loop for large files.
   // Only runs when there is truly no prior project — no projectId row in the DB.
   useEffect(() => {
     if (!starterUrl || projectId) return
     let cancelled = false
     fetch(starterUrl)
-      .then(r => r.ok ? r.arrayBuffer() : null)
-      .then(buf => {
-        if (!cancelled && buf) {
-          // Convert binary to base64 string (same format as __kkGetProjectSb3 returns)
-          const bytes = new Uint8Array(buf)
-          let binary = ''
-          for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i])
-          localStorage.setItem('kk_project', btoa(binary))
+      .then(r => {
+        if (!r.ok) throw new Error(`starter fetch ${r.status}`)
+        return r.blob()
+      })
+      .then(blob => new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => {
+          const dataUrl = reader.result as string          // "data:...;base64,XXXX"
+          resolve(dataUrl.replace(/^data:[^;]+;base64,/, ''))  // strip prefix → raw base64
+        }
+        reader.onerror = reject
+        reader.readAsDataURL(blob)
+      }))
+      .then(base64 => {
+        if (!cancelled) {
+          localStorage.setItem('kk_project', base64)
           setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
         }
       })
       .catch(e => {
-        // Starter load failed — fall back to blank project
         console.warn('[KK] starter fetch failed, starting blank', e)
         localStorage.removeItem('kk_project')
         if (!cancelled) setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
