@@ -50,6 +50,7 @@ export function CodingSandbox({
   // from firing before TurboWarp has finished initialising (which could write
   // stale or empty state over a real project).
   const projectReadyRef       = useRef(false)
+  const starterInjectedRef    = useRef(false)   // prevents double-injection of starter .sb3
   const pyCode                = useRef('')
   const [currentStep, setCurrentStep] = useState(initialStep)
 
@@ -87,8 +88,11 @@ export function CodingSandbox({
   // For brand-new projects with a starterUrl (no prior project row): also start null,
   // load starter .sb3 first. If a project row already exists (projectId), skip the
   // starter even if projectData is empty — treat as blank editor, not a first visit.
+  // For saved projects: start null until kk_project is in localStorage (prevents double-load race).
+  // For new projects (with or without starter): start TurboWarp immediately; starter is injected
+  // after KK_PROJECT_LOADED via vm.loadProject(), bypassing localStorage entirely.
   const [iframeSrc, setIframeSrc] = useState<string | null>(
-    (projectUrl || (starterUrl && !projectId)) ? null : `/scratch/editor.html?kk=${Date.now()}`
+    projectUrl ? null : `/scratch/editor.html?kk=${Date.now()}`
   )
 
   // ── KeeBot state ──────────────────────────────────────────────────────────
@@ -244,15 +248,38 @@ export function CodingSandbox({
   }, [uploadProject])
 
   // ── Listen for TurboWarp "project fully loaded" signal ─────────────────────
+  // For brand-new projects with a starterUrl: on the FIRST KK_PROJECT_LOADED we inject
+  // the starter .sb3 via vm.loadProject(ArrayBuffer) — no localStorage needed.
+  // TurboWarp fires a second KK_PROJECT_LOADED after loadProject completes, and that
+  // second signal sets projectReadyRef so auto-save can begin.
   useEffect(() => {
-    const handler = (e: MessageEvent) => {
-      if (e.data?.type === 'KK_PROJECT_LOADED') {
-        projectReadyRef.current = true
+    const handler = async (e: MessageEvent) => {
+      if (e.data?.type !== 'KK_PROJECT_LOADED') return
+
+      if (starterUrl && !projectId && !starterInjectedRef.current) {
+        starterInjectedRef.current = true
+        try {
+          const res = await fetch(`${starterUrl}?v=3`)
+          if (!res.ok) throw new Error(`fetch ${res.status}`)
+          const buf = await res.arrayBuffer()
+          const vm = (iframeRef.current?.contentWindow as any)?.vm
+          if (vm) {
+            console.log('[KK] injecting starter via vm.loadProject, size:', buf.byteLength)
+            await vm.loadProject(buf)
+            // vm.loadProject fires a second KK_PROJECT_LOADED — projectReadyRef set there
+            return
+          }
+        } catch (err) {
+          console.warn('[KK] starter inject failed, using default project', err)
+        }
+        // Injection failed — still mark ready so auto-save works
       }
+
+      projectReadyRef.current = true
     }
     window.addEventListener('message', handler)
     return () => window.removeEventListener('message', handler)
-  }, [])
+  }, [starterUrl, projectId])
 
   // ── Auto-save every 10 seconds ─────────────────────────────────────────────
   // Guard: TurboWarp must have finished loading the student's project (projectReadyRef).
@@ -296,13 +323,12 @@ export function CodingSandbox({
 
   // ── New project: clear stale localStorage so TurboWarp starts blank ─────────
   // Without this, TurboWarp reads kk_project from a previous week and loads the
-  // wrong project. Auto-save then overwrites the new week's project with old data.
-  // Skip only if starterUrl AND no prior project row — the starter effect handles it.
+  // wrong project. Starter injection happens via vm.loadProject() AFTER TurboWarp
+  // loads, so we always want a clean slate in localStorage for new projects.
   useEffect(() => {
     if (language !== 'scratch' || projectUrl) return
-    if (starterUrl && !projectId) return  // starter effect will write localStorage
     localStorage.removeItem('kk_project')
-  }, [language, projectUrl, starterUrl, projectId])
+  }, [language, projectUrl])
 
   // ── Fetch saved project in parent frame → localStorage → TurboWarp reads it ─
   // (Fetching here avoids any auth issues inside the TurboWarp iframe)
@@ -322,41 +348,7 @@ export function CodingSandbox({
     return () => { cancelled = true }
   }, [projectUrl])
 
-  // ── Load starter .sb3 for brand-new projects ──────────────────────────────
-  // Fetch the pre-seeded .sb3 (binary), base64-encode it, store as kk_project.
-  // Uses FileReader.readAsDataURL — the standard browser API for binary→base64,
-  // far more reliable than the btoa(String.fromCharCode) loop for large files.
-  // Only runs when there is truly no prior project — no projectId row in the DB.
-  useEffect(() => {
-    if (!starterUrl || projectId) return
-    let cancelled = false
-    fetch(`${starterUrl}?v=2`)   // v= busts browser cache when starter is updated
-      .then(r => {
-        if (!r.ok) throw new Error(`starter fetch ${r.status}`)
-        return r.blob()
-      })
-      .then(blob => new Promise<string>((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onload = () => {
-          const dataUrl = reader.result as string          // "data:...;base64,XXXX"
-          resolve(dataUrl.replace(/^data:[^;]+;base64,/, ''))  // strip prefix → raw base64
-        }
-        reader.onerror = reject
-        reader.readAsDataURL(blob)
-      }))
-      .then(base64 => {
-        if (!cancelled) {
-          localStorage.setItem('kk_project', base64)
-          setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
-        }
-      })
-      .catch(e => {
-        console.warn('[KK] starter fetch failed, starting blank', e)
-        localStorage.removeItem('kk_project')
-        if (!cancelled) setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
-      })
-    return () => { cancelled = true }
-  }, [starterUrl, projectId])
+  // (Starter injection now happens in the KK_PROJECT_LOADED handler via vm.loadProject)
 
   // ── Shared header content ───────────────────────────────────────────────────
   const headerStatus = (
