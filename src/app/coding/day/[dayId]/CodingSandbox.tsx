@@ -265,7 +265,12 @@ export function CodingSandbox({
           const blob = await res.blob()
           const base64 = await new Promise<string>((resolve, reject) => {
             const reader = new FileReader()
-            reader.onload = () => resolve((reader.result as string).replace(/^data:[^;]+;base64,/, ''))
+            reader.onload = () => {
+              // editor.js expects exactly "data:application/zip;base64,<b64>"
+              const raw = reader.result as string
+              const b64 = raw.replace(/^data:[^;]+;base64,/, '')
+              resolve(`data:application/zip;base64,${b64}`)
+            }
             reader.onerror = reject
             reader.readAsDataURL(blob)
           })
