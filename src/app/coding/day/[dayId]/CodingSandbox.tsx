@@ -330,7 +330,7 @@ export function CodingSandbox({
   useEffect(() => {
     if (!starterUrl || projectId) return
     let cancelled = false
-    fetch(starterUrl)
+    fetch(`${starterUrl}?v=2`)   // v= busts browser cache when starter is updated
       .then(r => {
         if (!r.ok) throw new Error(`starter fetch ${r.status}`)
         return r.blob()
