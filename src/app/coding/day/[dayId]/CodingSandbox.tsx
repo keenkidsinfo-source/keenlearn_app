@@ -260,7 +260,7 @@ export function CodingSandbox({
       if (starterUrl && !projectId && !starterInjectedRef.current) {
         starterInjectedRef.current = true
         try {
-          const res = await fetch(`${starterUrl}?v=3`)
+          const res = await fetch(`${starterUrl}?v=4`)
           if (!res.ok) throw new Error(`fetch ${res.status}`)
           const blob = await res.blob()
           const base64 = await new Promise<string>((resolve, reject) => {
