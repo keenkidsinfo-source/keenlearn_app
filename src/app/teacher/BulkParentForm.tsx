@@ -129,6 +129,15 @@ export function BulkParentForm({ students, onSaved, onClose }: Props) {
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
         </div>
 
+        {/* Re-upload warning */}
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 text-sm text-amber-800 flex gap-2 items-start">
+          <span className="text-lg leading-none mt-0.5">⚠️</span>
+          <div>
+            <p className="font-bold">Uploading will overwrite existing contact info</p>
+            <p className="text-xs text-amber-700 mt-0.5">Any student matched by name will have their parent name, email, and phone <strong>replaced</strong> with the values from your spreadsheet. Students not in the spreadsheet are unaffected.</p>
+          </div>
+        </div>
+
         {/* Template hint */}
         <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 mb-4 text-sm text-indigo-700">
           <p className="font-bold mb-1">Your spreadsheet should have these columns:</p>
@@ -250,7 +259,11 @@ export function BulkParentForm({ students, onSaved, onClose }: Props) {
 
       {error && <p className="text-red-500 text-sm mt-3">{error}</p>}
 
-      <div className="flex gap-3 mt-4">
+      <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-3">
+        ⚠️ Saving will <strong>overwrite</strong> existing parent contact info for all matched students.
+      </p>
+
+      <div className="flex gap-3 mt-3">
         <button
           onClick={() => setStep('upload')}
           className="flex-1 py-2.5 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:bg-gray-50 text-sm"

@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     .where(and(eq(users.classroomId, classroom.id), eq(users.role, 'student'), isNull(users.deletedAt)))
 
   const body = await req.json().catch(() => null)
-  const rows: { studentName: string; parentName: string; parentEmail: string }[] = body?.rows ?? []
+  const rows: { studentName: string; parentName: string; parentEmail: string; parentPhone?: string }[] = body?.rows ?? []
 
   if (!Array.isArray(rows) || rows.length === 0) {
     return apiError('No rows provided', 'VALIDATION_ERROR', 400)
@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
     await db.update(users).set({
       parentName:  row.parentName?.trim()  || null,
       parentEmail: row.parentEmail?.trim().toLowerCase() || null,
+      ...(row.parentPhone !== undefined ? { parentPhone: row.parentPhone?.trim() || null } : {}),
     }).where(eq(users.id, match.id))
 
     results.push({ studentName: row.studentName, status: 'updated' })

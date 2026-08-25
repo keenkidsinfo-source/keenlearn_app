@@ -47,6 +47,7 @@ export const users = pgTable('users', {
   passwordHash: text('password_hash'), // teachers/admins only
   parentName:   text('parent_name'),   // students only
   parentEmail:  text('parent_email'),  // students only
+  parentPhone:  text('parent_phone'),  // students only
   createdAt:    timestamp('created_at').defaultNow().notNull(),
   lastActiveAt: timestamp('last_active_at'),
   deletedAt:    timestamp('deleted_at'),   // soft delete

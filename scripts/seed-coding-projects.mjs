@@ -19,7 +19,8 @@ const sql = postgres(process.env.DATABASE_URL)
 
 const projects = [
   // ── G1-2 Week 1: Welcome to Scratch! ────────────────────────────────────────
-  // Topic: Explore the interface, meet sprites (aligned with keenkids-teachers.netlify.app W1)
+  // Topic: Explore the interface, meet sprites — VERY basic, first ever session
+  // Teacher guide: 15 min free explore, 30 min guided (sprite → backdrop → move block). That's it.
   {
     gradeBand: 'g1-2',
     weekNumber: 1,
@@ -29,54 +30,35 @@ const projects = [
       tagline: 'Explore Scratch and make something move — anything goes!',
       starterUrl: '/scratch-starters/g1-2-w1-starter.sb3',
       steps: [
-        // W1: Welcome to Scratch! — Explore interface, meet sprites (slow & playful)
         '🐱 You\'re in Scratch! See the orange cat on the white screen? That\'s a SPRITE. The white area is called the STAGE.',
-        '🟡 On the LEFT side, click the yellow button that says "Events" — find the block that says "when 🚩 clicked" and drag it into the middle area.',
-        '🔵 Now click "Motion" (blue) on the left — find "move 10 steps" and snap it UNDER the flag block.',
+        '🟡 Click "Events" (yellow) on the left → find the block that says "when 🚩 clicked" → drag it into the middle area.',
+        '🔵 Click "Motion" (blue) on the left → find "move 10 steps" → snap it UNDER the flag block.',
         '🚩 Click the GREEN FLAG at the top of the stage — did the cat move? Click it again and again!',
-        '🔢 Find the number "10" in your move block and click it. Change it to "50" and click the flag again. What happened?',
-        '🌟 Try "100" — then try "5". Which one moves more? Which is slower?',
-        '🐾 Now let\'s pick a NEW sprite! Click the cat face icon at the bottom-right corner. Pick any animal or character you like.',
-        '🎨 Drag your new sprite somewhere else on the stage so you can see both.',
-        '🔧 Click your NEW sprite, then give it the same code: Events → "when 🚩 clicked" → Motion → "move 10 steps".',
-        '🚩 Click the green flag — BOTH sprites move now! Change the numbers to make them move different amounts.',
-        '🖼️ Pick a backdrop! Click the backdrop picture at the bottom-right → choose any scene you like (nature, space, city!).',
-        '💬 Make your sprite talk! Click "Looks" (purple) → find "say [Hello!] for 2 secs" → snap it under the move block → click the flag.',
-        '😄 Click the "Hello!" text and change it to anything you want your sprite to say!',
-        '🔊 Add a sound! Click on the Cat sprite at the bottom of the screen → then click "Sounds" at the top — you\'ll see Pop, Meow, Boing, Drum, Zap, and Cheer are already loaded! Drag "play sound [Pop]" into your code and try each one.',
-        '⭐ EXPLORE: Click every coloured button on the left and drag blocks to see what they do. Make your sprite do ANYTHING — there are no wrong answers today!',
-        '🌈 BONUS: Make your sprite change colour! Click "Looks" → "change [colour] effect by 25" → snap it inside a "forever" loop and click the flag. Rainbow time! 🌈',
-        '📏 BONUS: Make your sprite grow! "Looks" → "change size by 10" inside a forever loop. Can you make it shrink back with "change size by -10"?',
-        '🎭 BONUS: Switch backdrops with a key! Events → "when [space] key pressed" → Looks → "next backdrop". Press space to travel through every scene!',
+        '🔢 See the number "10" in your move block? Click it and change it to "50" → click the flag again. What happened?',
+        '🐾 Pick your own sprite! Click the cat face icon at the bottom-right corner → choose any animal or character you like.',
+        '🖼️ Pick a backdrop! Click the backdrop picture at the bottom-right → choose any scene you like. You\'re done — show your teacher! 🎉',
       ],
     },
   },
 
   // ── G1-2 Week 2: Make it move ────────────────────────────────────────────────
-  // Topic: Motion blocks, repeat loops (aligned with keenkids-teachers.netlify.app W2)
+  // Topic: repeat loop, back-and-forth motion
+  // Teacher guide: act out loop physically first, then repeat block → bounce → dance challenge
   {
     gradeBand: 'g1-2',
     weekNumber: 2,
     metadata: {
       language: 'scratch',
       challenge: 'Make it move!',
-      tagline: 'Use motion blocks and loops to make sprites zoom, bounce, and repeat!',
+      tagline: 'Use repeat loops to make your sprite walk, bounce, and dance!',
       steps: [
-        '👀 Open Scratch — can you see last week\'s project? Click the green flag. What does your sprite do?',
-        '📍 Let\'s make it always start in the same place! Click "Motion" (blue) → find "go to x: 0 y: 0" → drag it ABOVE your move block.',
-        '🚩 Click the flag — the sprite starts in the middle then moves. Try changing "0 0" to "-180 0" to start on the left edge!',
-        '🏃 Now stand up! We\'re going to ACT OUT a loop. Clap 3 times. You just did a REPEAT 3 loop!',
-        '🔁 In Scratch: click "Control" (orange) on the left → find "repeat 10" → drag it so it WRAPS AROUND your move block.',
-        '🔢 Change "10" to "3" and change your move to "60 steps" → click the flag. The sprite takes 3 steps across!',
-        '➕ Try "repeat 6" with "move 30 steps" — it still crosses the stage but takes more smaller steps.',
-        '♾️ Now find "forever" in Control — it\'s below repeat. Drag it to replace your repeat block (wrap it around move).',
-        '🚩 Click the flag — it goes FOREVER! Hit the red STOP button ⏹️ to make it stop.',
-        '🏓 Add a BOUNCE! Motion → find "if on edge, bounce" → drag it INSIDE the forever loop, AFTER the move block.',
-        '🚩 Click the flag — the sprite bounces back and forth like a ping pong ball! Try changing the move speed.',
-        '🐾 Add a SECOND sprite and give it different code — maybe "move 8 steps" instead of 10. They race each other!',
-        '🔄 Try adding "turn 15 degrees" inside the forever loop. What happens? (It goes wild! 🌀)',
-        '🎨 Change the backdrop to something fun — a race track, the ocean, or outer space!',
-        '⭐ CHALLENGE: Make 3 sprites race at different speeds. Who gets to the edge first? Can you make one do somersaults while it moves?',
+        '👀 Click the green flag — does your sprite still move from last week? Great start!',
+        '📍 Let\'s make it always start in the middle: "Motion" (blue) → "go to x: 0 y: 0" → drag it to the TOP of your code, ABOVE the move block.',
+        '🏃 Stand up! Clap 3 times. You just did a REPEAT 3 loop — doing the same thing 3 times in a row!',
+        '🔁 In Scratch: click "Control" (orange) → find "repeat 10" → drag it so it WRAPS AROUND your move block.',
+        '🔢 Change "repeat 10" to "repeat 4" and "move 10 steps" to "move 60 steps" → click the flag. It walks across the stage!',
+        '↩️ Add a bounce: "Motion" → "if on edge, bounce" → drag it INSIDE the repeat loop, AFTER the move block → click the flag. It bounces back!',
+        '💃 CHALLENGE: Add "turn 15 degrees" inside your repeat loop. What does your sprite do? Show your teacher! 🕺',
       ],
     },
   },

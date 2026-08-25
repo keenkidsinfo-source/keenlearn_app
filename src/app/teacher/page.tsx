@@ -121,7 +121,13 @@ export default async function TeacherDashboardPage({
       .innerJoin(curriculumContent, eq(curriculumContent.curriculumDayId, curriculumDays.id))
       .where(eq(curriculumDays.curriculumId, thisWeek.curriculumId))
 
-    weekSubjects = dayItems as SubjectProgress[]
+    // Deduplicate by subject — if a day has multiple content items, keep the first only
+    const seenSubjects = new Set<string>()
+    weekSubjects = (dayItems as SubjectProgress[]).filter(ws => {
+      if (seenSubjects.has(ws.subject)) return false
+      seenSubjects.add(ws.subject)
+      return true
+    })
 
     // Load student progress only if there are students
     if (weekSubjects.length > 0 && students.length > 0) {

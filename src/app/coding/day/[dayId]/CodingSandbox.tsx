@@ -52,7 +52,9 @@ export function CodingSandbox({
   const projectReadyRef       = useRef(false)
   const starterInjectedRef    = useRef(false)   // prevents double-injection of starter .sb3
   const pyCode                = useRef('')
-  const [currentStep, setCurrentStep] = useState(initialStep)
+  const [currentStep, setCurrentStep] = useState(
+    steps && initialStep >= steps.length ? 0 : initialStep
+  )
 
   // Save step position to student_sessions (fire-and-forget)
   const saveStep = useCallback((step: number) => {

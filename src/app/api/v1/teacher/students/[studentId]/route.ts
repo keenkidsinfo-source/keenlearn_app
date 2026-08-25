@@ -58,6 +58,10 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     updates.parentEmail = body.parentEmail?.trim().toLowerCase() || null
   }
 
+  if ('parentPhone' in body) {
+    updates.parentPhone = body.parentPhone?.trim() || null
+  }
+
   if (Object.keys(updates).length === 0) {
     return apiError('Nothing to update', 'EMPTY_UPDATE', 400)
   }

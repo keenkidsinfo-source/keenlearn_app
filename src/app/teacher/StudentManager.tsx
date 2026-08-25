@@ -12,6 +12,7 @@ interface Student {
   avatarId: number | null
   parentName: string | null
   parentEmail: string | null
+  parentPhone: string | null
 }
 
 interface Props {
@@ -40,6 +41,7 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
   const [newAvatar, setNewAvatar]           = useState(1)
   const [newParentName, setNewParentName]   = useState('')
   const [newParentEmail, setNewParentEmail] = useState('')
+  const [newParentPhone, setNewParentPhone] = useState('')
   // ── Edit name form state
   const [editName, setEditName]             = useState('')
   // ── Edit PIN form state
@@ -47,15 +49,16 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
   // ── Edit parent form state
   const [editParentName, setEditParentName]   = useState('')
   const [editParentEmail, setEditParentEmail] = useState('')
+  const [editParentPhone, setEditParentPhone] = useState('')
 
   function closeModal() {
     setModal(null)
     setError('')
     setNewName(''); setNewPin(''); setNewAvatar(1)
-    setNewParentName(''); setNewParentEmail('')
+    setNewParentName(''); setNewParentEmail(''); setNewParentPhone('')
     setEditName('')
     setNewPinEdit('')
-    setEditParentName(''); setEditParentEmail('')
+    setEditParentName(''); setEditParentEmail(''); setEditParentPhone('')
   }
 
   async function addStudent() {
@@ -70,12 +73,13 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
           name: newName.trim(), pin: newPin, avatarId: newAvatar,
           parentName: newParentName.trim() || null,
           parentEmail: newParentEmail.trim() || null,
+          parentPhone: newParentPhone.trim() || null,
           classroomId: classroomId ?? null,
         }),
       })
       const json = await res.json()
       if (!res.ok) { setError(json.error ?? 'Failed to add student'); return }
-      setStudents(prev => [...prev, json.data].sort((a, b) => a.name.localeCompare(b.name)))
+      setStudents(prev => [...prev, { ...json.data, parentPhone: json.data.parentPhone ?? null }].sort((a, b) => a.name.localeCompare(b.name)))
       closeModal()
     } catch {
       setError('Network error')
@@ -132,12 +136,13 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
         body: JSON.stringify({
           parentName:  editParentName.trim()  || null,
           parentEmail: editParentEmail.trim() || null,
+          parentPhone: editParentPhone.trim() || null,
         }),
       })
       if (!res.ok) { setError('Failed to save parent info'); return }
       setStudents(prev => prev.map(s =>
         s.id === studentId
-          ? { ...s, parentName: editParentName.trim() || null, parentEmail: editParentEmail.trim() || null }
+          ? { ...s, parentName: editParentName.trim() || null, parentEmail: editParentEmail.trim() || null, parentPhone: editParentPhone.trim() || null }
           : s
       ))
       closeModal()
@@ -196,6 +201,7 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
                 onClick={() => {
                   setEditParentName(student.parentName ?? '')
                   setEditParentEmail(student.parentEmail ?? '')
+                  setEditParentPhone(student.parentPhone ?? '')
                   setModal({ type: 'edit-parent', student })
                   setError('')
                 }}
@@ -228,15 +234,17 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
         <button
           onClick={() => setModal({ type: 'add' })}
           className="flex-1 border-2 border-dashed border-keen-300 text-keen-600 font-bold py-3 rounded-xl hover:border-keen-500 hover:bg-keen-50 transition-all text-sm"
+          title="Create a new student account with name, PIN, and optional parent contact"
         >
-          + Add Student
+          + Add New Student
         </button>
         {students.length > 0 && (
           <button
             onClick={() => setModal({ type: 'bulk-parents' })}
             className="flex-1 border-2 border-dashed border-indigo-300 text-indigo-600 font-bold py-3 rounded-xl hover:border-indigo-500 hover:bg-indigo-50 transition-all text-sm"
+            title="Update parent contact info for existing students via spreadsheet upload"
           >
-            📊 Upload Parent Contacts
+            📊 Bulk Update Contacts
           </button>
         )}
       </div>
@@ -325,6 +333,16 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
                           className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-indigo-400 focus:outline-none"
                         />
                       </div>
+                      <div>
+                        <label className="text-sm font-bold text-gray-600 mb-1 block">Parent Phone</label>
+                        <input
+                          type="tel"
+                          value={newParentPhone}
+                          onChange={e => setNewParentPhone(e.target.value)}
+                          placeholder="e.g. (415) 555-0123"
+                          className="w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-indigo-400 focus:outline-none"
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -407,6 +425,16 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
                       value={editParentEmail}
                       onChange={e => setEditParentEmail(e.target.value)}
                       placeholder="e.g. jane@example.com"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-indigo-400 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-bold text-gray-600 mb-1 block">Parent Phone</label>
+                    <input
+                      type="tel"
+                      value={editParentPhone}
+                      onChange={e => setEditParentPhone(e.target.value)}
+                      placeholder="e.g. (415) 555-0123"
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm focus:border-indigo-400 focus:outline-none"
                     />
                   </div>

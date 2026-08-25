@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json()
-  const { name, pin, avatarId, parentName, parentEmail, classroomId: requestedClassroomId } = body
+  const { name, pin, avatarId, parentName, parentEmail, parentPhone, classroomId: requestedClassroomId } = body
 
   // If a specific classroomId was requested, validate the teacher is assigned to it
   let classroom = null
@@ -55,8 +55,9 @@ export async function POST(req: NextRequest) {
       pinHash,
       parentName:  parentName?.trim() || null,
       parentEmail: parentEmail?.trim().toLowerCase() || null,
+      parentPhone: parentPhone?.trim() || null,
     })
-    .returning({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId, parentName: users.parentName, parentEmail: users.parentEmail })
+    .returning({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId, parentName: users.parentName, parentEmail: users.parentEmail, parentPhone: users.parentPhone })
 
   return apiOk(student, 201)
 }
