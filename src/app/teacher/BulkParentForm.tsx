@@ -10,6 +10,7 @@ interface Student {
   avatarId: number | null
   parentName: string | null
   parentEmail: string | null
+  parentPhone: string | null
 }
 
 interface ParsedRow {
