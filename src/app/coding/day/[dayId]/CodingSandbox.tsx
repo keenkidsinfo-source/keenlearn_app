@@ -22,15 +22,31 @@ interface Props {
 }
 
 // ── Text-to-speech helper ──────────────────────────────────────────────────
+// Splits on sentence-ending punctuation and inserts a 500 ms pause between each sentence.
 function speak(text: string) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
   window.speechSynthesis.cancel()
+
   // Strip emojis and non-ASCII so the voice doesn't stumble
   const clean = text.replace(/[^\x00-\x7F]/g, '').replace(/\s+/g, ' ').trim()
-  const utt = new SpeechSynthesisUtterance(clean)
-  utt.rate = 0.6    // slow — easier for young kids to follow
-  utt.pitch = 1.05
-  window.speechSynthesis.speak(utt)
+
+  // Split into sentences on . ! ? — keep the punctuation with the sentence
+  const sentences = clean.match(/[^.!?]+[.!?]*/g)?.map(s => s.trim()).filter(Boolean) ?? [clean]
+
+  function speakNext(i: number) {
+    if (i >= sentences.length) return
+    const utt = new SpeechSynthesisUtterance(sentences[i])
+    utt.rate  = 0.6
+    utt.pitch = 1.05
+    utt.onend = () => {
+      if (i + 1 < sentences.length) {
+        setTimeout(() => speakNext(i + 1), 500)  // 500 ms pause between sentences
+      }
+    }
+    window.speechSynthesis.speak(utt)
+  }
+
+  speakNext(0)
 }
 
 export function CodingSandbox({
