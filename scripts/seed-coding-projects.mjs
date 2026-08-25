@@ -95,25 +95,26 @@ const projects = [
 
   // ── G3-4 Week 2: Make it Dance! ──────────────────────────────────────────────
   // Topic: Loops (repeat vs forever), motion + sound, sprite animation
-  // Teacher guide: same "Make it move" session as G1-2 but push forever vs repeat N
+  // Students arrive with their W1 Moving Car project — arrow keys + change x/y.
+  // We ADD a new dancing character and teach loops with that, leaving the car intact.
   {
     gradeBand: 'g3-4',
     weekNumber: 2,
     metadata: {
       language: 'scratch',
       challenge: 'Make it Dance!',
-      tagline: 'Master loops and make your sprite walk, bounce, and bust a move!',
+      tagline: 'Add a dancer to your car scene and master repeat vs forever loops!',
       starterUrl: '/scratch-starters/g3-4-w1-starter.sb3',
       steps: [
-        '👀 Click the green flag — does your sprite from last week still move? Great! Today we are going to use LOOPS to make it do a lot more.',
-        '🔁 REPEAT loop: click Control (orange) → drag "repeat 10" → wrap it around your "move 10 steps" block → click the flag. Your sprite moves 10 times then stops. That is a REPEAT loop — it runs a set number of times!',
-        '♾️ FOREVER loop: now swap "repeat 10" for a "forever" block (also in Control) → click the flag. It never stops! Press the red STOP button to end it. FOREVER loops run until you stop them. REPEAT loops stop by themselves.',
-        '🏃 Make it bounce! Keep the forever loop → add Motion → "if on edge, bounce" INSIDE the loop, below the move block → click the flag. Your sprite walks back and forth forever!',
-        '🎭 Pick a fun sprite for the dance! Right-click your current sprite → delete. Click the sprite icon (bottom-right) → search "Dinosaur" or "Penguin" → add it. Dancers need personality!',
-        '💃 Start the dance: inside your forever loop, add "turn 15 degrees" below the move block → click the flag. It spins AND moves at the same time. Change 15 to different numbers — what looks best?',
-        '🔊 Add a sound: click the Sounds tab at the top of the screen → click the speaker icon (bottom-left) → search "Dance" or "Pop" → click a sound to add it. Back in Code: Sound → drag "play sound [your sound] until done" → snap it ABOVE your forever loop but still under "when green flag clicked".',
-        '🎵 Now try putting the sound INSIDE a "repeat 3" block above the forever loop so it plays 3 times then your sprite starts dancing. Does that feel better?',
-        '🎨 CHALLENGE: Add a SECOND sprite — click the sprite icon → pick another character → give it its own "when green flag clicked" → "forever" → "move" + "turn" blocks with DIFFERENT numbers. Now both sprites dance at the same time! 🕺',
+        '👀 Click the green flag — your car from last week should still drive with the arrow keys! Great. Today we are going to ADD a dancing character using LOOPS.',
+        '🐾 Add a dancer: click the sprite icon at the bottom-right of the stage → search "Dinosaur", "Penguin", or "Ballerina" → click to add it. You now have the car AND the dancer on stage!',
+        '🖱️ Click your NEW dancer sprite in the sprite panel (not the car). Events (yellow) → drag "when 🚩 clicked" into the code area. This starts the dancer when you click the green flag.',
+        '♾️ FOREVER loop: Control (orange) → drag "forever" block → snap it under "when 🚩 clicked". Inside it: Motion (blue) → "move 10 steps". Click the green flag — the dancer walks forever!',
+        '↩️ Add a bounce: Motion → "if on edge, bounce" → drag it INSIDE the forever loop, BELOW "move 10 steps" → click the flag again. The dancer walks back and forth across the stage!',
+        '🌀 Add spinning: inside the forever loop, Motion → "turn 15 degrees" → snap it below the bounce block → click flag. Dancing AND spinning! Try changing 15 to different numbers — bigger = faster spin.',
+        '⏳ Try a REPEAT loop: right-click your "forever" block → delete. Control → drag "repeat 10" → snap it under "when 🚩 clicked" → put the same move + bounce + turn blocks inside. Click flag — it moves 10 times then STOPS. REPEAT loops stop by themselves. FOREVER loops never stop!',
+        '🔊 Add sound: click the Sounds tab at the top → click the speaker icon (bottom-left) → search "Dance" or "Pop" → click to add it. Back in Code tab: Sound → "play sound [your sound] until done" → snap it INSIDE a "forever" loop above the move block.',
+        '🏆 CHALLENGE: Click the green flag — your car AND your dancer should move at the same time. That is the power of code! Can you add a SECOND dancer with different numbers so they move differently? 🕺',
       ],
     },
   },
