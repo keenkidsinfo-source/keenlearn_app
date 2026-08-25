@@ -28,7 +28,7 @@ function speak(text: string) {
   // Strip emojis and non-ASCII so the voice doesn't stumble
   const clean = text.replace(/[^\x00-\x7F]/g, '').replace(/\s+/g, ' ').trim()
   const utt = new SpeechSynthesisUtterance(clean)
-  utt.rate = 0.88   // slightly slower — easier for kids
+  utt.rate = 0.75   // slower — easier for young kids to follow
   utt.pitch = 1.05
   window.speechSynthesis.speak(utt)
 }
@@ -411,6 +411,7 @@ export function CodingSandbox({
           onSpeak={speak}
           onKeeBotToggle={() => setChatOpen(v => !v)}
           keeBotOpen={chatOpen}
+          gradeBand={gradeBand}
         />
 
         {/* Main area: iframe + optional KeeBot side panel, side by side */}
@@ -508,7 +509,7 @@ export function CodingSandbox({
 
 // ── Step-by-step panel — one step at a time ───────────────────────────────
 function StepPanel({
-  steps, challenge, currentStep, onStepChange, onComplete, onSpeak, onKeeBotToggle, keeBotOpen,
+  steps, challenge, currentStep, onStepChange, onComplete, onSpeak, onKeeBotToggle, keeBotOpen, gradeBand,
 }: {
   steps?: string[]
   challenge?: string
@@ -518,8 +519,16 @@ function StepPanel({
   onSpeak?: (text: string) => void
   onKeeBotToggle?: () => void
   keeBotOpen?: boolean
+  gradeBand?: string
 }) {
   const [toast, setToast] = useState<string | null>(null)
+
+  // Auto-read the step aloud for G1-2 only (ages 6-8 benefit from audio guidance)
+  useEffect(() => {
+    if (gradeBand !== 'g1-2' || !steps || !onSpeak) return
+    const text = steps[currentStep]
+    if (text) onSpeak(text)
+  }, [currentStep]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!steps || steps.length === 0) return null
   const total   = steps.length
