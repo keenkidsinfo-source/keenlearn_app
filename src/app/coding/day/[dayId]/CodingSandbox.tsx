@@ -408,6 +408,7 @@ export function CodingSandbox({
           steps={steps} challenge={challenge}
           currentStep={currentStep} onStepChange={handleStepChange}
           onComplete={handleStepComplete}
+          onDone={() => router.push('/dashboard')}
           onSpeak={speak}
           onKeeBotToggle={() => setChatOpen(v => !v)}
           keeBotOpen={chatOpen}
@@ -479,6 +480,7 @@ export function CodingSandbox({
         steps={steps} challenge={challenge}
         currentStep={currentStep} onStepChange={handleStepChange}
         onComplete={handleStepComplete}
+        onDone={() => router.push('/dashboard')}
         onSpeak={speak}
         onKeeBotToggle={() => setChatOpen(v => !v)}
         keeBotOpen={chatOpen}
@@ -509,13 +511,14 @@ export function CodingSandbox({
 
 // ── Step-by-step panel — one step at a time ───────────────────────────────
 function StepPanel({
-  steps, challenge, currentStep, onStepChange, onComplete, onSpeak, onKeeBotToggle, keeBotOpen, gradeBand,
+  steps, challenge, currentStep, onStepChange, onComplete, onDone, onSpeak, onKeeBotToggle, keeBotOpen, gradeBand,
 }: {
   steps?: string[]
   challenge?: string
   currentStep: number
   onStepChange: (n: number) => void
   onComplete?: () => void
+  onDone?: () => void
   onSpeak?: (text: string) => void
   onKeeBotToggle?: () => void
   keeBotOpen?: boolean
@@ -534,6 +537,7 @@ function StepPanel({
     if (isLast) {
       setToast('🎉 All steps done! Amazing work!')
       onComplete?.()   // ← save completed=true to DB
+      setTimeout(() => onDone?.(), 1200)  // brief pause so toast shows, then go home
     } else {
       setToast(`✅ Step ${currentStep + 1} done! On to step ${currentStep + 2}!`)
       onStepChange(currentStep + 1)
