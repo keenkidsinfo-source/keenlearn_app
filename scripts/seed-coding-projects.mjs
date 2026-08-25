@@ -72,6 +72,7 @@ const projects = [
       language: 'scratch',
       challenge: 'Moving Car',
       tagline: 'Build a driveable car and discover how wheels are a simple machine!',
+      starterUrl: '/scratch-starters/g3-4-w1-starter.sb3',
       steps: [
         '🔬 SCIENCE FIRST: A WHEEL is a simple machine! Wheels + axles let things roll instead of slide — much less friction. Today you\'ll code one! 🚗',
         '🗑️ Delete the cat sprite (right-click → delete). Then click the backdrop picture (bottom-right) → choose "Blue Sky" or any outdoor scene.',

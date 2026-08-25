@@ -414,7 +414,10 @@ export function CodingSandbox({
           <button onClick={async () => { await saveScratch(); router.push('/dashboard') }} className="text-purple-200 text-2xl">←</button>
           <div className="flex-1 min-w-0">
             <h1 className="font-black text-lg truncate">💻 {title}</h1>
-            {theme && <p className="text-purple-200 text-xs">{theme}</p>}
+            <p className="text-purple-200 text-xs flex items-center gap-2">
+              {theme && <span>{theme}</span>}
+              {gradeBand && <span className="bg-purple-500 text-purple-100 font-bold px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wide">{gradeBand}</span>}
+            </p>
           </div>
           {headerStatus}
           {/* Start fresh — wipes stale saved data so student isn't stuck with ? sprite */}
@@ -502,7 +505,10 @@ export function CodingSandbox({
         <button onClick={async () => { await savePython(); router.push('/dashboard') }} className="text-purple-200 text-2xl">←</button>
         <div className="flex-1 min-w-0">
           <h1 className="font-black text-lg truncate">💻 {title}</h1>
-          {theme && <p className="text-purple-200 text-xs">{theme}</p>}
+          <p className="text-purple-200 text-xs flex items-center gap-2">
+            {theme && <span>{theme}</span>}
+            {gradeBand && <span className="bg-purple-500 text-purple-100 font-bold px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wide">{gradeBand}</span>}
+          </p>
         </div>
         {headerStatus}
         <button onClick={savePython}
