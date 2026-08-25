@@ -302,18 +302,31 @@ export function CodingSandbox({
         try {
           const res = await fetch(`${starterUrl}?v=4`)
           if (!res.ok) throw new Error(`fetch ${res.status}`)
-          const blob = await res.blob()
-          const base64 = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onload = () => {
-              // editor.js expects exactly "data:application/zip;base64,<b64>"
-              const raw = reader.result as string
-              const b64 = raw.replace(/^data:[^;]+;base64,/, '')
-              resolve(`data:application/zip;base64,${b64}`)
+          // Two cases:
+          // 1. /scratch-starters/*.sb3 → binary blob → needs FileReader encoding
+          // 2. /api/v1/coding/[id]/data → returns the base64 data URL as text directly
+          const contentType = res.headers.get('Content-Type') ?? ''
+          let base64: string
+          if (contentType.includes('application/json') || contentType.includes('text/')) {
+            // Already a "data:application/zip;base64,..." string — use directly
+            base64 = (await res.text()).trim()
+            if (!base64.startsWith('data:application/zip;base64,')) {
+              throw new Error('unexpected data format from project API')
             }
-            reader.onerror = reject
-            reader.readAsDataURL(blob)
-          })
+          } else {
+            // Binary .sb3 file — encode via FileReader
+            const blob = await res.blob()
+            base64 = await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader()
+              reader.onload = () => {
+                const raw = reader.result as string
+                const b64 = raw.replace(/^data:[^;]+;base64,/, '')
+                resolve(`data:application/zip;base64,${b64}`)
+              }
+              reader.onerror = reject
+              reader.readAsDataURL(blob)
+            })
+          }
           localStorage.setItem('kk_project', base64)
           console.log('[KK] starter written to localStorage, reloading iframe')
           setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
