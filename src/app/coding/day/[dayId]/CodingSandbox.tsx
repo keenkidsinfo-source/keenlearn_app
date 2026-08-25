@@ -33,14 +33,36 @@ function speak(text: string) {
   // Split into sentences on . ! ? — keep the punctuation with the sentence
   const sentences = clean.match(/[^.!?]+[.!?]*/g)?.map(s => s.trim()).filter(Boolean) ?? [clean]
 
+  // Pick the most natural-sounding available voice (prefer Samantha, Google US English, etc.)
+  const voices = window.speechSynthesis.getVoices()
+  const preferred = ['Samantha', 'Google US English', 'Karen', 'Moira', 'Google UK English Female']
+  const voice = preferred.reduce<SpeechSynthesisVoice | null>((found, name) =>
+    found ?? voices.find(v => v.name.includes(name)) ?? null, null)
+
   function speakNext(i: number) {
     if (i >= sentences.length) return
-    const utt = new SpeechSynthesisUtterance(sentences[i])
-    utt.rate  = 0.6
-    utt.pitch = 1.05
+    const s   = sentences[i]
+    const utt = new SpeechSynthesisUtterance(s)
+    if (voice) utt.voice = voice
+
+    // Vary pitch + rate by sentence type for expressiveness
+    if (s.endsWith('?')) {
+      utt.pitch = 1.3   // questions rise
+      utt.rate  = 0.65
+    } else if (s.endsWith('!')) {
+      utt.pitch = 1.2   // exclamations are bright
+      utt.rate  = 0.7
+    } else if (i === 0) {
+      utt.pitch = 1.15  // first sentence — slightly warm opener
+      utt.rate  = 0.6
+    } else {
+      utt.pitch = 1.0   // regular statements are calm and clear
+      utt.rate  = 0.6
+    }
+
     utt.onend = () => {
       if (i + 1 < sentences.length) {
-        setTimeout(() => speakNext(i + 1), 500)  // 500 ms pause between sentences
+        setTimeout(() => speakNext(i + 1), 500)
       }
     }
     window.speechSynthesis.speak(utt)
