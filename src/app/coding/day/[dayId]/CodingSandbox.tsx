@@ -411,7 +411,7 @@ export function CodingSandbox({
           onSpeak={speak}
           onKeeBotToggle={() => setChatOpen(v => !v)}
           keeBotOpen={chatOpen}
-          gradeBand={gradeBand}
+          gradeBand={gradeBand ?? undefined}
         />
 
         {/* Main area: iframe + optional KeeBot side panel, side by side */}
