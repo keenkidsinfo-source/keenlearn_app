@@ -82,7 +82,7 @@ export default async function TeacherDashboardPage({
   // Load students (non-deleted)
   const students = classroom
     ? await db
-        .select({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId, lastActiveAt: users.lastActiveAt, parentName: users.parentName, parentEmail: users.parentEmail })
+        .select({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId, lastActiveAt: users.lastActiveAt, parentName: users.parentName, parentEmail: users.parentEmail, parentPhone: users.parentPhone })
         .from(users)
         .where(and(eq(users.classroomId, classroom.id), eq(users.role, 'student'), isNull(users.deletedAt)))
         .orderBy(users.name)
@@ -519,6 +519,7 @@ export default async function TeacherDashboardPage({
               avatarId: s.avatarId,
               parentName: s.parentName ?? null,
               parentEmail: s.parentEmail ?? null,
+              parentPhone: s.parentPhone ?? null,
             }))}
           />
           <CoTeacherPanel />
