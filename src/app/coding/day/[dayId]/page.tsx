@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
-import { curriculumDays, curriculumContent, contentItems, codingProjects, studentSessions } from '@/lib/db/schema'
+import { curriculum, curriculumDays, curriculumContent, contentItems, codingProjects, studentSessions } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { CodingSandbox } from './CodingSandbox'
 
@@ -56,6 +56,54 @@ export default async function CodingDayPage({ params }: Props) {
     ? project.projectData
     : null
 
+  // If no saved project for this week and it's Scratch, try to use the previous week's
+  // project as the starter so students continue building on their prior work.
+  let starterUrl: string | null = meta?.starterUrl ?? null
+  if (!project && language === 'scratch' && !starterUrl) {
+    const [thisCurriculum] = await db
+      .select({ weekNumber: curriculum.weekNumber, gradeBand: curriculum.gradeBand })
+      .from(curriculum)
+      .where(eq(curriculum.id, day.curriculumId))
+      .limit(1)
+
+    if (thisCurriculum && thisCurriculum.weekNumber > 1) {
+      // Find the previous week's coding day
+      const [prevDay] = await db
+        .select({ id: curriculumDays.id })
+        .from(curriculumDays)
+        .innerJoin(curriculum, eq(curriculum.id, curriculumDays.curriculumId))
+        .where(and(
+          eq(curriculum.weekNumber, thisCurriculum.weekNumber - 1),
+          eq(curriculum.gradeBand, thisCurriculum.gradeBand),
+          eq(curriculumDays.subject, 'coding'),
+        ))
+        .limit(1)
+
+      if (prevDay) {
+        const [prevContent] = await db
+          .select({ id: curriculumContent.id })
+          .from(curriculumContent)
+          .where(eq(curriculumContent.curriculumDayId, prevDay.id))
+          .limit(1)
+
+        if (prevContent) {
+          const [prevProject] = await db
+            .select()
+            .from(codingProjects)
+            .where(and(
+              eq(codingProjects.studentId, session.sub),
+              eq(codingProjects.curriculumContentId, prevContent.id),
+            ))
+            .limit(1)
+
+          if (prevProject?.projectData) {
+            starterUrl = `/api/v1/coding/${prevProject.id}/data`
+          }
+        }
+      }
+    }
+  }
+
   return (
     <CodingSandbox
       contentItemId={curriculumContentId}
@@ -65,7 +113,7 @@ export default async function CodingDayPage({ params }: Props) {
       language={language}
       projectId={project?.id ?? null}
       projectUrl={projectUrl}
-      starterUrl={meta?.starterUrl ?? null}
+      starterUrl={starterUrl}
       savedCode={savedCode}
       gradeBand={session.gradeBand ?? null}
       challenge={meta?.challenge}
