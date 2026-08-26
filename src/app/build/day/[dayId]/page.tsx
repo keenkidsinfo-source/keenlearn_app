@@ -2,7 +2,7 @@ import { redirect, notFound } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
 import {
-  curriculumDays, curriculumContent, contentItems, studentSessions,
+  curriculumDays, curriculumContent, contentItems, studentSessions, classroomCurriculum,
   type GradeBand,
 } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
@@ -69,6 +69,14 @@ export default async function BuildDayPage({ params, searchParams }: Props) {
   const isTeacher = session.role === 'teacher' || session.role === 'admin'
   if (!isTeacher) redirect(`/build/day/${dayId}/results`)
 
+  // Look up the week start date so the back button returns to the right week
+  const [weekRow] = await db
+    .select({ weekStartDate: classroomCurriculum.weekStartDate })
+    .from(classroomCurriculum)
+    .where(eq(classroomCurriculum.curriculumId, day.curriculumId))
+    .limit(1)
+  const backHref = weekRow ? `/teacher?week=${weekRow.weekStartDate}` : '/teacher'
+
   const rawStepUrls = metaImageUrls.some(u => u) ? metaImageUrls : r2Urls
   const stepUrls = rawStepUrls
 
@@ -87,6 +95,7 @@ export default async function BuildDayPage({ params, searchParams }: Props) {
           completed={sessionData?.completed ?? false}
           gradeBand={(item.gradeBand as GradeBand | null) ?? null}
           startWithSetup={view !== 'steps'}
+          backHref={backHref}
         />
       </div>
     </div>

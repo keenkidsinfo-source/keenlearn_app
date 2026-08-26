@@ -107,7 +107,7 @@ export default async function TeacherDashboardPage({
     : [undefined]
 
   // Build per-subject per-student progress for this week
-  type SubjectProgress = { subject: Subject; dayId: string; contentItemId: string }
+  type SubjectProgress = { subject: Subject; dayId: string; contentItemId: string; title: string }
   let weekSubjects: SubjectProgress[] = []
   // sessionMap: studentId → Set of completed contentItemIds
   const sessionMap = new Map<string, Set<string>>()
@@ -121,9 +121,11 @@ export default async function TeacherDashboardPage({
         subject:       curriculumDays.subject,
         dayId:         curriculumDays.id,
         contentItemId: curriculumContent.contentItemId,
+        title:         contentItems.title,
       })
       .from(curriculumDays)
       .innerJoin(curriculumContent, eq(curriculumContent.curriculumDayId, curriculumDays.id))
+      .innerJoin(contentItems, eq(curriculumContent.contentItemId, contentItems.id))
       .where(eq(curriculumDays.curriculumId, thisWeek.curriculumId))
 
     // Deduplicate by subject — if a day has multiple content items, keep the first only
@@ -301,23 +303,27 @@ export default async function TeacherDashboardPage({
               <p className="text-sm mt-1">No activities before the first week.</p>
             </div>
           ) : thisWeek ? (
-            <div className="bg-keen-50 rounded-xl p-4">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">📅</span>
-                <div>
-                  <p className="font-black text-gray-800">{thisWeek.weekTitle}</p>
-                  {thisWeek.theme && <p className="text-sm text-gray-500">{thisWeek.theme}</p>}
-                </div>
-              </div>
-              {weekSubjects.length > 0 && (
-                <div className="flex gap-2 flex-wrap">
-                  {weekSubjects.map(ws => (
-                    <span key={ws.contentItemId} className="text-xs bg-white border border-keen-200 text-keen-700 font-bold px-2 py-1 rounded-lg">
-                      {SUBJECT_EMOJI[ws.subject as Subject]} {SUBJECT_LABEL[ws.subject as Subject]}
-                    </span>
-                  ))}
-                </div>
-              )}
+            <div className="space-y-2">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-wide">{thisWeek.weekTitle}</p>
+              {weekSubjects.map(ws => {
+                const emoji = SUBJECT_EMOJI[ws.subject as Subject]
+                const label = SUBJECT_LABEL[ws.subject as Subject]
+                let href = '/teacher'
+                if (ws.subject === 'build') href = `/build/day/${ws.dayId}?view=steps`
+                else if (ws.subject === 'public_speaking' && speakingDay) href = `/teacher/speaking/${speakingDay.dayId}`
+                else if (ws.subject === 'science') href = '/teacher/science'
+                return (
+                  <Link key={ws.contentItemId} href={href}
+                    className="flex items-center gap-3 bg-keen-50 hover:bg-keen-100 border border-keen-100 rounded-xl px-4 py-3 transition-all group">
+                    <span className="text-2xl">{emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[11px] font-bold text-keen-500 uppercase tracking-wide">{label}</p>
+                      <p className="font-black text-gray-800 text-sm truncate">{ws.title}</p>
+                    </div>
+                    <span className="text-keen-400 group-hover:text-keen-600 font-bold text-lg">→</span>
+                  </Link>
+                )
+              })}
               <SendReportButton
                 weekStartDate={mondayStr}
                 weekTitle={thisWeek.weekTitle}
