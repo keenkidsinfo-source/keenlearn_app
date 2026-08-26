@@ -16,7 +16,7 @@
  * Safe to re-run — deletes and re-inserts all classroom_curriculum rows.
  */
 
-const SCHOOL_START = '2026-08-17'   // Monday of Week 1
+const SCHOOL_START = '2026-08-31'   // Monday of Week 1
 const TOTAL_WEEKS  = 2              // how many weeks of curriculum are seeded
 
 import { readFileSync } from 'fs'
