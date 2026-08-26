@@ -5,6 +5,7 @@ import { curriculumDays, curriculumContent, contentItems, curriculum } from '@/l
 import { eq } from 'drizzle-orm'
 import { getTheoryDeck } from '@/lib/theory-slides'
 import { TheoryViewer } from './TheoryViewer'
+import { TeacherSidebar } from '@/app/teacher/TeacherSidebar'
 
 export const dynamic = 'force-dynamic'
 
@@ -46,5 +47,12 @@ export default async function BuildTheoryPage({ params }: Props) {
   // No theory deck for this week yet — redirect back to the build page
   if (!deck) redirect(`/teacher/build`)
 
-  return <TheoryViewer deck={deck} buildDayId={dayId} />
+  return (
+    <div className="flex h-screen overflow-hidden">
+      <TeacherSidebar activePage="build" buildDayId={dayId} />
+      <div className="flex-1 overflow-hidden flex flex-col">
+        <TheoryViewer deck={deck} buildDayId={dayId} />
+      </div>
+    </div>
+  )
 }

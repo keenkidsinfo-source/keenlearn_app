@@ -809,11 +809,16 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
   const Visual = VISUALS[deck.gradeBand]?.[slide]
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900">
+    <div className="h-full flex flex-col bg-gray-900 overflow-hidden">
       {/* Thin header */}
       <header className={cn('text-white px-4 py-2.5 flex items-center gap-3', colors.badge)}>
-        <button onClick={() => router.push(`/build/day/${buildDayId}`)} className="text-white/70 text-xl leading-none">←</button>
+        <button onClick={() => router.push('/teacher')} className="text-white/70 text-xl leading-none">←</button>
         <p className="flex-1 font-black text-base truncate">{current.emoji} {current.title}</p>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button onClick={() => router.push(`/build/day/${buildDayId}`)} className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all">⚙️ Setup</button>
+          <button onClick={() => router.push(`/build/day/${buildDayId}`)} className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all">🏗️ Steps</button>
+          <button onClick={() => router.push(`/teacher/build/chart/${buildDayId}`)} className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all">📊 Results</button>
+        </div>
         {/* Dot nav */}
         <div className="flex gap-1.5 shrink-0">
           {Array.from({ length: total }, (_, i) => (

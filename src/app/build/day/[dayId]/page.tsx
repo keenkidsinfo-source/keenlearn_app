@@ -8,6 +8,7 @@ import {
 import { eq, and } from 'drizzle-orm'
 import { getStepImageUrls } from '@/lib/r2/client'
 import { StepViewer, type StepData } from './StepViewer'
+import { TeacherSidebar } from '@/app/teacher/TeacherSidebar'
 
 interface Props { params: Promise<{ dayId: string }> }
 
@@ -68,16 +69,21 @@ export default async function BuildDayPage({ params }: Props) {
   const stepUrls = rawStepUrls
 
   return (
-    <StepViewer
-      contentItemId={item.id}
-      dayId={dayId}
-      title={item.title}
-      theme={day.theme ?? ''}
-      stepUrls={stepUrls}
-      steps={textSteps.length > 0 ? textSteps : undefined}
-      initialStep={lastStep}
-      completed={sessionData?.completed ?? false}
-      gradeBand={(item.gradeBand as GradeBand | null) ?? null}
-    />
+    <div className="flex h-screen overflow-hidden">
+      <TeacherSidebar activePage="build" buildDayId={dayId} />
+      <div className="flex-1 overflow-hidden flex flex-col">
+        <StepViewer
+          contentItemId={item.id}
+          dayId={dayId}
+          title={item.title}
+          theme={day.theme ?? ''}
+          stepUrls={stepUrls}
+          steps={textSteps.length > 0 ? textSteps : undefined}
+          initialStep={lastStep}
+          completed={sessionData?.completed ?? false}
+          gradeBand={(item.gradeBand as GradeBand | null) ?? null}
+        />
+      </div>
+    </div>
   )
 }

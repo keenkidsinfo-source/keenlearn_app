@@ -143,7 +143,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
   const isG12 = gradeBand === 'g1-2'
 
   return (
-    <div className="min-h-screen bg-orange-50 flex flex-col">
+    <div className="h-full bg-orange-50 flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-orange-500 text-white px-4 py-4 flex items-center gap-3">
         <button onClick={() => router.push('/teacher')} className="text-orange-100 text-2xl">←</button>
@@ -155,7 +155,6 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
             <button
               onClick={() => router.push(`/build/theory/${dayId}`)}
               className="text-xs font-bold bg-purple-600 text-white px-2 py-0.5 rounded-full hover:bg-purple-500 transition-all"
-              title="Show theory slides"
             >
               📖 Theory
             </button>
@@ -166,11 +165,16 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
                   'text-xs font-bold px-2 py-0.5 rounded-full transition-all',
                   showPrep ? 'bg-yellow-300 text-yellow-900' : 'bg-yellow-500 text-white hover:bg-yellow-400'
                 )}
-                title="Instructor setup"
               >
-                🔧 Setup
+                ⚙️ Setup
               </button>
             )}
+            <button
+              onClick={() => router.push(`/teacher/build/chart/${dayId}`)}
+              className="text-xs font-bold bg-teal-600 text-white px-2 py-0.5 rounded-full hover:bg-teal-500 transition-all"
+            >
+              📊 Results
+            </button>
           </div>
           <h1 className={`font-black truncate ${isG12 ? 'text-xl' : 'text-lg'}`}>🔨 {title}</h1>
           {theme && <p className="text-orange-200 text-sm">{theme}</p>}
