@@ -627,7 +627,7 @@ function StepPanel({
           <p className="text-xs font-bold text-yellow-500 leading-none mb-0.5">
             🎯 {challenge ?? 'Challenge'} · Step {currentStep + 1} of {total}
           </p>
-          <p className="text-sm text-gray-700 leading-snug">{step}</p>
+          <p className="text-sm text-gray-700 leading-snug whitespace-pre-line">{step}</p>
         </div>
 
         {/* Read aloud */}
