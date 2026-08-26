@@ -146,7 +146,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
     <div className="min-h-screen bg-orange-50 flex flex-col">
       {/* Header */}
       <header className="bg-orange-500 text-white px-4 py-4 flex items-center gap-3">
-        <button onClick={() => router.push('/dashboard')} className="text-orange-100 text-2xl">←</button>
+        <button onClick={() => router.push('/teacher')} className="text-orange-100 text-2xl">←</button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             <span className="text-xs font-bold bg-orange-400 text-white px-2 py-0.5 rounded-full">
