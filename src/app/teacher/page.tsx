@@ -318,16 +318,6 @@ export default async function TeacherDashboardPage({
                   ))}
                 </div>
               )}
-              {buildDay && (
-                <div className="mt-3">
-                  <Link
-                    href={`/teacher/build/${buildDay.dayId}`}
-                    className="flex items-center justify-center gap-2 w-full bg-keen-600 hover:bg-keen-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
-                  >
-                    🔧 Open Build Day Hub →
-                  </Link>
-                </div>
-              )}
               <SendReportButton
                 weekStartDate={mondayStr}
                 weekTitle={thisWeek.weekTitle}
