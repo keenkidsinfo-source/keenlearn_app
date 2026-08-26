@@ -15,6 +15,7 @@ import type { Subject } from '@/lib/db/schema'
 import { StudentManager } from './StudentManager'
 import { SendReportButton } from './SendReportButton'
 import { CoTeacherPanel } from './CoTeacherPanel'
+import { TeacherSidebar } from './TeacherSidebar'
 import { getMondayStr, addDays, formatWeekLabel, summarizeClassProgress } from '@/lib/teacher-dashboard'
 
 const AVATARS = ['🦊','🐼','🦁','🐸','🦋','🐬','🦄','🐉']
@@ -164,12 +165,12 @@ export default async function TeacherDashboardPage({
 
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-keen-700 text-white px-6 py-5">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
+      <header className="bg-keen-700 text-white px-6 py-4 flex-shrink-0">
+        <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-black">
+            <h1 className="text-xl font-black">
               {isAdmin ? '🛡️ Admin · Teacher View' : 'KeenKids Teacher'}
             </h1>
             <p className="text-keen-200 text-sm mt-0.5">
@@ -190,13 +191,12 @@ export default async function TeacherDashboardPage({
             </form>
           </div>
         </div>
-
       </header>
 
       {/* Teacher grade-band switcher — only shown when teacher has multiple classrooms */}
       {!isAdmin && teacherClassrooms.length > 1 && (
-        <div className="bg-keen-50 border-b border-keen-200 px-6 py-3">
-          <div className="max-w-3xl mx-auto flex items-center gap-3">
+        <div className="bg-keen-50 border-b border-keen-200 px-6 py-3 flex-shrink-0">
+          <div className="flex items-center gap-3">
             <span className="text-keen-700 text-xs font-bold uppercase tracking-wide">Grade:</span>
             {teacherClassrooms.map(c => {
               const gradeLabel = c.gradeBand === 'g1-2' ? 'Gr 1–2' : 'Gr 3–4'
@@ -221,31 +221,36 @@ export default async function TeacherDashboardPage({
 
       {/* Admin classroom picker — prominent banner */}
       {isAdmin && (
-        <div className="bg-yellow-50 border-b-2 border-yellow-200 px-6 py-4">
-          <div className="max-w-3xl mx-auto">
-            <p className="text-yellow-800 text-xs font-bold uppercase tracking-wide mb-2">🛡️ Admin — Select a classroom to view</p>
-            <form method="GET" action="/teacher" className="flex items-center gap-3">
-              <select
-                name="classroomId"
-                defaultValue={qClassroomId ?? ''}
-                className="flex-1 bg-white border-2 border-yellow-300 rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 focus:outline-none focus:border-yellow-500"
-              >
-                <option value="">— Pick a classroom —</option>
-                {allClassrooms.map(c => (
-                  <option key={c.id} value={c.id}>
-                    {c.schoolName ? `${c.schoolName} — ` : ''}{c.name} (Grade {c.gradeLevel})
-                  </option>
-                ))}
-              </select>
-              <button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black px-6 py-2.5 rounded-xl text-sm transition-all active:scale-95">
-                Load →
-              </button>
-            </form>
-          </div>
+        <div className="bg-yellow-50 border-b-2 border-yellow-200 px-6 py-4 flex-shrink-0">
+          <p className="text-yellow-800 text-xs font-bold uppercase tracking-wide mb-2">🛡️ Admin — Select a classroom to view</p>
+          <form method="GET" action="/teacher" className="flex items-center gap-3">
+            <select
+              name="classroomId"
+              defaultValue={qClassroomId ?? ''}
+              className="flex-1 bg-white border-2 border-yellow-300 rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-700 focus:outline-none focus:border-yellow-500"
+            >
+              <option value="">— Pick a classroom —</option>
+              {allClassrooms.map(c => (
+                <option key={c.id} value={c.id}>
+                  {c.schoolName ? `${c.schoolName} — ` : ''}{c.name} (Grade {c.gradeLevel})
+                </option>
+              ))}
+            </select>
+            <button type="submit" className="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black px-6 py-2.5 rounded-xl text-sm transition-all active:scale-95">
+              Load →
+            </button>
+          </form>
         </div>
       )}
 
-      <main className="max-w-3xl mx-auto px-4 py-6 space-y-5">
+      {/* Sidebar + content */}
+      <div className="flex flex-1">
+        <TeacherSidebar
+          activePage="dashboard"
+          speakingHref={speakingDay ? `/teacher/speaking/${speakingDay.dayId}` : null}
+          buildHref={buildDay ? `/teacher` : null}
+        />
+        <main className="flex-1 bg-gray-50 px-5 py-5 space-y-5 overflow-y-auto">
 
         {/* ── Access Code ── */}
         <div className="bg-white rounded-2xl shadow-sm border-2 border-keen-100 p-5 flex items-center justify-between">
@@ -525,7 +530,8 @@ export default async function TeacherDashboardPage({
           <CoTeacherPanel />
         </div>
 
-      </main>
+        </main>
+      </div>
     </div>
   )
 }

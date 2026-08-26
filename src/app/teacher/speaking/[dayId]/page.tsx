@@ -11,6 +11,7 @@ import { eq, and, inArray, isNull } from 'drizzle-orm'
 import Link from 'next/link'
 import { SpeakingSession } from './SpeakingSession'
 import { getTeacherClassroom } from '@/lib/teacher-classroom'
+import { TeacherSidebar } from '../../TeacherSidebar'
 
 interface Props { params: Promise<{ dayId: string }> }
 
@@ -84,31 +85,33 @@ export default async function TeacherSpeakingPage({ params }: Props) {
   const meta = (item.metadata as any) ?? {}
 
   return (
-    <div className="min-h-screen bg-teal-50">
-      <header className="bg-teal-700 text-white px-5 py-4">
-        <div className="max-w-2xl mx-auto flex items-center gap-3">
-          <Link href="/teacher" className="text-teal-300 text-xl">←</Link>
-          <div className="flex-1 min-w-0">
-            <h1 className="font-black text-lg leading-tight">🎤 Speaking Class</h1>
-            <p className="text-teal-200 text-xs mt-0.5">
-              {week ? `Week ${week.weekNumber} · ` : ''}
-              {classroom.gradeBand === 'g1-2' ? 'Grades 1–2' : 'Grades 3–4'} · {students.length} students
-            </p>
-          </div>
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-keen-700 text-white px-5 py-4 flex-shrink-0 flex items-center gap-3">
+        <div className="flex-1 min-w-0">
+          <h1 className="font-black text-xl leading-tight">🎤 Speaking Class</h1>
+          <p className="text-keen-200 text-xs mt-0.5">
+            {week ? `Week ${week.weekNumber} · ` : ''}
+            {classroom.gradeBand === 'g1-2' ? 'Grades 1–2' : 'Grades 3–4'} · {students.length} students
+          </p>
         </div>
       </header>
 
-      <SpeakingSession
-        contentItemId={item.id}
-        meta={meta}
-        students={students.map(s => ({
-          id: s.id,
-          name: s.name,
-          displayName: s.displayName,
-          avatarId: s.avatarId,
-        }))}
-        initialDoneIds={Array.from(doneIds)}
-      />
+      <div className="flex flex-1 overflow-hidden">
+        <TeacherSidebar activePage="speaking" speakingHref={`/teacher/speaking/${dayId}`} />
+        <div className="flex-1 overflow-y-auto bg-teal-50">
+          <SpeakingSession
+            contentItemId={item.id}
+            meta={meta}
+            students={students.map(s => ({
+              id: s.id,
+              name: s.name,
+              displayName: s.displayName,
+              avatarId: s.avatarId,
+            }))}
+            initialDoneIds={Array.from(doneIds)}
+          />
+        </div>
+      </div>
     </div>
   )
 }

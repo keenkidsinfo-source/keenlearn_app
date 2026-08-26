@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { scienceLabs } from '@/lib/scienceLabs'
 import Link from 'next/link'
+import { TeacherSidebar } from '../TeacherSidebar'
 
 interface Props { searchParams: Promise<{ week?: string }> }
 
@@ -17,50 +18,34 @@ export default async function TeacherSciencePage({ searchParams }: Props) {
   const isLast  = weekIndex === scienceLabs.length - 1
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-teal-700 text-white px-6 py-5">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center justify-between mb-3">
-            <Link href="/teacher" className="text-teal-200 text-sm hover:text-white">← Dashboard</Link>
-            <span className="text-teal-300 text-sm font-medium">
-              Week {weekIndex + 1} of {scienceLabs.length}
-            </span>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            {/* Prev week */}
-            <Link
-              href={isFirst ? '#' : `/teacher/science?week=${weekIndex}`}
-              aria-disabled={isFirst}
-              className={`flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-bold transition-all
-                ${isFirst
-                  ? 'text-teal-600 cursor-not-allowed pointer-events-none'
-                  : 'bg-teal-600 hover:bg-teal-500 text-white'}`}
-            >
-              ← Prev
-            </Link>
-
-            <div className="text-center flex-1">
-              <h1 className="text-xl font-black">🔬 Science Lab — Instructor Manual</h1>
-              <p className="text-teal-200 text-xs mt-0.5">KeenKids STEAM · Mattos & Sinnott Elementary</p>
-            </div>
-
-            {/* Next week */}
-            <Link
-              href={isLast ? '#' : `/teacher/science?week=${weekIndex + 2}`}
-              aria-disabled={isLast}
-              className={`flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-bold transition-all
-                ${isLast
-                  ? 'text-teal-600 cursor-not-allowed pointer-events-none'
-                  : 'bg-teal-600 hover:bg-teal-500 text-white'}`}
-            >
-              Next →
-            </Link>
-          </div>
+      <header className="bg-keen-700 text-white px-6 py-4 flex-shrink-0 flex items-center justify-between">
+        <h1 className="text-xl font-black">🔬 Science Lab — Instructor Manual</h1>
+        <div className="flex items-center gap-3">
+          <Link
+            href={isFirst ? '#' : `/teacher/science?week=${weekIndex}`}
+            aria-disabled={isFirst}
+            className={`px-3 py-1.5 rounded-xl text-sm font-bold transition-all
+              ${isFirst ? 'text-keen-400 pointer-events-none' : 'bg-white/20 hover:bg-white/30 text-white'}`}
+          >
+            ← Prev
+          </Link>
+          <span className="text-keen-200 text-sm font-medium">Week {weekIndex + 1} of {scienceLabs.length}</span>
+          <Link
+            href={isLast ? '#' : `/teacher/science?week=${weekIndex + 2}`}
+            aria-disabled={isLast}
+            className={`px-3 py-1.5 rounded-xl text-sm font-bold transition-all
+              ${isLast ? 'text-keen-400 pointer-events-none' : 'bg-white/20 hover:bg-white/30 text-white'}`}
+          >
+            Next →
+          </Link>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8">
+      <div className="flex flex-1">
+        <TeacherSidebar activePage="science" />
+        <main className="flex-1 overflow-y-auto bg-gray-50 px-6 py-6">
         <div className="bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
           {/* Lab title */}
           <div className="bg-teal-600 text-white px-6 py-4">
@@ -229,7 +214,8 @@ export default async function TeacherSciencePage({ searchParams }: Props) {
             {!isLast && <span className="text-gray-500 font-normal truncate max-w-[140px]">{scienceLabs[weekIndex + 1]?.title}</span>} Week {weekIndex + 2} →
           </Link>
         </div>
-      </main>
+        </main>
+      </div>
     </div>
   )
 }
