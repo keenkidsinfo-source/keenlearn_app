@@ -36,7 +36,7 @@ export function TeacherSidebar({ activePage, speakingHref, buildDayId }: Props) 
     <nav className="w-[112px] bg-[#023e6b] flex flex-col flex-shrink-0 self-stretch">
       {NAV_ITEMS.map(item => {
         if (item.key === 'build') {
-          const mainHref = buildDayId ? `/teacher/build/${buildDayId}` : '/teacher'
+          const mainHref = buildDayId ? `/build/day/${buildDayId}` : '/teacher'
           const active = isBuildSection
 
           return (
