@@ -21,15 +21,14 @@ const BOTTOM_ITEMS: { key: TeacherPage; label: string; emoji: string; staticHref
   { key: 'curriculum', label: 'Curriculum', emoji: '📚', staticHref: '/teacher/curriculum' },
 ]
 
-// All 4 activity items — reordered per school
+// Activity items — reordered per school (coding removed from sidebar)
 const ACTIVITY_ITEMS: { key: ActivitySubject; label: string; emoji: string; staticHref: string | null }[] = [
   { key: 'build',    label: 'Build Day', emoji: '🔧', staticHref: null },
-  { key: 'coding',   label: 'Coding',    emoji: '💻', staticHref: '/teacher' },
   { key: 'speaking', label: 'Speaking',  emoji: '🎤', staticHref: null },
   { key: 'science',  label: 'Science',   emoji: '🔬', staticHref: '/teacher/science' },
 ]
 
-const DEFAULT_ORDER: ActivitySubject[] = ['build', 'coding', 'speaking', 'science']
+const DEFAULT_ORDER: ActivitySubject[] = ['build', 'speaking', 'science']
 
 const BUILD_SUB: { label: string; emoji: string; getHref: (id: string) => string; pathMatch: string }[] = [
   { label: 'Setup',         emoji: '⚙️',  getHref: id => `/build/day/${id}`,          pathMatch: '' },
