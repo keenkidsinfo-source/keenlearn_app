@@ -15,7 +15,7 @@ import type { Subject } from '@/lib/db/schema'
 import { StudentManager } from './StudentManager'
 import { SendReportButton } from './SendReportButton'
 import { CoTeacherPanel } from './CoTeacherPanel'
-import { TeacherSidebar } from './TeacherSidebar'
+import { TeacherSidebar, type ActivitySubject } from './TeacherSidebar'
 import { getMondayStr, addDays, formatWeekLabel, summarizeClassProgress } from '@/lib/teacher-dashboard'
 
 const AVATARS = ['🦊','🐼','🦁','🐸','🦋','🐬','🦄','🐉']
@@ -253,6 +253,7 @@ export default async function TeacherDashboardPage({
           activePage="dashboard"
           speakingHref={speakingDay ? `/teacher/speaking/${speakingDay.dayId}` : null}
           buildDayId={buildDay?.dayId ?? null}
+          subjectOrder={weekSubjects.map(ws => ws.subject as ActivitySubject)}
         />
         <main className="flex-1 bg-gray-50 px-5 py-5 space-y-5 overflow-y-auto">
 
