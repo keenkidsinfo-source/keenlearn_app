@@ -10,13 +10,17 @@ import { getStepImageUrls } from '@/lib/r2/client'
 import { StepViewer, type StepData } from './StepViewer'
 import { TeacherSidebar } from '@/app/teacher/TeacherSidebar'
 
-interface Props { params: Promise<{ dayId: string }> }
+interface Props {
+  params: Promise<{ dayId: string }>
+  searchParams: Promise<{ view?: string }>
+}
 
-export default async function BuildDayPage({ params }: Props) {
+export default async function BuildDayPage({ params, searchParams }: Props) {
   const session = await getSession()
   if (!session) redirect('/login')
 
   const { dayId } = await params
+  const { view } = await searchParams
 
   // Load the day
   const [day] = await db.select().from(curriculumDays).where(eq(curriculumDays.id, dayId)).limit(1)
@@ -82,6 +86,7 @@ export default async function BuildDayPage({ params }: Props) {
           initialStep={lastStep}
           completed={sessionData?.completed ?? false}
           gradeBand={(item.gradeBand as GradeBand | null) ?? null}
+          startWithSetup={view !== 'steps'}
         />
       </div>
     </div>

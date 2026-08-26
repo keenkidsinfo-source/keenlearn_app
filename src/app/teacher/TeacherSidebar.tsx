@@ -31,10 +31,10 @@ const ACTIVITY_ITEMS: { key: ActivitySubject; label: string; emoji: string; stat
 const DEFAULT_ORDER: ActivitySubject[] = ['build', 'speaking', 'science']
 
 const BUILD_SUB: { label: string; emoji: string; getHref: (id: string) => string; pathMatch: string }[] = [
-  { label: 'Setup',         emoji: '⚙️',  getHref: id => `/build/day/${id}`,          pathMatch: '' },
-  { label: 'Theory Slides', emoji: '📖', getHref: id => `/build/theory/${id}`,        pathMatch: '/build/theory/' },
-  { label: 'Build Steps',   emoji: '🏗️', getHref: id => `/build/day/${id}`,          pathMatch: '/build/day/' },
-  { label: 'Results Chart', emoji: '📊', getHref: id => `/teacher/build/chart/${id}`, pathMatch: '/teacher/build/chart/' },
+  { label: 'Setup',         emoji: '⚙️',  getHref: id => `/build/day/${id}`,                pathMatch: '' },
+  { label: 'Theory Slides', emoji: '📖', getHref: id => `/build/theory/${id}`,              pathMatch: '/build/theory/' },
+  { label: 'Build Steps',   emoji: '🏗️', getHref: id => `/build/day/${id}?view=steps`,     pathMatch: '/build/day/' },
+  { label: 'Results Chart', emoji: '📊', getHref: id => `/teacher/build/chart/${id}`,       pathMatch: '/teacher/build/chart/' },
 ]
 
 export function TeacherSidebar({ activePage, speakingHref, buildDayId, subjectOrder }: Props) {

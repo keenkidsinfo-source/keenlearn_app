@@ -22,6 +22,7 @@ interface Props {
   initialStep: number
   completed: boolean
   gradeBand: GradeBand | null
+  startWithSetup?: boolean
 }
 
 // Instructor prep data keyed by title keyword
@@ -53,7 +54,7 @@ const PREP_INFO: Record<string, { image: string; steps: string[]; warning: strin
   },
 }
 
-export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand }: Props) {
+export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand, startWithSetup = true }: Props) {
   const router = useRouter()
   const [step, setStep]         = useState(Math.max(0, initialStep))
   const [isDone, setIsDone]     = useState(completed)
@@ -62,8 +63,8 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
   const prepKey = Object.keys(PREP_INFO).find(k => title.includes(k))
   const prep = prepKey ? PREP_INFO[prepKey] : null
 
-  // Auto-open setup panel on first load if this build has prep info
-  const [showPrep, setShowPrep] = useState(!!prep)
+  // Auto-open setup panel only when explicitly requested (Setup sidebar item)
+  const [showPrep, setShowPrep] = useState(!!(prep && startWithSetup))
 
   const totalSteps = steps?.length ?? stepUrls.length
 
