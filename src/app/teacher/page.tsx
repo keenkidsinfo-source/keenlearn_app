@@ -252,7 +252,7 @@ export default async function TeacherDashboardPage({
         <TeacherSidebar
           activePage="dashboard"
           speakingHref={speakingDay ? `/teacher/speaking/${speakingDay.dayId}` : null}
-          buildHref={buildDay ? `/teacher/build/${buildDay.dayId}` : null}
+          buildDayId={buildDay?.dayId ?? null}
         />
         <main className="flex-1 bg-gray-50 px-5 py-5 space-y-5 overflow-y-auto">
 

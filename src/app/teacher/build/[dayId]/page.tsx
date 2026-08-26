@@ -46,30 +46,39 @@ export default async function TeacherBuildHubPage({ params }: Props) {
       </header>
 
       <div className="flex flex-1">
-        <TeacherSidebar activePage="build" buildHref={`/teacher/build/${dayId}`} />
-        <main className="flex-1 bg-gray-50 flex flex-col items-center justify-center gap-4 px-6 py-10">
-          <p className="text-gray-500 text-sm font-semibold mb-2 uppercase tracking-wide">Launch activity</p>
+        <TeacherSidebar activePage="build" buildDayId={dayId} />
+        <main className="flex-1 bg-gray-50 px-6 py-6 overflow-y-auto">
+          <div className="max-w-2xl mx-auto flex flex-col gap-3">
 
-          <Link
-            href={`/build/theory/${dayId}`}
-            className="flex items-center justify-center gap-3 w-full max-w-md bg-purple-600 hover:bg-purple-500 text-white font-bold py-5 rounded-2xl text-lg transition-all shadow"
-          >
-            📖 Theory Slides <span className="text-purple-200 text-sm font-normal">(show first)</span>
-          </Link>
+            <Link
+              href={`/build/day/${dayId}`}
+              className="flex items-center justify-center gap-3 w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 rounded-2xl text-base transition-all shadow-sm"
+            >
+              ⚙️ Setup <span className="text-gray-300 text-sm font-normal">(do this before students arrive)</span>
+            </Link>
 
-          <Link
-            href={`/build/day/${dayId}`}
-            className="flex items-center justify-center gap-3 w-full max-w-md bg-orange-500 hover:bg-orange-400 text-white font-bold py-5 rounded-2xl text-lg transition-all shadow"
-          >
-            🏗️ View Build Steps
-          </Link>
+            <Link
+              href={`/build/theory/${dayId}`}
+              className="flex items-center justify-center gap-3 w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 rounded-2xl text-base transition-all shadow-sm"
+            >
+              📖 Theory Slides <span className="text-purple-200 text-sm font-normal">(show first)</span>
+            </Link>
 
-          <Link
-            href={`/teacher/build/chart/${dayId}`}
-            className="flex items-center justify-center gap-3 w-full max-w-md bg-teal-600 hover:bg-teal-500 text-white font-bold py-5 rounded-2xl text-lg transition-all shadow"
-          >
-            📊 Class Results Chart
-          </Link>
+            <Link
+              href={`/build/day/${dayId}`}
+              className="flex items-center justify-center gap-3 w-full bg-orange-500 hover:bg-orange-400 text-white font-bold py-4 rounded-2xl text-base transition-all shadow-sm"
+            >
+              🏗️ View Build Steps
+            </Link>
+
+            <Link
+              href={`/teacher/build/chart/${dayId}`}
+              className="flex items-center justify-center gap-3 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-4 rounded-2xl text-base transition-all shadow-sm"
+            >
+              📊 Class Results Chart
+            </Link>
+
+          </div>
         </main>
       </div>
     </div>

@@ -42,7 +42,7 @@ export interface ScienceLab {
 export const scienceLabs: ScienceLab[] = [
   {
     id: 'aug-21-fire-extinguisher',
-    date: '2025-08-21',
+    date: '2026-09-03',
     emoji: '🔥',
     title: 'The Invisible Fire Extinguisher',
     conceptShort: 'Chemical Reactions · Carbon Dioxide · Combustion',
@@ -184,7 +184,7 @@ export const scienceLabs: ScienceLab[] = [
 
   {
     id: 'aug-28-spinning-pen',
-    date: '2025-08-28',
+    date: '2026-09-10',
     emoji: '🧲',
     title: 'The Spinning Magnetic Pen',
     conceptShort: 'Magnetism · Magnetic Repulsion · Invisible Forces',
