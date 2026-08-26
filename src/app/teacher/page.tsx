@@ -29,12 +29,16 @@ export default async function TeacherDashboardPage({
   if (!session) redirect('/login')
   if (session.role === 'student') redirect('/dashboard')
 
+  const PROGRAM_START = '2026-08-31'
+
   const { week, classroomId: qClassroomId } = await searchParams
   const currentMonday = getMondayStr()
   const mondayStr = (week && /^\d{4}-\d{2}-\d{2}$/.test(week)) ? week : currentMonday
   const isCurrentWeek = mondayStr === currentMonday
+  const isBeforeStart = mondayStr < PROGRAM_START
   const prevWeek = addDays(mondayStr, -7)
   const nextWeek = addDays(mondayStr, 7)
+  const isPrevDisabled = prevWeek < PROGRAM_START
 
   // Admins can pick any classroom via ?classroomId=; teachers use their own
   const isAdmin = session.role === 'admin'
@@ -248,7 +252,7 @@ export default async function TeacherDashboardPage({
         <TeacherSidebar
           activePage="dashboard"
           speakingHref={speakingDay ? `/teacher/speaking/${speakingDay.dayId}` : null}
-          buildHref={buildDay ? `/teacher` : null}
+          buildHref={buildDay ? `/teacher/build/${buildDay.dayId}` : null}
         />
         <main className="flex-1 bg-gray-50 px-5 py-5 space-y-5 overflow-y-auto">
 
@@ -266,10 +270,14 @@ export default async function TeacherDashboardPage({
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <Link
-                href={`/teacher?week=${prevWeek}${qClassroomId ? `&classroomId=${qClassroomId}` : ''}`}
-                className="text-gray-400 hover:text-keen-600 font-bold text-lg px-1"
-              >←</Link>
+              {isPrevDisabled ? (
+                <span className="text-gray-200 font-bold text-lg px-1 cursor-not-allowed">←</span>
+              ) : (
+                <Link
+                  href={`/teacher?week=${prevWeek}${qClassroomId ? `&classroomId=${qClassroomId}` : ''}`}
+                  className="text-gray-400 hover:text-keen-600 font-bold text-lg px-1"
+                >←</Link>
+              )}
               <div>
                 <h2 className="text-lg font-bold text-gray-800 leading-none">
                   {isCurrentWeek ? 'This Week' : 'Week of'}
@@ -285,7 +293,13 @@ export default async function TeacherDashboardPage({
               📚 {thisWeek ? 'Change Curriculum' : 'Assign Curriculum'}
             </Link>
           </div>
-          {thisWeek ? (
+          {isBeforeStart ? (
+            <div className="text-center py-6 text-gray-400">
+              <p className="text-2xl mb-2">📅</p>
+              <p className="font-semibold text-gray-500">Program starts Aug 31</p>
+              <p className="text-sm mt-1">No activities before the first week.</p>
+            </div>
+          ) : thisWeek ? (
             <div className="bg-keen-50 rounded-xl p-4">
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-3xl">📅</span>
@@ -304,41 +318,15 @@ export default async function TeacherDashboardPage({
                 </div>
               )}
               {buildDay && (
-                <div className="mt-3 flex flex-col gap-2">
+                <div className="mt-3">
                   <Link
-                    href={`/build/theory/${buildDay.dayId}`}
-                    className="flex items-center justify-center gap-2 w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
+                    href={`/teacher/build/${buildDay.dayId}`}
+                    className="flex items-center justify-center gap-2 w-full bg-keen-600 hover:bg-keen-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
                   >
-                    📖 Theory Slides (show first)
-                  </Link>
-                  <Link
-                    href={`/build/day/${buildDay.dayId}`}
-                    className="flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-400 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
-                  >
-                    🏗️ View Build Steps
-                  </Link>
-                  <Link
-                    href={`/teacher/build/chart/${buildDay.dayId}`}
-                    className="flex items-center justify-center gap-2 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
-                  >
-                    📊 Class Results Chart
+                    🔧 Open Build Day Hub →
                   </Link>
                 </div>
               )}
-              {speakingDay && (
-                <Link
-                  href={`/teacher/speaking/${speakingDay.dayId}`}
-                  className="mt-2 flex items-center justify-center gap-2 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
-                >
-                  🎤 Run Speaking Class
-                </Link>
-              )}
-              <Link
-                href="/teacher/science"
-                className="mt-2 flex items-center justify-center gap-2 w-full bg-teal-700 hover:bg-teal-600 text-white font-bold py-2.5 rounded-xl text-sm transition-all"
-              >
-                🔬 Science Lab Manual
-              </Link>
               <SendReportButton
                 weekStartDate={mondayStr}
                 weekTitle={thisWeek.weekTitle}
@@ -509,7 +497,7 @@ export default async function TeacherDashboardPage({
         </div>
 
         {/* ── Manage Students ── */}
-        <div className="bg-white rounded-2xl shadow-sm p-5">
+        <div id="students" className="bg-white rounded-2xl shadow-sm p-5">
           <h2 className="text-lg font-bold text-gray-800 mb-4">
             Students
             <span className="ml-2 text-sm font-normal text-gray-400">({students.length})</span>

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-export type TeacherPage = 'dashboard' | 'speaking' | 'science' | 'build' | 'coding' | 'curriculum'
+export type TeacherPage = 'dashboard' | 'speaking' | 'science' | 'build' | 'coding' | 'students' | 'curriculum'
 
 interface Props {
   activePage: TeacherPage
@@ -16,6 +16,7 @@ const ITEMS: { key: TeacherPage; label: string; emoji: string; staticHref: strin
   { key: 'science',    label: 'Science',    emoji: '🔬', staticHref: '/teacher/science' },
   { key: 'build',      label: 'Build Day',  emoji: '🔧', staticHref: null },
   { key: 'coding',     label: 'Coding',     emoji: '💻', staticHref: '/teacher' },
+  { key: 'students',   label: 'Students',   emoji: '👥', staticHref: '/teacher#students' },
   { key: 'curriculum', label: 'Curriculum', emoji: '📚', staticHref: '/teacher/curriculum' },
 ]
 
