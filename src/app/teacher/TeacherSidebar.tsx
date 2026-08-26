@@ -66,14 +66,24 @@ export function TeacherSidebar({ activePage, speakingHref, buildDayId, subjectOr
       {/* Activity items — school-ordered */}
       {sortedActivities.map(item => {
         if (item.key === 'build') {
-          const mainHref = buildDayId ? `/build/day/${buildDayId}` : '/teacher'
+          const active = isBuildSection
           return (
             <div key="build">
-              <Link href={mainHref} className={linkClass(isBuildSection)}>
-                <span className="text-sm leading-none" aria-hidden="true">🔧</span>
-                Build Day
-              </Link>
-              {isBuildSection && buildDayId && (
+              {/* Build Day — label only when sub-items are available, link otherwise */}
+              {buildDayId ? (
+                <div className={linkClass(active)}>
+                  <span className="text-sm leading-none" aria-hidden="true">🔧</span>
+                  Build Day
+                </div>
+              ) : (
+                <Link href="/teacher" className={linkClass(false)}>
+                  <span className="text-sm leading-none" aria-hidden="true">🔧</span>
+                  Build Day
+                </Link>
+              )}
+
+              {/* Sub-nav always visible when buildDayId is set */}
+              {buildDayId && (
                 <div className="bg-[#012d4e]">
                   {BUILD_SUB.map(sub => {
                     const href = sub.getHref(buildDayId)
