@@ -244,12 +244,13 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
         {/* Illustration image — use plain <img> so SVGs aren't routed through Next.js
             image optimizer (which refuses SVGs in production) */}
         {currentUrl && (
-          <div className="w-full bg-white rounded-2xl shadow-md overflow-hidden">
+          <div className="w-full bg-white rounded-2xl shadow-md overflow-hidden" style={{ maxHeight: 300 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={currentUrl}
               alt={`Step ${step + 1}`}
-              className="w-full object-contain p-2"
+              className="w-full h-full object-contain p-2"
+              style={{ maxHeight: 300 }}
             />
           </div>
         )}
