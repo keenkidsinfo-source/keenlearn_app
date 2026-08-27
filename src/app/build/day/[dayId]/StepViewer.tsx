@@ -118,8 +118,14 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
         <h1 className="text-3xl font-black text-orange-700 mb-2">Amazing Build!</h1>
         <p className="text-gray-600 mb-6">You completed <strong>{title}</strong></p>
         <div className="flex flex-col gap-3 w-full max-w-xs">
-          <button onClick={() => router.push('/dashboard')} className="btn-primary bg-orange-500">
+          <button onClick={() => router.push(backHref)} className="btn-primary bg-orange-500">
             Back to Home
+          </button>
+          <button
+            onClick={() => router.push(`/teacher/build/chart/${dayId}`)}
+            className="w-full py-3 rounded-xl bg-teal-600 text-white font-bold text-sm shadow hover:bg-teal-500 transition-all"
+          >
+            📊 View Live Results Chart →
           </button>
           <button
             onClick={async () => {
