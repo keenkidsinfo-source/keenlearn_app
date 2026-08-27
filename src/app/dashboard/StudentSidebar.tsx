@@ -48,11 +48,18 @@ export function StudentSidebar({ nav, gradeBand, name }: Props) {
 
   return (
     <aside className="w-20 md:w-48 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col h-screen sticky top-0">
-      {/* Logo + name */}
+      {/* Logo + name + sign out */}
       <div className="px-3 py-4 border-b border-gray-100">
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-black text-keen-600">KK</span>
-          <span className="hidden md:block text-xs font-black text-gray-400 uppercase tracking-widest">Learn</span>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-xl font-black text-keen-600 shrink-0">KK</span>
+            <span className="hidden md:block text-xs font-black text-gray-400 uppercase tracking-widest truncate">Learn</span>
+          </div>
+          <form action="/api/v1/auth/logout" method="POST" className="shrink-0">
+            <button type="submit" title="Sign out" className="text-gray-300 hover:text-gray-500 transition-all text-base leading-none">
+              🚪
+            </button>
+          </form>
         </div>
         {firstName && (
           <p className="hidden md:block text-xs text-gray-500 mt-1 truncate">Hi, {firstName}! 👋</p>
@@ -92,18 +99,6 @@ export function StudentSidebar({ nav, gradeBand, name }: Props) {
         })}
       </nav>
 
-      {/* Sign out */}
-      <div className="p-3 border-t border-gray-100">
-        <form action="/api/v1/auth/logout" method="POST">
-          <button
-            type="submit"
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-all"
-          >
-            <span className="text-lg w-6 text-center">🚪</span>
-            <span className="hidden md:block text-xs font-semibold">Sign out</span>
-          </button>
-        </form>
-      </div>
     </aside>
   )
 }
