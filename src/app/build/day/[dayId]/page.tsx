@@ -83,7 +83,7 @@ export default async function BuildDayPage({ params, searchParams }: Props) {
   return (
     <div className="flex h-screen overflow-hidden">
       <TeacherSidebar activePage="build" buildDayId={dayId} />
-      <div className="flex-1 overflow-hidden flex flex-col">
+      <div className="flex-1 overflow-y-auto">
         <StepViewer
           contentItemId={item.id}
           dayId={dayId}

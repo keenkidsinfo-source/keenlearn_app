@@ -145,7 +145,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
   const isG12 = gradeBand === 'g1-2'
 
   return (
-    <div className="flex-1 bg-orange-50 flex flex-col overflow-auto">
+    <div className="min-h-screen bg-orange-50 flex flex-col">
       {/* Header */}
       <header className="bg-orange-500 text-white px-4 py-4 flex items-center gap-3">
         <button onClick={() => router.push(backHref)} className="text-orange-100 text-2xl">←</button>

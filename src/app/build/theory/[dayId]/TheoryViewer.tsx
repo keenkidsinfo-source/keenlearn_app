@@ -809,7 +809,7 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
   const Visual = VISUALS[deck.gradeBand]?.[slide]
 
   return (
-    <div className="flex-1 flex flex-col bg-gray-900 overflow-auto">
+    <div className="min-h-screen flex flex-col bg-gray-900">
       {/* Thin header */}
       <header className={cn('text-white px-4 py-2.5 flex items-center gap-3', colors.badge)}>
         <button onClick={() => router.push('/teacher')} className="text-white/70 text-xl leading-none">←</button>

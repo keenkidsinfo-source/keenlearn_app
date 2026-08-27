@@ -50,7 +50,7 @@ export default async function BuildTheoryPage({ params }: Props) {
   return (
     <div className="flex h-screen overflow-hidden">
       <TeacherSidebar activePage="build" buildDayId={dayId} />
-      <div className="flex-1 overflow-hidden flex flex-col">
+      <div className="flex-1 overflow-y-auto">
         <TheoryViewer deck={deck} buildDayId={dayId} />
       </div>
     </div>
