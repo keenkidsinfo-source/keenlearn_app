@@ -73,7 +73,7 @@ function FireAnimation() {
         </g>
         <ellipse cx="110" cy="162" rx="80" ry="12" fill="#93c5fd" opacity="0" className="co2-cloud"/>
         <text x="64" y="192" textAnchor="middle" fontSize="10" fill="#6b7280">candles</text>
-        <text x="255" y="192" textAnchor="middle" fontSize="10" fill="#6b7280">bowl + CO₂</text>
+        <text x="255" y="192" textAnchor="middle" fontSize="10" fill="#6b7280">mystery bowl</text>
       </svg>
     </div>
   )
@@ -229,10 +229,10 @@ export function ScienceLabClient({ lab, contentItemId }: { lab: ScienceLab; cont
 
   const isFireLab = lab.id.includes('fire')
   const predictionQ = isFireLab
-    ? 'Will the invisible gas put out the candles?'
+    ? 'What do you think will happen to the candles?'
     : 'Can a pen really float in mid-air using only magnets?'
   const voteOptions = {
-    up:   { emoji: '👍', label: isFireLab ? 'Yes — the candles will go out!' : 'Yes — it will float!' },
+    up:   { emoji: '👍', label: isFireLab ? 'Yes — something will change!' : 'Yes — it will float!' },
     side: { emoji: '🤔', label: "I'm not sure…" },
     down: { emoji: '👎', label: isFireLab ? 'Nothing will happen' : 'No, it will fall' },
   }
