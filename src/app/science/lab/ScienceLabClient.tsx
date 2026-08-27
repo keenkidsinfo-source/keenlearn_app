@@ -241,7 +241,7 @@ export function ScienceLabClient({ lab, contentItemId }: { lab: ScienceLab; cont
     <div className="min-h-screen bg-teal-50 flex flex-col">
       {/* Header */}
       <header className="bg-teal-600 text-white px-4 py-4 flex items-center gap-3 shrink-0">
-        <button onClick={() => router.push('/dashboard')} className="text-teal-200 text-2xl">←</button>
+        <button onClick={() => router.back()} className="text-teal-200 text-2xl">←</button>
         <div className="flex-1 min-w-0">
           <h1 className="font-black text-lg truncate">🔬 {lab.title}</h1>
           <p className="text-teal-200 text-xs">{lab.conceptShort}</p>

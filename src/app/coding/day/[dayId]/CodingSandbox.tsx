@@ -23,7 +23,7 @@ interface Props {
 
 // ── Text-to-speech helper ──────────────────────────────────────────────────
 // Splits on sentence-ending punctuation and inserts a 500 ms pause between each sentence.
-function speak(text: string) {
+function speak(text: string, baseRate = 0.6) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
   window.speechSynthesis.cancel()
 
@@ -47,17 +47,17 @@ function speak(text: string) {
 
     // Vary pitch + rate by sentence type for expressiveness
     if (s.endsWith('?')) {
-      utt.pitch = 1.3   // questions rise
-      utt.rate  = 0.65
+      utt.pitch = 1.3
+      utt.rate  = baseRate + 0.05
     } else if (s.endsWith('!')) {
-      utt.pitch = 1.2   // exclamations are bright
-      utt.rate  = 0.7
+      utt.pitch = 1.2
+      utt.rate  = baseRate + 0.1
     } else if (i === 0) {
-      utt.pitch = 1.15  // first sentence — slightly warm opener
-      utt.rate  = 0.6
+      utt.pitch = 1.15
+      utt.rate  = baseRate
     } else {
-      utt.pitch = 1.0   // regular statements are calm and clear
-      utt.rate  = 0.6
+      utt.pitch = 1.0
+      utt.rate  = baseRate
     }
 
     utt.onend = () => {
@@ -73,8 +73,10 @@ function speak(text: string) {
 
 export function CodingSandbox({
   contentItemId, sessionContentItemId, title, theme, language, projectId, projectUrl,
-  starterUrl, savedCode, gradeBand, challenge, tagline, steps, initialStep = 0
+  starterUrl, savedCode, gradeBand, challenge, tagline, steps, initialStep = 0,
 }: Props) {
+  // G1-2 gets a noticeably slower reading speed (younger ears need more time)
+  const ttsRate = gradeBand === 'g1-2' ? 0.5 : 0.6
   const router          = useRouter()
   const iframeRef       = useRef<HTMLIFrameElement>(null)
   const [saving, setSaving]   = useState(false)
@@ -424,7 +426,7 @@ export function CodingSandbox({
     return (
       <div className="flex flex-col h-screen bg-purple-50">
         <header className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3 shrink-0">
-          <button onClick={async () => { await saveScratch(); router.push('/dashboard') }} className="text-purple-200 text-2xl">←</button>
+          <button onClick={async () => { await saveScratch(); router.back() }} className="text-purple-200 text-2xl">←</button>
           <div className="flex-1 min-w-0">
             <h1 className="font-black text-lg truncate">💻 {title}</h1>
             <p className="text-purple-200 text-xs flex items-center gap-2">
@@ -463,7 +465,7 @@ export function CodingSandbox({
           currentStep={currentStep} onStepChange={handleStepChange}
           onComplete={handleStepComplete}
           onDone={() => router.push('/dashboard')}
-          onSpeak={speak}
+          onSpeak={(text) => speak(text, ttsRate)}
           onKeeBotToggle={() => setChatOpen(v => !v)}
           keeBotOpen={chatOpen}
           gradeBand={gradeBand ?? undefined}
@@ -515,7 +517,7 @@ export function CodingSandbox({
   return (
     <div className="flex flex-col h-screen bg-purple-50">
       <header className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3 shrink-0">
-        <button onClick={async () => { await savePython(); router.push('/dashboard') }} className="text-purple-200 text-2xl">←</button>
+        <button onClick={async () => { await savePython(); router.back() }} className="text-purple-200 text-2xl">←</button>
         <div className="flex-1 min-w-0">
           <h1 className="font-black text-lg truncate">💻 {title}</h1>
           <p className="text-purple-200 text-xs flex items-center gap-2">
@@ -538,7 +540,7 @@ export function CodingSandbox({
         currentStep={currentStep} onStepChange={handleStepChange}
         onComplete={handleStepComplete}
         onDone={() => router.push('/dashboard')}
-        onSpeak={speak}
+        onSpeak={(text) => speak(text, ttsRate)}
         onKeeBotToggle={() => setChatOpen(v => !v)}
         keeBotOpen={chatOpen}
       />
