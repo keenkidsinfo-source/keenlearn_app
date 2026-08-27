@@ -132,6 +132,7 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
               const last = Math.max(0, totalSteps - 1)
               setStep(last)
               setIsDone(false)
+              setShowPrep(false)
               await saveProgress(last, false)
             }}
             className="border-2 border-orange-400 text-orange-600 font-bold py-2.5 rounded-xl hover:bg-orange-100 transition-all text-sm"
