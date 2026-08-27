@@ -305,11 +305,11 @@ export default async function TeacherDashboardPage({
           ) : thisWeek ? (
             <div className="space-y-2">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-wide">{thisWeek.weekTitle}</p>
-              {weekSubjects.map(ws => {
+              {weekSubjects.filter(ws => ws.subject !== 'coding' && ws.subject !== 'math').map(ws => {
                 const emoji = SUBJECT_EMOJI[ws.subject as Subject]
                 const label = SUBJECT_LABEL[ws.subject as Subject]
                 let href = '/teacher'
-                if (ws.subject === 'build') href = `/build/day/${ws.dayId}?view=steps`
+                if (ws.subject === 'build') href = `/build/day/${ws.dayId}`
                 else if (ws.subject === 'public_speaking' && speakingDay) href = `/teacher/speaking/${speakingDay.dayId}`
                 else if (ws.subject === 'science') href = '/teacher/science'
                 return (
