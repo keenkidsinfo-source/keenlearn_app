@@ -5,47 +5,44 @@
 <text x="480" y="97" font-size="17" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Take the outside end of String 2 (right side). Tie it to the RIGHT end of the straw.</text>
 
 <!-- ZIP LINE STRAW -->
-<rect x="130" y="140" width="700" height="28" fill="#a3c96e" stroke="#1e293b" stroke-width="3" rx="12"/>
-<text x="480" y="159" font-size="13" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">ZIP LINE STRAW</text>
+<rect x="130" y="120" width="700" height="28" fill="#a3c96e" stroke="#1e293b" stroke-width="3" rx="12"/>
+<text x="480" y="139" font-size="13" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">ZIP LINE STRAW</text>
 
 <!-- Left end: already done (green) -->
-<circle cx="155" cy="140" r="14" fill="#16a34a" stroke="#1e293b" stroke-width="2"/>
-<text x="155" y="145" font-size="9" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">done</text>
+<circle cx="155" cy="120" r="14" fill="#16a34a" stroke="#1e293b" stroke-width="2"/>
+<text x="155" y="125" font-size="9" text-anchor="middle" fill="white" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">done</text>
 
-<!-- Right end: tie here (red/yellow) -->
-<circle cx="805" cy="140" r="14" fill="#fbbf24" stroke="#ef4444" stroke-width="3"/>
-<text x="805" y="145" font-size="9" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">KNOT</text>
-<text x="870" y="138" font-size="14" font-weight="bold" fill="#ef4444" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif">tie here</text>
-<text x="870" y="158" font-size="13" fill="#ef4444" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif">right end</text>
+<!-- Right end: tie here -->
+<circle cx="805" cy="120" r="14" fill="#fbbf24" stroke="#ef4444" stroke-width="3"/>
+<text x="805" y="125" font-size="9" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">KNOT</text>
+<text x="870" y="118" font-size="14" font-weight="bold" fill="#ef4444" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif">tie here</text>
+<text x="870" y="138" font-size="13" fill="#ef4444" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif">right end</text>
 
 <!-- Strings from straw ends diagonally to cup holes -->
-<!-- Left string: from (155,154) down-right to left hole (380,255) -->
-<line x1="155" y1="154" x2="382" y2="252" stroke="#6b7280" stroke-width="4"/>
-<!-- Right string: from (805,154) down-left to right hole (578,255) -->
-<line x1="805" y1="154" x2="578" y2="252" stroke="#6b7280" stroke-width="4"/>
+<line x1="155" y1="134" x2="382" y2="222" stroke="#6b7280" stroke-width="4"/>
+<line x1="805" y1="134" x2="578" y2="222" stroke="#6b7280" stroke-width="4"/>
 
 <!-- Single gondola cup centered at ~480 -->
-<!-- Cup top edge (rim): x=365 to x=595 at y=255 -->
-<line x1="365" y1="255" x2="595" y2="255" stroke="#1e293b" stroke-width="4"/>
-<!-- Cup body (trapezoid): top 365-595, bottom 385-575 -->
-<polygon points="365,255 595,255 575,350 385,350" fill="#d4956a" stroke="#1e293b" stroke-width="3"/>
+<line x1="365" y1="222" x2="595" y2="222" stroke="#1e293b" stroke-width="4"/>
+<polygon points="365,222 595,222 575,310 385,310" fill="#d4956a" stroke="#1e293b" stroke-width="3"/>
 
-<!-- Hole markers on rim (small circles) -->
-<circle cx="382" cy="255" r="5" fill="#1e293b"/>
-<circle cx="578" cy="255" r="5" fill="#1e293b"/>
+<!-- Hole markers on rim -->
+<circle cx="382" cy="222" r="5" fill="#1e293b"/>
+<circle cx="578" cy="222" r="5" fill="#1e293b"/>
 
-<!-- Knot inside the cup (small green circles inside) -->
-<circle cx="382" cy="272" r="6" fill="#16a34a"/>
-<text x="360" y="295" font-size="10" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot inside</text>
-<circle cx="578" cy="272" r="6" fill="#16a34a"/>
-<text x="556" y="295" font-size="10" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot inside</text>
+<!-- Knot inside the cup -->
+<circle cx="382" cy="238" r="6" fill="#16a34a"/>
+<text x="300" y="252" font-size="11" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot inside</text>
+<circle cx="578" cy="238" r="6" fill="#16a34a"/>
+<text x="582" y="252" font-size="11" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">knot inside</text>
 
-<text x="480" y="330" font-size="24" text-anchor="middle" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">GONDOLA DONE!</text>
-<text x="480" y="356" font-size="14" text-anchor="middle" fill="#374151" font-family="system-ui,-apple-system,sans-serif">One cup hangs below the straw — strings go from straw ends through the cup holes.</text>
+<!-- GONDOLA DONE label — below the cup -->
+<text x="480" y="345" font-size="26" text-anchor="middle" fill="#16a34a" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">✅ GONDOLA DONE!</text>
+<text x="480" y="372" font-size="14" text-anchor="middle" fill="#374151" font-family="system-ui,-apple-system,sans-serif">One cup hangs below the straw — strings go from straw ends through the cup holes.</text>
 
 <!-- Tip box -->
-<rect x="30" y="375" width="900" height="95" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="12"/>
-<text x="480" y="405" font-size="17" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">Both knots are at the ENDS of the straw. Strings go diagonally down from straw</text>
-<text x="480" y="429" font-size="17" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">ends through the cup holes. Knots inside anchor the cup.</text>
-<text x="480" y="457" font-size="16" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">Rocks go INSIDE the cup as cargo.</text>
+<rect x="30" y="392" width="900" height="110" fill="#dbeafe" stroke="#3b82f6" stroke-width="2" rx="12"/>
+<text x="480" y="422" font-size="16" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">Both knots are at the ENDS of the straw. Strings go diagonally down from straw</text>
+<text x="480" y="446" font-size="16" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">ends through the cup holes. Knots inside anchor the cup.</text>
+<text x="480" y="474" font-size="15" text-anchor="middle" fill="#1e40af" font-family="system-ui,-apple-system,sans-serif">Rocks go INSIDE the cup as cargo.</text>
 </svg>
