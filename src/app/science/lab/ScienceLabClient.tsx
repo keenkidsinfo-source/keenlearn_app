@@ -273,9 +273,14 @@ export function ScienceLabClient({ lab, contentItemId }: { lab: ScienceLab; cont
         {/* ── PREDICT phase ─────────────────────────────────────────────────── */}
         {phase === 'predict' && (
           <>
-            {/* Animated preview — no spoilers, just the animation */}
+            {/* Animated preview — setup description, no spoilers */}
             <div className="bg-white rounded-2xl shadow-sm border border-teal-100 overflow-hidden">
               {isFireLab ? <FireAnimation /> : <MagnetAnimation />}
+              <p className="text-xs text-center text-gray-500 pb-3 px-4">
+                {isFireLab
+                  ? 'The teacher will tilt the mystery bowl toward the lit candles. Watch carefully!'
+                  : 'The teacher will hold a pen between two ring magnets without touching. Watch closely!'}
+              </p>
             </div>
 
             {/* Prediction vote */}
