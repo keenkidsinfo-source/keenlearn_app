@@ -273,12 +273,8 @@ export function ScienceLabClient({ lab, contentItemId }: { lab: ScienceLab; cont
         {/* ── PREDICT phase ─────────────────────────────────────────────────── */}
         {phase === 'predict' && (
           <>
-            {/* Animated preview */}
+            {/* Animated preview — no spoilers, just the animation */}
             <div className="bg-white rounded-2xl shadow-sm border border-teal-100 overflow-hidden">
-              <div className="px-4 pt-4 pb-1">
-                <p className="text-xs font-bold text-teal-500 uppercase tracking-wide">Watch what happens in class today</p>
-                <p className="text-sm font-black text-gray-800 mt-0.5">✨ {lab.wowFactor}</p>
-              </div>
               {isFireLab ? <FireAnimation /> : <MagnetAnimation />}
             </div>
 
