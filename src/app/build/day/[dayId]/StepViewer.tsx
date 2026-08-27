@@ -250,7 +250,6 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
               src={currentUrl}
               alt={`Step ${step + 1}`}
               className="w-full object-contain p-2"
-              style={{ maxHeight: 260 }}
             />
           </div>
         )}

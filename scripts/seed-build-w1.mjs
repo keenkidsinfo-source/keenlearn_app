@@ -178,8 +178,8 @@ const builds = [
       {
         emoji: '🪣',
         title: 'Make the bucket',
-        text: 'Roll the small corrugated piece into a mini cylinder and tape the seam. Tie 3 short pieces of string around the RIM of the bucket — equally spaced (like a triangle). Knot all 3 strings together at the top. Tie this top knot to the free hanging end of your axle string.',
-        tip: 'Three equally spaced strings keep the bucket hanging level. Adjust the knot heights until the bucket hangs flat.',
+        text: 'Roll the small corrugated piece into a mini cylinder and tape the seam. Bend a paper clip into an open hook shape and loop one end through the top rim of the bucket on each side. Tie the free hanging end of your axle string directly to the paper clip hook.',
+        tip: 'The paper clip hook is your handle — make sure it sits over the rim securely before attaching the string.',
       },
       {
         emoji: '🎡',
