@@ -10,6 +10,8 @@ import {
 import { eq, and } from 'drizzle-orm'
 import { getResultFields } from '@/lib/build-result-fields'
 import { ResultsForm } from './ResultsForm'
+import { StudentSidebar } from '@/app/dashboard/StudentSidebar'
+import { getWeekNav } from '@/lib/student-week-nav'
 
 interface Props { params: Promise<{ dayId: string }> }
 
@@ -63,14 +65,21 @@ export default async function BuildResultsPage({ params }: Props) {
     note: br.note ?? '',
   }
 
+  const nav = await getWeekNav(dayId)
+
   return (
-    <ResultsForm
-      contentItemId={item.id}
-      dayId={dayId}
-      buildTitle={item.title}
-      myStudentId={session.sub}
-      resultFields={resultFields}
-      initial={initial}
-    />
+    <div className="flex h-screen overflow-hidden">
+      <StudentSidebar nav={nav} gradeBand={(gradeBand as 'g1-2' | 'g3-4') ?? null} />
+      <div className="flex-1 overflow-y-auto">
+        <ResultsForm
+          contentItemId={item.id}
+          dayId={dayId}
+          buildTitle={item.title}
+          myStudentId={session.sub}
+          resultFields={resultFields}
+          initial={initial}
+        />
+      </div>
+    </div>
   )
 }

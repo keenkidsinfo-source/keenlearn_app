@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { curriculumDays, curriculumContent, contentItems, studentSessions } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { SpeakingActivity } from './SpeakingActivity'
+import { StudentSidebar } from '@/app/dashboard/StudentSidebar'
+import { getWeekNav } from '@/lib/student-week-nav'
 
 interface Props { params: Promise<{ dayId: string }> }
 
@@ -41,15 +43,21 @@ export default async function SpeakingDayPage({ params }: Props) {
     .limit(1)
 
   const meta = (item.metadata as any) ?? {}
+  const nav = await getWeekNav(dayId)
 
   return (
-    <SpeakingActivity
-      contentItemId={item.id}
-      title={item.title}
-      theme={day.theme ?? ''}
-      gradeBand={session.gradeBand ?? null}
-      completed={sessionData?.completed ?? false}
-      meta={meta}
-    />
+    <div className="flex h-screen overflow-hidden">
+      <StudentSidebar nav={nav} gradeBand={(session.gradeBand as 'g1-2' | 'g3-4') ?? null} />
+      <div className="flex-1 overflow-y-auto">
+        <SpeakingActivity
+          contentItemId={item.id}
+          title={item.title}
+          theme={day.theme ?? ''}
+          gradeBand={session.gradeBand ?? null}
+          completed={sessionData?.completed ?? false}
+          meta={meta}
+        />
+      </div>
+    </div>
   )
 }

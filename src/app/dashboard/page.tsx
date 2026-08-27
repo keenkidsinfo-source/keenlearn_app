@@ -12,7 +12,9 @@ import { eq, and, desc, lte } from 'drizzle-orm'
 import Link from 'next/link'
 import type { Subject } from '@/lib/db/schema'
 import { WeekDays } from './WeekDays'
+import { StudentSidebar } from './StudentSidebar'
 import { getLabForDashboard } from '@/lib/scienceLabs'
+import type { WeekNav } from '@/lib/student-week-nav'
 
 function getMondayStr(): string {
   const today = new Date()
@@ -122,28 +124,34 @@ export default async function DashboardPage({
 
   const labToShow = getLabForDashboard()
 
+  const nav: WeekNav = {
+    build:           subjectToDay.get('build')?.id           ?? null,
+    coding:          subjectToDay.get('coding')?.id          ?? null,
+    public_speaking: subjectToDay.get('public_speaking')?.id ?? null,
+    science:         subjectToDay.get('science')?.id         ?? null,
+    math:            subjectToDay.get('math')?.id            ?? null,
+    arts:            subjectToDay.get('arts')?.id            ?? null,
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-keen-600 text-white px-6 py-5">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center bg-keen-500 text-white text-xs font-black px-2 py-0.5 rounded-lg tracking-wide">KK·LEARN</span>
-              <h1 className="text-xl font-black">KeenKids</h1>
+    <div className="flex h-screen overflow-hidden bg-gray-50">
+      <StudentSidebar nav={nav} gradeBand={(classroom?.gradeBand as 'g1-2' | 'g3-4') ?? null} />
+
+      <div className="flex-1 overflow-y-auto">
+        {/* Header */}
+        <header className="bg-keen-600 text-white px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-lg font-black">
+                {school?.name ?? 'KeenKids'}
+              </h1>
+              <p className="text-keen-200 text-sm mt-0.5">
+                {assigned?.weekTitle ?? 'This week'}
+              </p>
             </div>
-            <p className="text-keen-200 text-sm mt-0.5">
-              {school?.name ?? ''}{assigned?.weekTitle ? ` · ${assigned.weekTitle}` : ''}
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
             <Link href="/achievements" className="text-3xl" aria-label="My achievements">🏆</Link>
-            <form action="/api/v1/auth/logout" method="POST">
-              <button type="submit" className="text-keen-200 hover:text-white text-sm font-semibold">Sign out</button>
-            </form>
           </div>
-        </div>
-      </header>
+        </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
         <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned || !!nearestBuildDayId} canEnterResults={canEnterResults} />
@@ -179,6 +187,7 @@ export default async function DashboardPage({
           </Link>
         )}
       </main>
+      </div>
     </div>
   )
 }

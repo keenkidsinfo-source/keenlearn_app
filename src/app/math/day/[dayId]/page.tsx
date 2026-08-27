@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { curriculumDays, curriculumContent, contentItems, studentSessions } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { MathActivity } from './MathActivity'
+import { StudentSidebar } from '@/app/dashboard/StudentSidebar'
+import { getWeekNav } from '@/lib/student-week-nav'
 
 interface Props { params: { dayId: string } }
 
@@ -34,17 +36,23 @@ export default async function MathDayPage({ params }: Props) {
   const existing = (sessionData?.sessionData as any) ?? null
 
   const questions = (item.metadata as any)?.questions ?? []
+  const nav = await getWeekNav(params.dayId)
 
   return (
-    <MathActivity
-      contentItemId={item.id}
-      title={item.title}
-      description={item.description ?? ''}
-      theme={day.theme ?? ''}
-      gradeBand={session.gradeBand ?? null}
-      completed={sessionData?.completed ?? false}
-      existingSession={existing}
-      questions={questions}
-    />
+    <div className="flex h-screen overflow-hidden">
+      <StudentSidebar nav={nav} gradeBand={(session.gradeBand as 'g1-2' | 'g3-4') ?? null} />
+      <div className="flex-1 overflow-y-auto">
+        <MathActivity
+          contentItemId={item.id}
+          title={item.title}
+          description={item.description ?? ''}
+          theme={day.theme ?? ''}
+          gradeBand={session.gradeBand ?? null}
+          completed={sessionData?.completed ?? false}
+          existingSession={existing}
+          questions={questions}
+        />
+      </div>
+    </div>
   )
 }
