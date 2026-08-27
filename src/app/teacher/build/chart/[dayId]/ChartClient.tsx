@@ -142,6 +142,28 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
     />
   )
 
+  if (students.length === 0) return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-teal-700 text-white px-6 py-4">
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-black">📊 Class Results Chart</h1>
+            <p className="text-teal-200 text-sm">{buildTitle} · {isG12 ? 'Grades 1–2' : 'Grades 3–4'}</p>
+          </div>
+          <a href="/teacher" className="text-teal-200 text-sm hover:text-white">← Dashboard</a>
+        </div>
+      </header>
+      <main className="max-w-3xl mx-auto px-4 py-16 flex flex-col items-center text-center gap-4">
+        <p className="text-5xl">👥</p>
+        <h2 className="font-black text-gray-700 text-xl">No students yet</h2>
+        <p className="text-gray-500 text-sm max-w-xs">Add students to your classroom first, then come back here to enter their results.</p>
+        <a href="/teacher#students" className="mt-2 px-6 py-3 rounded-xl bg-teal-600 text-white font-bold text-sm hover:bg-teal-500 transition-all">
+          + Add Students →
+        </a>
+      </main>
+    </div>
+  )
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-teal-700 text-white px-6 py-4">
