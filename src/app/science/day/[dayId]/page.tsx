@@ -1,10 +1,12 @@
 import { redirect, notFound } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
-import { curriculumDays, curriculum, curriculumContent } from '@/lib/db/schema'
+import { curriculumDays, curriculum, curriculumContent, classrooms } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import { scienceLabs } from '@/lib/scienceLabs'
 import { ScienceLabClient } from '@/app/science/lab/ScienceLabClient'
+import { StudentSidebar } from '@/app/dashboard/StudentSidebar'
+import { getWeekNav } from '@/lib/student-week-nav'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,10 +41,20 @@ export default async function ScienceDayPage({ params }: Props) {
 
   if (!lab) redirect('/dashboard')
 
+  const nav = await getWeekNav(dayId)
+  const [classroom] = session.classroomId
+    ? await db.select({ gradeBand: classrooms.gradeBand }).from(classrooms).where(eq(classrooms.id, session.classroomId)).limit(1)
+    : [undefined]
+
   return (
-    <ScienceLabClient
-      lab={lab}
-      contentItemId={contentRow?.contentItemId ?? null}
-    />
+    <div className="flex h-screen overflow-hidden">
+      <StudentSidebar nav={nav} gradeBand={(classroom?.gradeBand as 'g1-2' | 'g3-4') ?? null} name={session.name} />
+      <div className="flex-1 overflow-y-auto">
+        <ScienceLabClient
+          lab={lab}
+          contentItemId={contentRow?.contentItemId ?? null}
+        />
+      </div>
+    </div>
   )
 }

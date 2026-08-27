@@ -135,7 +135,7 @@ export default async function DashboardPage({
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      <StudentSidebar nav={nav} gradeBand={(classroom?.gradeBand as 'g1-2' | 'g3-4') ?? null} />
+      <StudentSidebar nav={nav} gradeBand={(classroom?.gradeBand as 'g1-2' | 'g3-4') ?? null} name={session.name} />
 
       <div className="flex-1 overflow-y-auto">
         {/* Header */}

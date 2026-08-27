@@ -18,7 +18,7 @@ export default async function ScienceLabPage() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <StudentSidebar nav={nav} gradeBand={(session.gradeBand as 'g1-2' | 'g3-4') ?? null} />
+      <StudentSidebar nav={nav} gradeBand={(session.gradeBand as 'g1-2' | 'g3-4') ?? null} name={session.name} />
       <div className="flex-1 overflow-y-auto">
         <ScienceLabClient lab={lab} contentItemId={null} />
       </div>

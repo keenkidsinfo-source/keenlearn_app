@@ -8,6 +8,7 @@ import type { WeekNav } from '@/lib/student-week-nav'
 interface Props {
   nav: WeekNav
   gradeBand: 'g1-2' | 'g3-4' | null
+  name?: string | null
 }
 
 const ITEMS = [
@@ -41,17 +42,21 @@ function isActive(key: string, pathname: string): boolean {
   return false
 }
 
-export function StudentSidebar({ nav, gradeBand }: Props) {
+export function StudentSidebar({ nav, gradeBand, name }: Props) {
   const pathname = usePathname()
+  const firstName = name?.split(' ')[0] ?? null
 
   return (
     <aside className="w-20 md:w-48 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col h-screen sticky top-0">
-      {/* Logo */}
+      {/* Logo + name */}
       <div className="px-3 py-4 border-b border-gray-100">
         <div className="flex items-center gap-2">
           <span className="text-xl font-black text-keen-600">KK</span>
           <span className="hidden md:block text-xs font-black text-gray-400 uppercase tracking-widest">Learn</span>
         </div>
+        {firstName && (
+          <p className="hidden md:block text-xs text-gray-500 mt-1 truncate">Hi, {firstName}! 👋</p>
+        )}
       </div>
 
       <nav className="flex-1 py-3 flex flex-col gap-1 px-2">

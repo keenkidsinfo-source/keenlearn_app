@@ -69,7 +69,7 @@ export default async function BuildResultsPage({ params }: Props) {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <StudentSidebar nav={nav} gradeBand={(gradeBand as 'g1-2' | 'g3-4') ?? null} />
+      <StudentSidebar nav={nav} gradeBand={(gradeBand as 'g1-2' | 'g3-4') ?? null} name={session.name} />
       <div className="flex-1 overflow-y-auto">
         <ResultsForm
           contentItemId={item.id}

@@ -8,6 +8,8 @@ import {
 } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import Link from 'next/link'
+import { StudentSidebar } from '@/app/dashboard/StudentSidebar'
+import { getWeekNav } from '@/lib/student-week-nav'
 
 interface Props { params: Promise<{ dayId: string }> }
 
@@ -35,9 +37,12 @@ export default async function BuildWatchPage({ params }: Props) {
     .limit(1)
 
   const title = row?.item.title ?? 'Build Day'
+  const nav = await getWeekNav(dayId)
 
   return (
-    <div className="min-h-screen bg-orange-50 flex flex-col items-center justify-center p-6 text-center">
+    <div className="flex h-screen overflow-hidden">
+      <StudentSidebar nav={nav} gradeBand="g1-2" name={session.name} />
+      <div className="flex-1 overflow-y-auto bg-orange-50 flex flex-col items-center justify-center p-6 text-center">
       <div className="text-8xl mb-6 animate-bounce">🏗️</div>
       <h1 className="text-4xl font-black text-orange-700 mb-3">It&apos;s Build Day!</h1>
       <p className="text-2xl font-bold text-orange-500 mb-6">{title}</p>
@@ -54,6 +59,7 @@ export default async function BuildWatchPage({ params }: Props) {
       <Link href="/dashboard" className="mt-8 text-orange-400 font-bold text-sm hover:text-orange-600">
         ← Back to Home
       </Link>
+      </div>
     </div>
   )
 }
