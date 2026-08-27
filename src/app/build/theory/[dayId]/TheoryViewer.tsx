@@ -816,7 +816,7 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
         <p className="flex-1 font-black text-base truncate">{current.emoji} {current.title}</p>
         <div className="flex items-center gap-1.5 shrink-0">
           <button onClick={() => router.push(`/build/day/${buildDayId}`)} className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all">⚙️ Setup</button>
-          <button onClick={() => router.push(`/build/day/${buildDayId}`)} className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all">🏗️ Steps</button>
+          <button onClick={() => router.push(`/build/day/${buildDayId}?view=steps`)} className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all">🏗️ Steps</button>
           <button onClick={() => router.push(`/teacher/build/chart/${buildDayId}`)} className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all">📊 Results</button>
         </div>
         {/* Dot nav */}
@@ -882,7 +882,7 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
         </button>
         {isLast ? (
           <button
-            onClick={() => router.push(`/build/day/${buildDayId}`)}
+            onClick={() => router.push(`/build/day/${buildDayId}?view=steps`)}
             className={cn('min-h-[48px] px-8 rounded-xl text-white font-bold active:scale-95 transition-all shadow', colors.badge)}
             style={{ flex: 2 }}
           >
