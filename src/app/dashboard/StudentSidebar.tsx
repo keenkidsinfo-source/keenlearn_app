@@ -49,21 +49,30 @@ export function StudentSidebar({ nav, gradeBand, name }: Props) {
   return (
     <aside className="w-20 md:w-48 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col h-screen sticky top-0">
       {/* Logo + name + sign out */}
-      <div className="px-3 py-4 border-b border-gray-100">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-xl font-black text-keen-600 shrink-0">KK</span>
-            <span className="hidden md:block text-xs font-black text-gray-400 uppercase tracking-widest truncate">Learn</span>
-          </div>
-          <form action="/api/v1/auth/logout" method="POST" className="shrink-0">
-            <button type="submit" title="Sign out" className="text-gray-300 hover:text-gray-500 transition-all text-base leading-none">
-              🚪
-            </button>
-          </form>
+      <div className="px-3 py-3 border-b border-gray-100 flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xl font-black text-keen-600 shrink-0">KK</span>
+          <span className="hidden md:block text-xs font-black text-gray-400 uppercase tracking-widest">Learn</span>
         </div>
         {firstName && (
-          <p className="hidden md:block text-xs text-gray-500 mt-1 truncate">Hi, {firstName}! 👋</p>
+          <p className="hidden md:block text-base font-bold text-gray-800 truncate">Hi, {firstName}! 👋</p>
         )}
+        <form action="/api/v1/auth/logout" method="POST">
+          <button
+            type="submit"
+            className="hidden md:flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-red-500 transition-all"
+          >
+            <span>🚪</span>
+            <span>Sign out</span>
+          </button>
+          {/* Icon-only on small sidebar */}
+          <button
+            type="submit"
+            className="md:hidden text-base text-gray-400 hover:text-red-500 transition-all"
+          >
+            🚪
+          </button>
+        </form>
       </div>
 
       <nav className="flex-1 py-3 flex flex-col gap-1 px-2">
