@@ -44,7 +44,7 @@ export default async function TeacherSciencePage({ searchParams }: Props) {
       </header>
 
       <div className="flex flex-1">
-        <TeacherSidebar activePage="science" />
+        <TeacherSidebar activePage="science" email={session.email} />
         <main className="flex-1 overflow-y-auto bg-gray-50 px-6 py-6">
         <div className="bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
           {/* Lab title */}

@@ -12,6 +12,7 @@ interface Props {
   buildDayId?: string | null
   /** Order of the 4 activity subjects for this school's schedule */
   subjectOrder?: ActivitySubject[]
+  email?: string | null
 }
 
 // Fixed top/bottom items
@@ -37,7 +38,7 @@ const BUILD_SUB: { label: string; emoji: string; getHref: (id: string) => string
   { label: 'Results Chart', emoji: '📊', getHref: id => `/teacher/build/chart/${id}`,       pathMatch: '/teacher/build/chart/' },
 ]
 
-export function TeacherSidebar({ activePage, speakingHref, buildDayId, subjectOrder }: Props) {
+export function TeacherSidebar({ activePage, speakingHref, buildDayId, subjectOrder, email }: Props) {
   const pathname = usePathname()
   const isBuildSection = activePage === 'build'
 
@@ -123,6 +124,18 @@ export function TeacherSidebar({ activePage, speakingHref, buildDayId, subjectOr
           {item.label}
         </Link>
       ))}
+
+      {/* Email + sign out */}
+      <div className="mt-auto border-t border-white/10 px-3 py-3 flex flex-col gap-1">
+        {email && (
+          <p className="text-[9px] text-[#7dd3fc] font-semibold truncate" title={email}>{email}</p>
+        )}
+        <form action="/api/v1/auth/logout" method="POST">
+          <button type="submit" className="flex items-center gap-1.5 text-[10px] font-bold text-[#7dd3fc] hover:text-white transition-colors">
+            <span aria-hidden="true">🚪</span> Sign out
+          </button>
+        </form>
+      </div>
 
     </nav>
   )

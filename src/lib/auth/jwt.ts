@@ -8,6 +8,7 @@ export interface JWTPayload {
   classroomId?: string
   gradeBand?: GradeBand
   name: string
+  email?: string
 }
 
 const secret = () => new TextEncoder().encode(process.env.JWT_SECRET!)
