@@ -37,8 +37,8 @@ export async function POST(req: NextRequest) {
   if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
 
   if (!name?.trim()) return apiError('Name is required', 'MISSING_NAME', 400)
-  if (!pin || String(pin).length !== 4 || isNaN(Number(pin))) {
-    return apiError('PIN must be 4 digits', 'INVALID_PIN', 400)
+  if (!pin || String(pin).length < 2) {
+    return apiError('PIN must be at least 2 characters', 'INVALID_PIN', 400)
   }
 
   const pinHash = await bcrypt.hash(String(pin), 10)

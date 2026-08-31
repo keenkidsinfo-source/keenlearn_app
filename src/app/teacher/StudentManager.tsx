@@ -61,7 +61,7 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
   function parseCsv(text: string): CsvRow[] {
     return text.split('\n')
       .map(l => l.trim())
-      .filter(l => l && !l.toLowerCase().startsWith('name'))
+      .filter(l => l && !l.toLowerCase().startsWith('name') && !l.toLowerCase().startsWith('pin'))
       .map(l => {
         const cols = l.split(',').map(c => c.trim())
         return {
@@ -72,7 +72,7 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
           parentPhone: cols[4] ?? '',
         }
       })
-      .filter(r => r.name && r.pin.length === 4 && !isNaN(Number(r.pin)))
+      .filter(r => r.name.length > 0 && r.pin.length >= 2)
   }
 
   async function importCsvStudents() {

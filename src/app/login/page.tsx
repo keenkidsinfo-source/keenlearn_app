@@ -79,7 +79,7 @@ function LoginForm() {
   }
 
   async function handlePinSubmit() {
-    if (pin.length !== 4) return
+    if (pin.length < 2) return
     setLoading(true)
     setError('')
     try {
@@ -209,22 +209,19 @@ function LoginForm() {
         {step === 'enter-pin' && (
           <div className="bg-white rounded-3xl shadow-lg p-8">
             <h2 className="text-2xl font-bold text-center mb-1">Hi, {pendingFirstName}! 👋</h2>
-            <p className="text-center text-gray-400 text-sm mb-6">Enter your 4-digit PIN</p>
+            <p className="text-center text-gray-400 text-sm mb-6">Enter your PIN</p>
             <input
               type="password"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              maxLength={4}
               value={pin}
-              onChange={e => { setPin(e.target.value.replace(/\D/g, '')); setError('') }}
-              placeholder="• • • •"
+              onChange={e => { setPin(e.target.value); setError('') }}
+              placeholder="PIN"
               className="w-full text-center text-4xl font-black tracking-[0.5em] border-4 border-keen-200 rounded-2xl p-4 focus:outline-none focus:border-keen-500"
               autoFocus
-              onKeyDown={e => e.key === 'Enter' && pin.length === 4 && handlePinSubmit()}
+              onKeyDown={e => e.key === 'Enter' && pin.length >= 2 && handlePinSubmit()}
             />
             <button
               onClick={handlePinSubmit}
-              disabled={pin.length !== 4 || loading}
+              disabled={pin.length < 2 || loading}
               className="btn-primary w-full mt-6 disabled:opacity-50"
             >
               {loading ? 'Checking...' : 'Go! →'}
