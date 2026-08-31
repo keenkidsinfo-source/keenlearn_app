@@ -27,6 +27,7 @@ type Modal =
   | { type: 'edit-parent'; student: Student }
   | { type: 'delete'; student: Student }
   | { type: 'bulk-parents' }
+  | { type: 'bulk-students' }
   | null
 
 export function StudentManager({ initialStudents, classroomId }: Props) {
@@ -50,6 +51,64 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
   const [editParentName, setEditParentName]   = useState('')
   const [editParentEmail, setEditParentEmail] = useState('')
   const [editParentPhone, setEditParentPhone] = useState('')
+  // ── Bulk student CSV state
+  const [csvText, setCsvText]         = useState('')
+  const [csvImporting, setCsvImporting] = useState(false)
+  const [csvResult, setCsvResult]     = useState<{ done: number; failed: string[] } | null>(null)
+
+  type CsvRow = { name: string; pin: string; parentName: string; parentEmail: string; parentPhone: string }
+
+  function parseCsv(text: string): CsvRow[] {
+    return text.split('\n')
+      .map(l => l.trim())
+      .filter(l => l && !l.toLowerCase().startsWith('name'))
+      .map(l => {
+        const cols = l.split(',').map(c => c.trim())
+        return {
+          name:        cols[0] ?? '',
+          pin:         cols[1] ?? '',
+          parentName:  cols[2] ?? '',
+          parentEmail: cols[3] ?? '',
+          parentPhone: cols[4] ?? '',
+        }
+      })
+      .filter(r => r.name && r.pin.length === 4 && !isNaN(Number(r.pin)))
+  }
+
+  async function importCsvStudents() {
+    const rows = parseCsv(csvText)
+    if (!rows.length) { setError('No valid rows found'); return }
+    setCsvImporting(true); setError(''); setCsvResult(null)
+    const failed: string[] = []
+    let done = 0
+    for (const row of rows) {
+      try {
+        const res = await fetch('/api/v1/teacher/students', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: row.name, pin: row.pin, avatarId: Math.ceil(Math.random() * 8),
+            parentName:  row.parentName  || null,
+            parentEmail: row.parentEmail || null,
+            parentPhone: row.parentPhone || null,
+            classroomId: classroomId ?? null,
+          }),
+        })
+        if (res.ok) {
+          const json = await res.json()
+          setStudents(prev => [...prev, { ...json.data, parentPhone: json.data.parentPhone ?? null }])
+          done++
+        } else {
+          failed.push(row.name)
+        }
+      } catch {
+        failed.push(row.name)
+      }
+    }
+    setStudents(prev => [...prev].sort((a, b) => a.name.localeCompare(b.name)))
+    setCsvResult({ done, failed })
+    setCsvImporting(false)
+  }
 
   function closeModal() {
     setModal(null)
@@ -59,6 +118,7 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
     setEditName('')
     setNewPinEdit('')
     setEditParentName(''); setEditParentEmail(''); setEditParentPhone('')
+    setCsvText(''); setCsvResult(null)
   }
 
   async function addStudent() {
@@ -230,13 +290,20 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
       </div>
 
       {/* Add student + bulk upload buttons */}
-      <div className="mt-4 flex gap-2">
+      <div className="mt-4 flex gap-2 flex-wrap">
         <button
           onClick={() => setModal({ type: 'add' })}
           className="flex-1 border-2 border-dashed border-keen-300 text-keen-600 font-bold py-3 rounded-xl hover:border-keen-500 hover:bg-keen-50 transition-all text-sm"
           title="Create a new student account with name, PIN, and optional parent contact"
         >
           + Add New Student
+        </button>
+        <button
+          onClick={() => { setCsvText(''); setCsvResult(null); setModal({ type: 'bulk-students' }) }}
+          className="flex-1 border-2 border-dashed border-green-300 text-green-700 font-bold py-3 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all text-sm"
+          title="Import multiple students at once from a CSV list"
+        >
+          📋 Bulk Import Students
         </button>
         {students.length > 0 && (
           <button
@@ -253,6 +320,56 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
       {modal && (
         <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50 p-4">
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+
+            {/* BULK STUDENT IMPORT */}
+            {modal.type === 'bulk-students' && (
+              <>
+                <h3 className="text-xl font-black text-gray-800 mb-1">Bulk Import Students</h3>
+                <p className="text-gray-500 text-sm mb-3">
+                  Paste a list — one student per line:<br/>
+                  <code className="bg-gray-100 px-1 rounded text-xs">Name, PIN</code> or&nbsp;
+                  <code className="bg-gray-100 px-1 rounded text-xs">Name, PIN, Parent Name, Parent Email, Parent Phone</code>
+                </p>
+                <textarea
+                  value={csvText}
+                  onChange={e => { setCsvText(e.target.value); setCsvResult(null) }}
+                  placeholder={"Alice Smith, 1234\nBob Jones, 5678, Jane Jones, jane@gmail.com\n..."}
+                  rows={8}
+                  className="w-full border-2 border-gray-200 rounded-xl px-3 py-2.5 text-sm font-mono focus:border-green-400 focus:outline-none resize-none"
+                />
+                {csvText.trim() && (() => {
+                  const rows = parseCsv(csvText)
+                  return (
+                    <p className="text-sm text-gray-600 mt-1">
+                      {rows.length > 0
+                        ? <span className="text-green-700 font-semibold">✓ {rows.length} valid student{rows.length !== 1 ? 's' : ''} ready to import</span>
+                        : <span className="text-red-500 font-semibold">No valid rows found — check format</span>}
+                    </p>
+                  )
+                })()}
+                {csvResult && (
+                  <div className={`mt-2 rounded-xl px-4 py-3 text-sm font-semibold ${csvResult.failed.length === 0 ? 'bg-green-50 text-green-800' : 'bg-orange-50 text-orange-800'}`}>
+                    ✓ {csvResult.done} imported
+                    {csvResult.failed.length > 0 && <span> · Failed: {csvResult.failed.join(', ')}</span>}
+                  </div>
+                )}
+                {error && <p className="text-red-500 text-sm font-semibold mt-2">{error}</p>}
+                <div className="flex gap-3 mt-4">
+                  <button onClick={closeModal} className="flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-bold hover:bg-gray-50">
+                    {csvResult ? 'Done' : 'Cancel'}
+                  </button>
+                  {!csvResult && (
+                    <button
+                      onClick={importCsvStudents}
+                      disabled={csvImporting || parseCsv(csvText).length === 0}
+                      className="flex-1 py-3 rounded-xl bg-green-600 text-white font-bold hover:bg-green-500 disabled:opacity-60"
+                    >
+                      {csvImporting ? 'Importing…' : `Import ${parseCsv(csvText).length} Students`}
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
 
             {/* BULK PARENT UPLOAD */}
             {modal.type === 'bulk-parents' && (
