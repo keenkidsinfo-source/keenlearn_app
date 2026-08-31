@@ -147,7 +147,7 @@ export async function POST(req: NextRequest) {
     role:        teacher.role as 'teacher' | 'admin',
     classroomId: teacher.classroomId ?? undefined,
     name:        teacher.name,
-    email:       teacher.email,
+    email:       teacher.email ?? undefined,
   })
 
   const res = apiOk({ id: teacher.id, name: teacher.name, role: teacher.role, email: teacher.email })
