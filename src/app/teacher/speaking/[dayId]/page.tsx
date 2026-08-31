@@ -97,7 +97,7 @@ export default async function TeacherSpeakingPage({ params }: Props) {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        <TeacherSidebar activePage="speaking" speakingHref={`/teacher/speaking/${dayId}`} />
+        <TeacherSidebar activePage="speaking" speakingHref={`/teacher/speaking/${dayId}`} email={session.email} />
         <div className="flex-1 overflow-y-auto bg-teal-50">
           <SpeakingSession
             contentItemId={item.id}

@@ -82,7 +82,7 @@ export default async function BuildDayPage({ params, searchParams }: Props) {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <TeacherSidebar activePage="build" buildDayId={dayId} />
+      <TeacherSidebar activePage="build" buildDayId={dayId} email={session.email} />
       <div className="flex-1 overflow-y-auto">
         <StepViewer
           contentItemId={item.id}
@@ -91,7 +91,7 @@ export default async function BuildDayPage({ params, searchParams }: Props) {
           theme={day.theme ?? ''}
           stepUrls={stepUrls}
           steps={textSteps.length > 0 ? textSteps : undefined}
-          initialStep={lastStep}
+          initialStep={0}
           completed={sessionData?.completed ?? false}
           gradeBand={(item.gradeBand as GradeBand | null) ?? null}
           startWithSetup={view !== 'steps'}

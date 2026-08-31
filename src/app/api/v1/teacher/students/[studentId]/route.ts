@@ -19,17 +19,29 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     return apiError('Forbidden', 'FORBIDDEN', 403)
   }
 
-  const classroom = await getTeacherClassroom(teacherId!)
-  if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
+  // Admins can edit any student; teachers must own the classroom
+  if (role !== 'admin') {
+    const classroom = await getTeacherClassroom(teacherId!)
+    if (!classroom) return apiError('No classroom found', 'NO_CLASSROOM', 404)
 
-  // Verify student belongs to this classroom
-  const [student] = await db
-    .select()
-    .from(users)
-    .where(and(eq(users.id, params.studentId), eq(users.classroomId, classroom.id)))
-    .limit(1)
+    const [studentCheck] = await db
+      .select()
+      .from(users)
+      .where(and(eq(users.id, params.studentId), eq(users.classroomId, classroom.id)))
+      .limit(1)
 
-  if (!student) return apiError('Student not found', 'NOT_FOUND', 404)
+    if (!studentCheck) return apiError('Student not found', 'NOT_FOUND', 404)
+  } else {
+    const [studentCheck] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, params.studentId))
+      .limit(1)
+
+    if (!studentCheck || studentCheck.role !== 'student') {
+      return apiError('Student not found', 'NOT_FOUND', 404)
+    }
+  }
 
   const body = await req.json()
   const updates: Record<string, unknown> = {}
@@ -78,6 +90,26 @@ export async function DELETE(req: NextRequest, { params }: Props) {
 
   if (role !== 'teacher' && role !== 'admin') {
     return apiError('Forbidden', 'FORBIDDEN', 403)
+  }
+
+  // Admins can delete any student directly; teachers must own the classroom
+  if (role === 'admin') {
+    const [student] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, params.studentId))
+      .limit(1)
+
+    if (!student || student.role !== 'student') {
+      return apiError('Student not found', 'NOT_FOUND', 404)
+    }
+
+    await db
+      .update(users)
+      .set({ deletedAt: new Date() })
+      .where(eq(users.id, params.studentId))
+
+    return apiOk({ deleted: true })
   }
 
   const classroom2 = await getTeacherClassroom(teacherId!)
