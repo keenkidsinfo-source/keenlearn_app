@@ -16,9 +16,10 @@ import { getTeacherClassroom } from '@/lib/teacher-classroom'
 // ── Schema ────────────────────────────────────────────────────────────────────
 
 const bodySchema = z.object({
-  weekStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  classroomId:  z.string().uuid().optional(),
-  photos:       z.array(z.string()).max(6).optional(),
+  weekStartDate:  z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  classroomId:    z.string().uuid().optional(),
+  photos:         z.array(z.string()).max(6).optional(),
+  selectedEmails: z.array(z.string().email()).optional(),
 })
 
 // ── GET /api/v1/teacher/send-report?weekStartDate=YYYY-MM-DD ─────────────────
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
   const parsed = bodySchema.safeParse(body)
   if (!parsed.success) return apiError('Invalid request', 'VALIDATION_ERROR', 400)
 
-  const { weekStartDate, classroomId: adminClassroomId, photos = [] } = parsed.data
+  const { weekStartDate, classroomId: adminClassroomId, photos = [], selectedEmails } = parsed.data
 
   // ── 1. Load classroom + teacher email ───────────────────────────────────────
   const classroom = await getTeacherClassroom(session.sub, session.role === 'admin' ? adminClassroomId : undefined)
@@ -170,6 +171,12 @@ export async function POST(req: NextRequest) {
     const studentName = (student.displayName ?? student.name).trim()
 
     if (!student.parentEmail) {
+      results.push({ student: studentName, status: 'no_email' })
+      continue
+    }
+
+    // Skip if teacher deselected this student
+    if (selectedEmails && !selectedEmails.includes(student.parentEmail)) {
       results.push({ student: studentName, status: 'no_email' })
       continue
     }

@@ -56,8 +56,9 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
   const [preview, setPreview] = useState<PreviewRow[]>([])
   const [result, setResult]   = useState<SendResult | null>(null)
   const [errMsg, setErrMsg]   = useState('')
-  const [photos, setPhotos]   = useState<string[]>([])   // base64 data URLs
+  const [photos, setPhotos]     = useState<string[]>([])   // base64 data URLs
   const [photoLoading, setPhotoLoading] = useState(false)
+  const [selected, setSelected] = useState<Set<string>>(new Set()) // selected parent emails
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   async function loadPreview() {
@@ -67,12 +68,29 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
       const res = await fetch(`/api/v1/teacher/send-report?${qs}`)
       const data = await res.json()
       if (!res.ok) { setErrMsg(data?.error ?? `Error ${res.status}`); setState('error'); return }
-      setPreview(data.data.preview)
+      const rows: PreviewRow[] = data.data.preview
+      setPreview(rows)
+      // Select all matched students by default
+      setSelected(new Set(rows.filter(r => r.matched && r.parentEmail).map(r => r.parentEmail!)))
       setState('preview')
     } catch (e: any) {
       setErrMsg(e?.message ?? 'Network error')
       setState('error')
     }
+  }
+
+  function toggleStudent(email: string) {
+    setSelected(prev => {
+      const next = new Set(prev)
+      next.has(email) ? next.delete(email) : next.add(email)
+      return next
+    })
+  }
+
+  function toggleAll(matched: PreviewRow[]) {
+    const emails = matched.map(r => r.parentEmail!)
+    const allSelected = emails.every(e => selected.has(e))
+    setSelected(allSelected ? new Set() : new Set(emails))
   }
 
   async function handlePhotoFiles(files: FileList | null) {
@@ -105,7 +123,8 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
         body:    JSON.stringify({
           weekStartDate,
           ...(classroomId ? { classroomId } : {}),
-          photos: photos.length > 0 ? photos : undefined,
+          photos:         photos.length > 0 ? photos : undefined,
+          selectedEmails: Array.from(selected),
         }),
       })
       const data = await res.json()
@@ -141,23 +160,51 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
 
   // ── Preview ───────────────────────────────────────────────────────────────
   if (state === 'preview') {
-    const emailCount = preview.filter(p => p.matched).length
+    const matched    = preview.filter(p => p.matched && p.parentEmail)
     const missing    = preview.filter(p => !p.matched)
+    const allChecked = matched.length > 0 && matched.every(r => selected.has(r.parentEmail!))
+    const sendCount  = selected.size
     return (
       <div className="mt-2 bg-indigo-50 border border-indigo-200 rounded-xl p-4">
         <p className="font-bold text-indigo-800 text-sm mb-1">📤 Ready to send — {weekTitle}</p>
         <p className="text-indigo-600 text-xs mb-3">
-          {emailCount} of {preview.length} students have a parent email on file.
+          {matched.length} of {preview.length} students have a parent email on file.
         </p>
 
-        {/* Student list */}
+        {/* Student list with checkboxes */}
+        {matched.length > 0 && (
+          <div className="mb-1 flex items-center justify-between px-1">
+            <span className="text-xs text-gray-500">{sendCount} selected</span>
+            <button
+              onClick={() => toggleAll(matched)}
+              className="text-xs text-indigo-600 font-semibold hover:underline"
+            >
+              {allChecked ? 'Deselect all' : 'Select all'}
+            </button>
+          </div>
+        )}
         <div className="flex flex-col gap-1.5 mb-4">
           {preview.map((row, i) => (
-            <div key={i} className="flex items-center gap-2 text-xs bg-white rounded-lg px-3 py-2 border border-indigo-100">
-              <span className="text-base">{row.matched ? '✅' : '📧'}</span>
+            <div
+              key={i}
+              onClick={() => row.matched && row.parentEmail && toggleStudent(row.parentEmail)}
+              className={`flex items-center gap-2 text-xs bg-white rounded-lg px-3 py-2 border transition-colors
+                ${row.matched ? 'border-indigo-100 cursor-pointer hover:border-indigo-300' : 'border-gray-100 opacity-60'}`}
+            >
+              {row.matched && row.parentEmail ? (
+                <input
+                  type="checkbox"
+                  checked={selected.has(row.parentEmail)}
+                  onChange={() => toggleStudent(row.parentEmail!)}
+                  onClick={e => e.stopPropagation()}
+                  className="accent-indigo-600 shrink-0"
+                />
+              ) : (
+                <span className="w-4 shrink-0" />
+              )}
               <span className="font-semibold text-gray-800 flex-1">{row.studentName}</span>
               {row.matched
-                ? <span className="text-green-600 font-medium">{row.parentEmail}</span>
+                ? <span className="text-green-600 font-medium truncate max-w-[140px]">{row.parentEmail}</span>
                 : <span className="text-orange-500">No email on file</span>}
             </div>
           ))}
@@ -213,7 +260,7 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
           </p>
         )}
 
-        {emailCount === 0 && (
+        {matched.length === 0 && (
           <p className="text-orange-600 text-xs font-semibold mb-3">
             No parent emails on file yet — edit each student to add one.
           </p>
@@ -222,10 +269,10 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
         <div className="flex gap-2">
           <button
             onClick={send}
-            disabled={emailCount === 0}
+            disabled={sendCount === 0}
             className="flex-1 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white font-bold py-2 rounded-xl text-sm active:scale-95 transition-all"
           >
-            Send to {emailCount} {emailCount === 1 ? 'parent' : 'parents'} →
+            Send to {sendCount} {sendCount === 1 ? 'parent' : 'parents'} →
           </button>
           <button
             onClick={() => setState('idle')}
