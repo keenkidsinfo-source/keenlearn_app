@@ -108,7 +108,8 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
             const aVal = r[resultFields.a.key]
             const bVal = r[resultFields.b.key]
             const cVal = hasC && resultFields.c ? r[resultFields.c.key] : undefined
-            return aVal != null || bVal != null || cVal != null
+            // Include students who have at least one number OR a note
+            return aVal != null || bVal != null || cVal != null || !!r.note
           }),
       }
 

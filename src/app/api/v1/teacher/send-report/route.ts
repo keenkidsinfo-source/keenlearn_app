@@ -208,7 +208,7 @@ export async function POST(req: NextRequest) {
             const maxR = data!.maxRocks    ?? data!.maxClips    ?? null
             const r1   = minR != null ? `Minimum rocks to slide: ${minR}` : ''
             const best = maxR != null ? `<strong>Best: ${maxR} rocks carried! 🎉</strong>` : ''
-            const note = data!.note ? `<br/><em>${data!.note}</em>` : ''
+            const note = data!.note ? `<em>${data!.note}</em>` : ''
             cards.push(card('🔨', `Build — ${buildTitle}`, '#f59e0b',
               [r1, best, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
           } else {
@@ -217,7 +217,7 @@ export async function POST(req: NextRequest) {
             const c1  = src.cranksNoLoad   != null ? `First attempt: ${src.cranksNoLoad} rocks` : ''
             const c2  = src.cranksWithLoad != null ? `After adjustment: ${src.cranksWithLoad} rocks` : ''
             const c3  = src.cranksImproved != null ? `<strong>Best: ${src.cranksImproved} rocks held 🎉</strong>` : ''
-            const note = (src.note as string) ? `<br/><em>${src.note}</em>` : ''
+            const note = (src.note as string) ? `<em>${src.note}</em>` : ''
             cards.push(card('🔨', `Build — ${buildTitle}`, '#f59e0b',
               [c1, c2, c3, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
           }
