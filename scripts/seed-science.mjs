@@ -30,7 +30,7 @@ const scienceContent = [
   {
     gradeBand: 'g1-2',
     weekNumber: 1,
-    title: 'What do plants need?',
+    title: 'The Invisible Fire Extinguisher',
     stepCount: 6,
     metadata: {
       steps: [
@@ -66,7 +66,7 @@ const scienceContent = [
   {
     gradeBand: 'g3-4',
     weekNumber: 1,
-    title: 'Forces and Motion Lab',
+    title: 'The Invisible Fire Extinguisher',
     stepCount: 7,
     metadata: {
       steps: [

@@ -10,6 +10,7 @@ interface Student {
   name: string
   displayName: string | null
   avatarId: number | null
+  pin: string | null
   parentName: string | null
   parentEmail: string | null
   parentPhone: string | null
@@ -96,7 +97,7 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
         })
         if (res.ok) {
           const json = await res.json()
-          setStudents(prev => [...prev, { ...json.data, parentPhone: json.data.parentPhone ?? null }])
+          setStudents(prev => [...prev, { ...json.data, pin: json.data.pin ?? null, parentPhone: json.data.parentPhone ?? null }])
           done++
         } else {
           failed.push(row.name)
@@ -139,7 +140,7 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
       })
       const json = await res.json()
       if (!res.ok) { setError(json.error ?? 'Failed to add student'); return }
-      setStudents(prev => [...prev, { ...json.data, parentPhone: json.data.parentPhone ?? null }].sort((a, b) => a.name.localeCompare(b.name)))
+      setStudents(prev => [...prev, { ...json.data, pin: json.data.pin ?? null, parentPhone: json.data.parentPhone ?? null }].sort((a, b) => a.name.localeCompare(b.name)))
       closeModal()
     } catch {
       setError('Network error')
@@ -179,6 +180,7 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
         body: JSON.stringify({ pin: newPinEdit }),
       })
       if (!res.ok) { setError('Failed to update PIN'); return }
+      setStudents(prev => prev.map(s => s.id === studentId ? { ...s, pin: newPinEdit } : s))
       closeModal()
     } catch {
       setError('Network error')
@@ -241,9 +243,14 @@ export function StudentManager({ initialStudents, classroomId }: Props) {
             </span>
             <div className="flex-1 min-w-0">
               <p className="font-bold text-gray-800 truncate">{student.displayName ?? student.name}</p>
-              {student.parentEmail
-                ? <p className="text-xs text-green-600 truncate">📧 {student.parentEmail}</p>
-                : <p className="text-xs text-orange-400">No parent email</p>}
+              <div className="flex items-center gap-2 flex-wrap">
+                {student.pin
+                  ? <p className="text-xs text-gray-500 font-mono">PIN: {student.pin}</p>
+                  : <p className="text-xs text-orange-400">No PIN set</p>}
+                {student.parentEmail
+                  ? <p className="text-xs text-green-600 truncate">📧 {student.parentEmail}</p>
+                  : <p className="text-xs text-orange-400">No parent email</p>}
+              </div>
             </div>
             <div className="flex gap-2 flex-shrink-0">
               <button

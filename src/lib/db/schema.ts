@@ -42,7 +42,8 @@ export const users = pgTable('users', {
   displayName:  text('display_name'),
   role:         text('role').notNull(), // 'student' | 'teacher' | 'admin'
   avatarId:     integer('avatar_id').default(1), // 1-20
-  pinHash:      text('pin_hash'),       // students only (bcrypt of 4-digit PIN)
+  pin:          text('pin'),             // students only (plain text PIN — for teacher visibility)
+  pinHash:      text('pin_hash'),       // students only (bcrypt of 4-digit PIN — legacy)
   email:        text('email').unique(), // teachers/admins only
   passwordHash: text('password_hash'), // teachers/admins only
   parentName:   text('parent_name'),   // students only

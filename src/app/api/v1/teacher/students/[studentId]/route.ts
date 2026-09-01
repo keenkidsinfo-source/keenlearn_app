@@ -5,7 +5,6 @@ import { db } from '@/lib/db'
 import { users, classrooms } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
-import bcrypt from 'bcryptjs'
 import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 interface Props { params: { studentId: string } }
@@ -55,7 +54,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     if (String(body.pin).length !== 4 || isNaN(Number(body.pin))) {
       return apiError('PIN must be 4 digits', 'INVALID_PIN', 400)
     }
-    updates.pinHash = await bcrypt.hash(String(body.pin), 10)
+    updates.pin = String(body.pin)
   }
 
   if (body.avatarId) {

@@ -5,7 +5,6 @@ import { db } from '@/lib/db'
 import { users, classrooms, classroomTeachers } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
-import bcrypt from 'bcryptjs'
 import { getTeacherClassroom } from '@/lib/teacher-classroom'
 
 // POST /api/v1/teacher/students — add a student to teacher's classroom
@@ -41,7 +40,7 @@ export async function POST(req: NextRequest) {
     return apiError('PIN must be at least 2 characters', 'INVALID_PIN', 400)
   }
 
-  const pinHash = await bcrypt.hash(String(pin), 10)
+  const pinStr = String(pin)
 
   const [student] = await db
     .insert(users)
@@ -52,12 +51,12 @@ export async function POST(req: NextRequest) {
       displayName: name.trim(),
       role:        'student',
       avatarId:    avatarId ?? 1,
-      pinHash,
+      pin:         pinStr,
       parentName:  parentName?.trim() || null,
       parentEmail: parentEmail?.trim().toLowerCase() || null,
       parentPhone: parentPhone?.trim() || null,
     })
-    .returning({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId, parentName: users.parentName, parentEmail: users.parentEmail, parentPhone: users.parentPhone })
+    .returning({ id: users.id, name: users.name, displayName: users.displayName, avatarId: users.avatarId, pin: users.pin, parentName: users.parentName, parentEmail: users.parentEmail, parentPhone: users.parentPhone })
 
   return apiOk(student, 201)
 }

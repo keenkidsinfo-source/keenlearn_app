@@ -74,7 +74,11 @@ export async function POST(req: NextRequest) {
         )).limit(1)
       if (!student) return apiError('Student not found', 'STUDENT_NOT_FOUND', 401)
 
-      if (student.pinHash) {
+      if (student.pin) {
+        // Plain text PIN (new accounts)
+        if (data.pin !== student.pin) return apiError('Wrong PIN. Try again!', 'INVALID_PIN', 401)
+      } else if (student.pinHash) {
+        // Legacy bcrypt PIN
         const pinValid = await comparePin(data.pin, student.pinHash)
         if (!pinValid) return apiError('Wrong PIN. Try again!', 'INVALID_PIN', 401)
       }

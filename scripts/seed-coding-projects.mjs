@@ -44,6 +44,7 @@ const projects = [
   // ── G1-2 Week 2: Make it move ────────────────────────────────────────────────
   // Topic: repeat loop, back-and-forth motion
   // Teacher guide: act out loop physically first, then repeat block → bounce → dance challenge
+  // Students arrive with: when flag clicked → move 50 steps (changed from 10 in W1) + custom sprite + backdrop
   {
     gradeBand: 'g1-2',
     weekNumber: 2,
@@ -52,13 +53,13 @@ const projects = [
       challenge: 'Make it move!',
       tagline: 'Use repeat loops to make your sprite walk, bounce, and dance!',
       steps: [
-        '👀 Click the green flag — does your sprite still move from last week? Great start!',
-        '📍 Let\'s make it always start in the middle: "Motion" (blue) → "go to x: 0 y: 0" → drag it to the TOP of your code, ABOVE the move block.',
-        '🏃 Stand up! Clap 3 times. You just did a REPEAT 3 loop — doing the same thing 3 times in a row!',
-        '🔁 In Scratch: click "Control" (orange) → find "repeat 10" → drag it so it WRAPS AROUND your move block.',
-        '🔢 Change "repeat 10" to "repeat 4" and "move 10 steps" to "move 60 steps" → click the flag. It walks across the stage!',
-        '↩️ Add a bounce: "Motion" → "if on edge, bounce" → drag it INSIDE the repeat loop, AFTER the move block → click the flag. It bounces back!',
-        '💃 CHALLENGE: Add "turn 15 degrees" inside your repeat loop. What does your sprite do? Show your teacher! 🕺',
+        '👀 Click the green flag — does your sprite still move from last week?\nGreat start! Today we will use LOOPS to make it do even more.',
+        '📍 Make it always start in the middle!\n1. Motion (blue) → find "go to x: 0 y: 0"\n2. Drag it to the very TOP of your code, ABOVE the move block\n3. Click the flag — your sprite now starts in the centre every time!',
+        '🏃 Stand up! Do 4 jumping jacks.\nYou just did a REPEAT 4 loop — the same thing 4 times in a row!\nIn Scratch we can make the computer do that too.',
+        '🔁 Add a REPEAT loop!\n1. Control (orange) → find "repeat 10"\n2. Drag it and WRAP it around your move block (the move block slots inside)\n3. The "go to x:0 y:0" block should stay ABOVE the repeat — not inside it\n4. Click the flag — your sprite moves 10 times then stops!',
+        '🔢 Change the numbers!\n1. Click the "10" inside repeat → change it to 4\n2. Click the number inside your move block → change it to 60\n3. Click the flag — walks further in fewer steps!\nTry different numbers and see what happens.',
+        '↩️ Add a bounce so it stays on screen!\n1. Motion → find "if on edge, bounce"\n2. Drag it INSIDE the repeat, AFTER the move block\n3. Click the flag — your sprite bounces back and forth!',
+        '💃 CHALLENGE: Add "turn 15 degrees" inside your repeat loop, after the bounce block.\nClick the flag — what does your sprite do?\nTry changing 15 to bigger or smaller numbers! 🕺',
       ],
     },
   },

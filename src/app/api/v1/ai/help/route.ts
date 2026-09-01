@@ -39,7 +39,12 @@ export async function POST(req: NextRequest) {
       } catch { /* ignore parse errors */ }
     }
 
-    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    const anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+      defaultHeaders: process.env.ANTHROPIC_WORKSPACE_ID
+        ? { 'anthropic-workspace-id': process.env.ANTHROPIC_WORKSPACE_ID }
+        : undefined,
+    })
 
     const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',

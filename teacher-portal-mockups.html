@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KeenKids Teacher Portal — Sidebar Mockups</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.x/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Nunito,system-ui,sans-serif;background:#f1f5f9;padding:32px 24px;color:#0f172a}
+h1{font-size:22px;font-weight:900;color:#0369a1;margin-bottom:4px}
+.subtitle{font-size:13px;color:#64748b;margin-bottom:32px}
+h2{font-size:14px;font-weight:700;color:#0369a1;text-transform:uppercase;letter-spacing:.06em;margin:40px 0 14px;border-top:2px solid #bae6fd;padding-top:16px}
+h2:first-of-type{border-top:none;margin-top:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:24px}
+.frame-label{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;text-align:center}
+.shell{border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;height:500px;background:#f8fafc}
+.shell-tall{height:540px}
+
+/* topbar */
+.topbar{padding:10px 15px;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tb-keen{background:#0369a1}
+.tb-orange{background:#c2410c}
+.tb-teal{background:#0f766e}
+.tb-purple{background:#7e22ce}
+.tb-dark{background:#1e293b}
+.topbar i{font-size:15px}
+.topbar-sub{font-weight:500;opacity:.75;font-size:11px}
+.topbar-right{margin-left:auto;font-size:10px;opacity:.8;cursor:pointer}
+
+/* sidebar */
+.body{display:flex;flex:1;overflow:hidden}
+.sidebar{width:120px;background:#023e6b;display:flex;flex-direction:column;padding:8px 0;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:7px;padding:8px 12px;font-size:10px;color:#7dd3fc;font-weight:700;cursor:pointer;border-left:3px solid transparent}
+.nav-item.active{background:#0284c7;color:#fff;border-left-color:#38bdf8}
+.nav-item i{font-size:13px;flex-shrink:0}
+.nav-spacer{flex:1}
+
+/* mains */
+.main{flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:9px}
+.main-default{background:#f0f9ff}
+.main-orange{background:#fff7ed}
+.main-teal{background:#f0fdfa}
+.main-purple{background:#faf5ff}
+
+/* cards */
+.card{border-radius:9px;padding:10px 12px}
+.card-blue{background:#fff;border:1px solid #bae6fd}
+.card-orange{background:#fff;border:1px solid #fed7aa}
+.card-teal{background:#fff;border:1px solid #99f6e4}
+.card-purple{background:#fff;border:1px solid #d8b4fe}
+
+.section-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.st-blue{color:#0369a1}.st-orange{color:#c2410c}.st-teal{color:#0f766e}.st-purple{color:#6b21a8}
+
+.hero-banner{border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:10px;color:#fff}
+.hero-orange{background:#f97316}.hero-teal{background:#0d9488}.hero-purple{background:#9333ea}.hero-keen{background:#0369a1}
+.hero-emoji{font-size:26px;line-height:1}
+.hero-title{font-size:12px;font-weight:900}
+.hero-sub{font-size:9px;opacity:.85;margin-top:1px}
+
+.week-nav{display:flex;align-items:center;justify-content:space-between;font-size:10px;font-weight:700}
+.week-badge{background:#e0f2fe;color:#0369a1;font-size:9px;font-weight:700;padding:3px 10px;border-radius:99px}
+.nw-arr{color:#0369a1;cursor:pointer}
+
+/* access code */
+.access-code{font-size:30px;font-weight:900;color:#0c4a6e;letter-spacing:.2em}
+.access-sub{font-size:9px;color:#94a3b8;margin-top:2px}
+
+/* action btns */
+.btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:8px 12px;border-radius:8px;font-size:10px;font-weight:700;color:#fff;border:none;cursor:pointer;width:100%}
+.btn-purple{background:#9333ea}.btn-orange{background:#f97316}.btn-teal{background:#0d9488}.btn-blue{background:#0284c7}
+
+/* student grid */
+.student-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.student-card-sm{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:6px;text-align:center}
+.s-avatar{font-size:18px;line-height:1}
+.s-name{font-size:8px;font-weight:700;color:#0c4a6e;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dots{display:flex;gap:2px;justify-content:center;margin-top:3px}
+.dot{width:6px;height:6px;border-radius:50%}
+.dot-g{background:#22c55e}.dot-p{background:#a855f7}.dot-o{background:#f97316}.dot-x{background:#e2e8f0}
+
+/* launcher cards */
+.launch-card{border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid}
+.lc-purple{background:#faf5ff;border-color:#d8b4fe}
+.lc-orange{background:#fff7ed;border-color:#fed7aa}
+.lc-teal{background:#f0fdfa;border-color:#99f6e4}
+.lc-yellow{background:#fffbeb;border-color:#fde68a}
+.lc-icon{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.lci-purple{background:#9333ea}.lci-orange{background:#f97316}.lci-teal{background:#0d9488}.lci-yellow{background:#f59e0b}
+.lc-title{font-size:10px;font-weight:900}
+.lc-purple .lc-title{color:#6b21a8}
+.lc-orange .lc-title{color:#c2410c}
+.lc-teal .lc-title{color:#0f766e}
+.lc-yellow .lc-title{color:#92400e}
+.lc-sub{font-size:8px;color:#94a3b8;margin-top:1px}
+.lc-arrow{margin-left:auto;font-size:14px;color:#94a3b8}
+
+/* step list */
+.step-list{display:flex;flex-direction:column;gap:5px}
+.step{display:flex;gap:7px;align-items:flex-start}
+.step-num{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:900;flex-shrink:0;margin-top:1px}
+.sn-orange{background:#ffedd5;color:#c2410c}
+.sn-teal{background:#ccfbf1;color:#0f766e}
+.step-text{font-size:9px;color:#374151;line-height:1.4}
+
+/* speaking */
+.timer-row{display:flex;gap:8px}
+.timer-box{background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;padding:8px 12px;text-align:center;flex:1}
+.timer-num{font-size:20px;font-weight:900;color:#0f766e}
+.timer-lbl{font-size:8px;color:#64748b;font-weight:600}
+.queue-item{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-radius:7px;font-size:9px;margin-bottom:3px}
+.qi-active{background:#ccfbf1;border:1px solid #5eead4}
+.qi-done{background:#f8fafc;border:1px solid #e2e8f0;opacity:.6}
+.qi-waiting{background:#f8fafc;border:1px solid #e2e8f0}
+.qi-name{font-weight:700;color:#0f172a}
+.qi-badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px}
+.badge-active{background:#0d9488;color:#fff}
+.badge-done{background:#e2e8f0;color:#64748b}
+.badge-wait{background:#fef9c3;color:#92400e}
+.plan-row{display:flex;gap:6px;align-items:flex-start;margin-bottom:4px}
+.plan-time{font-size:8px;font-weight:700;color:#0f766e;width:32px;flex-shrink:0;padding-top:1px}
+.plan-text{font-size:8.5px;color:#374151;line-height:1.4}
+
+/* coding */
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.stat-box{background:#fff;border:1px solid #d8b4fe;border-radius:8px;padding:7px;text-align:center}
+.stat-num{font-size:18px;font-weight:900;color:#7e22ce}
+.stat-lbl{font-size:8px;color:#64748b;font-weight:600}
+.coding-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.code-card{background:#f8fafc;border:1px solid #d8b4fe;border-radius:8px;padding:6px 8px;display:flex;align-items:center;gap:6px}
+.c-name{font-size:9px;font-weight:700;color:#0f172a}
+.c-status{font-size:8px;margin-top:1px}
+.s-done{color:#0d9488}.s-prog{color:#f97316}.s-none{color:#94a3b8}
+
+/* fullscreen slides */
+.fs-body{flex:1;overflow:hidden;display:flex;flex-direction:column}
+.slide-area{flex:1;background:#1e1b4b;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:10px}
+.slide-title{color:#fff;font-size:14px;font-weight:900;text-align:center}
+.slide-sub{color:#a5b4fc;font-size:10px;text-align:center}
+.slide-diagram{background:#312e81;border-radius:10px;padding:12px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%}
+.diagram-row{display:flex;align-items:center;gap:8px;font-size:11px;color:#e0e7ff;font-weight:700}
+.slide-nav{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:#0f172a;flex-shrink:0}
+.slide-btn{background:#312e81;color:#a5b4fc;border:none;border-radius:7px;padding:5px 12px;font-size:9px;font-weight:700;cursor:pointer}
+.slide-counter{color:#64748b;font-size:9px}
+
+/* build steps fullscreen */
+.bs-header{background:#f97316;color:#fff;padding:10px 14px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.bs-title{font-size:11px;font-weight:900}
+.bs-close{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:7px;padding:4px 9px;font-size:9px;font-weight:700}
+.bs-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#fff7ed}
+.bs-step{background:#fff;border:1px solid #fed7aa;border-radius:9px;padding:9px 11px;display:flex;gap:8px}
+.bs-num{width:20px;height:20px;border-radius:50%;background:#f97316;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;flex-shrink:0;margin-top:1px}
+.bs-step-title{font-size:10px;font-weight:900;color:#c2410c}
+.bs-step-text{font-size:9px;color:#64748b;margin-top:2px;line-height:1.4}
+.bs-img{width:100%;height:36px;background:#ffedd5;border-radius:6px;margin-top:5px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#f97316;font-weight:700}
+
+/* mini row */
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+</style>
+</head>
+<body>
+
+<h1>KeenKids Teacher Portal — Sidebar Navigation Mockups</h1>
+<p class="subtitle">Design review · Aug 2026 · Not implemented yet</p>
+
+<!-- ═══ DASHBOARD ═══ -->
+<h2>1. Dashboard (main)</h2>
+<div style="max-width:680px">
+  <div class="shell shell-tall">
+    <div class="topbar tb-keen"><i class="ti ti-school"></i>KeenKids <span class="topbar-sub">· Sunshine Class — G3-4</span><span class="topbar-right">Sign out</span></div>
+    <div class="body">
+      <div class="sidebar">
+        <div class="nav-item active"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+        <div class="nav-item"><i class="ti ti-users"></i>Students</div>
+        <div class="nav-item"><i class="ti ti-microphone"></i>Speaking</div>
+        <div class="nav-item"><i class="ti ti-flask"></i>Science</div>
+        <div class="nav-item"><i class="ti ti-tools"></i>Build Day</div>
+        <div class="nav-item"><i class="ti ti-code"></i>Coding</div>
+        <div class="nav-item"><i class="ti ti-book"></i>Curriculum</div>
+        <div class="nav-spacer"></div>
+        <div class="nav-item"><i class="ti ti-send"></i>Reports</div>
+      </div>
+      <div class="main main-default">
+        <div class="row-2">
+          <div class="card card-blue">
+            <div class="section-title st-blue">Class access code</div>
+            <div class="access-code">KK42</div>
+            <div class="access-sub">Students enter this at login</div>
+          </div>
+          <div class="card card-blue">
+            <div class="section-title st-blue">This week</div>
+            <div class="week-nav"><span class="nw-arr">‹</span><div style="text-align:center"><div style="font-size:11px;font-weight:700;color:#0c4a6e">Week 1</div><div style="font-size:9px;color:#94a3b8">Aug 18 – Aug 22</div></div><span class="nw-arr">›</span></div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px">
+              <span style="font-size:8px;background:#fff;border:1px solid #bae6fd;color:#0369a1;font-weight:700;padding:3px 7px;border-radius:6px">🔬 Science</span>
+              <span style="font-size:8px;background:#fff;border:1px solid #bae6fd;color:#0369a1;font-weight:700;padding:3px 7px;border-radius:6px">💻 Coding</span>
+              <span style="font-size:8px;background:#fff;border:1px solid #bae6fd;color:#0369a1;font-weight:700;padding:3px 7px;border-radius:6px">🎤 Speaking</span>
+              <span style="font-size:8px;background:#fff;border:1px solid #bae6fd;color:#0369a1;font-weight:700;padding:3px 7px;border-radius:6px">🔧 Build</span>
+            </div>
+          </div>
+        </div>
+        <div class="row-3">
+          <button class="btn btn-purple">🎤 Speaking Session</button>
+          <button class="btn btn-orange">🔧 Build Day</button>
+          <button class="btn btn-teal">🔬 Science Lab</button>
+        </div>
+        <div class="card card-blue">
+          <div class="section-title st-blue">Students — progress this week &nbsp;<span style="color:#94a3b8;font-size:8px;font-weight:500">🟢 Science &nbsp;🟣 Coding &nbsp;🟠 Speaking</span></div>
+          <div class="student-grid">
+            <div class="student-card-sm"><div class="s-avatar">🦊</div><div class="s-name">Emma</div><div class="dots"><div class="dot dot-g"></div><div class="dot dot-p"></div><div class="dot dot-o"></div></div></div>
+            <div class="student-card-sm"><div class="s-avatar">🐼</div><div class="s-name">Liam</div><div class="dots"><div class="dot dot-g"></div><div class="dot dot-p"></div><div class="dot dot-x"></div></div></div>
+            <div class="student-card-sm"><div class="s-avatar">🦁</div><div class="s-name">Sofia</div><div class="dots"><div class="dot dot-g"></div><div class="dot dot-x"></div><div class="dot dot-o"></div></div></div>
+            <div class="student-card-sm"><div class="s-avatar">🐸</div><div class="s-name">Noah</div><div class="dots"><div class="dot dot-x"></div><div class="dot dot-p"></div><div class="dot dot-o"></div></div></div>
+            <div class="student-card-sm"><div class="s-avatar">🦋</div><div class="s-name">Ava</div><div class="dots"><div class="dot dot-g"></div><div class="dot dot-p"></div><div class="dot dot-o"></div></div></div>
+            <div class="student-card-sm"><div class="s-avatar">🐬</div><div class="s-name">Marcus</div><div class="dots"><div class="dot dot-g"></div><div class="dot dot-x"></div><div class="dot dot-x"></div></div></div>
+            <div class="student-card-sm"><div class="s-avatar">🦄</div><div class="s-name">Priya</div><div class="dots"><div class="dot dot-x"></div><div class="dot dot-x"></div><div class="dot dot-o"></div></div></div>
+            <div class="student-card-sm"><div class="s-avatar">🐉</div><div class="s-name">Jake</div><div class="dots"><div class="dot dot-g"></div><div class="dot dot-p"></div><div class="dot dot-x"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BUILD DAY ═══ -->
+<h2>2. Build Day</h2>
+<div class="grid-3">
+  <div>
+    <div class="frame-label">Hub (with sidebar)</div>
+    <div class="shell">
+      <div class="topbar tb-orange"><i class="ti ti-tools"></i>Build Day <span class="topbar-sub">· Cable Car W1</span></div>
+      <div class="body">
+        <div class="sidebar">
+          <div class="nav-item"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+          <div class="nav-item"><i class="ti ti-users"></i>Students</div>
+          <div class="nav-item"><i class="ti ti-microphone"></i>Speaking</div>
+          <div class="nav-item"><i class="ti ti-flask"></i>Science</div>
+          <div class="nav-item active"><i class="ti ti-tools"></i>Build Day</div>
+          <div class="nav-item"><i class="ti ti-code"></i>Coding</div>
+          <div class="nav-item"><i class="ti ti-book"></i>Curriculum</div>
+          <div class="nav-spacer"></div>
+          <div class="nav-item"><i class="ti ti-send"></i>Reports</div>
+        </div>
+        <div class="main main-orange">
+          <div class="week-nav"><span class="nw-arr">‹ Prev</span><span class="week-badge">Week 1 of 8</span><span class="nw-arr">Next ›</span></div>
+          <div class="hero-banner hero-orange"><div class="hero-emoji">🚡</div><div><div class="hero-title">Cable Car</div><div class="hero-sub">Simple Machines · Aug 18</div></div></div>
+          <div class="launch-card lc-yellow"><div class="lc-icon lci-yellow">🔧</div><div><div class="lc-title">Instructor Setup</div><div class="lc-sub">Prep checklist — opens full screen</div></div><i class="ti ti-external-link lc-arrow"></i></div>
+          <div class="launch-card lc-purple"><div class="lc-icon lci-purple">📖</div><div><div class="lc-title">Theory Slides</div><div class="lc-sub">Show to class first — opens full screen</div></div><i class="ti ti-external-link lc-arrow"></i></div>
+          <div class="launch-card lc-orange"><div class="lc-icon lci-orange">🏗️</div><div><div class="lc-title">Build Steps</div><div class="lc-sub">Step-by-step — opens full screen</div></div><i class="ti ti-external-link lc-arrow"></i></div>
+          <div class="launch-card lc-teal"><div class="lc-icon lci-teal">📊</div><div><div class="lc-title">Class Results Chart</div><div class="lc-sub">Enter student data</div></div><i class="ti ti-external-link lc-arrow"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="frame-label">Theory Slides (full screen)</div>
+    <div class="shell">
+      <div class="topbar tb-dark"><i class="ti ti-presentation"></i>Theory Slides — Cable Car<span class="topbar-right">✕ Return to hub</span></div>
+      <div class="fs-body">
+        <div class="slide-area">
+          <div class="slide-title">How does a cable car work?</div>
+          <div class="slide-sub">Slide 2 of 6 — Simple Machines: Pulley</div>
+          <div class="slide-diagram">
+            <div class="diagram-row">🏔️ High point <span style="color:#818cf8;margin:0 6px">——●——</span> Low point 🏠</div>
+            <div style="font-size:9px;color:#818cf8;margin-top:4px">The cable loops over a pulley at the top</div>
+            <div class="diagram-row" style="margin-top:6px">⬇️ Weight pulls one side <span style="color:#818cf8;margin:0 4px">→</span> other side rises</div>
+          </div>
+          <div class="slide-sub" style="color:#6366f1">Ask the class: where else do you see pulleys?</div>
+        </div>
+        <div class="slide-nav">
+          <button class="slide-btn">← Back</button>
+          <span class="slide-counter">2 / 6</span>
+          <button class="slide-btn" style="background:#7e22ce;color:#fff">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="frame-label">Build Steps (full screen)</div>
+    <div class="shell">
+      <div class="bs-header"><div class="bs-title">🏗️ Cable Car — Build Steps</div><button class="bs-close">✕ Return to hub</button></div>
+      <div class="bs-body">
+        <div class="bs-step"><div class="bs-num">1</div><div><div class="bs-step-title">Set up your anchor points</div><div class="bs-step-text">Tape one straw upright to each end of the table. These are your towers.</div><div class="bs-img">📷 Image: two straw towers on table</div></div></div>
+        <div class="bs-step"><div class="bs-num">2</div><div><div class="bs-step-title">Thread the string</div><div class="bs-step-text">Run string through both straws and tie a loose loop at each end.</div><div class="bs-img">📷 Image: string threaded through straws</div></div></div>
+        <div class="bs-step"><div class="bs-num">3</div><div><div class="bs-step-title">Attach the gondola</div><div class="bs-step-text">Push a paper clip through the hole in the gondola and hook it onto the string.</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCIENCE ═══ -->
+<h2>3. Science Lab</h2>
+<div style="max-width:400px">
+  <div class="shell">
+    <div class="topbar tb-teal"><i class="ti ti-flask"></i>Science Lab <span class="topbar-sub">· Instructor Manual</span></div>
+    <div class="body">
+      <div class="sidebar">
+        <div class="nav-item"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+        <div class="nav-item"><i class="ti ti-users"></i>Students</div>
+        <div class="nav-item"><i class="ti ti-microphone"></i>Speaking</div>
+        <div class="nav-item active"><i class="ti ti-flask"></i>Science</div>
+        <div class="nav-item"><i class="ti ti-tools"></i>Build Day</div>
+        <div class="nav-item"><i class="ti ti-code"></i>Coding</div>
+        <div class="nav-item"><i class="ti ti-book"></i>Curriculum</div>
+        <div class="nav-spacer"></div>
+        <div class="nav-item"><i class="ti ti-send"></i>Reports</div>
+      </div>
+      <div class="main main-teal">
+        <div class="week-nav"><span class="nw-arr">‹ Prev</span><span class="week-badge">Week 1 of 8</span><span class="nw-arr">Next ›</span></div>
+        <div class="hero-banner hero-teal"><div class="hero-emoji">🧲</div><div><div class="hero-title">Magnetism — Push &amp; Pull</div><div class="hero-sub">✨ Wow factor: floating magnet trick</div></div></div>
+        <div class="card card-teal">
+          <div class="section-title st-teal">Step-by-step instructions</div>
+          <div class="step-list">
+            <div class="step"><div class="step-num sn-teal">1</div><div class="step-text">Introduce magnets — hold two together, let students feel the push</div></div>
+            <div class="step"><div class="step-num sn-teal">2</div><div class="step-text">Ask: what happens when you flip one around?</div></div>
+            <div class="step"><div class="step-num sn-teal">3</div><div class="step-text">Students test: which objects stick? Record on worksheet</div></div>
+          </div>
+        </div>
+        <div class="card card-teal">
+          <div class="section-title st-teal">Student observations</div>
+          <div class="queue-item qi-active"><span class="qi-name">🦊 Emma</span><span class="qi-badge badge-active">Submitted ✓</span></div>
+          <div class="queue-item qi-done"><span class="qi-name">🐼 Liam</span><span class="qi-badge badge-active">Submitted ✓</span></div>
+          <div class="queue-item qi-waiting"><span class="qi-name">🦁 Sofia</span><span class="qi-badge badge-wait">Pending…</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SPEAKING ═══ -->
+<h2>4. Speaking Session</h2>
+<div style="max-width:400px">
+  <div class="shell shell-tall">
+    <div class="topbar tb-teal"><i class="ti ti-microphone"></i>Speaking <span class="topbar-sub">· Week 1 · G3-4</span></div>
+    <div class="body">
+      <div class="sidebar">
+        <div class="nav-item"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+        <div class="nav-item"><i class="ti ti-users"></i>Students</div>
+        <div class="nav-item active"><i class="ti ti-microphone"></i>Speaking</div>
+        <div class="nav-item"><i class="ti ti-flask"></i>Science</div>
+        <div class="nav-item"><i class="ti ti-tools"></i>Build Day</div>
+        <div class="nav-item"><i class="ti ti-code"></i>Coding</div>
+        <div class="nav-item"><i class="ti ti-book"></i>Curriculum</div>
+        <div class="nav-spacer"></div>
+        <div class="nav-item"><i class="ti ti-send"></i>Reports</div>
+      </div>
+      <div class="main main-teal">
+        <div class="hero-banner hero-teal"><div class="hero-emoji">🎤</div><div><div class="hero-title">My Favourite Animal</div><div class="hero-sub">W1 · Introductions · 45 min</div></div></div>
+        <div class="card card-teal">
+          <div class="section-title st-teal">Session timer</div>
+          <div class="timer-row"><div class="timer-box"><div class="timer-num">2:00</div><div class="timer-lbl">Prep time</div></div><div class="timer-box"><div class="timer-num">1:30</div><div class="timer-lbl">Speaking time</div></div></div>
+          <button class="btn btn-teal" style="margin-top:7px">▶ Start timer</button>
+        </div>
+        <div class="card card-teal">
+          <div class="section-title st-teal">Student queue</div>
+          <div class="queue-item qi-active"><span class="qi-name">🦊 Emma</span><span class="qi-badge badge-active">Speaking now</span></div>
+          <div class="queue-item qi-done"><span class="qi-name">🐼 Liam</span><span class="qi-badge badge-done">Done ✓</span></div>
+          <div class="queue-item qi-waiting"><span class="qi-name">🦁 Sofia</span><span class="qi-badge badge-wait">Up next</span></div>
+          <div class="queue-item qi-waiting"><span class="qi-name">🐸 Noah</span><span class="qi-badge badge-wait">Waiting</span></div>
+        </div>
+        <div class="card card-teal">
+          <div class="section-title st-teal">Minute-by-minute plan</div>
+          <div class="plan-row"><span class="plan-time">0–5</span><span class="plan-text">Warm-up: name an animal that starts with your initial</span></div>
+          <div class="plan-row"><span class="plan-time">5–35</span><span class="plan-text">Student speeches — 2 min prep + 1.5 min speaking each</span></div>
+          <div class="plan-row"><span class="plan-time">35–45</span><span class="plan-text">Class feedback + wrap-up</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CODING ═══ -->
+<h2>5. Coding</h2>
+<div style="max-width:400px">
+  <div class="shell shell-tall">
+    <div class="topbar tb-purple"><i class="ti ti-code"></i>Coding <span class="topbar-sub">· Week 1 · G3-4</span></div>
+    <div class="body">
+      <div class="sidebar">
+        <div class="nav-item"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+        <div class="nav-item"><i class="ti ti-users"></i>Students</div>
+        <div class="nav-item"><i class="ti ti-microphone"></i>Speaking</div>
+        <div class="nav-item"><i class="ti ti-flask"></i>Science</div>
+        <div class="nav-item"><i class="ti ti-tools"></i>Build Day</div>
+        <div class="nav-item active"><i class="ti ti-code"></i>Coding</div>
+        <div class="nav-item"><i class="ti ti-book"></i>Curriculum</div>
+        <div class="nav-spacer"></div>
+        <div class="nav-item"><i class="ti ti-send"></i>Reports</div>
+      </div>
+      <div class="main main-purple">
+        <div class="week-nav"><span class="nw-arr">‹ Prev</span><span class="week-badge">Week 1 of 8</span><span class="nw-arr">Next ›</span></div>
+        <div class="hero-banner hero-purple"><div class="hero-emoji">🚗</div><div><div class="hero-title">Moving Car</div><div class="hero-sub">Scratch · Arrow keys + wheel &amp; axle</div></div></div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-num">9</div><div class="stat-lbl">Completed</div></div>
+          <div class="stat-box"><div class="stat-num">3</div><div class="stat-lbl">In progress</div></div>
+          <div class="stat-box"><div class="stat-num">2</div><div class="stat-lbl">Not started</div></div>
+        </div>
+        <div class="card card-purple">
+          <div class="section-title st-purple">Student progress</div>
+          <div class="coding-grid">
+            <div class="code-card"><span style="font-size:16px">🦊</span><div><div class="c-name">Emma</div><div class="c-status s-done">✓ Completed</div></div></div>
+            <div class="code-card"><span style="font-size:16px">🐼</span><div><div class="c-name">Liam</div><div class="c-status s-done">✓ Completed</div></div></div>
+            <div class="code-card"><span style="font-size:16px">🦁</span><div><div class="c-name">Sofia</div><div class="c-status s-prog">⏳ In progress</div></div></div>
+            <div class="code-card"><span style="font-size:16px">🐸</span><div><div class="c-name">Noah</div><div class="c-status s-none">— Not started</div></div></div>
+            <div class="code-card"><span style="font-size:16px">🦋</span><div><div class="c-name">Ava</div><div class="c-status s-done">✓ Completed</div></div></div>
+            <div class="code-card"><span style="font-size:16px">🐬</span><div><div class="c-name">Marcus</div><div class="c-status s-prog">⏳ In progress</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
