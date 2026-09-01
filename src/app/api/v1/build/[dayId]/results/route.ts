@@ -77,12 +77,15 @@ export async function GET(
       const name = s.displayName ?? s.name
 
       if (isG12) {
+        // G1-2 Cable Car: teacher enters minRocks (a) and maxRocks (b) — no column c
+        const a = br.minRocks ?? br.round1Clips ?? null      // minRocks is current key; round1Clips is legacy
+        const b = br.maxRocks ?? br.afterFixClips ?? null
         return {
           studentId: s.id,
           name,
-          a: br.round1Clips ?? null,
-          b: br.afterFixClips ?? null,
-          c: br.maxClips ?? null,
+          a,
+          b,
+          c: null,
           note: br.note ?? '',
         }
       } else {
@@ -96,7 +99,8 @@ export async function GET(
         }
       }
     })
-    .filter(r => r.c != null)  // only include students who have submitted their key metric
+    // G1-2 has no column c — filter on b (key metric); G3-4 filters on c
+    .filter(r => r.c != null || r.b != null)
 
   return apiOk(results)
 }

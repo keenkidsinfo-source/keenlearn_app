@@ -211,7 +211,7 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
           <div className="bg-teal-50 border-b border-teal-100 px-4 py-2.5 flex items-center justify-between">
             <div>
               <p className="font-black text-teal-800 text-sm">
-                {isG12 ? '📎 Enter Paperclip Counts' : '🔩 Enter Crank Counts'}
+                {isG12 ? '📎 Enter Paperclip Counts' : '🪨 Enter Rock Counts'}
               </p>
               <p className="text-teal-500 text-xs">Press <kbd className="bg-teal-100 px-1 rounded">Enter</kbd> to jump to next field</p>
             </div>

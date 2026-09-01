@@ -51,16 +51,8 @@ function matchChild(
 const StudentResultSchema = z.object({
   studentId:   z.string(),
   studentName: z.string(),
-  /** For G1-2 Cable Car */
-  round1Clips: z.number().int().nonnegative().optional(),
-  round2Clips: z.number().int().nonnegative().optional(),
-  maxClips:    z.number().int().nonnegative().optional(),
-  /** For G3-4 Well Pulley */
-  cranksNoLoad:    z.number().int().nonnegative().optional(),
-  cranksWithLoad:  z.number().int().nonnegative().optional(),
-  cranksImproved:  z.number().int().nonnegative().optional(),
   note: z.string().optional(),
-})
+}).passthrough() // allow arbitrary result keys (minRocks, maxRocks, cranksNoLoad, etc.) from resultFields
 
 const bodySchema = z.object({
   weekStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),

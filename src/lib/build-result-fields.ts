@@ -26,11 +26,11 @@ export const DEFAULT_RESULT_FIELDS: Record<'g1-2' | 'g3-4', ResultFields> = {
     showLeaderboard: false,
   },
   'g3-4': {
-    a:               { label: 'No cargo — how many cranks?',   key: 'cranksNoLoad'   },
-    b:               { label: '3 pennies — cranks?',           key: 'cranksWithLoad' },
-    c:               { label: 'After improvement — cranks 🏆', key: 'cranksImproved' },
-    unit:            'cranks',
-    leaderboard:     'less',
+    a:               { label: 'First attempt — rocks held',    key: 'cranksNoLoad'   },
+    b:               { label: 'After adjustment — rocks held', key: 'cranksWithLoad' },
+    c:               { label: 'Best rocks held 🏆',            key: 'cranksImproved' },
+    unit:            'rocks',
+    leaderboard:     'more',
     showLeaderboard: true,
   },
 }

@@ -203,18 +203,20 @@ export async function POST(req: NextRequest) {
           const gradeBand  = (data?.gradeBand as string) ?? classroom.gradeBand ?? ''
           const buildTitle = (data?.buildTitle as string) ?? 'Build Project'
           if (gradeBand === 'g1-2') {
-            const r1  = data!.round1Clips != null ? `Round 1: ${data!.round1Clips} paperclips` : ''
-            const r2  = data!.round2Clips != null ? `After improvements: ${data!.round2Clips} paperclips` : ''
-            const max = data!.maxClips    != null ? `<strong>Best: ${data!.maxClips} paperclips! 🎉</strong>` : ''
+            // Keys: minRocks (current), round1Clips/maxClips (legacy)
+            const minR = data!.minRocks    ?? data!.round1Clips ?? null
+            const maxR = data!.maxRocks    ?? data!.maxClips    ?? null
+            const r1   = minR != null ? `Minimum rocks to slide: ${minR}` : ''
+            const best = maxR != null ? `<strong>Best: ${maxR} rocks carried! 🎉</strong>` : ''
             const note = data!.note ? `<br/><em>${data!.note}</em>` : ''
             cards.push(card('🔨', `Build — ${buildTitle}`, '#f59e0b',
-              [r1, r2, max, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
+              [r1, best, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
           } else {
             // G3-4: student-submitted (nested under buildResults) or teacher-submitted (flat)
             const src = studentBuildData ?? data!
-            const c1  = src.cranksNoLoad   != null ? `Without cargo: ${src.cranksNoLoad} cranks` : ''
-            const c2  = src.cranksWithLoad != null ? `With 3-penny load: ${src.cranksWithLoad} cranks` : ''
-            const c3  = src.cranksImproved != null ? `<strong>After improvement: ${src.cranksImproved} cranks 🎉</strong>` : ''
+            const c1  = src.cranksNoLoad   != null ? `First attempt: ${src.cranksNoLoad} rocks` : ''
+            const c2  = src.cranksWithLoad != null ? `After adjustment: ${src.cranksWithLoad} rocks` : ''
+            const c3  = src.cranksImproved != null ? `<strong>Best: ${src.cranksImproved} rocks held 🎉</strong>` : ''
             const note = (src.note as string) ? `<br/><em>${src.note}</em>` : ''
             cards.push(card('🔨', `Build — ${buildTitle}`, '#f59e0b',
               [c1, c2, c3, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
