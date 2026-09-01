@@ -8,6 +8,7 @@ interface Student {
   name: string
   displayName: string | null
   avatarId: number | null
+  pin: string | null
   parentName: string | null
   parentEmail: string | null
   parentPhone: string | null
