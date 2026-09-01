@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 interface Props {
   weekStartDate: string
@@ -31,11 +31,34 @@ type SendResult = {
   results: ResultRow[]
 }
 
+/** Compress a File to a base64 JPEG, max 900px on the longest side */
+function compressImage(file: File, maxDim = 900, quality = 0.78): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const scale = Math.min(1, maxDim / Math.max(img.width, img.height))
+      const canvas = document.createElement('canvas')
+      canvas.width  = Math.round(img.width  * scale)
+      canvas.height = Math.round(img.height * scale)
+      const ctx = canvas.getContext('2d')!
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      resolve(canvas.toDataURL('image/jpeg', quality))
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Failed to load image')) }
+    img.src = url
+  })
+}
+
 export function SendReportButton({ weekStartDate, weekTitle, studentCount, classroomId }: Props) {
   const [state, setState]     = useState<'idle' | 'previewing' | 'preview' | 'sending' | 'done' | 'error'>('idle')
   const [preview, setPreview] = useState<PreviewRow[]>([])
   const [result, setResult]   = useState<SendResult | null>(null)
   const [errMsg, setErrMsg]   = useState('')
+  const [photos, setPhotos]   = useState<string[]>([])   // base64 data URLs
+  const [photoLoading, setPhotoLoading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   async function loadPreview() {
     setState('previewing')
@@ -52,13 +75,38 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
     }
   }
 
+  async function handlePhotoFiles(files: FileList | null) {
+    if (!files || files.length === 0) return
+    const remaining = 6 - photos.length
+    if (remaining <= 0) return
+    setPhotoLoading(true)
+    try {
+      const toProcess = Array.from(files).slice(0, remaining)
+      const compressed = await Promise.all(toProcess.map(f => compressImage(f)))
+      setPhotos(prev => [...prev, ...compressed].slice(0, 6))
+    } catch {
+      // silently skip failed images
+    } finally {
+      setPhotoLoading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  function removePhoto(idx: number) {
+    setPhotos(prev => prev.filter((_, i) => i !== idx))
+  }
+
   async function send() {
     setState('sending')
     try {
       const res = await fetch('/api/v1/teacher/send-report', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ weekStartDate, ...(classroomId ? { classroomId } : {}) }),
+        body:    JSON.stringify({
+          weekStartDate,
+          ...(classroomId ? { classroomId } : {}),
+          photos: photos.length > 0 ? photos : undefined,
+        }),
       })
       const data = await res.json()
       if (!res.ok) { setErrMsg(data?.error ?? `Error ${res.status}`); setState('error'); return }
@@ -102,6 +150,7 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
           {emailCount} of {preview.length} students have a parent email on file.
         </p>
 
+        {/* Student list */}
         <div className="flex flex-col gap-1.5 mb-4">
           {preview.map((row, i) => (
             <div key={i} className="flex items-center gap-2 text-xs bg-white rounded-lg px-3 py-2 border border-indigo-100">
@@ -114,17 +163,61 @@ export function SendReportButton({ weekStartDate, weekTitle, studentCount, class
           ))}
         </div>
 
+        {/* Photo upload */}
+        <div className="bg-white border border-indigo-100 rounded-xl p-3 mb-4">
+          <p className="text-xs font-bold text-gray-700 mb-2">
+            📸 Add class photos <span className="font-normal text-gray-400">(optional, up to 6)</span>
+          </p>
+
+          {photos.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 mb-3">
+              {photos.map((src, i) => (
+                <div key={i} className="relative rounded-lg overflow-hidden aspect-square bg-gray-100">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" />
+                  <button
+                    onClick={() => removePhoto(i)}
+                    className="absolute top-1 right-1 bg-black/60 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center leading-none hover:bg-black/80"
+                    aria-label="Remove photo"
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {photos.length < 6 && (
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={photoLoading}
+              className="w-full border-2 border-dashed border-indigo-200 rounded-lg py-2 text-xs text-indigo-500 hover:border-indigo-400 hover:text-indigo-700 transition-colors disabled:opacity-50"
+            >
+              {photoLoading ? 'Compressing…' : `+ Add photo${photos.length > 0 ? ` (${6 - photos.length} left)` : 's'}`}
+            </button>
+          )}
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={e => handlePhotoFiles(e.target.files)}
+          />
+        </div>
+
         {missing.length > 0 && (
           <p className="text-orange-600 text-xs mb-3">
             {missing.map(r => r.studentName).join(', ')} {missing.length === 1 ? 'has' : 'have'} no parent email — add it in your student list to include them.
           </p>
         )}
 
-        {emailCount === 0 ? (
+        {emailCount === 0 && (
           <p className="text-orange-600 text-xs font-semibold mb-3">
             No parent emails on file yet — edit each student to add one.
           </p>
-        ) : null}
+        )}
 
         <div className="flex gap-2">
           <button

@@ -18,6 +18,7 @@ import { getTeacherClassroom } from '@/lib/teacher-classroom'
 const bodySchema = z.object({
   weekStartDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   classroomId:  z.string().uuid().optional(),
+  photos:       z.array(z.string()).max(6).optional(),
 })
 
 // ── GET /api/v1/teacher/send-report?weekStartDate=YYYY-MM-DD ─────────────────
@@ -69,7 +70,7 @@ export async function POST(req: NextRequest) {
   const parsed = bodySchema.safeParse(body)
   if (!parsed.success) return apiError('Invalid request', 'VALIDATION_ERROR', 400)
 
-  const { weekStartDate, classroomId: adminClassroomId } = parsed.data
+  const { weekStartDate, classroomId: adminClassroomId, photos = [] } = parsed.data
 
   // ── 1. Load classroom + teacher email ───────────────────────────────────────
   const classroom = await getTeacherClassroom(session.sub, session.role === 'admin' ? adminClassroomId : undefined)
@@ -283,6 +284,15 @@ export async function POST(req: NextRequest) {
     ✅ <strong>${studentName} attended class this week</strong>
   </div>` : ''}
 
+  <!-- Class photos -->
+  ${photos.length > 0 ? `
+  <div style="margin-bottom:20px">
+    <p style="margin:0 0 10px;font-size:14px;font-weight:700;color:#111">📸 This Week in Class</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      ${photos.map((_: string, i: number) => `<img src="cid:photo${i}@keenkids" alt="Class photo ${i + 1}" style="width:${photos.length === 1 ? '100%' : photos.length <= 2 ? 'calc(50% - 4px)' : 'calc(33% - 6px)'};border-radius:8px;object-fit:cover;display:block"/>`).join('')}
+    </div>
+  </div>` : ''}
+
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0"/>
   <p style="font-size:12px;color:#9ca3af;margin:0">
     Sent by <strong>KeenKids Enrichment</strong> · ${schoolName}<br/>
@@ -291,12 +301,24 @@ export async function POST(req: NextRequest) {
 </div>`
 
     try {
+      const attachments = photos.map((dataUrl: string, i: number) => {
+        const [header, data] = dataUrl.split(',')
+        const mimeType = header.match(/data:([^;]+)/)?.[1] ?? 'image/jpeg'
+        return {
+          filename:    `photo-${i + 1}.jpg`,
+          content:     Buffer.from(data, 'base64'),
+          contentType: mimeType,
+          cid:         `photo${i}@keenkids`,
+        }
+      })
+
       await transporter.sendMail({
-        from:    `"KeenKids Enrichment" <${GMAIL_USER}>`,
-        replyTo: `"${teacherName}" <${teacherEmail}>`,
-        to:      student.parentEmail,
-        subject: `${studentName}'s KeenKids Week — ${weekRow.title}`,
+        from:        `"KeenKids Enrichment" <${GMAIL_USER}>`,
+        replyTo:     `"${teacherName}" <${teacherEmail}>`,
+        to:          student.parentEmail,
+        subject:     `${studentName}'s KeenKids Week — ${weekRow.title}`,
         html,
+        attachments,
       })
       results.push({ student: studentName, status: 'sent', parentEmail: student.parentEmail })
     } catch (err: any) {
