@@ -9,9 +9,6 @@ import { comparePassword, comparePin } from '@/lib/auth/password'
 import { signToken, setTokenCookie } from '@/lib/auth/jwt'
 import { apiError, apiOk } from '@/lib/utils'
 
-async function touchLastActive(userId: string) {
-  await db.update(users).set({ lastActiveAt: new Date() }).where(eq(users.id, userId))
-}
 
 const studentSchema = z.object({
   type:       z.literal('student'),
@@ -37,7 +34,6 @@ async function issueStudentToken(student: any) {
     .limit(1)
   if (!classroom) return apiError('Classroom not found', 'CLASSROOM_NOT_FOUND', 401)
 
-  await touchLastActive(student.id)
   const token = await signToken({
     sub:         student.id,
     role:        'student',
@@ -147,7 +143,6 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  await touchLastActive(teacher.id)
   const token = await signToken({
     sub:         teacher.id,
     role:        teacher.role as 'teacher' | 'admin',
