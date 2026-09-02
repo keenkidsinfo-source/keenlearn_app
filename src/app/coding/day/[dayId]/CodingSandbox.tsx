@@ -84,6 +84,12 @@ export function CodingSandbox({
   const [saveError, setSaveError] = useState<string | null>(null)
   const currentProjectId      = useRef(projectId)
   const autoSaveTimer         = useRef<ReturnType<typeof setInterval> | null>(null)
+  const debounceTimer         = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastSavedAt           = useRef<number>(0)
+  // Change-detection: store snapshot of what was last successfully uploaded.
+  // The interval only fires a real save when content has changed since last save.
+  const lastSavedSb3          = useRef<string | null>(null)
+  const lastSavedPy           = useRef<string | null>(null)
   // true once TurboWarp signals KK_PROJECT_LOADED — prevents auto-save from firing while
   // the student's .sb3 is still being loaded into the VM (which would overwrite the real project).
   // Wait for KK_PROJECT_LOADED signal even for new projects — prevents auto-save
@@ -275,6 +281,8 @@ export function CodingSandbox({
       } catch (e: any) { setSaveError('save failed: ' + e?.message); return }
       if (!projectJson) { setSaveError('empty project'); return }
       await uploadProject(projectJson, 'scratch')
+      // Record snapshot so the interval can skip redundant saves
+      lastSavedSb3.current = iframeWin?.__kkLastSb3 ?? projectJson
       iframeWin.ReduxStore?.dispatch({
         type: 'scratch-gui/project-changed/SET_PROJECT_CHANGED',
         changed: false,
@@ -287,6 +295,7 @@ export function CodingSandbox({
   // ── Python save ────────────────────────────────────────────────────────────
   const savePython = useCallback(async () => {
     await uploadProject(pyCode.current, 'python')
+    lastSavedPy.current = pyCode.current
   }, [uploadProject])
 
   // ── Listen for TurboWarp "project fully loaded" signal ─────────────────────
@@ -344,17 +353,24 @@ export function CodingSandbox({
     return () => window.removeEventListener('message', handler)
   }, [starterUrl, projectId])
 
-  // ── Auto-save every 10 seconds ─────────────────────────────────────────────
-  // Guard: TurboWarp must have finished loading the student's project (projectReadyRef).
-  // We no longer require currentProjectId — if none exists yet, saveScratch does a POST
-  // to create the project row automatically, so kids never need to click "Save first!".
+  // ── Auto-save (change-detection) ──────────────────────────────────────────
+  // Checks every 60 s but only fires a real DB write when content has changed
+  // since the last successful save. Eliminates redundant uploads when kids are
+  // idle, reading instructions, or just watching the car simulation run.
   useEffect(() => {
     if (language === 'scratch') {
       autoSaveTimer.current = setInterval(() => {
-        if (projectReadyRef.current) saveScratch()
+        if (!projectReadyRef.current) return
+        // Only save when __kkLastSb3 has changed since the last successful save
+        const iframeWin = iframeRef.current?.contentWindow as any
+        const currentSb3 = iframeWin?.__kkLastSb3 as string | null | undefined
+        if (currentSb3 && currentSb3 === lastSavedSb3.current) return // no change
+        saveScratch()
       }, 60_000)
     } else {
       autoSaveTimer.current = setInterval(() => {
+        // Only save when Python code has changed since the last successful save
+        if (pyCode.current === lastSavedPy.current) return
         savePython()
       }, 60_000)
     }
