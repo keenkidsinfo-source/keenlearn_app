@@ -352,11 +352,11 @@ export function CodingSandbox({
     if (language === 'scratch') {
       autoSaveTimer.current = setInterval(() => {
         if (projectReadyRef.current) saveScratch()
-      }, 10_000)
+      }, 60_000)
     } else {
       autoSaveTimer.current = setInterval(() => {
         savePython()
-      }, 10_000)
+      }, 60_000)
     }
     return () => { if (autoSaveTimer.current) clearInterval(autoSaveTimer.current) }
   }, [language, saveScratch, savePython])
