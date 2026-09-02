@@ -366,13 +366,13 @@ export function CodingSandbox({
         const currentSb3 = iframeWin?.__kkLastSb3 as string | null | undefined
         if (currentSb3 && currentSb3 === lastSavedSb3.current) return // no change
         saveScratch()
-      }, 60_000)
+      }, 300_000)
     } else {
       autoSaveTimer.current = setInterval(() => {
         // Only save when Python code has changed since the last successful save
         if (pyCode.current === lastSavedPy.current) return
         savePython()
-      }, 60_000)
+      }, 300_000)
     }
     return () => { if (autoSaveTimer.current) clearInterval(autoSaveTimer.current) }
   }, [language, saveScratch, savePython])
