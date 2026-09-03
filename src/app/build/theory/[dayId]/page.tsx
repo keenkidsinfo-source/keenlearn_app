@@ -42,13 +42,27 @@ export default async function BuildTheoryPage({ params }: Props) {
   const weekNumber = row.weekNumber
 
   const deck = getTheoryDeck(gradeBand, weekNumber)
-  // No theory deck for this week yet — redirect back to the build page
-  if (!deck) redirect(`/teacher/build`)
+  // No theory deck for this week yet — show debug info instead of silent redirect
+  if (!deck) {
+    return (
+      <div className="p-8 font-mono text-sm bg-red-50">
+        <p className="text-red-700 font-bold mb-2">No theory deck found</p>
+        <p>dayId: {dayId}</p>
+        <p>gradeBand: {gradeBand}</p>
+        <p>weekNumber: {weekNumber}</p>
+        <p>rowCount: {rows.length}</p>
+      </div>
+    )
+  }
+
+  // DEBUG — remove after confirming
+  const debugInfo = `${gradeBand} W${weekNumber}`
 
   return (
     <div className="flex h-screen overflow-hidden">
       <TeacherSidebar activePage="build" buildDayId={dayId} email={session.email} />
       <div className="flex-1 overflow-y-auto">
+        <div className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 font-mono">[debug] {debugInfo}</div>
         <TheoryViewer deck={deck} buildDayId={dayId} />
       </div>
     </div>
