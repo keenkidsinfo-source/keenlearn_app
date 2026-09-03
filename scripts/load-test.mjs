@@ -36,9 +36,10 @@ const getArg = (flag, def) => {
   const i = args.indexOf(flag)
   return i !== -1 ? parseInt(args[i + 1]) : def
 }
-const USERS  = getArg('--users', 26)
-const ROUNDS = getArg('--rounds', 3)
-const DELAY  = getArg('--delay', 5000)  // ms between rounds (simulates 5-min save; use 5s for test)
+const USERS      = getArg('--users', 26)
+const ROUNDS     = getArg('--rounds', 5)
+const DELAY      = getArg('--delay', 3000)   // ms between rounds
+const STOP_P95   = getArg('--stop-p95', 400) // ms — abort if p95 exceeds this (proxy for ~50% CPU)
 
 // ── DB connection ─────────────────────────────────────────────────────────────
 // Use max = USERS so we can have truly concurrent connections
@@ -146,7 +147,16 @@ async function main() {
 
     const s = stats(times)
     const roundMs = Date.now() - roundStart
+
+    // CPU proxy: colour-code based on p95 latency thresholds
+    const cpuLabel =
+      s.p95 < 150  ? '🟢 DB healthy   (CPU likely <30%)' :
+      s.p95 < 400  ? '🟡 DB warm      (CPU likely 30–60%)' :
+      s.p95 < 800  ? '🔴 DB stressed  (CPU likely 60–80%)' :
+                     '💀 DB struggling (CPU likely >80%)'
+
     console.log(`    Total: ${roundMs}ms | avg: ${s.avg}ms | p50: ${s.p50}ms | p95: ${s.p95}ms | p99: ${s.p99}ms | max: ${s.max}ms`)
+    console.log(`    ${cpuLabel}`)
     if (errors.length) {
       console.log(`    ❌  ${errors.length} error(s): ${[...new Set(errors)].join(', ')}`)
     } else {
@@ -155,6 +165,13 @@ async function main() {
 
     allTimes.push(...times)
     allErrors.push(...errors)
+
+    // Auto-stop if p95 exceeds safety threshold
+    if (s.p95 >= STOP_P95 || errors.length > 0) {
+      console.log(`\n🛑  STOPPING EARLY — p95 ${s.p95}ms hit safety limit (${STOP_P95}ms) or errors detected.`)
+      console.log(`    This corresponds to ~50%+ CPU. Do NOT run more load against this DB right now.`)
+      break
+    }
 
     if (round < ROUNDS) {
       process.stdout.write(`    Waiting ${DELAY}ms before next round...`)
@@ -169,12 +186,14 @@ async function main() {
   console.log(`   avg: ${s.avg}ms | p50: ${s.p50}ms | p95: ${s.p95}ms | p99: ${s.p99}ms | max: ${s.max}ms`)
   console.log(`   Errors: ${allErrors.length}/${allTimes.length}`)
 
-  if (allErrors.length === 0 && s.p95 < 500) {
-    console.log(`\n✅  PASS — Nano should handle ${USERS} concurrent students fine.`)
-  } else if (allErrors.length === 0 && s.p95 < 1500) {
-    console.log(`\n⚠️   MARGINAL — Queries are slow but not failing. Monitor during class.`)
+  if (allErrors.length === 0 && s.p95 < 150) {
+    console.log(`\n✅  PASS — Micro is handling ${USERS} students easily. Could probably downgrade to Nano.`)
+  } else if (allErrors.length === 0 && s.p95 < 400) {
+    console.log(`\n✅  PASS — Micro is comfortable. Stay on Micro; don't downgrade.`)
+  } else if (allErrors.length === 0 && s.p95 < 800) {
+    console.log(`\n⚠️   MARGINAL — DB is warm. Micro is the right tier; watch CPU during class.`)
   } else {
-    console.log(`\n❌  FAIL — DB is struggling. Keep Micro or migrate to Railway.`)
+    console.log(`\n❌  FAIL — DB is struggling even on Micro. Consider Supabase Pro Large or Railway.`)
   }
 
   await sql.end()

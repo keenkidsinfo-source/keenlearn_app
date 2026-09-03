@@ -44,20 +44,21 @@ const scienceContent = [
     },
   },
 
-  // ── G1-2 Week 2: Push & Pull — Forces All Around Us ────────────────────────
+  // ── G1-2 Week 2: Spinning Magnetic Pen ─────────────────────────────────────
   {
     gradeBand: 'g1-2',
     weekNumber: 2,
-    title: 'Push & Pull: Forces All Around Us',
-    stepCount: 6,
+    title: 'Spinning Magnetic Pen',
+    stepCount: 7,
     metadata: {
       steps: [
-        { emoji: '🤔', title: 'What is a force?', text: 'A force is a push OR a pull. Push your chair away from you — that\'s a push force. Pull it back — that\'s a pull force. Find 3 things in the classroom and decide: is it a push, a pull, or both? Write them down.', tip: 'Gravity is a pull force too — it\'s what keeps you on the ground!' },
-        { emoji: '📏', title: 'Ramp experiment setup', text: 'Make a ramp by leaning a book against a stack of 2 other books. Place a toy car at the TOP of the ramp. Let go. Measure how far it rolls with a ruler. Write the distance.', tip: 'Let go gently — don\'t push! We want gravity to be the only force.' },
-        { emoji: '📐', title: 'Change the slope', text: 'Now make the ramp STEEPER by adding one more book. Release the car again. How far does it roll this time? Add another book and try again. Record all 3 distances in a table.', tip: 'A steeper ramp means a stronger push from gravity — predict before you try!' },
-        { emoji: '🧲', title: 'Friction detective', text: 'Roll the car on the smooth floor, then on the carpet, then on a rough towel. Does it go the same distance each time? The force that slows it down is called FRICTION.', tip: 'Friction always acts in the OPPOSITE direction to movement — it\'s nature\'s brake!' },
-        { emoji: '📝', title: 'Record your results', text: 'Fill in your results table: Surface | Distance rolled. Which surface had the most friction (shortest roll)? Which had the least? Circle your answer and write one sentence explaining why.', tip: 'Pattern: rougher surface → more friction → car stops sooner.' },
-        { emoji: '🏗️', title: 'Connect to Build week', text: 'Think about your balance scale from Build day. Which force made the heavier side tip down? What would happen on the moon where gravity is weaker? Discuss with a partner!', tip: 'STEM is connected — the forces in your build project are the SAME forces you just measured!' },
+        { emoji: '🧲', title: 'Feel the magic — magnets push AND pull', text: 'Hold two magnets. Stick them together — that is ATTRACT. Now flip one around. They push away — that is REPEL. Feel the invisible force in your hands! Today you will see this force hold a whole PEN in mid-air.', tip: 'Every magnet has two ends: NORTH POLE and SOUTH POLE. Opposite poles attract. Same poles repel — push each other away.' },
+        { emoji: '🔮', title: 'Make your prediction', text: 'Before the demo: Thumbs UP if you think the pen can float in the air. Thumbs DOWN if you think it will fall. Sideways if you\'re not sure. Remember your prediction — we come back to it after! Write your prediction and why.', tip: 'There is no wrong prediction! Scientists use predictions to test what they think they know.' },
+        { emoji: '✨', title: 'Watch the demo', text: 'Watch your teacher slowly lower the pen toward the base. Feel the tension. When it is released — the pen FLOATS! Give it a gentle spin — it keeps spinning. Notice: nothing is touching it. What force is holding it up?', tip: 'Pay close attention! Can you see the force? No — but you can see what it DOES.' },
+        { emoji: '✋', title: 'Feel the repulsion force yourself', text: 'Your teacher will invite you to try: push the floating pen DOWN. What happens? It pushes BACK. That invisible push is magnetic repulsion — the same poles pushing each other away. The magnets on the pen and the base have the SAME pole facing each other.', tip: 'Two forces are at work: magnetic repulsion pushing UP, and gravity pulling DOWN. When they balance — the pen floats!' },
+        { emoji: '💡', title: 'The science: same poles repel', text: 'Every magnet has a NORTH POLE and a SOUTH POLE. Rule: same poles repel (push apart). The pen has magnets with the SAME pole facing down as the base magnets facing up. They push away from each other — strong enough to hold the pen against gravity!', tip: 'Write on your paper: SAME POLES REPEL. OPPOSITE POLES ATTRACT. Draw a north and south pole arrow.' },
+        { emoji: '🚄', title: 'Real world — the floating train!', text: 'MAGLEV trains float above the track using the SAME force — magnetic repulsion! No wheels touching the track means no friction — so maglev trains go over 600 km/h! Ask: "What else could float if we made magnets strong enough?" Discuss with a partner.', tip: 'Maglev = MAGnetic LEVitation. The same invisible force that held the pen holds a whole train!' },
+        { emoji: '✏️', title: 'Draw and label — show the forces', text: 'Draw the floating pen above the base. Add TWO arrows: one pointing UP (the magnetic repulsion pushing the pen up) and one pointing DOWN (gravity pulling the pen down). Label: "push up" and "pull down." Write one sentence: "The pen floats because..."', tip: 'Good science drawing shows forces as ARROWS. The size of the arrow shows how strong the force is. Both arrows here are the same size — the forces are balanced!' },
       ],
     },
   },
@@ -81,21 +82,21 @@ const scienceContent = [
     },
   },
 
-  // ── G3-4 Week 2: Measuring Forces with Newtons ─────────────────────────────
+  // ── G3-4 Week 2: Spinning Magnetic Pen ─────────────────────────────────────
   {
     gradeBand: 'g3-4',
     weekNumber: 2,
-    title: 'Measuring Forces with Newtons',
+    title: 'Spinning Magnetic Pen',
     stepCount: 7,
     metadata: {
       steps: [
-        { emoji: '⚖️', title: 'What is a Newton?', text: 'A Newton (N) is the unit of force. 1 Newton ≈ the weight of a 100g apple. Write: Weight (N) = mass (kg) × 9.8. If you weigh 30 kg on Earth, what is your weight in Newtons? Calculate it!', tip: 'Weight and mass are DIFFERENT: mass is how much stuff, weight is the gravitational force on that stuff.' },
-        { emoji: '🏗️', title: 'Build a spring scale', text: 'Stretch a rubber band and attach a paper cup. Mark the rest position "0 N." Hang a 100g weight (≈ 1 N) and mark that line. Add another 100g and mark 2 N. Keep going to 5 N. You\'ve made a force meter!', tip: 'This works because rubber bands obey Hooke\'s Law: stretch is proportional to force.' },
-        { emoji: '📏', title: 'Calibrate and test', text: 'Use your spring scale to measure: (1) your pencil case, (2) a book, (3) your shoe. Record the force in Newtons. Then check with a real spring scale or balance — how close were your measurements?', tip: 'All measuring instruments need calibration — even the ones in hospitals and space stations!' },
-        { emoji: '🔬', title: 'Measure lever forces', text: 'Set up your lever from Build day. Hang a 200g load at 10 cm from the fulcrum. Measure the effort force needed at 20 cm. Then at 5 cm. Fill in: Distance from fulcrum: 5 cm / 10 cm / 20 cm | Force needed: ___N / ___N / ___N', tip: 'Pattern you\'ll find: twice the distance = half the force. This is the Law of the Lever: F × d = F × d' },
-        { emoji: '📐', title: 'Calculate mechanical advantage', text: 'Mechanical Advantage (MA) = Load Force ÷ Effort Force. Calculate MA for each fulcrum position. Which gave the best mechanical advantage? Write: "The lever with the fulcrum at ___ gave MA = ___, meaning I only needed to push with ___ N to lift ___N."', tip: 'MA > 1 means the machine multiplies your force. MA < 1 means it trades force for speed.' },
-        { emoji: '📊', title: 'Graph force vs. distance', text: 'Plot a line graph: x-axis = effort distance from fulcrum (cm), y-axis = force needed (N). Draw the best-fit line. Is it linear? What does the shape tell you about the relationship between distance and force?', tip: 'A straight downward line confirms an inverse relationship: force × distance = constant.' },
-        { emoji: '🌍', title: 'Levers in the real world', text: 'Find a lever in everyday life (scissors, door handle, wheelbarrow, see-saw). Identify: fulcrum, effort point, load point. Calculate the approximate mechanical advantage. Would a longer handle make it easier or harder? Explain using your graph.', tip: 'Archimedes said "Give me a lever long enough and I shall move the world." Was he right? Discuss!' },
+        { emoji: '🧲', title: 'What do you already know about magnets?', text: 'Every magnet has two poles: NORTH and SOUTH. Rule 1 — opposite poles attract (pull together). Rule 2 — same poles repel (push apart). Before the demo: predict how you could use REPULSION (same poles pushing) to make an object float. Write your idea.', tip: 'Repulsion = pushing apart. If the repulsion force is exactly equal to gravity, the object floats in equilibrium.' },
+        { emoji: '🔮', title: 'Make your prediction', text: 'Before the demo: Thumbs UP if you think same-pole repulsion can hold a pen against gravity. DOWN if you think gravity always wins. Write: "I predict ___ because using F=ma, the magnet force needs to be ___." Then circle: you think it will work / won\'t work / almost work.', tip: 'Think: gravity pulls down with force = mg. For the pen to float, the magnetic repulsion must equal mg upward.' },
+        { emoji: '✨', title: 'Watch the demo — every detail matters', text: 'Watch your teacher lower the pen. Notice: at what distance does it start to resist? When released — it floats! Key question: which poles must be facing each other on the pen magnet and the base magnet? (Hint: think about which rule makes them push apart.) Write your answer.', tip: 'Same poles = NORTH facing NORTH, or SOUTH facing SOUTH. They push apart. That upward push balances gravity.' },
+        { emoji: '✋', title: 'Feel and test the force', text: 'When invited, push the floating pen down. Notice: the harder you push DOWN, the harder it pushes UP. This is because as magnets get closer, the repulsion force gets STRONGER. Try spinning the pen — it keeps spinning. Why? (Hint: no friction from the base, and gyroscopic effect stabilises it.)' , tip: 'Gyroscopic effect: a spinning object resists tipping. That\'s why the pen stays upright instead of wobbling sideways.' },
+        { emoji: '💡', title: 'The science: equilibrium of forces', text: 'Two forces act on the floating pen: (1) GRAVITY pulls DOWN (force = mass × g). (2) MAGNETIC REPULSION pushes UP. When these two forces are EXACTLY EQUAL — the pen floats in EQUILIBRIUM. If one increases, the pen moves until balance is restored. Write: Forces balanced → object in EQUILIBRIUM.', tip: 'Equilibrium means the net force = 0. No net force = no acceleration = object stays still (or keeps spinning at the same speed).' },
+        { emoji: '🚄', title: 'Real world — maglev and beyond', text: 'MAGLEV trains use the same principle at massive scale. Powerful electromagnets create enough repulsive force to lift a 40-tonne train car off the track. No friction = speeds over 600 km/h. Question: why do maglev trains need active computer systems to stay stable? (Hint: why doesn\'t your pen need one?) Discuss.', tip: 'A heavier train needs enormously stronger magnets. And unlike your pen (which stays in the magnetic "bowl"), a train on a flat track can drift sideways — computers correct this hundreds of times per second.' },
+        { emoji: '✏️', title: 'Draw and label — force diagram', text: 'Draw the floating pen above the base. Draw and label 4 things: (1) NORTH POLE on the base magnet, (2) NORTH POLE on the pen magnet (same → repel), (3) MAGNETIC REPULSION arrow pointing UP from base to pen, (4) GRAVITY arrow pointing DOWN from pen. Write the conclusion: "The pen floats because ___."', tip: 'In physics, force diagrams (called free body diagrams) show ALL forces on an object as arrows. The pen has two arrows of equal length = balanced forces = equilibrium.' },
       ],
     },
   },

@@ -853,15 +853,30 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
 
         {notesOpen && (
           <div className="px-4 pb-3 space-y-1.5">
-            <p className="text-white font-bold text-sm">{current.headline}</p>
-            <ul className="space-y-1">
-              {current.bullets.map((b, i) => (
-                <li key={i} className="flex items-start gap-2 text-gray-300 text-xs leading-snug">
-                  <span className="text-gray-500 shrink-0 mt-0.5">•</span>
-                  <span dangerouslySetInnerHTML={{ __html: b.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>') }} />
-                </li>
-              ))}
-            </ul>
+            {current.speakerNotes ? (
+              /* Dedicated speaker notes — what to SAY aloud */
+              <ul className="space-y-1.5">
+                {current.speakerNotes.map((note, i) => (
+                  <li key={i} className="flex items-start gap-2 text-gray-200 text-xs leading-snug">
+                    <span className="text-blue-400 shrink-0 mt-0.5 font-bold">{i + 1}.</span>
+                    <span dangerouslySetInnerHTML={{ __html: note.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>') }} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              /* Fallback: show headline + bullets */
+              <>
+                <p className="text-white font-bold text-sm">{current.headline}</p>
+                <ul className="space-y-1">
+                  {current.bullets.map((b, i) => (
+                    <li key={i} className="flex items-start gap-2 text-gray-300 text-xs leading-snug">
+                      <span className="text-gray-500 shrink-0 mt-0.5">•</span>
+                      <span dangerouslySetInnerHTML={{ __html: b.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>') }} />
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
             {current.tryThis && (
               <p className="text-yellow-300 text-xs font-semibold border border-yellow-700 rounded px-2 py-1 mt-1">
                 🙋 Ask: {current.tryThis}

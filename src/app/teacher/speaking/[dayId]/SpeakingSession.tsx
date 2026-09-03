@@ -262,7 +262,11 @@ const CARD_CONTENT: Record<string, { bg: string; lines: string[] }> = {
   },
   'Feeling Faces': {
     bg: 'bg-pink-500',
-    lines: ['😊 FEELING FACES', '', '😄  Excited', '😰  Nervous', '😤  Frustrated', '😢  Sad', '😮  Surprised', '😊  Proud', '😂  Happy', '😌  Calm'],
+    lines: ['😊 FEELING FACES', '', '😄  Happy / Excited', '😢  Sad / Upset', '😤  Angry / Frustrated', '😰  Scared / Nervous', '😮  Surprised / Amazed', '😌  Calm / Proud', '😂  Silly / Funny', '🤔  Curious / Puzzled'],
+  },
+  'Voice Toolkit': {
+    bg: 'bg-sky-700',
+    lines: ['🎙 THE VOICE TOOLKIT', '', '📢  VOLUME', 'Aim at the back wall — not the front row', '', '🐢  PACE', 'Slow on key words · faster on lists', '', '⏸  PAUSE', '2 seconds of silence = "this matters"', '', '🎵  PITCH', 'Vary it — monotone loses the room', '', '🔤  CLARITY', 'Over-enunciate consonants; never swallow endings'],
   },
 }
 

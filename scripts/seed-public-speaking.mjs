@@ -57,26 +57,63 @@ const speakingContent = [
     meta: {
       weekWord: 'Balance',
       weekWordDef: 'when both sides are equal — like a see-saw sitting perfectly in the middle',
-      prompt: 'Pick something in the room. Is it heavy or light? How can you tell?',
-      timeLimit: 60,
+      prompt: 'Pick one object. Hold it up and use your three lines!',
+      timeLimit: 45,
       structure: [
-        '🎯 Name the object ("I picked...")',
-        '🏋️ Heavy or light? ("It feels...")',
-        '🤔 How do you know? ("I can tell because...")',
+        '📦 "I picked a ___."  (hold it up)',
+        '🏋️ "It feels ___ in my hand."  (heavy / light / kind of heavy)',
+        '🪙 "It is ___ than a coin."  (heavier / lighter / about the same)',
+        '✨ BONUS: "I think ___ is heavier because ___."',
       ],
       improvGame: {
         name: 'Pass the Object',
-        description: 'An invisible object travels around the room — but it keeps transforming! Builds imagination and speaking confidence.',
+        description: 'An invisible object travels around the circle — but transforms each time. Builds imagination and speaking warmth before speeches.',
         instructions: [
           'Sit or stand in a circle.',
-          'Teacher holds an "invisible ball" — squeeze it, feel its weight, show its size.',
-          'Pass it to the next person. They must transform it into something else.',
-          'They describe it briefly ("This is now a heavy bowling ball!") and mime using it.',
-          'Then pass it on. Keep going until it travels the full circle.',
+          'Teacher holds an invisible object — mime its weight and size.',
+          'Pass to the next person. They transform it into something new.',
+          'They describe it in ONE sentence ("This is now a heavy bowling ball!") and mime using it.',
+          'Pass it on. Keep going until the full circle is done.',
         ],
       },
-      tip: 'Pause instead of saying "um." Silence sounds CONFIDENT — try it!',
-      tipIcon: '🤫',
+      tip: 'Hold the object while you speak — it gives your hands something to do and helps you remember your lines!',
+      tipIcon: '📦',
+      sessionPlan: [
+        {
+          startMin: 0, endMin: 10, label: 'WARM-UP', emoji: '🎭', title: 'Week Word + Pass the Object',
+          steps: [
+            { time: '0:00', action: 'Write BALANCE on the board. Ask: "Has anyone heard this word before?" Take 3 answers. Say: "Balance means when both sides are equal — like a seesaw sitting perfectly in the middle. Our speeches today are about heavy and light — and your seesaw from Build Day is the perfect scientist for the job!"' },
+            { time: '2:00', action: 'Run Pass the Object. Sit in a circle. Teacher holds an invisible object and mimes its weight and size. Pass to the next kid — they transform it and describe it in one sentence before passing on. Keep the pace moving. Full circle takes about 5–6 minutes.' },
+            { time: '9:00', action: 'Bring everyone back to seats. "Great — you all just spoke in front of the group! That was warm-up. Now we do it for real."' },
+          ],
+        },
+        {
+          startMin: 10, endMin: 18, label: 'MAIN ACTIVITY', emoji: '🎤', title: 'Teacher Models the Three Lines',
+          steps: [
+            { time: '10:00', action: 'Write the three lines on the board exactly as they appear in the structure. Point to each line as you read it: LINE 1: "I picked a ___." LINE 2: "It feels ___ in my hand." LINE 3: "It is ___ than a coin." Tell kids: "These three lines are your whole speech. You just fill in the blanks."' },
+            { time: '12:00', action: 'Pick up a book. Say the three lines out loud while pointing to each one: "I picked a book. It feels heavy in my hand. It is heavier than a coin." Then do it again with a pencil — make it slightly funny and relaxed so kids laugh and feel the low stakes.' },
+            { time: '14:00', action: 'Ask a volunteer to recite the three lines from the board. Point to each line as they say it. Then ask: "Who can do it without me pointing?" Call on 2–3 kids. The goal: kids can say the three lines from memory before partner practice.' },
+            { time: '17:00', action: 'Partner practice. Each kid picks ONE object from the room or their bag. They practice the three lines with their partner. Circulate — give a quick thumbs up when the three lines are all there. Give one piece of feedback per pair: "Great! Now say line 2 a bit louder."' },
+          ],
+        },
+        {
+          startMin: 18, endMin: 50, label: 'MAIN ACTIVITY', emoji: '🎤', title: 'Class Speeches',
+          steps: [
+            { time: '18:00', action: 'Start class speeches. Each kid stands, holds up their object, and says the three lines. Keep it moving — 30 to 45 seconds each. After each speech: class gives 3 claps.' },
+            { time: '19:00', action: 'If a kid freezes: point to LINE 1 on the board and say the first word with them: "I picked a..." and let them fill in the blank. Do NOT complete the sentence for them.' },
+            { time: '30:00', action: 'ENGAGEMENT BOOST (use if energy drops): Seesaw Vote — teacher holds one object in each hand, arms out like a seesaw. Class votes which is heavier by leaning left or right in their seats. Then test on the real seesaw to check. Takes 2–3 minutes and re-engages a distracted group.' },
+            { time: '40:00', action: 'BONUS challenge for confident speakers who finished early: add the bonus line — "I think ___ is heavier because ___." Let them try it with a second object.' },
+          ],
+        },
+        {
+          startMin: 50, endMin: 55, label: 'WRAP-UP', emoji: '🌟', title: 'Reflection + Week Word',
+          steps: [
+            { time: '50:00', action: 'Ask: "What was easy? What was hard?" Take 2–3 answers. Then: "You all used the three lines — that is a real speech structure. Scientists do the exact same thing: name the thing, describe it, compare it."' },
+            { time: '52:00', action: 'Tip of the day: "Pause instead of saying um. Silence sounds CONFIDENT — try it!" Do a quick demo: pause for 3 seconds in silence. Ask: "Did that feel weird to me? Yes. Did it sound confident to you? Also yes."' },
+            { time: '54:00', action: 'Week word send-off. "BALANCE." Ask the class to say it together. "Write it on a sticky note when you get home. Next week: new word, new topic."' },
+          ],
+        },
+      ],
     },
   },
 

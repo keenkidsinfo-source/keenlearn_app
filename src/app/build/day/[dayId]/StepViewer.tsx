@@ -53,6 +53,31 @@ const PREP_INFO: Record<string, { image: string; steps: string[]; warning: strin
       'Write a 2-column crank-count chart on the board: "Empty" and "3 Pennies" columns.',
     ],
   },
+  'Seesaw': {
+    image: '/images/build/seesaw/step-01.svg',
+    warning: '⚠️ Pre-score and pre-cut ALL cardstock pieces before class — folding scored lines is fast, cutting mid-class is not!',
+    steps: [
+      'Pre-cut: 1 beam (30×5 cm), 1 triangle fulcrum with scored base tab, 1 base (20×15 cm), 2 seat squares (5×5 cm) per group.',
+      'Mark the CENTRE of the beam clearly with a pencil line — the fulcrum must sit exactly at the centre mark.',
+      'Have pennies, coins, erasers, and small rocks ready as test weights.',
+      'Place materials in a small bag or pile per group. Tape and scissors at each station.',
+      'Build your own demo seesaw and test it — confirm it tips left/right freely before kids arrive.',
+      'Write on the board: BEAM | FULCRUM | LOAD — so kids have the vocabulary as they build.',
+    ],
+  },
+  'Balance Scale': {
+    image: '/images/build/balance-scale/step-01.svg',
+    warning: '⚠️ Pre-cut all cardstock and pre-cut string to equal lengths per group — unequal strings cause systematic error in every measurement!',
+    steps: [
+      'Cut the upright stand pieces: 2 tall side panels and 1 cross-base per group.',
+      'Cut string: 3 pieces × equal length per pan, 2 pans per group. All strings the same length.',
+      'Cut pan circles (or squares) from cardstock — both pans MUST be the same size and material.',
+      'Pre-punch or pre-score the 3 string holes in each pan (equally spaced, like a peace sign).',
+      'Prepare wooden skewers — one per group — and confirm they can rest across the top of the stand.',
+      'Build your own demo balance scale and verify: empty pans hang level before kids arrive.',
+      'Write on the board: BEAM | FULCRUM | LOAD | TORQUE for vocabulary reference.',
+    ],
+  },
 }
 
 export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand, startWithSetup = true, backHref = '/teacher' }: Props) {
