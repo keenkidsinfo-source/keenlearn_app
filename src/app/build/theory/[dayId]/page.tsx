@@ -19,29 +19,27 @@ export default async function BuildTheoryPage({ params }: Props) {
 
   const { dayId } = await params
 
-  // Load the day and its content item to get grade band + week number
-  const [day] = await db.select().from(curriculumDays).where(eq(curriculumDays.id, dayId)).limit(1)
-  if (!day || day.subject !== 'build') notFound()
-
-  const items = await db
-    .select({ contentItem: contentItems })
-    .from(curriculumContent)
-    .innerJoin(contentItems, eq(curriculumContent.contentItemId, contentItems.id))
-    .where(eq(curriculumContent.curriculumDayId, day.id))
+  // Single joined query: day → curriculum (week number) + content item (grade band)
+  const rows = await db
+    .select({
+      dayId:      curriculumDays.id,
+      subject:    curriculumDays.subject,
+      weekNumber: curriculum.weekNumber,
+      gradeBand:  contentItems.gradeBand,
+    })
+    .from(curriculumDays)
+    .innerJoin(curriculum, eq(curriculum.id, curriculumDays.curriculumId))
+    .innerJoin(curriculumContent, eq(curriculumContent.curriculumDayId, curriculumDays.id))
+    .innerJoin(contentItems, eq(contentItems.id, curriculumContent.contentItemId))
+    .where(eq(curriculumDays.id, dayId))
     .limit(1)
 
-  if (items.length === 0) notFound()
+  if (rows.length === 0) notFound()
+  const row = rows[0]
+  if (row.subject !== 'build') notFound()
 
-  const item = items[0].contentItem
-  const gradeBand = item.gradeBand ?? 'g1-2'
-
-  // Look up week number so we can show the correct theory deck
-  const [curriculumRow] = await db
-    .select({ weekNumber: curriculum.weekNumber })
-    .from(curriculum)
-    .where(eq(curriculum.id, day.curriculumId))
-    .limit(1)
-  const weekNumber = curriculumRow?.weekNumber ?? 1
+  const gradeBand = row.gradeBand ?? 'g1-2'
+  const weekNumber = row.weekNumber
 
   const deck = getTheoryDeck(gradeBand, weekNumber)
   // No theory deck for this week yet — redirect back to the build page
