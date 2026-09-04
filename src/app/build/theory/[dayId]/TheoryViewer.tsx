@@ -832,14 +832,48 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
         <span className="text-white/50 text-xs shrink-0">{slide + 1}/{total}</span>
       </header>
 
-      {/* SLIDE — SVG takes the whole screen */}
-      <div className="flex-1 bg-white flex items-center justify-center p-2">
-        {Visual ? (
+      {/* SLIDE — SVG or text card */}
+      <div className={cn('flex-1 flex items-center justify-center p-4 overflow-y-auto', Visual != null ? 'bg-white' : colors.bg)}>
+        {Visual != null ? (
           <div className="w-full max-w-4xl">
             <Visual />
           </div>
         ) : (
-          <div className="text-9xl text-center">{current.emoji}</div>
+          /* Text layout for slides without a custom SVG (e.g. W2 Seesaw / Balance Scale) */
+          <div className="w-full max-w-2xl space-y-4">
+            {/* Emoji + headline */}
+            <div className={cn('rounded-2xl p-5 border-2', colors.border)}>
+              <div className="text-6xl text-center mb-3">{current.emoji}</div>
+              <p className={cn('text-xl font-black text-center leading-snug', colors.text)}>{current.headline}</p>
+            </div>
+            {/* Vocab word */}
+            {current.vocab && (
+              <div className={cn('rounded-xl px-4 py-3 flex items-start gap-3', colors.headlineBg, 'border', colors.border)}>
+                <span className={cn('text-xs font-black uppercase tracking-widest mt-0.5 shrink-0', colors.text)}>WORD</span>
+                <div>
+                  <p className={cn('font-black text-base', colors.text)}>{current.vocab.word}</p>
+                  <p className={cn('text-sm', colors.text)}>{current.vocab.definition}</p>
+                </div>
+              </div>
+            )}
+            {/* Bullet points */}
+            <div className="space-y-2">
+              {current.bullets.map((b, i) => (
+                <div key={i} className={cn('rounded-xl px-4 py-3 border', colors.headlineBg, colors.border)}>
+                  <span
+                    className={cn('text-sm leading-snug', colors.text)}
+                    dangerouslySetInnerHTML={{ __html: b.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>') }}
+                  />
+                </div>
+              ))}
+            </div>
+            {/* Try this */}
+            {current.tryThis && (
+              <div className="rounded-xl bg-yellow-50 border border-yellow-200 px-4 py-3">
+                <p className="text-yellow-800 text-sm font-semibold">🙋 {current.tryThis}</p>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
