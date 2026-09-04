@@ -41,6 +41,15 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
   const unit  = resultFields.unit
   const hasC  = colC !== null
 
+  // Derive a friendly heading from the unit — avoids hardcoding per grade band
+  const UNIT_HEADINGS: Record<string, string> = {
+    clips:      '📎 Enter Paperclip Counts',
+    rocks:      '🪨 Enter Rock Counts',
+    objects:    '⚖️ Enter Object Results',
+    challenges: '🔬 Enter Challenge Results',
+  }
+  const dataHeading = UNIT_HEADINGS[unit] ?? `📋 Enter ${unit.charAt(0).toUpperCase() + unit.slice(1)} Results`
+
   const [rows, setRows] = useState<Record<string, Row>>(
     () => Object.fromEntries(students.map(s => [s.id, initialRows[s.id] ?? { a: '', b: '', c: '', note: '' }]))
   )
@@ -212,7 +221,7 @@ export function ChartClient({ students, gradeBand, buildTitle, buildDayId, weekS
           <div className="bg-teal-50 border-b border-teal-100 px-4 py-2.5 flex items-center justify-between">
             <div>
               <p className="font-black text-teal-800 text-sm">
-                {isG12 ? '📎 Enter Paperclip Counts' : '🪨 Enter Rock Counts'}
+                {dataHeading}
               </p>
               <p className="text-teal-500 text-xs">Press <kbd className="bg-teal-100 px-1 rounded">Enter</kbd> to jump to next field</p>
             </div>

@@ -771,8 +771,329 @@ function SvgEngineers() {
   )
 }
 
+// ── G1-2 Week 2 — Seesaw slides ───────────────────────────────────────────────
+
+// Helper: draws a seesaw (beam+fulcrum+seats) with optional tilt and optional objects
+function SeesawDiagram({ cx, cy, tilt = 0, leftObjs = 0, rightObjs = 0, balanced = false }: {
+  cx: number; cy: number; tilt?: number; leftObjs?: number; rightObjs?: number; balanced?: boolean
+}) {
+  const beamW = 280, beamH = 14, halfBeam = beamW / 2
+  const rad = (tilt * Math.PI) / 180
+  // beam endpoints relative to pivot
+  const lx = cx - halfBeam * Math.cos(rad), ly = cy - halfBeam * Math.sin(rad)
+  const rx = cx + halfBeam * Math.cos(rad), ry = cy + halfBeam * Math.sin(rad)
+  return (
+    <g>
+      {/* fulcrum triangle */}
+      <polygon points={`${cx},${cy} ${cx - 22},${cy + 46} ${cx + 22},${cy + 46}`} fill="#f97316" stroke="#ea580c" strokeWidth="2"/>
+      {/* base */}
+      <rect x={cx - 38} y={cy + 46} width={76} height={10} rx="5" fill="#ea580c"/>
+      {/* beam */}
+      <line x1={lx} y1={ly} x2={rx} y2={ry} stroke="#92400e" strokeWidth={beamH} strokeLinecap="round"/>
+      {/* left seat */}
+      <rect x={lx - 22} y={ly - 26} width={44} height={20} rx="5" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
+      {/* right seat */}
+      <rect x={rx - 22} y={ry - 26} width={44} height={20} rx="5" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
+      {/* left objects (coins) */}
+      {Array.from({ length: leftObjs }).map((_, i) => (
+        <circle key={`l${i}`} cx={lx - 8 + i * 10} cy={ly - 36} r={8} fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"/>
+      ))}
+      {/* right objects */}
+      {Array.from({ length: rightObjs }).map((_, i) => (
+        <circle key={`r${i}`} cx={rx - 8 + i * 10} cy={ry - 36} r={8} fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"/>
+      ))}
+      {/* balanced label */}
+      {balanced && <text x={cx} y={cy - 50} textAnchor="middle" fontSize="16" fontWeight="bold" fill="#16a34a">BALANCED ✓</text>}
+    </g>
+  )
+}
+
+function SvgSeesawBuild() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fff7ed" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What Did We Build? 🪜</text>
+      {/* Main seesaw diagram */}
+      <SeesawDiagram cx={380} cy={195} tilt={-8} leftObjs={2} rightObjs={0}/>
+      {/* labels with arrows */}
+      {/* BEAM arrow */}
+      <line x1="290" y1="148" x2="310" y2="160" stroke="#92400e" strokeWidth="2"/>
+      <rect x="230" y="135" width="62" height="22" rx="8" fill="#92400e"/>
+      <text x="261" y="150" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">① BEAM</text>
+      {/* FULCRUM arrow */}
+      <line x1="380" y1="258" x2="380" y2="245" stroke="#ea580c" strokeWidth="2"/>
+      <rect x="340" y="260" width="82" height="22" rx="8" fill="#ea580c"/>
+      <text x="381" y="275" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">② FULCRUM</text>
+      {/* SEAT arrow */}
+      <line x1="300" y1="168" x2="318" y2="175" stroke="#16a34a" strokeWidth="2"/>
+      <rect x="238" y="155" width="64" height="22" rx="8" fill="#16a34a"/>
+      <text x="270" y="170" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">③ SEAT</text>
+      {/* LOAD arrow */}
+      <line x1="310" y1="142" x2="330" y2="150" stroke="#d97706" strokeWidth="2"/>
+      <rect x="246" y="126" width="66" height="22" rx="8" fill="#d97706"/>
+      <text x="279" y="141" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">④ LOAD</text>
+      {/* bottom info cards */}
+      <rect x="18" y="295" width="340" height="38" rx="10" fill="#1d4ed8"/>
+      <text x="188" y="312" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">The HEAVIER side goes DOWN</text>
+      <text x="188" y="326" textAnchor="middle" fontSize="11" fill="#bfdbfe">Beam tips around the fulcrum</text>
+      <rect x="402" y="295" width="340" height="38" rx="10" fill="#15803d"/>
+      <text x="572" y="312" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">Add objects to test WEIGHT</text>
+      <text x="572" y="326" textAnchor="middle" fontSize="11" fill="#bbf7d0">Coins, erasers, rocks — anything!</text>
+    </svg>
+  )
+}
+
+function SvgSeesawLever() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#eff6ff" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What is a Lever? ⚖️</text>
+      {/* Central diagram showing BEAM + FULCRUM + LOAD */}
+      <rect x="190" y="105" width="380" height="18" rx="9" fill="#92400e" stroke="#78350f" strokeWidth="2"/>
+      {/* Left LOAD */}
+      <rect x="195" y="75" width="50" height="30" rx="6" fill="#3b82f6" stroke="#1d4ed8" strokeWidth="2"/>
+      <text x="220" y="94" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">LOAD</text>
+      {/* Fulcrum */}
+      <polygon points="380,123 354,166 406,166" fill="#f97316" stroke="#ea580c" strokeWidth="2"/>
+      <rect x="344" y="166" width="72" height="10" rx="5" fill="#ea580c"/>
+      <text x="380" y="185" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#ea580c">FULCRUM</text>
+      {/* Right LOAD */}
+      <rect x="515" y="75" width="60" height="30" rx="6" fill="#7c3aed" stroke="#6d28d9" strokeWidth="2"/>
+      <text x="545" y="94" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">LOAD</text>
+      {/* BEAM label */}
+      <text x="380" y="100" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#92400e">BEAM</text>
+      {/* 3 real-world examples */}
+      <rect x="18" y="200" width="220" height="120" rx="14" fill="white" stroke="#f97316" strokeWidth="2.5"/>
+      <text x="128" y="228" textAnchor="middle" fontSize="36">🪜</text>
+      <text x="128" y="262" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#1e293b">Seesaw</text>
+      <text x="128" y="280" textAnchor="middle" fontSize="11" fill="#64748b">Fulcrum in the middle</text>
+      <text x="128" y="296" textAnchor="middle" fontSize="11" fill="#64748b">Load on both ends</text>
+      <rect x="270" y="200" width="220" height="120" rx="14" fill="white" stroke="#3b82f6" strokeWidth="2.5"/>
+      <text x="380" y="228" textAnchor="middle" fontSize="36">✂️</text>
+      <text x="380" y="262" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#1e293b">Scissors</text>
+      <text x="380" y="280" textAnchor="middle" fontSize="11" fill="#64748b">Two levers joined</text>
+      <text x="380" y="296" textAnchor="middle" fontSize="11" fill="#64748b">at the fulcrum!</text>
+      <rect x="522" y="200" width="220" height="120" rx="14" fill="white" stroke="#22c55e" strokeWidth="2.5"/>
+      <text x="632" y="228" textAnchor="middle" fontSize="36">🦾</text>
+      <text x="632" y="262" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#1e293b">Crowbar</text>
+      <text x="632" y="280" textAnchor="middle" fontSize="11" fill="#64748b">Lever that lifts</text>
+      <text x="632" y="296" textAnchor="middle" fontSize="11" fill="#64748b">very heavy things!</text>
+    </svg>
+  )
+}
+
+function SvgSeesawFulcrum() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#f0fdf4" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Key Word: FULCRUM 🔺</text>
+      {/* Left panel: centred fulcrum = balanced */}
+      <rect x="18" y="48" width="340" height="240" rx="16" fill="white" stroke="#16a34a" strokeWidth="3"/>
+      <rect x="18" y="48" width="340" height="36" rx="16" fill="#16a34a"/>
+      <rect x="18" y="70" width="340" height="14" fill="#16a34a"/>
+      <text x="188" y="72" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">✅ Fulcrum in the CENTRE</text>
+      {/* centred seesaw - balanced */}
+      <rect x="48" y="148" width="280" height="14" rx="7" fill="#92400e" stroke="#78350f" strokeWidth="2"/>
+      <polygon points="188,162 164,206 212,206" fill="#16a34a" stroke="#15803d" strokeWidth="2"/>
+      <rect x="148" y="206" width="80" height="10" rx="5" fill="#15803d"/>
+      <rect x="52" y="126" width="44" height="22" rx="5" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
+      <rect x="280" y="126" width="44" height="22" rx="5" fill="#86efac" stroke="#16a34a" strokeWidth="2"/>
+      <circle cx="73" cy="118" r="10" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"/>
+      <circle cx="302" cy="118" r="10" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"/>
+      <text x="188" y="240" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#16a34a">Can tip EITHER way! ↕</text>
+      <text x="188" y="258" textAnchor="middle" fontSize="12" fill="#64748b">Fair measurement!</text>
+      {/* Right panel: off-centre = always tilts */}
+      <rect x="402" y="48" width="340" height="240" rx="16" fill="white" stroke="#ef4444" strokeWidth="3"/>
+      <rect x="402" y="48" width="340" height="36" rx="16" fill="#ef4444"/>
+      <rect x="402" y="70" width="340" height="14" fill="#ef4444"/>
+      <text x="572" y="72" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">❌ Fulcrum OFF-CENTRE</text>
+      {/* off-centre seesaw - tilted right */}
+      <line x1="420" y1="175" x2="720" y2="155" stroke="#92400e" strokeWidth="14" strokeLinecap="round"/>
+      <polygon points="610,155 586,199 634,199" fill="#ef4444" stroke="#dc2626" strokeWidth="2"/>
+      <rect x="570" y="199" width="80" height="10" rx="5" fill="#dc2626"/>
+      <rect x="422" y="153" width="44" height="22" rx="5" fill="#fca5a5" stroke="#ef4444" strokeWidth="2"/>
+      <rect x="676" y="133" width="44" height="22" rx="5" fill="#fca5a5" stroke="#ef4444" strokeWidth="2"/>
+      <text x="572" y="240" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#ef4444">ALWAYS tilts one way!</text>
+      <text x="572" y="258" textAnchor="middle" fontSize="12" fill="#64748b">Wrong results!</text>
+      {/* bottom tip */}
+      <rect x="50" y="300" width="660" height="32" rx="10" fill="#1e293b"/>
+      <text x="380" y="320" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">💡 Mark the CENTRE of your beam — the fulcrum must sit exactly there!</text>
+    </svg>
+  )
+}
+
+function SvgSeesawBalance() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fef2f2" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">The Rule of Balance ⬇️</text>
+      <text x="380" y="50" textAnchor="middle" fontSize="13" fill="#64748b">The HEAVIER side ALWAYS goes down — equal weight = level beam</text>
+      {/* 3 states */}
+      {/* State 1: Left heavy → left down */}
+      <rect x="12" y="64" width="222" height="214" rx="14" fill="white" stroke="#ef4444" strokeWidth="3"/>
+      <rect x="12" y="64" width="222" height="34" rx="14" fill="#ef4444"/>
+      <rect x="12" y="84" width="222" height="14" fill="#ef4444"/>
+      <text x="123" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Left side heavier</text>
+      <SeesawDiagram cx={123} cy={172} tilt={12} leftObjs={2} rightObjs={0}/>
+      <rect x="22" y="255" width="202" height="16" rx="6" fill="#fee2e2"/>
+      <text x="123" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#dc2626">LEFT goes DOWN ⬇</text>
+      <text x="123" y="283" textAnchor="middle" fontSize="11" fill="#64748b">Right goes UP ⬆</text>
+      {/* State 2: Equal → balanced */}
+      <rect x="269" y="64" width="222" height="214" rx="14" fill="white" stroke="#16a34a" strokeWidth="3"/>
+      <rect x="269" y="64" width="222" height="34" rx="14" fill="#16a34a"/>
+      <rect x="269" y="84" width="222" height="14" fill="#16a34a"/>
+      <text x="380" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Equal on both sides</text>
+      <SeesawDiagram cx={380} cy={172} tilt={0} leftObjs={1} rightObjs={1} balanced/>
+      <rect x="279" y="255" width="202" height="16" rx="6" fill="#dcfce7"/>
+      <text x="380" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">BEAM STAYS LEVEL ↔</text>
+      <text x="380" y="283" textAnchor="middle" fontSize="11" fill="#64748b">That is BALANCE!</text>
+      {/* State 3: Right heavy → right down */}
+      <rect x="526" y="64" width="222" height="214" rx="14" fill="white" stroke="#3b82f6" strokeWidth="3"/>
+      <rect x="526" y="64" width="222" height="34" rx="14" fill="#3b82f6"/>
+      <rect x="526" y="84" width="222" height="14" fill="#3b82f6"/>
+      <text x="637" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Right side heavier</text>
+      <SeesawDiagram cx={637} cy={172} tilt={-12} leftObjs={0} rightObjs={2}/>
+      <rect x="536" y="255" width="202" height="16" rx="6" fill="#dbeafe"/>
+      <text x="637" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1d4ed8">RIGHT goes DOWN ⬇</text>
+      <text x="637" y="283" textAnchor="middle" fontSize="11" fill="#64748b">Left goes UP ⬆</text>
+      {/* Bottom */}
+      <rect x="50" y="293" width="660" height="38" rx="12" fill="#1e293b"/>
+      <text x="380" y="311" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Your seesaw is a MEASURING MACHINE — it tells you which side is heavier!</text>
+      <text x="380" y="326" textAnchor="middle" fontSize="12" fill="#e2e8f0">More reliable than your eyes 👁️</text>
+    </svg>
+  )
+}
+
+function SvgSeesawSizeWeight() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#f5f3ff" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Size vs. Weight 🔍</text>
+      <text x="380" y="50" textAnchor="middle" fontSize="13" fill="#7c3aed">A BIG object is NOT always heavier — your seesaw tells the truth!</text>
+      {/* Left example: small stone vs big foam */}
+      <rect x="18" y="62" width="340" height="200" rx="16" fill="white" stroke="#7c3aed" strokeWidth="3"/>
+      <text x="188" y="88" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#7c3aed">Small stone vs Big foam cube</text>
+      {/* seesaw tilted left (stone side down) */}
+      <SeesawDiagram cx={188} cy={172} tilt={14} leftObjs={0} rightObjs={0}/>
+      {/* stone on left seat (small, dark) */}
+      <circle cx="110" cy="138" r="16" fill="#78716c" stroke="#57534e" strokeWidth="2"/>
+      <text x="110" y="143" textAnchor="middle" fontSize="9" fontWeight="bold" fill="white">stone</text>
+      {/* foam cube on right seat (big, light) */}
+      <rect x="228" y="102" width="40" height="40" rx="4" fill="#bfdbfe" stroke="#3b82f6" strokeWidth="2"/>
+      <text x="248" y="126" textAnchor="middle" fontSize="8" fontWeight="bold" fill="#1d4ed8">foam</text>
+      <text x="188" y="240" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#7c3aed">Stone goes DOWN — it is denser!</text>
+      <text x="188" y="258" textAnchor="middle" fontSize="11" fill="#64748b">The big cube looks heavier but is NOT</text>
+      {/* Right example: balloon vs marble */}
+      <rect x="402" y="62" width="340" height="200" rx="16" fill="white" stroke="#f97316" strokeWidth="3"/>
+      <text x="572" y="88" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#f97316">Big balloon vs Tiny marble</text>
+      {/* seesaw tilted right (marble side down) */}
+      <SeesawDiagram cx={572} cy={172} tilt={-14} leftObjs={0} rightObjs={0}/>
+      {/* balloon on left (big, light) */}
+      <circle cx="490" cy="102" r="30" fill="#fca5a5" stroke="#ef4444" strokeWidth="2"/>
+      <text x="490" y="107" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#7f1d1d">balloon</text>
+      <line x1="490" y1="132" x2="490" y2="142" stroke="#ef4444" strokeWidth="2"/>
+      {/* marble on right (tiny, heavy) */}
+      <circle cx="656" cy="125" r="10" fill="#6366f1" stroke="#4338ca" strokeWidth="2"/>
+      <text x="656" y="129" textAnchor="middle" fontSize="7" fontWeight="bold" fill="white">marble</text>
+      <text x="572" y="240" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#f97316">Marble goes DOWN — more matter inside!</text>
+      <text x="572" y="258" textAnchor="middle" fontSize="11" fill="#64748b">The big balloon is almost weightless</text>
+      {/* Bottom */}
+      <rect x="50" y="278" width="660" height="50" rx="12" fill="#1e293b"/>
+      <text x="380" y="298" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">SIZE = how big something LOOKS</text>
+      <text x="380" y="318" textAnchor="middle" fontSize="13" fill="#e2e8f0">WEIGHT (Mass) = how much MATTER is inside — what your seesaw measures!</text>
+    </svg>
+  )
+}
+
+function SvgSeesawRealWorld() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#eff6ff" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="19" fontWeight="bold" fill="#1e293b">Levers in the Real World! 🌍</text>
+      <text x="380" y="48" textAnchor="middle" fontSize="13" fill="#64748b">Levers are everywhere — from your kitchen to construction sites!</text>
+      <rect x="18" y="60" width="342" height="118" rx="14" fill="white" stroke="#f97316" strokeWidth="2.5"/>
+      <text x="50" y="92" fontSize="38">🪜</text>
+      <text x="108" y="88" fontSize="15" fontWeight="bold" fill="#1e293b">Playground Seesaw</text>
+      <text x="108" y="108" fontSize="12" fill="#64748b">Beam + fulcrum in the middle</text>
+      <text x="108" y="124" fontSize="12" fill="#64748b">+ two loads on each end.</text>
+      <text x="108" y="142" fontSize="12" fontWeight="bold" fill="#f97316">Just like YOUR build! 🎉</text>
+      <rect x="400" y="60" width="342" height="118" rx="14" fill="white" stroke="#3b82f6" strokeWidth="2.5"/>
+      <text x="432" y="92" fontSize="38">✂️</text>
+      <text x="490" y="88" fontSize="15" fontWeight="bold" fill="#1e293b">Scissors</text>
+      <text x="490" y="108" fontSize="12" fill="#64748b">Two levers joined at the</text>
+      <text x="490" y="124" fontSize="12" fill="#64748b">fulcrum (the screw).</text>
+      <text x="490" y="142" fontSize="12" fontWeight="bold" fill="#3b82f6">Squeeze = effort. Cut = load!</text>
+      <rect x="18" y="192" width="342" height="118" rx="14" fill="white" stroke="#22c55e" strokeWidth="2.5"/>
+      <text x="50" y="224" fontSize="38">⚖️</text>
+      <text x="108" y="220" fontSize="15" fontWeight="bold" fill="#1e293b">Balance Scale</text>
+      <text x="108" y="240" fontSize="12" fill="#64748b">Same as your seesaw —</text>
+      <text x="108" y="256" fontSize="12" fill="#64748b">used in science labs for</text>
+      <text x="108" y="272" fontSize="14" fontWeight="bold" fill="#22c55e">5,000 years! 🏛️</text>
+      <rect x="400" y="192" width="342" height="118" rx="14" fill="white" stroke="#7c3aed" strokeWidth="2.5"/>
+      <text x="432" y="224" fontSize="38">🦾</text>
+      <text x="490" y="220" fontSize="15" fontWeight="bold" fill="#1e293b">Crowbar</text>
+      <text x="490" y="240" fontSize="12" fill="#64748b">A lever that multiplies</text>
+      <text x="490" y="256" fontSize="12" fill="#64748b">your push to lift</text>
+      <text x="490" y="272" fontSize="14" fontWeight="bold" fill="#7c3aed">VERY heavy loads! 💪</text>
+    </svg>
+  )
+}
+
+function SvgSeesawDiscovery() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#faf5ff" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Our Big Discovery! 🏆</text>
+      {/* 4 discovery cards */}
+      {[
+        { x: 18,  y: 46, color: '#ef4444', bg: '#fef2f2', border: '#fca5a5', emoji: '⬇️', title: 'Heavier side', sub: 'ALWAYS goes DOWN' },
+        { x: 390, y: 46, color: '#16a34a', bg: '#f0fdf4', border: '#86efac', emoji: '↔️', title: 'Equal weight', sub: 'BEAM stays LEVEL' },
+        { x: 18,  y: 172, color: '#7c3aed', bg: '#f5f3ff', border: '#c4b5fd', emoji: '🪨', title: 'Big ≠ heavy', sub: 'SIZE and WEIGHT differ' },
+        { x: 390, y: 172, color: '#f97316', bg: '#fff7ed', border: '#fdba74', emoji: '⚖️', title: 'Your seesaw', sub: 'is a MEASURING MACHINE' },
+      ].map((c, i) => (
+        <g key={i}>
+          <rect x={c.x} y={c.y} width={348} height={110} rx="14" fill={c.bg} stroke={c.border} strokeWidth="2.5"/>
+          <text x={c.x + 44} y={c.y + 58} textAnchor="middle" fontSize="40">{c.emoji}</text>
+          <text x={c.x + 210} y={c.y + 46} fontSize="15" fontWeight="bold" fill={c.color}>{c.title}</text>
+          <text x={c.x + 210} y={c.y + 68} fontSize="13" fill="#374151">{c.sub}</text>
+        </g>
+      ))}
+      {/* Bottom */}
+      <rect x="40" y="297" width="680" height="34" rx="12" fill="#1e293b"/>
+      <text x="380" y="319" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">You discovered this by TESTING, not by being told. That is real science! 🔬</text>
+    </svg>
+  )
+}
+
+function SvgSeesawReview() {
+  const qa = [
+    { q: 'What simple machine is a seesaw?', a: 'A LEVER!', color: '#f97316' },
+    { q: 'What is the pivot point called?', a: 'THE FULCRUM!', color: '#16a34a' },
+    { q: 'Which side of the seesaw goes DOWN?', a: 'THE HEAVIER SIDE!', color: '#ef4444' },
+    { q: 'If both sides are level — what does that tell us?', a: 'EQUAL WEIGHT = BALANCE!', color: '#7c3aed' },
+  ]
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fffbeb" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="19" fontWeight="bold" fill="#1e293b">{"Let's Review! 🙋"}</text>
+      {qa.map((item, i) => {
+        const y = 46 + i * 70
+        return (
+          <g key={i}>
+            <rect x="18" y={y} width="724" height="60" rx="12" fill="white" stroke={item.color} strokeWidth="2"/>
+            <rect x="18" y={y} width="36" height="60" rx="12" fill={item.color}/>
+            <rect x="42" y={y} width="12" height="60" fill={item.color}/>
+            <text x="36" y={y + 36} textAnchor="middle" fontSize="18" fontWeight="bold" fill="white">?</text>
+            <text x="68" y={y + 22} fontSize="12" fill="#374151">{item.q}</text>
+            <text x="68" y={y + 44} fontSize="14" fontWeight="bold" fill={item.color}>{'→ ' + item.a}</text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
 // Map "gradeBand-weekNumber" + slideIndex → SVG component
-// W2 decks (Seesaw, Balance Scale) have no custom SVGs — falls back to emoji
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g1-2-1': {
     0: SvgWhatDidWeBuild,
@@ -793,7 +1114,18 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
     3: SvgMechanicalAdvantage,
     4: SvgRealWorld,
   },
-  // g1-2-2 (Seesaw) and g3-4-2 (Balance Scale) use emoji fallback — no custom SVGs
+  // G1-2 Week 2 — Seesaw (all 8 slides)
+  'g1-2-2': {
+    0: SvgSeesawBuild,
+    1: SvgSeesawLever,
+    2: SvgSeesawFulcrum,
+    3: SvgSeesawBalance,
+    4: SvgSeesawSizeWeight,
+    5: SvgSeesawRealWorld,
+    6: SvgSeesawDiscovery,
+    7: SvgSeesawReview,
+  },
+  // g3-4-2 (Balance Scale) still uses text fallback — no custom SVGs yet
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
