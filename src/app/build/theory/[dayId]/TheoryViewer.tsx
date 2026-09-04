@@ -771,9 +771,10 @@ function SvgEngineers() {
   )
 }
 
-// Map grade+slideIndex → SVG component
+// Map "gradeBand-weekNumber" + slideIndex → SVG component
+// W2 decks (Seesaw, Balance Scale) have no custom SVGs — falls back to emoji
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
-  'g1-2': {
+  'g1-2-1': {
     0: SvgWhatDidWeBuild,
     1: SvgPulleyRealWorld,
     2: SvgGravity,
@@ -785,13 +786,14 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
     8: SvgReview,
     9: SvgEngineers,
   },
-  'g3-4': {
+  'g3-4-1': {
     0: SvgSimpleMachinesG34,
     1: SvgWheelAxle,
     2: SvgCrankWell,
     3: SvgMechanicalAdvantage,
     4: SvgRealWorld,
   },
+  // g1-2-2 (Seesaw) and g3-4-2 (Balance Scale) use emoji fallback — no custom SVGs
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -806,7 +808,7 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
   const colors = SLIDE_COLORS[current.color]
   const isLast = slide === total - 1
 
-  const Visual = VISUALS[deck.gradeBand]?.[slide]
+  const Visual = VISUALS[`${deck.gradeBand}-${deck.weekNumber}`]?.[slide]
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900">

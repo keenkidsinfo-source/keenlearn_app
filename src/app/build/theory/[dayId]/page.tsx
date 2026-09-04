@@ -55,14 +55,10 @@ export default async function BuildTheoryPage({ params }: Props) {
     )
   }
 
-  // DEBUG — remove after confirming
-  const debugInfo = `${gradeBand} W${weekNumber}`
-
   return (
     <div className="flex h-screen overflow-hidden">
       <TeacherSidebar activePage="build" buildDayId={dayId} email={session.email} />
       <div className="flex-1 overflow-y-auto">
-        <div className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 font-mono">[debug] {debugInfo}</div>
         <TheoryViewer deck={deck} buildDayId={dayId} />
       </div>
     </div>
