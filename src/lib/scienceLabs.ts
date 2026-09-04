@@ -327,6 +327,21 @@ export const scienceLabs: ScienceLab[] = [
 ]
 
 /**
+ * General instructor tips that apply to every Science Lab session.
+ * Source: KeenKids Science Lab Instructor Manual — August 2025
+ */
+export const scienceLabGeneralTips: string[] = [
+  'Always practice the demo at home the day before. What looks easy on video can go wrong in front of 13 kids.',
+  'Never tell kids what will happen before the demo. The prediction phase is what makes the reveal powerful.',
+  'Wrong predictions are gold — when kids are surprised, that is when learning sticks. Celebrate being wrong.',
+  'Ask questions during the demo, not just after. "What do you think will happen next?" keeps everyone engaged.',
+  'Let kids touch, feel and handle materials where safe — the magnetic pen especially benefits from kids feeling the repulsion force themselves.',
+  'Draw & Write time is not optional — it forces kids to consolidate what they saw into their own words and images.',
+  'G1–2 and G3–4 sitting together is intentional — older kids reinforce learning by explaining to younger ones.',
+  'If a demo fails — do not panic. Ask kids: "What went wrong? How would we fix it?" That is real science.',
+]
+
+/**
  * Dashboard card: only show a lab during its week or up to 3 days before.
  * Returns null at all other times so the card doesn't appear permanently.
  */

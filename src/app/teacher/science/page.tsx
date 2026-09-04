@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
-import { scienceLabs } from '@/lib/scienceLabs'
+import { scienceLabs, scienceLabGeneralTips } from '@/lib/scienceLabs'
 import Link from 'next/link'
 import { TeacherSidebar } from '../TeacherSidebar'
 
@@ -188,6 +188,19 @@ export default async function TeacherSciencePage({ searchParams }: Props) {
               </section>
             )}
           </div>
+        </div>
+
+        {/* General Tips */}
+        <div className="mt-6 bg-white rounded-2xl shadow border border-gray-200 p-5">
+          <h3 className="text-base font-black text-gray-800 mb-3">💡 General Science Lab Tips</h3>
+          <ol className="flex flex-col gap-2">
+            {scienceLabGeneralTips.map((tip, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-gray-700 leading-snug">
+                <span className="bg-teal-100 text-teal-700 rounded-full w-5 h-5 flex items-center justify-center shrink-0 font-bold text-xs mt-0.5">{i + 1}</span>
+                {tip}
+              </li>
+            ))}
+          </ol>
         </div>
 
         {/* Bottom week nav */}
