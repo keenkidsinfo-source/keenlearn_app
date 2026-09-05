@@ -13,6 +13,8 @@ interface Props {
   /** Order of the 4 activity subjects for this school's schedule */
   subjectOrder?: ActivitySubject[]
   email?: string | null
+  /** Which science week to link to (1-based). Defaults to 1. */
+  scienceWeek?: number
 }
 
 // Fixed top/bottom items
@@ -38,7 +40,7 @@ const BUILD_SUB: { label: string; emoji: string; getHref: (id: string) => string
   { label: 'Results Chart', emoji: '📊', getHref: id => `/teacher/build/chart/${id}`,       pathMatch: '/teacher/build/chart/' },
 ]
 
-export function TeacherSidebar({ activePage, speakingHref, buildDayId, subjectOrder, email }: Props) {
+export function TeacherSidebar({ activePage, speakingHref, buildDayId, subjectOrder, email, scienceWeek = 1 }: Props) {
   const pathname = usePathname()
   const isBuildSection = activePage === 'build'
 
@@ -108,6 +110,7 @@ export function TeacherSidebar({ activePage, speakingHref, buildDayId, subjectOr
 
         let href = item.staticHref ?? '/teacher'
         if (item.key === 'speaking' && speakingHref) href = speakingHref
+        if (item.key === 'science') href = `/teacher/science?week=${scienceWeek}`
 
         return (
           <Link key={item.key} href={href} className={linkClass(item.key === activePage)}>

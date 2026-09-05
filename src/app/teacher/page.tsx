@@ -257,6 +257,7 @@ export default async function TeacherDashboardPage({
           buildDayId={buildDay?.dayId ?? null}
           subjectOrder={weekSubjects.map(ws => ws.subject as ActivitySubject)}
           email={session.email}
+          scienceWeek={Math.max(1, Math.round((new Date(mondayStr).getTime() - new Date(PROGRAM_START).getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1)}
         />
         <main className="flex-1 bg-gray-50 px-5 py-5 space-y-5 overflow-y-auto">
 
