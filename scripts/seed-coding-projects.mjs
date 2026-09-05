@@ -52,6 +52,7 @@ const projects = [
       language: 'scratch',
       challenge: 'Make it move!',
       tagline: 'Use repeat loops to make your sprite walk, bounce, and dance!',
+      starterUrl: '/scratch-starters/g1-2-w2-starter.sb3',
       steps: [
         '👀 Click the green flag — does your sprite still move from last week?\nGreat start! Today we will use LOOPS to make it do even more.',
         '📍 Make it always start in the middle!\n1. Motion (blue) → find "go to x: 0 y: 0"\n2. Drag it to the very TOP of your code, ABOVE the move block\n3. Click the flag — your sprite now starts in the centre every time!',
