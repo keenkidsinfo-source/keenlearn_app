@@ -930,7 +930,7 @@ function SvgSeesawBalance() {
       <text x="380" y="50" textAnchor="middle" fontSize="13" fill="#64748b">The HEAVIER side ALWAYS goes down — equal weight = level beam</text>
       {/* 3 states */}
       {/* State 1: Left heavy → left down */}
-      <rect x="12" y="64" width="222" height="214" rx="14" fill="white" stroke="#ef4444" strokeWidth="3"/>
+      <rect x="12" y="64" width="222" height="228" rx="14" fill="white" stroke="#ef4444" strokeWidth="3"/>
       <rect x="12" y="64" width="222" height="34" rx="14" fill="#ef4444"/>
       <rect x="12" y="84" width="222" height="14" fill="#ef4444"/>
       <text x="123" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Left side heavier</text>
@@ -939,7 +939,7 @@ function SvgSeesawBalance() {
       <text x="123" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#dc2626">LEFT goes DOWN ⬇</text>
       <text x="123" y="283" textAnchor="middle" fontSize="11" fill="#64748b">Right goes UP ⬆</text>
       {/* State 2: Equal → balanced */}
-      <rect x="269" y="64" width="222" height="214" rx="14" fill="white" stroke="#16a34a" strokeWidth="3"/>
+      <rect x="269" y="64" width="222" height="228" rx="14" fill="white" stroke="#16a34a" strokeWidth="3"/>
       <rect x="269" y="64" width="222" height="34" rx="14" fill="#16a34a"/>
       <rect x="269" y="84" width="222" height="14" fill="#16a34a"/>
       <text x="380" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Equal on both sides</text>
@@ -948,7 +948,7 @@ function SvgSeesawBalance() {
       <text x="380" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">BEAM STAYS LEVEL ↔</text>
       <text x="380" y="283" textAnchor="middle" fontSize="11" fill="#64748b">That is BALANCE!</text>
       {/* State 3: Right heavy → right down */}
-      <rect x="526" y="64" width="222" height="214" rx="14" fill="white" stroke="#3b82f6" strokeWidth="3"/>
+      <rect x="526" y="64" width="222" height="228" rx="14" fill="white" stroke="#3b82f6" strokeWidth="3"/>
       <rect x="526" y="64" width="222" height="34" rx="14" fill="#3b82f6"/>
       <rect x="526" y="84" width="222" height="14" fill="#3b82f6"/>
       <text x="637" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Right side heavier</text>
@@ -957,9 +957,9 @@ function SvgSeesawBalance() {
       <text x="637" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1d4ed8">RIGHT goes DOWN ⬇</text>
       <text x="637" y="283" textAnchor="middle" fontSize="11" fill="#64748b">Left goes UP ⬆</text>
       {/* Bottom */}
-      <rect x="50" y="293" width="660" height="38" rx="12" fill="#1e293b"/>
-      <text x="380" y="311" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Your seesaw is a MEASURING MACHINE — it tells you which side is heavier!</text>
-      <text x="380" y="326" textAnchor="middle" fontSize="12" fill="#e2e8f0">More reliable than your eyes 👁️</text>
+      <rect x="50" y="302" width="660" height="34" rx="12" fill="#1e293b"/>
+      <text x="380" y="318" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Your seesaw is a MEASURING MACHINE — it tells you which side is heavier!</text>
+      <text x="380" y="332" textAnchor="middle" fontSize="12" fill="#e2e8f0">More reliable than your eyes 👁️</text>
     </svg>
   )
 }
@@ -1054,8 +1054,8 @@ function SvgSeesawDiscovery() {
         <g key={i}>
           <rect x={c.x} y={c.y} width={348} height={110} rx="14" fill={c.bg} stroke={c.border} strokeWidth="2.5"/>
           <text x={c.x + 44} y={c.y + 58} textAnchor="middle" fontSize="40">{c.emoji}</text>
-          <text x={c.x + 210} y={c.y + 46} fontSize="15" fontWeight="bold" fill={c.color}>{c.title}</text>
-          <text x={c.x + 210} y={c.y + 68} fontSize="13" fill="#374151">{c.sub}</text>
+          <text x={c.x + 196} y={c.y + 46} fontSize="15" fontWeight="bold" fill={c.color}>{c.title}</text>
+          <text x={c.x + 196} y={c.y + 68} fontSize="12" fill="#374151">{c.sub}</text>
         </g>
       ))}
       {/* Bottom */}
