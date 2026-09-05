@@ -812,33 +812,32 @@ function SvgSeesawBuild() {
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
       <rect width="760" height="340" fill="#fff7ed" rx="16"/>
-      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What Did We Build? 🪜</text>
-      {/* Main seesaw diagram */}
-      <SeesawDiagram cx={380} cy={195} tilt={-8} leftObjs={2} rightObjs={0}/>
-      {/* labels with arrows */}
-      {/* BEAM arrow */}
-      <line x1="290" y1="148" x2="310" y2="160" stroke="#92400e" strokeWidth="2"/>
-      <rect x="230" y="135" width="62" height="22" rx="8" fill="#92400e"/>
-      <text x="261" y="150" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">① BEAM</text>
-      {/* FULCRUM arrow */}
-      <line x1="380" y1="258" x2="380" y2="245" stroke="#ea580c" strokeWidth="2"/>
-      <rect x="340" y="260" width="82" height="22" rx="8" fill="#ea580c"/>
-      <text x="381" y="275" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">② FULCRUM</text>
-      {/* SEAT arrow */}
-      <line x1="300" y1="168" x2="318" y2="175" stroke="#16a34a" strokeWidth="2"/>
-      <rect x="238" y="155" width="64" height="22" rx="8" fill="#16a34a"/>
-      <text x="270" y="170" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">③ SEAT</text>
-      {/* LOAD arrow */}
-      <line x1="310" y1="142" x2="330" y2="150" stroke="#d97706" strokeWidth="2"/>
-      <rect x="246" y="126" width="66" height="22" rx="8" fill="#d97706"/>
-      <text x="279" y="141" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">④ LOAD</text>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What Did We Build? 🪜</text>
+      {/* Main seesaw diagram — raised so labels have room */}
+      <SeesawDiagram cx={380} cy={175} tilt={-8} leftObjs={2} rightObjs={0}/>
+      {/* ① BEAM — top centre, arrow to beam midpoint */}
+      <line x1="460" y1="115" x2="420" y2="152" stroke="#92400e" strokeWidth="2"/>
+      <rect x="420" y="95" width="100" height="24" rx="8" fill="#92400e"/>
+      <text x="470" y="111" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">① BEAM</text>
+      {/* ② FULCRUM — below the triangle */}
+      <line x1="380" y1="240" x2="380" y2="226" stroke="#ea580c" strokeWidth="2"/>
+      <rect x="330" y="242" width="100" height="24" rx="8" fill="#ea580c"/>
+      <text x="380" y="258" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">② FULCRUM</text>
+      {/* ③ SEAT — far left, arrow to left seat */}
+      <line x1="174" y1="182" x2="214" y2="192" stroke="#16a34a" strokeWidth="2"/>
+      <rect x="82" y="170" width="94" height="24" rx="8" fill="#16a34a"/>
+      <text x="129" y="186" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">③ SEAT</text>
+      {/* ④ LOAD — upper left, arrow to coins */}
+      <line x1="168" y1="125" x2="236" y2="150" stroke="#d97706" strokeWidth="2"/>
+      <rect x="76" y="113" width="94" height="24" rx="8" fill="#d97706"/>
+      <text x="123" y="129" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">④ LOAD</text>
       {/* bottom info cards */}
-      <rect x="18" y="295" width="340" height="38" rx="10" fill="#1d4ed8"/>
-      <text x="188" y="312" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">The HEAVIER side goes DOWN</text>
-      <text x="188" y="326" textAnchor="middle" fontSize="11" fill="#bfdbfe">Beam tips around the fulcrum</text>
-      <rect x="402" y="295" width="340" height="38" rx="10" fill="#15803d"/>
-      <text x="572" y="312" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">Add objects to test WEIGHT</text>
-      <text x="572" y="326" textAnchor="middle" fontSize="11" fill="#bbf7d0">Coins, erasers, rocks — anything!</text>
+      <rect x="18" y="290" width="340" height="40" rx="10" fill="#1d4ed8"/>
+      <text x="188" y="307" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">The HEAVIER side goes DOWN</text>
+      <text x="188" y="323" textAnchor="middle" fontSize="11" fill="#bfdbfe">Beam tips around the fulcrum</text>
+      <rect x="402" y="290" width="340" height="40" rx="10" fill="#15803d"/>
+      <text x="572" y="307" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">Add objects to test WEIGHT</text>
+      <text x="572" y="323" textAnchor="middle" fontSize="11" fill="#bbf7d0">Coins, erasers, rocks — anything!</text>
     </svg>
   )
 }
@@ -989,9 +988,9 @@ function SvgSeesawSizeWeight() {
       {/* seesaw tilted right (marble side down) */}
       <SeesawDiagram cx={572} cy={172} tilt={-14} leftObjs={0} rightObjs={0}/>
       {/* balloon on left (big, light) */}
-      <circle cx="490" cy="102" r="30" fill="#fca5a5" stroke="#ef4444" strokeWidth="2"/>
-      <text x="490" y="107" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#7f1d1d">balloon</text>
-      <line x1="490" y1="132" x2="490" y2="142" stroke="#ef4444" strokeWidth="2"/>
+      <circle cx="490" cy="118" r="28" fill="#fca5a5" stroke="#ef4444" strokeWidth="2"/>
+      <text x="490" y="123" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#7f1d1d">balloon</text>
+      <line x1="490" y1="146" x2="490" y2="155" stroke="#ef4444" strokeWidth="2"/>
       {/* marble on right (tiny, heavy) */}
       <circle cx="656" cy="125" r="10" fill="#6366f1" stroke="#4338ca" strokeWidth="2"/>
       <text x="656" y="129" textAnchor="middle" fontSize="7" fontWeight="bold" fill="white">marble</text>
