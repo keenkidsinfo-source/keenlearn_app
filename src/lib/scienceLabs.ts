@@ -184,7 +184,7 @@ export const scienceLabs: ScienceLab[] = [
 
   {
     id: 'aug-28-spinning-pen',
-    date: '2026-09-10',
+    date: '2026-09-04',
     emoji: '🧲',
     title: 'The Spinning Magnetic Pen',
     conceptShort: 'Magnetism · Magnetic Repulsion · Invisible Forces',
