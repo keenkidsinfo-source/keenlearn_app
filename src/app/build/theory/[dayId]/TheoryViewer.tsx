@@ -774,10 +774,10 @@ function SvgEngineers() {
 // ── G1-2 Week 2 — Seesaw slides ───────────────────────────────────────────────
 
 // Helper: draws a seesaw (beam+fulcrum+seats) with optional tilt and optional objects
-function SeesawDiagram({ cx, cy, tilt = 0, leftObjs = 0, rightObjs = 0, balanced = false }: {
-  cx: number; cy: number; tilt?: number; leftObjs?: number; rightObjs?: number; balanced?: boolean
+function SeesawDiagram({ cx, cy, tilt = 0, leftObjs = 0, rightObjs = 0, balanced = false, beamW = 280 }: {
+  cx: number; cy: number; tilt?: number; leftObjs?: number; rightObjs?: number; balanced?: boolean; beamW?: number
 }) {
-  const beamW = 280, beamH = 14, halfBeam = beamW / 2
+  const beamH = 14, halfBeam = beamW / 2
   const rad = (tilt * Math.PI) / 180
   // beam endpoints relative to pivot
   const lx = cx - halfBeam * Math.cos(rad), ly = cy - halfBeam * Math.sin(rad)
@@ -933,7 +933,7 @@ function SvgSeesawBalance() {
       <rect x="12" y="64" width="222" height="34" rx="14" fill="#ef4444"/>
       <rect x="12" y="84" width="222" height="14" fill="#ef4444"/>
       <text x="123" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Left side heavier</text>
-      <SeesawDiagram cx={123} cy={172} tilt={12} leftObjs={2} rightObjs={0}/>
+      <SeesawDiagram cx={123} cy={172} tilt={12} leftObjs={2} rightObjs={0} beamW={175}/>
       <rect x="22" y="255" width="202" height="16" rx="6" fill="#fee2e2"/>
       <text x="123" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#dc2626">LEFT goes DOWN ⬇</text>
       <text x="123" y="283" textAnchor="middle" fontSize="11" fill="#64748b">Right goes UP ⬆</text>
@@ -942,7 +942,7 @@ function SvgSeesawBalance() {
       <rect x="269" y="64" width="222" height="34" rx="14" fill="#16a34a"/>
       <rect x="269" y="84" width="222" height="14" fill="#16a34a"/>
       <text x="380" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Equal on both sides</text>
-      <SeesawDiagram cx={380} cy={172} tilt={0} leftObjs={1} rightObjs={1} balanced/>
+      <SeesawDiagram cx={380} cy={172} tilt={0} leftObjs={1} rightObjs={1} balanced beamW={175}/>
       <rect x="279" y="255" width="202" height="16" rx="6" fill="#dcfce7"/>
       <text x="380" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">BEAM STAYS LEVEL ↔</text>
       <text x="380" y="283" textAnchor="middle" fontSize="11" fill="#64748b">That is BALANCE!</text>
@@ -951,7 +951,7 @@ function SvgSeesawBalance() {
       <rect x="526" y="64" width="222" height="34" rx="14" fill="#3b82f6"/>
       <rect x="526" y="84" width="222" height="14" fill="#3b82f6"/>
       <text x="637" y="86" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Right side heavier</text>
-      <SeesawDiagram cx={637} cy={172} tilt={-12} leftObjs={0} rightObjs={2}/>
+      <SeesawDiagram cx={637} cy={172} tilt={-12} leftObjs={0} rightObjs={2} beamW={175}/>
       <rect x="536" y="255" width="202" height="16" rx="6" fill="#dbeafe"/>
       <text x="637" y="266" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1d4ed8">RIGHT goes DOWN ⬇</text>
       <text x="637" y="283" textAnchor="middle" fontSize="11" fill="#64748b">Left goes UP ⬆</text>
