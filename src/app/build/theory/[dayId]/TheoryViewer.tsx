@@ -1407,14 +1407,14 @@ function SvgBalanceScaleRealWorld() {
       <line x1="696" y1="128" x2="704" y2="153" stroke="#64748b" strokeWidth="2"/>
       <ellipse cx="608" cy="157" rx="20" ry="8" fill="#fed7aa" stroke="#c2410c" strokeWidth="2"/>
       <ellipse cx="704" cy="157" rx="20" ry="8" fill="#fed7aa" stroke="#c2410c" strokeWidth="2"/>
-      <text x="656" y="182" textAnchor="middle" fontSize="11" fill="#374151">"No thumb on</text>
-      <text x="656" y="196" textAnchor="middle" fontSize="11" fill="#374151">the scale" 🏛️</text>
+      <text x="656" y="182" textAnchor="middle" fontSize="11" fill="#374151">No thumb on</text>
+      <text x="656" y="196" textAnchor="middle" fontSize="11" fill="#374151">the scale 🏛️</text>
       {/* Bottom bar */}
       <rect x="30" y="222" width="700" height="96" rx="12" fill="#1e293b"/>
       <text x="380" y="244" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">Mass vs. Weight — Key Difference!</text>
       <text x="380" y="264" textAnchor="middle" fontSize="13" fill="white">Balance scale measures MASS (amount of matter) — same reading on Moon as on Earth!</text>
       <text x="380" y="284" textAnchor="middle" fontSize="13" fill="#94a3b8">Spring scale measures WEIGHT (gravity force) — different on Moon. Balance scale wins! 🏆</text>
-      <text x="380" y="305" textAnchor="middle" fontSize="12" fill="#64748b">That's why precision lab scales use the lever principle, not springs.</text>
+      <text x="380" y="305" textAnchor="middle" fontSize="12" fill="#64748b">This is why precision lab scales use the lever principle, not springs.</text>
     </svg>
   )
 }
@@ -1466,7 +1466,7 @@ function SvgMassMeasurement() {
       {/* Bottom */}
       <rect x="30" y="222" width="700" height="96" rx="12" fill="#1e293b"/>
       <text x="380" y="244" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">MASS = amount of matter packed inside an object</text>
-      <text x="380" y="264" textAnchor="middle" fontSize="13" fill="white">Your scale answers: "Which is heavier?" and "How many pennies heavy?"</text>
+      <text x="380" y="264" textAnchor="middle" fontSize="13" fill="white">Your scale answers: Which is heavier? How many pennies heavy?</text>
       <text x="380" y="284" textAnchor="middle" fontSize="13" fill="#94a3b8">Mass stays the SAME everywhere — Moon, Earth, Jupiter. Weight changes!</text>
       <text x="380" y="305" textAnchor="middle" fontSize="12" fill="#64748b">Measured in grams (g) or kg · Your scale compares, not measures exactly</text>
     </svg>
@@ -1484,7 +1484,7 @@ function SvgBalanceScaleReview() {
   return (
     <svg viewBox="0 0 760 330" className="w-full h-full">
       <rect width="760" height="330" fill="#f0fdf4" rx="16"/>
-      <text x="380" y="22" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">🙋 Let's Review!</text>
+      <text x="380" y="22" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">{"🙋 Let's Review!"}</text>
       {qas.map((item, i) => {
         const y = 34 + i * 56
         return (
