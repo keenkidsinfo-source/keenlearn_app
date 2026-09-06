@@ -51,7 +51,7 @@ export default async function CodingDayPage({ params }: Props) {
   const meta = item.metadata as any
   const language: 'scratch' | 'python' = meta?.language ?? (session.gradeBand === 'g3-4' ? 'python' : 'scratch')
 
-  const projectUrl = (language === 'scratch' && project?.projectData)
+  const projectUrl = (language === 'scratch' && project && (project.projectData || project.r2Key))
     ? `/api/v1/coding/${project.id}/data`
     : null
   const savedCode = (language === 'python' && project?.projectData)
