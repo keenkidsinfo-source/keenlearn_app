@@ -239,9 +239,9 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
               {prep.warning}
             </div>
             {/* Setup image */}
-            <div className="w-full bg-white rounded-xl shadow overflow-hidden">
+            <div className="w-full bg-white rounded-xl shadow overflow-hidden" style={{ maxHeight: 260 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={prep.image} alt="Setup diagram" className="w-full object-contain" />
+              <img src={prep.image} alt="Setup diagram" className="w-full h-full object-contain" style={{ maxHeight: 260 }} />
             </div>
             {/* Setup steps */}
             <ol className="space-y-2">

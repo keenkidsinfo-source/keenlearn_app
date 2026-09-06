@@ -1092,6 +1092,416 @@ function SvgSeesawReview() {
   )
 }
 
+// ── G3-4 Week 2: Balance Scale slides ──────────────────────────────────────
+
+function SvgBalanceScaleBuild() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#eff6ff" rx="16"/>
+      <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Our Balance Scale — Parts Labeled</text>
+      {/* Beam */}
+      <rect x="130" y="98" width="500" height="12" rx="6" fill="#c49a4a" stroke="#92400e" strokeWidth="2"/>
+      {/* Fulcrum highlight */}
+      <circle cx="380" cy="104" r="10" fill="#ef4444" stroke="#b91c1c" strokeWidth="2"/>
+      {/* Vertical post */}
+      <rect x="372" y="110" width="16" height="110" rx="4" fill="#d4956a" stroke="#1e293b" strokeWidth="2"/>
+      {/* Clay base */}
+      <ellipse cx="380" cy="285" rx="52" ry="12" fill="#7fbb6a" stroke="#1e293b" strokeWidth="2"/>
+      <rect x="328" y="220" width="104" height="66" fill="#a3c96e" stroke="#1e293b" strokeWidth="2"/>
+      <ellipse cx="380" cy="220" rx="52" ry="12" fill="#a3c96e" stroke="#1e293b" strokeWidth="2"/>
+      <text x="380" y="260" textAnchor="middle" fontSize="11" fill="white" fontWeight="bold">CLAY</text>
+      {/* Left strings + pan */}
+      <line x1="165" y1="110" x2="145" y2="155" stroke="#64748b" strokeWidth="2"/>
+      <line x1="205" y1="110" x2="225" y2="155" stroke="#64748b" strokeWidth="2"/>
+      <path d="M140,155 Q140,185 148,190 L232,190 Q240,185 240,155 Z" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2"/>
+      <line x1="140" y1="155" x2="240" y2="155" stroke="#94a3b8" strokeWidth="2"/>
+      <text x="190" y="178" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#374151">Pan A</text>
+      {/* Right strings + pan */}
+      <line x1="520" y1="110" x2="500" y2="155" stroke="#64748b" strokeWidth="2"/>
+      <line x1="560" y1="110" x2="580" y2="155" stroke="#64748b" strokeWidth="2"/>
+      <path d="M495,155 Q495,185 503,190 L587,190 Q595,185 595,155 Z" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2"/>
+      <line x1="495" y1="155" x2="595" y2="155" stroke="#94a3b8" strokeWidth="2"/>
+      <text x="545" y="178" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#374151">Pan B</text>
+      {/* Labels */}
+      <text x="36" y="84" fontSize="12" fontWeight="bold" fill="#92400e">Beam (lever)</text>
+      <line x1="130" y1="90" x2="100" y2="84" stroke="#92400e" strokeWidth="1.5"/>
+      <text x="420" y="82" fontSize="12" fontWeight="bold" fill="#ef4444">Fulcrum / pivot</text>
+      <line x1="390" y1="95" x2="420" y2="82" stroke="#ef4444" strokeWidth="1.5"/>
+      <text x="620" y="170" fontSize="12" fontWeight="bold" fill="#374151">Equal pans</text>
+      <text x="620" y="184" fontSize="11" fill="#64748b">(cardstock)</text>
+      <text x="140" y="220" fontSize="12" fontWeight="bold" fill="#d4956a">Vertical post</text>
+      <line x1="372" y1="160" x2="200" y2="220" stroke="#d4956a" strokeWidth="1.5"/>
+      <text x="450" y="256" fontSize="12" fontWeight="bold" fill="#15803d">Clay base</text>
+      <text x="450" y="270" fontSize="11" fill="#64748b">(heavy + stable)</text>
+      <line x1="432" y1="256" x2="432" y2="256" stroke="#15803d" strokeWidth="1.5"/>
+      {/* Equal arm dashes */}
+      <line x1="165" y1="74" x2="380" y2="74" stroke="#3b82f6" strokeWidth="2" strokeDasharray="5,3"/>
+      <line x1="380" y1="74" x2="560" y2="74" stroke="#3b82f6" strokeWidth="2" strokeDasharray="5,3"/>
+      <text x="272" y="68" textAnchor="middle" fontSize="10" fill="#3b82f6">← equal arm →</text>
+      <text x="470" y="68" textAnchor="middle" fontSize="10" fill="#3b82f6">← equal arm →</text>
+      {/* Bottom bar */}
+      <rect x="60" y="300" width="640" height="24" rx="8" fill="#1e40af"/>
+      <text x="380" y="316" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Class 1 Lever: equal arms + equal pans = equal-arm lever balance scale ⚖️</text>
+    </svg>
+  )
+}
+
+function SvgBalanceScaleLever() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#fff7ed" rx="16"/>
+      <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">3 Classes of Levers</text>
+      {/* CLASS 1 highlighted */}
+      <rect x="16" y="38" width="226" height="200" rx="12" fill="#fef3c7" stroke="#f59e0b" strokeWidth="4"/>
+      <rect x="16" y="38" width="226" height="34" rx="12" fill="#f59e0b"/>
+      <rect x="16" y="60" width="226" height="12" fill="#f59e0b"/>
+      <text x="129" y="61" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">CLASS 1 ⭐ OUR SCALE</text>
+      <line x1="40" y1="140" x2="220" y2="140" stroke="#92400e" strokeWidth="5" strokeLinecap="round"/>
+      <polygon points="129,140 115,172 143,172" fill="#f59e0b" stroke="#92400e" strokeWidth="2"/>
+      <rect x="108" y="172" width="42" height="8" rx="2" fill="#92400e"/>
+      <defs><marker id="aBSL1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#3b82f6"/></marker></defs>
+      <line x1="58" y1="118" x2="58" y2="138" stroke="#3b82f6" strokeWidth="4" markerEnd="url(#aBSL1)"/>
+      <text x="58" y="113" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#3b82f6">Effort</text>
+      <rect x="194" y="118" width="18" height="22" rx="3" fill="#ef4444"/>
+      <text x="203" y="180" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#ef4444">Load</text>
+      <text x="129" y="196" textAnchor="middle" fontSize="11" fill="#92400e" fontWeight="bold">FULCRUM in centre</text>
+      <text x="129" y="216" textAnchor="middle" fontSize="11" fill="#374151">Seesaw · Balance scale</text>
+      <text x="129" y="230" textAnchor="middle" fontSize="11" fill="#374151">Scissors · Crowbar</text>
+      {/* CLASS 2 */}
+      <rect x="267" y="38" width="226" height="200" rx="12" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
+      <rect x="267" y="38" width="226" height="34" rx="12" fill="#64748b"/>
+      <rect x="267" y="60" width="226" height="12" fill="#64748b"/>
+      <text x="380" y="61" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">CLASS 2</text>
+      <line x1="282" y1="140" x2="470" y2="140" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round"/>
+      <polygon points="287,140 273,172 301,172" fill="#94a3b8" stroke="#64748b" strokeWidth="2"/>
+      <rect x="266" y="172" width="42" height="8" rx="2" fill="#64748b"/>
+      <rect x="362" y="118" width="18" height="22" rx="3" fill="#94a3b8"/>
+      <text x="371" y="113" textAnchor="middle" fontSize="11" fill="#64748b">Load (middle)</text>
+      <defs><marker id="aBSL2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#94a3b8"/></marker></defs>
+      <line x1="450" y1="120" x2="450" y2="138" stroke="#94a3b8" strokeWidth="3" markerEnd="url(#aBSL2)"/>
+      <text x="450" y="115" textAnchor="middle" fontSize="11" fill="#94a3b8">Effort</text>
+      <text x="380" y="196" textAnchor="middle" fontSize="11" fill="#64748b" fontWeight="bold">Fulcrum at END</text>
+      <text x="380" y="212" textAnchor="middle" fontSize="11" fill="#374151">Wheelbarrow · Nutcracker</text>
+      <text x="380" y="226" textAnchor="middle" fontSize="11" fill="#374151">Bottle opener</text>
+      {/* CLASS 3 */}
+      <rect x="518" y="38" width="226" height="200" rx="12" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
+      <rect x="518" y="38" width="226" height="34" rx="12" fill="#64748b"/>
+      <rect x="518" y="60" width="226" height="12" fill="#64748b"/>
+      <text x="631" y="61" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">CLASS 3</text>
+      <line x1="533" y1="140" x2="720" y2="140" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round"/>
+      <polygon points="538,140 524,172 552,172" fill="#94a3b8" stroke="#64748b" strokeWidth="2"/>
+      <rect x="517" y="172" width="42" height="8" rx="2" fill="#64748b"/>
+      <defs><marker id="aBSL3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#94a3b8"/></marker></defs>
+      <line x1="618" y1="120" x2="618" y2="138" stroke="#94a3b8" strokeWidth="3" markerEnd="url(#aBSL3)"/>
+      <text x="618" y="115" textAnchor="middle" fontSize="11" fill="#94a3b8">Effort (middle)</text>
+      <rect x="695" y="118" width="18" height="22" rx="3" fill="#94a3b8"/>
+      <text x="704" y="113" textAnchor="middle" fontSize="11" fill="#64748b">Load</text>
+      <text x="631" y="196" textAnchor="middle" fontSize="11" fill="#64748b" fontWeight="bold">Effort in MIDDLE</text>
+      <text x="631" y="212" textAnchor="middle" fontSize="11" fill="#374151">Tweezers · Fishing rod</text>
+      <text x="631" y="226" textAnchor="middle" fontSize="11" fill="#374151">Baseball bat</text>
+      {/* Bottom */}
+      <rect x="60" y="254" width="640" height="62" rx="10" fill="#1e293b"/>
+      <text x="380" y="274" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">Our balance scale = CLASS 1 LEVER</text>
+      <text x="380" y="293" textAnchor="middle" fontSize="13" fill="white">Fulcrum in the MIDDLE (pivot hole in the stand)</text>
+      <text x="380" y="311" textAnchor="middle" fontSize="12" fill="#94a3b8">Load on BOTH ends (the two pans) · Effort = adjusting the weights</text>
+    </svg>
+  )
+}
+
+function SvgTorqueBalance() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#faf5ff" rx="16"/>
+      <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Torque = Force × Distance</text>
+      <rect x="220" y="38" width="320" height="44" rx="10" fill="#7c3aed"/>
+      <text x="380" y="58" textAnchor="middle" fontSize="15" fontWeight="bold" fill="white">TORQUE = Force × Distance</text>
+      <text x="380" y="74" textAnchor="middle" fontSize="12" fill="#ddd6fe">how hard something ROTATES around the pivot</text>
+      {/* BALANCED left */}
+      <text x="185" y="106" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#15803d">BALANCED ✓</text>
+      <line x1="55" y1="148" x2="315" y2="148" stroke="#92400e" strokeWidth="6" strokeLinecap="round"/>
+      <polygon points="185,148 172,180 198,180" fill="#7c3aed" stroke="#4c1d95" strokeWidth="2"/>
+      <rect x="63" y="126" width="30" height="22" rx="4" fill="#3b82f6" stroke="#1d4ed8" strokeWidth="2"/>
+      <text x="78" y="141" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">3</text>
+      <rect x="267" y="126" width="30" height="22" rx="4" fill="#3b82f6" stroke="#1d4ed8" strokeWidth="2"/>
+      <text x="282" y="141" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">3</text>
+      <line x1="78" y1="196" x2="185" y2="196" stroke="#15803d" strokeWidth="2" strokeDasharray="4,3"/>
+      <text x="131" y="211" textAnchor="middle" fontSize="11" fill="#15803d">d = 10</text>
+      <line x1="185" y1="196" x2="282" y2="196" stroke="#15803d" strokeWidth="2" strokeDasharray="4,3"/>
+      <text x="233" y="211" textAnchor="middle" fontSize="11" fill="#15803d">d = 10</text>
+      <text x="78" y="228" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">T=3×10=30</text>
+      <text x="282" y="228" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">T=3×10=30</text>
+      <text x="185" y="250" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#15803d">Equal → BALANCED!</text>
+      {/* Divider */}
+      <line x1="374" y1="94" x2="374" y2="280" stroke="#e2e8f0" strokeWidth="2"/>
+      {/* UNBALANCED right */}
+      <text x="570" y="106" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#dc2626">UNBALANCED ✗</text>
+      <line x1="425" y1="165" x2="690" y2="130" stroke="#92400e" strokeWidth="6" strokeLinecap="round"/>
+      <polygon points="557,147 544,180 570,180" fill="#7c3aed" stroke="#4c1d95" strokeWidth="2"/>
+      <rect x="432" y="143" width="36" height="32" rx="4" fill="#ef4444" stroke="#dc2626" strokeWidth="2"/>
+      <text x="450" y="163" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">5</text>
+      <rect x="668" y="108" width="30" height="22" rx="4" fill="#fca5a5" stroke="#dc2626" strokeWidth="2"/>
+      <text x="683" y="123" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#dc2626">3</text>
+      <text x="450" y="218" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#dc2626">T=5×10=50</text>
+      <text x="683" y="218" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#64748b">T=3×10=30</text>
+      <text x="566" y="244" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#dc2626">50 &gt; 30 → left side DOWN!</text>
+      {/* Bottom */}
+      <rect x="60" y="275" width="640" height="44" rx="10" fill="#1e293b"/>
+      <text x="380" y="294" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Equal-arm scale: distance is the SAME on both sides</text>
+      <text x="380" y="312" textAnchor="middle" fontSize="13" fill="white">Only variable = WEIGHT → more weight = more torque = that pan sinks</text>
+    </svg>
+  )
+}
+
+function SvgTrueBalancePoint() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#f0fdf4" rx="16"/>
+      <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Finding the TRUE Balance Point</text>
+      {/* LEFT: Geometric center wrong */}
+      <rect x="16" y="38" width="340" height="210" rx="12" fill="#fff1f2" stroke="#ef4444" strokeWidth="3"/>
+      <rect x="16" y="38" width="340" height="34" rx="12" fill="#ef4444"/>
+      <rect x="16" y="60" width="340" height="12" fill="#ef4444"/>
+      <text x="186" y="61" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">❌ Geometric Centre (midpoint)</text>
+      {/* Stick tilted */}
+      <line x1="40" y1="162" x2="330" y2="174" stroke="#d4956a" strokeWidth="14" strokeLinecap="round"/>
+      {/* Dense dots left = heavy wood */}
+      {[52,68,84,100,116,132].map((x,i) => (
+        <circle key={`dL${i}`} cx={x} cy={165+i*0.5} r="3.5" fill="#92400e" opacity="0.65"/>
+      ))}
+      {/* Sparse dots right = light wood */}
+      {[210,230,250,270].map((x,i) => (
+        <circle key={`dR${i}`} cx={x} cy={170+i*0.3} r="2" fill="#92400e" opacity="0.3"/>
+      ))}
+      <polygon points="185,170 170,202 200,202" fill="#ef4444" stroke="#dc2626" strokeWidth="2"/>
+      <text x="186" y="222" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#ef4444">Exactly halfway (midpoint)</text>
+      <text x="186" y="238" textAnchor="middle" fontSize="11" fill="#64748b">but wood is denser on left</text>
+      <text x="186" y="260" textAnchor="middle" fontSize="13" fill="#dc2626" fontWeight="bold">→ Stick TILTS ↙</text>
+      {/* RIGHT: True balance */}
+      <rect x="404" y="38" width="340" height="210" rx="12" fill="#f0fdf4" stroke="#22c55e" strokeWidth="3"/>
+      <rect x="404" y="38" width="340" height="34" rx="12" fill="#22c55e"/>
+      <rect x="404" y="60" width="340" height="12" fill="#22c55e"/>
+      <text x="574" y="61" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">✅ True Balance Point (by feel)</text>
+      {/* Stick level */}
+      <line x1="424" y1="168" x2="714" y2="168" stroke="#d4956a" strokeWidth="14" strokeLinecap="round"/>
+      {[436,452,468,484,500,516].map((x,i) => (
+        <circle key={`tL${i}`} cx={x} cy={168} r="3.5" fill="#92400e" opacity="0.65"/>
+      ))}
+      {[594,614,634,654].map((x,i) => (
+        <circle key={`tR${i}`} cx={x} cy={168} r="2" fill="#92400e" opacity="0.3"/>
+      ))}
+      <polygon points="555,168 541,200 569,200" fill="#22c55e" stroke="#15803d" strokeWidth="2"/>
+      <text x="555" y="222" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#22c55e">True balance point</text>
+      <text x="555" y="238" textAnchor="middle" fontSize="11" fill="#64748b">slightly left of midpoint</text>
+      <text x="574" y="260" textAnchor="middle" fontSize="13" fill="#15803d" fontWeight="bold">→ Perfectly level ✅</text>
+      {/* Bottom */}
+      <rect x="60" y="264" width="640" height="54" rx="10" fill="#1e293b"/>
+      <text x="380" y="283" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Centre of Mass = where ALL the weight acts as one point</text>
+      <text x="380" y="301" textAnchor="middle" fontSize="13" fill="white">Wood grain is uneven → true balance ≠ geometric midpoint</text>
+      <text x="380" y="318" textAnchor="middle" fontSize="12" fill="#94a3b8">Balance your skewer on one finger 👆 — mark the spot with a pen dot!</text>
+    </svg>
+  )
+}
+
+function SvgAccuracyPrecision() {
+  const rings = (cx: number, cy: number) => (
+    <>
+      <circle cx={cx} cy={cy} r="48" fill="white" stroke="#e2e8f0" strokeWidth="1.5"/>
+      <circle cx={cx} cy={cy} r="36" fill="#fee2e2" stroke="#fca5a5" strokeWidth="1.5"/>
+      <circle cx={cx} cy={cy} r="24" fill="#fecaca" stroke="#f87171" strokeWidth="1.5"/>
+      <circle cx={cx} cy={cy} r="13" fill="#ef4444" stroke="#dc2626" strokeWidth="1.5"/>
+      <circle cx={cx} cy={cy} r="5" fill="#991b1b"/>
+    </>
+  )
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#fff1f2" rx="16"/>
+      <text x="380" y="24" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Accuracy vs. Precision</text>
+      {/* Column headers */}
+      <rect x="180" y="34" width="160" height="26" rx="8" fill="#3b82f6"/>
+      <text x="260" y="51" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">ACCURATE ✓</text>
+      <rect x="388" y="34" width="185" height="26" rx="8" fill="#e2e8f0"/>
+      <text x="480" y="51" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#64748b">NOT Accurate ✗</text>
+      {/* Row labels */}
+      <text x="22" y="138" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#3b82f6" transform="rotate(-90,22,138)">PRECISE ✓</text>
+      <text x="22" y="258" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#64748b" transform="rotate(-90,22,258)">NOT Precise ✗</text>
+      {/* Q1: Accurate + Precise */}
+      <rect x="48" y="66" width="295" height="118" rx="10" fill="#f0fdf4" stroke="#22c55e" strokeWidth="2"/>
+      {rings(170, 125)}
+      {[[-3,2],[2,-3],[1,4],[-2,-2],[3,1]].map(([dx,dy],i) => (
+        <circle key={`q1${i}`} cx={170+dx} cy={125+dy} r="5" fill="#22c55e" stroke="white" strokeWidth="1.5"/>
+      ))}
+      <text x="170" y="174" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">Accurate + Precise 🏆</text>
+      {/* Q2: Precise not accurate */}
+      <rect x="390" y="66" width="320" height="118" rx="10" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2"/>
+      {rings(540, 125)}
+      {[[22,-18],[24,-15],[20,-21],[23,-16],[25,-19]].map(([dx,dy],i) => (
+        <circle key={`q2${i}`} cx={540+dx} cy={125+dy} r="5" fill="#f59e0b" stroke="white" strokeWidth="1.5"/>
+      ))}
+      <text x="540" y="174" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#92400e">Precise but NOT accurate</text>
+      {/* Q3: Accurate not precise */}
+      <rect x="48" y="190" width="295" height="118" rx="10" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2"/>
+      {rings(170, 249)}
+      {[[-28,18],[15,-22],[8,30],[-20,-24],[30,10]].map(([dx,dy],i) => (
+        <circle key={`q3${i}`} cx={170+dx} cy={249+dy} r="5" fill="#3b82f6" stroke="white" strokeWidth="1.5"/>
+      ))}
+      <text x="170" y="298" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1d4ed8">Accurate but NOT precise</text>
+      {/* Q4: Neither */}
+      <rect x="390" y="190" width="320" height="118" rx="10" fill="#fff1f2" stroke="#ef4444" strokeWidth="2"/>
+      {rings(540, 249)}
+      {[[-28,-20],[22,18],[-10,30],[30,-25],[18,10]].map(([dx,dy],i) => (
+        <circle key={`q4${i}`} cx={540+dx} cy={249+dy} r="5" fill="#ef4444" stroke="white" strokeWidth="1.5"/>
+      ))}
+      <text x="540" y="298" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#dc2626">Neither accurate nor precise ❌</text>
+    </svg>
+  )
+}
+
+function SvgBalanceScaleRealWorld() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#eff6ff" rx="16"/>
+      <text x="380" y="24" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Balance Scales — 5,000 Years of History</text>
+      {/* Ancient Egypt */}
+      <rect x="16" y="38" width="168" height="170" rx="12" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2"/>
+      <text x="100" y="62" textAnchor="middle" fontSize="20">🏛️</text>
+      <text x="100" y="80" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#92400e">Ancient Egypt</text>
+      <text x="100" y="95" textAnchor="middle" fontSize="11" fill="#64748b">~3000 BCE</text>
+      <line x1="60" y1="128" x2="140" y2="128" stroke="#92400e" strokeWidth="4" strokeLinecap="round"/>
+      <polygon points="100,128 88,155 112,155" fill="#f59e0b" stroke="#92400e" strokeWidth="2"/>
+      <line x1="60" y1="128" x2="56" y2="153" stroke="#64748b" strokeWidth="2"/>
+      <line x1="140" y1="128" x2="144" y2="153" stroke="#64748b" strokeWidth="2"/>
+      <ellipse cx="56" cy="157" rx="18" ry="7" fill="#fef3c7" stroke="#92400e" strokeWidth="2"/>
+      <ellipse cx="144" cy="157" rx="18" ry="7" fill="#fef3c7" stroke="#92400e" strokeWidth="2"/>
+      <text x="100" y="180" textAnchor="middle" fontSize="11" fill="#374151">Weighed gold</text>
+      <text x="100" y="194" textAnchor="middle" fontSize="11" fill="#374151">and grain ⚖️</text>
+      {/* Pharmacy */}
+      <rect x="200" y="38" width="168" height="170" rx="12" fill="#f0fdf4" stroke="#22c55e" strokeWidth="2"/>
+      <text x="284" y="62" textAnchor="middle" fontSize="20">⚕️</text>
+      <text x="284" y="80" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#15803d">Pharmacy</text>
+      <text x="284" y="95" textAnchor="middle" fontSize="11" fill="#64748b">Drug compounding</text>
+      <rect x="264" y="108" width="40" height="22" rx="11" fill="#86efac" stroke="#22c55e" strokeWidth="2"/>
+      <line x1="264" y1="119" x2="304" y2="119" stroke="#22c55e" strokeWidth="2"/>
+      <text x="284" y="152" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#15803d">0.001 g</text>
+      <text x="284" y="167" textAnchor="middle" fontSize="11" fill="#374151">accuracy</text>
+      <text x="284" y="183" textAnchor="middle" fontSize="11" fill="#374151">Precise drug doses</text>
+      <text x="284" y="197" textAnchor="middle" fontSize="11" fill="#374151">save lives 💊</text>
+      {/* Chemistry lab */}
+      <rect x="384" y="38" width="168" height="170" rx="12" fill="#faf5ff" stroke="#7c3aed" strokeWidth="2"/>
+      <text x="468" y="62" textAnchor="middle" fontSize="20">⚗️</text>
+      <text x="468" y="80" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#6d28d9">Chemistry Lab</text>
+      <text x="468" y="95" textAnchor="middle" fontSize="11" fill="#64748b">Analytical balance</text>
+      <rect x="452" y="108" width="32" height="20" rx="4" fill="#ede9fe" stroke="#7c3aed" strokeWidth="2"/>
+      <path d="M446,128 Q452,156 468,161 Q484,156 490,128 Z" fill="#c4b5fd" stroke="#7c3aed" strokeWidth="2"/>
+      <text x="468" y="150" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#6d28d9">$50,000+</text>
+      <text x="468" y="165" textAnchor="middle" fontSize="11" fill="#374151">0.0001 g accuracy</text>
+      <text x="468" y="181" textAnchor="middle" fontSize="11" fill="#374151">Same lever principle</text>
+      <text x="468" y="196" textAnchor="middle" fontSize="11" fill="#374151">as yours! 🔬</text>
+      {/* Justice */}
+      <rect x="568" y="38" width="176" height="170" rx="12" fill="#fff7ed" stroke="#f97316" strokeWidth="2"/>
+      <text x="656" y="62" textAnchor="middle" fontSize="20">⚖️</text>
+      <text x="656" y="80" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#c2410c">Symbol of Justice</text>
+      <text x="656" y="95" textAnchor="middle" fontSize="11" fill="#64748b">Equal treatment</text>
+      <line x1="616" y1="128" x2="696" y2="128" stroke="#c2410c" strokeWidth="4" strokeLinecap="round"/>
+      <polygon points="656,128 643,155 669,155" fill="#f97316" stroke="#c2410c" strokeWidth="2"/>
+      <line x1="616" y1="128" x2="608" y2="153" stroke="#64748b" strokeWidth="2"/>
+      <line x1="696" y1="128" x2="704" y2="153" stroke="#64748b" strokeWidth="2"/>
+      <ellipse cx="608" cy="157" rx="20" ry="8" fill="#fed7aa" stroke="#c2410c" strokeWidth="2"/>
+      <ellipse cx="704" cy="157" rx="20" ry="8" fill="#fed7aa" stroke="#c2410c" strokeWidth="2"/>
+      <text x="656" y="182" textAnchor="middle" fontSize="11" fill="#374151">"No thumb on</text>
+      <text x="656" y="196" textAnchor="middle" fontSize="11" fill="#374151">the scale" 🏛️</text>
+      {/* Bottom bar */}
+      <rect x="30" y="222" width="700" height="96" rx="12" fill="#1e293b"/>
+      <text x="380" y="244" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">Mass vs. Weight — Key Difference!</text>
+      <text x="380" y="264" textAnchor="middle" fontSize="13" fill="white">Balance scale measures MASS (amount of matter) — same reading on Moon as on Earth!</text>
+      <text x="380" y="284" textAnchor="middle" fontSize="13" fill="#94a3b8">Spring scale measures WEIGHT (gravity force) — different on Moon. Balance scale wins! 🏆</text>
+      <text x="380" y="305" textAnchor="middle" fontSize="12" fill="#64748b">That's why precision lab scales use the lever principle, not springs.</text>
+    </svg>
+  )
+}
+
+function SvgMassMeasurement() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#faf5ff" rx="16"/>
+      <text x="380" y="24" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">What Did You Measure? — MASS!</text>
+      {/* Mass ≠ Size */}
+      <rect x="16" y="38" width="340" height="170" rx="12" fill="white" stroke="#7c3aed" strokeWidth="3"/>
+      <rect x="16" y="38" width="340" height="34" rx="12" fill="#7c3aed"/>
+      <rect x="16" y="60" width="340" height="12" fill="#7c3aed"/>
+      <text x="186" y="61" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">MASS ≠ SIZE</text>
+      {/* Big foam ball */}
+      <circle cx="110" cy="136" r="46" fill="#bfdbfe" stroke="#3b82f6" strokeWidth="3"/>
+      <text x="110" y="132" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1d4ed8">BIG foam ball</text>
+      <text x="110" y="148" textAnchor="middle" fontSize="11" fill="#1d4ed8">light mass</text>
+      <text x="110" y="192" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#3b82f6">Large size, small mass</text>
+      {/* VS */}
+      <text x="186" y="142" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#7c3aed">VS</text>
+      {/* Small steel bolt */}
+      <rect x="250" y="114" width="36" height="46" rx="5" fill="#475569" stroke="#1e293b" strokeWidth="3"/>
+      <rect x="244" y="110" width="48" height="10" rx="3" fill="#64748b" stroke="#1e293b" strokeWidth="2"/>
+      <text x="268" y="190" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#374151">Small size, large mass</text>
+      {/* Penny measurement */}
+      <rect x="404" y="38" width="340" height="170" rx="12" fill="white" stroke="#f59e0b" strokeWidth="3"/>
+      <rect x="404" y="38" width="340" height="34" rx="12" fill="#f59e0b"/>
+      <rect x="404" y="60" width="340" height="12" fill="#f59e0b"/>
+      <text x="574" y="61" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">MEASURING WITH PENNIES</text>
+      {/* Scale */}
+      <line x1="574" y1="88" x2="574" y2="110" stroke="#92400e" strokeWidth="3"/>
+      <line x1="464" y1="110" x2="684" y2="110" stroke="#92400e" strokeWidth="5" strokeLinecap="round"/>
+      <polygon points="574,110 560,140 588,140" fill="#f59e0b" stroke="#92400e" strokeWidth="2"/>
+      <line x1="476" y1="110" x2="456" y2="135" stroke="#64748b" strokeWidth="2"/>
+      <line x1="510" y1="110" x2="530" y2="135" stroke="#64748b" strokeWidth="2"/>
+      <ellipse cx="493" cy="140" rx="38" ry="10" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2"/>
+      <rect x="475" y="122" width="36" height="16" rx="3" fill="#f87171" stroke="#dc2626" strokeWidth="2"/>
+      <text x="493" y="133" textAnchor="middle" fontSize="9" fontWeight="bold" fill="white">ERASER</text>
+      <line x1="638" y1="110" x2="618" y2="135" stroke="#64748b" strokeWidth="2"/>
+      <line x1="672" y1="110" x2="692" y2="135" stroke="#64748b" strokeWidth="2"/>
+      <ellipse cx="655" cy="140" rx="38" ry="10" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2"/>
+      {[0,1,2,3].map(i => (
+        <circle key={`p${i}`} cx={640 + (i%2)*16} cy={i < 2 ? 124 : 134} r="7" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5"/>
+      ))}
+      <text x="574" y="165" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#92400e">4 pennies = 1 eraser</text>
+      <text x="574" y="181" textAnchor="middle" fontSize="11" fill="#374151">Eraser mass = 4 penny-units</text>
+      <text x="574" y="197" textAnchor="middle" fontSize="11" fill="#64748b">Scientists use grams (g) instead!</text>
+      {/* Bottom */}
+      <rect x="30" y="222" width="700" height="96" rx="12" fill="#1e293b"/>
+      <text x="380" y="244" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#fbbf24">MASS = amount of matter packed inside an object</text>
+      <text x="380" y="264" textAnchor="middle" fontSize="13" fill="white">Your scale answers: "Which is heavier?" and "How many pennies heavy?"</text>
+      <text x="380" y="284" textAnchor="middle" fontSize="13" fill="#94a3b8">Mass stays the SAME everywhere — Moon, Earth, Jupiter. Weight changes!</text>
+      <text x="380" y="305" textAnchor="middle" fontSize="12" fill="#64748b">Measured in grams (g) or kg · Your scale compares, not measures exactly</text>
+    </svg>
+  )
+}
+
+function SvgBalanceScaleReview() {
+  const qas = [
+    { q: 'What kind of simple machine is a balance scale?', a: 'Class 1 Lever — fulcrum in the MIDDLE between the two loads', color: '#3b82f6' },
+    { q: 'What does torque equal?', a: 'Torque = Force × Distance from the fulcrum', color: '#7c3aed' },
+    { q: 'Why find the TRUE balance point, not just the midpoint?', a: 'Wood is non-uniform — centre of mass ≠ geometric centre', color: '#22c55e' },
+    { q: 'Accurate but not precise — what does that mean?', a: 'Average is correct but results vary each time (inconsistent)', color: '#f59e0b' },
+    { q: 'Does your scale measure mass or weight?', a: 'MASS — same reading on Moon or Earth! (Weight changes with gravity)', color: '#ef4444' },
+  ]
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#f0fdf4" rx="16"/>
+      <text x="380" y="22" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">🙋 Let's Review!</text>
+      {qas.map((item, i) => {
+        const y = 34 + i * 56
+        return (
+          <g key={i}>
+            <rect x="16" y={y} width="728" height="50" rx="10" fill="white" stroke={item.color} strokeWidth="2"/>
+            <rect x="16" y={y} width="32" height="50" rx="10" fill={item.color}/>
+            <rect x="36" y={y} width="10" height="50" fill={item.color}/>
+            <text x="32" y={y + 30} textAnchor="middle" fontSize="15" fontWeight="bold" fill="white">{i + 1}</text>
+            <text x="58" y={y + 17} fontSize="11" fill="#374151">{item.q}</text>
+            <text x="58" y={y + 37} fontSize="12" fontWeight="bold" fill={item.color}>{`→ ${item.a}`}</text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
 // Map "gradeBand-weekNumber" + slideIndex → SVG component
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g1-2-1': {
@@ -1124,7 +1534,17 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
     6: SvgSeesawDiscovery,
     7: SvgSeesawReview,
   },
-  // g3-4-2 (Balance Scale) still uses text fallback — no custom SVGs yet
+  // G3-4 Week 2 — Balance Scale (all 8 slides)
+  'g3-4-2': {
+    0: SvgBalanceScaleBuild,
+    1: SvgBalanceScaleLever,
+    2: SvgTorqueBalance,
+    3: SvgTrueBalancePoint,
+    4: SvgAccuracyPrecision,
+    5: SvgBalanceScaleRealWorld,
+    6: SvgMassMeasurement,
+    7: SvgBalanceScaleReview,
+  },
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
