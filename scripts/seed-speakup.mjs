@@ -923,6 +923,23 @@ const SESSIONS_G34 = [
         {time:'58:00',action:'Closing ritual — three versions in a row. "I AM A SPEAKER!" — quiet and slow. Then full volume and expression. Then crisp, articulated, every consonant. "Five tools. One sentence. That\'s the toolkit." Fist bump or high five as students leave.'},
       ]},
   ],
+  bonusActivities:[
+    {
+      name:'Hot Seat',
+      emoji:'🔥',
+      duration:'5–15 min',
+      when:'If excerpt practice finishes early or students have energy left after wrap-up',
+      instructions:[
+        'One student sits in a chair facing the class — this is the Hot Seat.',
+        'The class asks any question (teacher filters anything unkind).',
+        'The speaker must answer in EXACTLY 3 sentences — no more, no less.',
+        'They must use at least 2 Voice Toolkit tools visibly (e.g. pause before a key word, vary pitch).',
+        'Class calls out which tools they heard after each answer.',
+        'Run until time is up — swap the speaker every 2-3 questions.',
+        'Teacher tip: if a student struggles to stop at 3 sentences, hold up fingers as a visible count.',
+      ],
+    },
+  ],
   pictureCards:[
     {name:'Voice Toolkit',emoji:'🎙️',use:'Written on board at 8:00 — keep visible all session; students refer to it during excerpt practice and partner feedback'},
     {name:'Three Pillars Poster',emoji:'3️⃣',use:'Point to VOICE pillar throughout'},

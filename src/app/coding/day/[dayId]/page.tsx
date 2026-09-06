@@ -99,7 +99,7 @@ export default async function CodingDayPage({ params }: Props) {
             ))
             .limit(1)
 
-          if (prevProject?.projectData) {
+          if (prevProject && (prevProject.projectData || prevProject.r2Key)) {
             starterUrl = `/api/v1/coding/${prevProject.id}/data`
           }
         }
