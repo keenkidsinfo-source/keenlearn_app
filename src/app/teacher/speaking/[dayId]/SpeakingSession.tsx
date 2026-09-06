@@ -738,6 +738,27 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
             </div>
           )}
 
+          {/* Bonus Activities */}
+          {meta.bonusActivities && meta.bonusActivities.length > 0 && (
+            <div className="bg-yellow-50 border-2 border-yellow-300 rounded-2xl px-4 py-3">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">⭐</span>
+                <span className="font-bold text-yellow-800 text-sm">BONUS — If you finish early</span>
+              </div>
+              {meta.bonusActivities.map((b: any, i: number) => (
+                <div key={i} className="mb-3">
+                  <div className="font-bold text-yellow-900 text-sm">{b.emoji} {b.name} <span className="font-normal text-yellow-700">({b.duration})</span></div>
+                  <div className="text-xs text-yellow-700 mb-1 italic">{b.when}</div>
+                  <ol className="list-decimal list-inside space-y-0.5">
+                    {b.instructions.map((step: string, j: number) => (
+                      <li key={j} className="text-xs text-yellow-900">{step}</li>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* Timer */}
           <div className="bg-white rounded-2xl shadow-sm p-5">
             <div className={cn('text-6xl font-black text-center mb-4 tabular-nums', timerColor)}>
@@ -818,26 +839,6 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
             )}
           </div>
 
-          {/* Bonus Activities */}
-          {meta.bonusActivities && meta.bonusActivities.length > 0 && (
-            <div className="bg-yellow-50 border-2 border-yellow-300 rounded-2xl px-4 py-3">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-lg">⭐</span>
-                <span className="font-bold text-yellow-800 text-sm">BONUS — If you finish early</span>
-              </div>
-              {meta.bonusActivities.map((b: any, i: number) => (
-                <div key={i} className="mb-3">
-                  <div className="font-bold text-yellow-900 text-sm">{b.emoji} {b.name} <span className="font-normal text-yellow-700">({b.duration})</span></div>
-                  <div className="text-xs text-yellow-700 mb-1 italic">{b.when}</div>
-                  <ol className="list-decimal list-inside space-y-0.5">
-                    {b.instructions.map((step: string, j: number) => (
-                      <li key={j} className="text-xs text-yellow-900">{step}</li>
-                    ))}
-                  </ol>
-                </div>
-              ))}
-            </div>
-          )}
         </>
       )}
     </main>
