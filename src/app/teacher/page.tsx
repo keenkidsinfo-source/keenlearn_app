@@ -130,10 +130,17 @@ export default async function TeacherDashboardPage({
 
     // Deduplicate by subject — if a day has multiple content items, keep the first only
     const seenSubjects = new Set<string>()
-    weekSubjects = (dayItems as SubjectProgress[]).filter(ws => {
+    const deduped = (dayItems as SubjectProgress[]).filter(ws => {
       if (seenSubjects.has(ws.subject)) return false
       seenSubjects.add(ws.subject)
       return true
+    })
+    // Enforce display order: build → public_speaking → science → free_build
+    const SUBJECT_ORDER: string[] = ['build', 'public_speaking', 'science', 'free_build']
+    weekSubjects = deduped.sort((a, b) => {
+      const ai = SUBJECT_ORDER.indexOf(a.subject)
+      const bi = SUBJECT_ORDER.indexOf(b.subject)
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
     })
 
     // Load student progress only if there are students
