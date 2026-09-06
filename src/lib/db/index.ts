@@ -3,5 +3,5 @@ import postgres from 'postgres'
 import * as schema from './schema'
 
 const connectionString = process.env.DATABASE_URL!
-const client = postgres(connectionString, { prepare: false, max: 1 })
+const client = postgres(connectionString, { prepare: false, max: 3 })
 export const db = drizzle(client, { schema })
