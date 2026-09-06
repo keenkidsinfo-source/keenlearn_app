@@ -5,6 +5,7 @@ import { db } from '@/lib/db'
 import { codingProjects } from '@/lib/db/schema'
 import { eq, and } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
+import { uploadProject } from '@/lib/scratch-storage'
 
 // GET /api/v1/coding/:projectId — load a coding project
 export async function GET(req: NextRequest, { params }: { params: Promise<{ projectId: string }> }) {
@@ -33,31 +34,23 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ proj
     if (!studentId) return apiError('Unauthorized', 'UNAUTHORIZED', 401)
 
     const { projectId } = await params
-
-    const [project] = await db
-      .select()
-      .from(codingProjects)
-      .where(and(
-        eq(codingProjects.id, projectId),
-        eq(codingProjects.studentId, studentId),
-      ))
-      .limit(1)
-
-    if (!project) return apiError('Project not found', 'NOT_FOUND', 404)
-
     const body = await req.json().catch(() => null)
     if (!body?.projectJson) return apiError('Invalid body', 'VALIDATION_ERROR', 400)
 
-    const updates: Record<string, unknown> = { projectData: body.projectJson, lastSavedAt: new Date() }
-    // Fix rows that were created without curriculumContentId
-    if (body.curriculumContentId && !project.curriculumContentId) {
-      updates.curriculumContentId = body.curriculumContentId
+    // Upload .sb3 to Supabase Storage — keeps project_data column empty
+    const storagePath = await uploadProject(projectId, body.projectJson)
+
+    const updates: Record<string, unknown> = {
+      r2Key: storagePath,
+      projectData: null,   // clear any old inline blob
+      lastSavedAt: new Date(),
     }
+    if (body.curriculumContentId) updates.curriculumContentId = body.curriculumContentId
 
     await db
       .update(codingProjects)
       .set(updates as any)
-      .where(eq(codingProjects.id, projectId))
+      .where(and(eq(codingProjects.id, projectId), eq(codingProjects.studentId, studentId)))
 
     return apiOk({ saved: true, lastSavedAt: new Date().toISOString() })
   } catch (err: any) {
