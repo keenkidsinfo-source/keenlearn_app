@@ -51,6 +51,7 @@ interface SpeakingMeta {
   tipIcon?: string
   sessionPlan?: SessionSegment[]
   pictureCards?: PictureCard[]
+  bonusActivities?: { name: string; emoji: string; duration: string; when: string; instructions: string[] }[]
 }
 
 interface Props {
