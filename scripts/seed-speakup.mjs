@@ -1755,6 +1755,7 @@ async function run() {
         prompt: s.prompt, timeLimit: s.timeLimit, structure: s.structure,
         sessionPlan: s.sessionPlan,
         pictureCards: s.pictureCards,
+        bonusActivities: s.bonusActivities,
       }
       const [existingItem] = await sql`
         SELECT ci.id FROM curriculum_content cc2
