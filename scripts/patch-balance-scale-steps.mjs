@@ -3,7 +3,8 @@
 // New design: 3 popsicle sticks (2 uprights + 1 beam) + flat cardstock base
 // Removes clay cylinder base
 
-import { sql } from '../src/lib/db/index.js'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' })
 
 const newSteps = [
   {
