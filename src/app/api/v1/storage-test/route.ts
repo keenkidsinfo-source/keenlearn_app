@@ -15,9 +15,21 @@ export async function GET(_req: Request) {
 
   try {
     const supabase = createClient(url, key)
-    const { data, error } = await supabase.storage.from('scratch-projects').list('projects', { limit: 3 })
+    const { data: list, error } = await supabase.storage.from('scratch-projects').list('projects', { limit: 3 })
     if (error) return NextResponse.json({ error: error.message, url, keyPrefix: key.slice(0, 10) }, { status: 500 })
-    return NextResponse.json({ ok: true, files: data?.length ?? 0, url, keyPrefix: key.slice(0, 10) })
+
+    // Try downloading the first file to verify read works
+    let downloadOk = false
+    let downloadError = null
+    let downloadSize = 0
+    if (list && list.length > 0) {
+      const path = `projects/${list[0].name}`
+      const { data: blob, error: dlErr } = await supabase.storage.from('scratch-projects').download(path)
+      if (dlErr) { downloadError = dlErr.message }
+      else { downloadOk = true; downloadSize = blob ? (await blob.arrayBuffer()).byteLength : 0 }
+    }
+
+    return NextResponse.json({ ok: true, files: list?.length ?? 0, downloadOk, downloadError, downloadSize, url, keyPrefix: key.slice(0, 10) })
   } catch (e: any) {
     return NextResponse.json({ error: e.message, url, keyPrefix: key.slice(0, 10) }, { status: 500 })
   }
