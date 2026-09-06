@@ -1101,15 +1101,13 @@ function SvgBalanceScaleBuild() {
       <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Our Balance Scale — Parts Labeled</text>
       {/* Beam */}
       <rect x="130" y="98" width="500" height="12" rx="6" fill="#c49a4a" stroke="#92400e" strokeWidth="2"/>
-      {/* Fulcrum highlight */}
-      <circle cx="380" cy="104" r="10" fill="#ef4444" stroke="#b91c1c" strokeWidth="2"/>
-      {/* Vertical post */}
-      <rect x="372" y="110" width="16" height="110" rx="4" fill="#d4956a" stroke="#1e293b" strokeWidth="2"/>
-      {/* Clay base */}
-      <ellipse cx="380" cy="285" rx="52" ry="12" fill="#7fbb6a" stroke="#1e293b" strokeWidth="2"/>
-      <rect x="328" y="220" width="104" height="66" fill="#a3c96e" stroke="#1e293b" strokeWidth="2"/>
-      <ellipse cx="380" cy="220" rx="52" ry="12" fill="#a3c96e" stroke="#1e293b" strokeWidth="2"/>
-      <text x="380" y="260" textAnchor="middle" fontSize="11" fill="white" fontWeight="bold">CLAY</text>
+      {/* Fulcrum gap highlight */}
+      <rect x="371" y="96" width="18" height="16" rx="2" fill="#ef4444" opacity="0.8"/>
+      {/* Two uprights side-by-side */}
+      <rect x="368" y="112" width="10" height="120" rx="3" fill="#d4956a" stroke="#1e293b" strokeWidth="2"/>
+      <rect x="382" y="112" width="10" height="120" rx="3" fill="#d4956a" stroke="#1e293b" strokeWidth="2"/>
+      {/* Flat cardstock base */}
+      <rect x="300" y="232" width="160" height="22" rx="4" fill="#a3c96e" stroke="#1e293b" strokeWidth="2"/>
       {/* Left strings + pan */}
       <line x1="165" y1="110" x2="145" y2="155" stroke="#64748b" strokeWidth="2"/>
       <line x1="205" y1="110" x2="225" y2="155" stroke="#64748b" strokeWidth="2"/>
@@ -1125,20 +1123,20 @@ function SvgBalanceScaleBuild() {
       {/* Labels */}
       <text x="36" y="84" fontSize="12" fontWeight="bold" fill="#92400e">Beam (lever)</text>
       <line x1="130" y1="90" x2="100" y2="84" stroke="#92400e" strokeWidth="1.5"/>
-      <text x="420" y="82" fontSize="12" fontWeight="bold" fill="#ef4444">Fulcrum / pivot</text>
-      <line x1="390" y1="95" x2="420" y2="82" stroke="#ef4444" strokeWidth="1.5"/>
+      <text x="430" y="82" fontSize="12" fontWeight="bold" fill="#ef4444">Gap = fulcrum/pivot</text>
+      <line x1="390" y1="97" x2="428" y2="84" stroke="#ef4444" strokeWidth="1.5"/>
       <text x="620" y="170" fontSize="12" fontWeight="bold" fill="#374151">Equal pans</text>
       <text x="620" y="184" fontSize="11" fill="#64748b">(cardstock)</text>
-      <text x="140" y="220" fontSize="12" fontWeight="bold" fill="#d4956a">Vertical post</text>
-      <line x1="372" y1="160" x2="200" y2="220" stroke="#d4956a" strokeWidth="1.5"/>
-      <text x="450" y="256" fontSize="12" fontWeight="bold" fill="#15803d">Clay base</text>
-      <text x="450" y="270" fontSize="11" fill="#64748b">(heavy + stable)</text>
-      <line x1="432" y1="256" x2="432" y2="256" stroke="#15803d" strokeWidth="1.5"/>
+      <text x="160" y="178" fontSize="12" fontWeight="bold" fill="#d4956a">2 uprights</text>
+      <line x1="215" y1="175" x2="366" y2="160" stroke="#d4956a" strokeWidth="1.5"/>
+      <text x="490" y="248" fontSize="12" fontWeight="bold" fill="#15803d">Flat base</text>
+      <text x="490" y="262" fontSize="11" fill="#64748b">(cardstock)</text>
+      <line x1="462" y1="248" x2="460" y2="242" stroke="#15803d" strokeWidth="1.5"/>
       {/* Equal arm dashes */}
-      <line x1="165" y1="74" x2="380" y2="74" stroke="#3b82f6" strokeWidth="2" strokeDasharray="5,3"/>
-      <line x1="380" y1="74" x2="560" y2="74" stroke="#3b82f6" strokeWidth="2" strokeDasharray="5,3"/>
-      <text x="272" y="68" textAnchor="middle" fontSize="10" fill="#3b82f6">← equal arm →</text>
-      <text x="470" y="68" textAnchor="middle" fontSize="10" fill="#3b82f6">← equal arm →</text>
+      <line x1="165" y1="74" x2="375" y2="74" stroke="#3b82f6" strokeWidth="2" strokeDasharray="5,3"/>
+      <line x1="385" y1="74" x2="560" y2="74" stroke="#3b82f6" strokeWidth="2" strokeDasharray="5,3"/>
+      <text x="270" y="68" textAnchor="middle" fontSize="10" fill="#3b82f6">← equal arm →</text>
+      <text x="473" y="68" textAnchor="middle" fontSize="10" fill="#3b82f6">← equal arm →</text>
       {/* Bottom bar */}
       <rect x="60" y="300" width="640" height="24" rx="8" fill="#1e40af"/>
       <text x="380" y="316" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Class 1 Lever: equal arms + equal pans = equal-arm lever balance scale ⚖️</text>
