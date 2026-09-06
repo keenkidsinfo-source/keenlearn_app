@@ -67,15 +67,14 @@ const PREP_INFO: Record<string, { image: string; steps: string[]; warning: strin
   },
   'Balance Scale': {
     image: '/images/build/balance-scale/step-01.svg',
-    warning: '⚠️ Pre-cut all cardstock and pre-cut string to equal lengths per group — unequal strings cause systematic error in every measurement!',
+    warning: '⚠️ Pre-roll clay cylinders BEFORE class — clay needs time to set firm so it holds the post upright. Fill, let set, then put out on desks!',
     steps: [
-      'Cut the upright stand pieces: 2 tall side panels and 1 cross-base per group.',
-      'Cut string: 3 pieces × equal length per pan, 2 pans per group. All strings the same length.',
-      'Cut pan circles (or squares) from cardstock — both pans MUST be the same size and material.',
-      'Pre-punch or pre-score the 3 string holes in each pan (equally spaced, like a peace sign).',
-      'Prepare wooden skewers — one per group — and confirm they can rest across the top of the stand.',
-      'Build your own demo balance scale and verify: empty pans hang level before kids arrive.',
-      'Write on the board: BEAM | FULCRUM | LOAD | TORQUE for vocabulary reference.',
+      'Roll cardstock into a cylinder (~5 cm diameter) per kid. Tape seam firmly. Fill the BOTTOM HALF with clay — press in firmly. Let clay set before class.',
+      'Pre-cut 6 string pieces (15 cm each) per kid — 3 strings per pan, 2 pans per kid. ALL strings must be the same length.',
+      'Pre-cut 2 cardstock circle pans per kid — both pans MUST be the same size and same material.',
+      'Have 2 popsicle sticks per kid ready: one is the vertical post (pushed into clay), one is the horizontal beam.',
+      'Build your own demo balance scale and verify: empty pans hang level and beam swings freely before kids arrive.',
+      'Write on the board: BEAM | FULCRUM | PIVOT | PRECISION — for vocabulary reference.',
     ],
   },
 }

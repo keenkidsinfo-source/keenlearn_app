@@ -4,7 +4,7 @@
 <text x="480" y="43" font-size="26" font-weight="bold" text-anchor="middle" fill="white" font-family="system-ui,-apple-system,sans-serif">Step 1 — Meet your materials</text>
 
 <!-- Subtitle (well below header, stays above items) -->
-<text x="480" y="88" font-size="17" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">A precision balance scale: popsicle beam + clay base + string pans.</text>
+<text x="480" y="88" font-size="17" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Popsicle post stands in clay cylinder. Popsicle beam pivots on top of post. String pans hang from each end.</text>
 
 <!-- Row 1 labels (clear of subtitle baseline) -->
 <text x="117" y="122" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">Vertical stick (post)</text>
@@ -14,8 +14,8 @@
 <rect x="220" y="128" width="155" height="22" fill="#d4956a" stroke="#1e293b" stroke-width="3" rx="4"/>
 
 <rect x="420" y="108" width="90" height="60" fill="#a3c96e" stroke="#1e293b" stroke-width="3" rx="8"/>
-<text x="465" y="140" font-size="12" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Cardstock</text>
-<text x="465" y="155" font-size="12" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">base + clay</text>
+<text x="465" y="140" font-size="12" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">Cylinder base</text>
+<text x="465" y="155" font-size="12" text-anchor="middle" fill="#1e293b" font-weight="bold" font-family="system-ui,-apple-system,sans-serif">(clay inside)</text>
 
 <!-- 6 strings -->
 <text x="605" y="112" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e293b" font-family="system-ui,-apple-system,sans-serif">6 strings</text>
