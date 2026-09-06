@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 
-const PUBLIC_PATHS = ['/', '/login', '/auth/teacher-signup', '/api/v1/auth/login', '/api/v1/classroom/students', '/api/v1/debug']
+const PUBLIC_PATHS = ['/', '/login', '/auth/teacher-signup', '/api/v1/auth/login', '/api/v1/classroom/students', '/api/v1/debug', '/api/v1/storage-test']
 
 const ROLE_PATHS: Record<string, string[]> = {
   teacher: ['/teacher', '/api/v1/teacher', '/api/v1/curriculum'],

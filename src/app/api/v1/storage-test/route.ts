@@ -1,9 +1,11 @@
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-export async function GET() {
+// Temporary debug route — remove after testing
+export async function GET(_req: Request) {
   const url = process.env.SUPABASE_URL
   const key = process.env.SUPABASE_SERVICE_KEY
 
