@@ -1691,16 +1691,17 @@ async function run() {
     }
   }
 
-  for (const [sessions, gradeBand, classroom] of [
-    [SESSIONS_G12, 'g1-2', clG12],
-    [SESSIONS_G34, 'g3-4', clG34],
+  for (const [sessions, gradeBand, classroom, weekOffset] of [
+    // Both programs start Aug 31 = WEEK_STARTS[2], so offset sessions by 2
+    [SESSIONS_G12, 'g1-2', clG12, 2],
+    [SESSIONS_G34, 'g3-4', clG34, 2],
   ]) {
     if (!classroom) { console.warn(`⚠  No classroom found for ${gradeBand}`); continue }
 
     for (let i = 0; i < sessions.length; i++) {
       const s = sessions[i]
       const weekNum = i + 1
-      const weekStart = WEEK_STARTS[i]
+      const weekStart = WEEK_STARTS[i + weekOffset]
 
       // Find the curriculum already assigned to this classroom for this week
       // (the enrichment curriculum that has build/science/coding days)
