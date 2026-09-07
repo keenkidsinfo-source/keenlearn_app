@@ -67,9 +67,9 @@ const newSteps = [
   },
   {
     emoji: '⚖️',
-    title: '3 weighing challenges',
-    text: 'Challenge 1: Find 2 objects that BALANCE exactly — the beam stays level. Challenge 2: Find 3 small objects that together balance 1 big object (3 small = 1 big). Challenge 3: Can your scale detect 1 paperclip vs 2 paperclips? Record ALL results on the class chart.',
-    tip: 'Record all results. Who has the most sensitive scale? What design difference explains it?',
+    title: '3 coin challenges',
+    text: 'Challenge 1: Put 1 coin on one pan. Find an object that makes the beam level — write it down. Challenge 2: Put 3 coins on one pan. Find 1 object that balances them — write it down. Challenge 3: Put 1 coin on one pan and 2 coins on the other — does your scale tip? Yes = precise scale! Record all 3 on the class chart.',
+    tip: 'Coins are perfect weights because every coin of the same type weighs exactly the same. Who has the most sensitive scale?',
     image: '/images/build/balance-scale/step-08.svg',
   },
   {
@@ -108,14 +108,22 @@ async function run() {
     process.exit(1)
   }
 
+  const newResultFields = {
+    a:               { label: 'What weighs the same as 1 coin?',       key: 'balanced1Coin'   },
+    b:               { label: 'What weighs the same as 3 coins?',      key: 'balanced3Coins'  },
+    c:               { label: 'Detects 1 coin vs 2 coins? (Yes/No) 🏆', key: 'coinTest'       },
+    unit:            'challenges',
+    leaderboard:     'more',
+    showLeaderboard: true,
+  }
+
   for (const item of items) {
     const oldMeta = item.metadata || {}
-    const newMeta = { ...oldMeta, steps: newSteps }
+    const newMeta = { ...oldMeta, steps: newSteps, resultFields: newResultFields }
     await sql`
       UPDATE content_items
       SET metadata = ${JSON.stringify(newMeta)},
-          step_count = ${newSteps.length},
-          updated_at = NOW()
+          step_count = ${newSteps.length}
       WHERE id = ${item.id}
     `
     console.log(`✅ Updated "${item.title}" (${item.id}) — ${newSteps.length} steps`)
