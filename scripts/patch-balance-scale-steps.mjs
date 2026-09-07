@@ -3,7 +3,16 @@
 // New design: 3 popsicle sticks (2 uprights + 1 beam) + flat cardstock base
 // Removes clay cylinder base
 
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
 import postgres from 'postgres'
+
+// Load .env.local
+const lines = readFileSync(resolve(process.cwd(), '.env.local'), 'utf8').split('\n')
+for (const line of lines) {
+  const m = line.match(/^([^#=]+)=(.*)$/)
+  if (m) { const [,k,v] = m; if (!process.env[k]) process.env[k] = v.replace(/^"|"$/g,'') }
+}
 const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' })
 
 const newSteps = [
