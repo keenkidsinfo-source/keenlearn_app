@@ -465,6 +465,29 @@ export function CodingSandbox({
             >Start fresh</button>
           )}
           <button
+            onClick={async () => {
+              const iframeWin = iframeRef.current?.contentWindow as any
+              if (!iframeWin) return
+              let b64: string | null = null
+              if (typeof iframeWin.__kkGetProjectSb3 === 'function') {
+                b64 = await iframeWin.__kkGetProjectSb3()
+              } else if (iframeWin.__kkLastSb3) {
+                b64 = iframeWin.__kkLastSb3
+              }
+              if (!b64) { alert('Project not ready yet — try again in a moment'); return }
+              const prefix = 'data:application/zip;base64,'
+              const base64 = b64.startsWith(prefix) ? b64.slice(prefix.length) : b64
+              const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0))
+              const blob = new Blob([bytes], { type: 'application/zip' })
+              const a = document.createElement('a')
+              a.href = URL.createObjectURL(blob)
+              a.download = `${title.replace(/\s+/g, '_')}.sb3`
+              a.click()
+            }}
+            className="font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all shrink-0 bg-green-500 hover:bg-green-400 text-white"
+            title="Download your project as a file"
+          >⬇ Download</button>
+          <button
             onClick={saveScratch}
             className={`font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all shrink-0
               ${!hasProject

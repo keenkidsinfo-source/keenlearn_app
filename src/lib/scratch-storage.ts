@@ -18,7 +18,18 @@ function getClient() {
 export async function uploadProject(projectId: string, data: string): Promise<string> {
   const supabase = getClient()
   const path = `projects/${projectId}.sb3`
-  const bytes = Buffer.from(data, 'utf-8')
+
+  // data is either:
+  //   "data:application/zip;base64,<b64>" — from __kkGetProjectSb3
+  //   raw JSON string                     — from vm.toJSON() fallback
+  let bytes: Buffer
+  const b64Prefix = 'data:application/zip;base64,'
+  if (data.startsWith(b64Prefix)) {
+    bytes = Buffer.from(data.slice(b64Prefix.length), 'base64')
+  } else {
+    // Python code or raw JSON — store as UTF-8 text
+    bytes = Buffer.from(data, 'utf-8')
+  }
 
   const { error } = await supabase.storage
     .from(BUCKET)
@@ -31,7 +42,7 @@ export async function uploadProject(projectId: string, data: string): Promise<st
   return path
 }
 
-/** Download raw project data string from storage. Returns null if not found. */
+/** Download project data from storage. Returns a base64 data URL for .sb3 files. */
 export async function downloadProject(storagePath: string): Promise<string | null> {
   const supabase = getClient()
   const { data, error } = await supabase.storage
@@ -39,6 +50,14 @@ export async function downloadProject(storagePath: string): Promise<string | nul
     .download(storagePath)
 
   if (error || !data) return null
+
+  // .sb3 files are binary — return as base64 data URL so TurboWarp can load them
+  if (storagePath.endsWith('.sb3')) {
+    const buffer = Buffer.from(await data.arrayBuffer())
+    return `data:application/zip;base64,${buffer.toString('base64')}`
+  }
+
+  // Python / other text files — return as plain text
   return await data.text()
 }
 
