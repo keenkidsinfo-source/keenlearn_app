@@ -44,10 +44,10 @@ const scienceContent = [
     },
   },
 
-  // ── G1-2 Week 2: Spinning Magnetic Pen ─────────────────────────────────────
+  // ── G1-2 Week 3: Spinning Magnetic Pen ─────────────────────────────────────
   {
     gradeBand: 'g1-2',
-    weekNumber: 2,
+    weekNumber: 3,
     title: 'Spinning Magnetic Pen',
     stepCount: 7,
     metadata: {
@@ -82,10 +82,50 @@ const scienceContent = [
     },
   },
 
-  // ── G3-4 Week 2: Spinning Magnetic Pen ─────────────────────────────────────
+  // ── G1-2 Week 2: Air Pressure & Surface Tension (Water Bottle) ─────────────
+  // Sep 11 — all grades together. G1-2: wonder + simple "why" questions.
+  {
+    gradeBand: 'g1-2',
+    weekNumber: 2,
+    title: 'The Upside-Down Water Bottle',
+    stepCount: 6,
+    metadata: {
+      prepInfo: 'Materials: 1 glass bottle (demo, teacher only) + 1 plastic bottle per pair, window screen mesh squares, rubber bands, wooden toothpicks, trays. Fill ALL bottles completely to the brim before class — zero air gap. Stretch mesh over each bottle mouth, secure with rubber band. Practice the flip at home: palm flat over mesh, flip fast, remove palm slowly. Do it 5 times until it feels natural.',
+      steps: [
+        { emoji: '💨', title: 'Can you feel the air?', text: 'Wave your hand in front of your face — you can feel air moving. But even when it is still, air is pushing on your skin from every direction, all the time. We call this AIR PRESSURE. And water molecules cling to each other like tiny magnets — at the surface they form a stretchy invisible skin called SURFACE TENSION. Today both of these invisible things will do something that looks impossible.', tip: 'Write these two words: AIR PRESSURE and SURFACE TENSION. We will need them today!' },
+        { emoji: '🔮', title: 'Make your prediction!', text: 'Teacher holds a bottle filled completely with water. Mesh is stretched over the top. Write your prediction: "When the teacher flips the bottle upside down, the water will ___." Thumbs UP if you think it falls out. Thumbs DOWN if you think it stays in. Tell a partner ONE reason for your answer. Remember your prediction — we come back to it!', tip: 'Scientists always predict BEFORE they test. There is no wrong answer here — that is the point!' },
+        { emoji: '🙃', title: 'Watch the demo!', text: 'Teacher puts palm over the mesh, counts 3-2-1, and flips the bottle. Slowly removes hand. What happens? THE WATER STAYS IN. Now teacher pushes a wooden toothpick through the mesh into the upside-down bottle. Which way does it go? It floats UP — because wood is lighter than water, so it always floats toward the top. But the top of the bottle is now at the bottom!', tip: 'Pay attention: what happens when teacher tilts the bottle? Air sneaks in — and the water falls immediately.' },
+        { emoji: '🧪', title: 'Try it with your partner!', text: 'Get your plastic bottle (filled to the brim!), mesh, rubber band and toothpicks. Challenge 1: Flip your bottle and hold the water in — both partners try. Challenge 2: Push toothpicks in one at a time while upside down — count how many before it leaks. Challenge 3: Very slowly tilt it — at what point does the water start to fall? Refill and try again!', tip: 'The bottle MUST be full to the brim — one air bubble inside will make it leak right away.' },
+        { emoji: '🗣️', title: 'Reflection — were you right?', text: 'Come back together. Look at your prediction — were you right? No matter what, write: "I was surprised that ___." Now think: WHY did the water stay in? (Air pushing up from below + surface tension sealing the holes.) WHY did the toothpick go up? (Wood is lighter than water — it floats.) Share your answer with the group.', tip: 'Being wrong is fine in science — what matters is understanding WHY you were wrong. That is how scientists learn!' },
+        { emoji: '🌍', title: 'Where do we see this in real life?', text: 'AIR PRESSURE: when you drink through a straw, you suck air OUT and pressure pushes the drink UP. Suction cups work the same way! SURFACE TENSION: water strider bugs walk on water using the surface skin. Raindrops are round because of it. BUOYANCY: boats, fish, and swimming all use the upward push of water. Draw one real-world example and label it.', tip: 'New words for your journal: AIR PRESSURE · SURFACE TENSION · BUOYANCY · FLOAT · SINK.' },
+      ],
+    },
+  },
+
+  // ── G3-4 Week 2: Air Pressure & Surface Tension (Water Bottle) ─────────────
+  // Sep 11 — all grades together. G3-4: same demo, deeper "why" + richer reflection.
   {
     gradeBand: 'g3-4',
     weekNumber: 2,
+    title: 'The Upside-Down Water Bottle',
+    stepCount: 6,
+    metadata: {
+      prepInfo: 'Materials: 1 glass bottle (demo, teacher only) + 1 plastic bottle per pair, window screen mesh squares, rubber bands, wooden toothpicks, trays. Fill ALL bottles completely to the brim before class — zero air gap. Stretch mesh over each bottle mouth, secure with rubber band. Practice the flip at home: palm flat over mesh, flip fast, remove palm slowly. Do it 5 times until it feels natural.',
+      steps: [
+        { emoji: '💨', title: 'Two invisible forces — air pressure and surface tension', text: 'Air pushes on everything around us from every direction all the time — we just don\'t feel it because it is balanced. Water molecules cling to each other at the surface, forming a stretchy skin called surface tension — strong enough to hold a paperclip on water. Wood floats on water because it is lighter than water for the same size — scientists call this being less dense. Today all three ideas combine to produce something that looks impossible.', tip: 'Write: AIR PRESSURE · SURFACE TENSION · DENSITY. These three things explain everything you will see today.' },
+        { emoji: '🔮', title: 'Make your prediction — and give a reason', text: 'Teacher holds a bottle filled completely with water with mesh secured over the mouth. Write your prediction: "When flipped upside down, the water will ___ because ___." Then make a second prediction: "When a wooden toothpick is pushed through the mesh into the upside-down bottle, it will float ___ because ___." Share your reason with a partner before the demo starts.', tip: 'A strong prediction uses the word BECAUSE and gives a reason based on what you know — not just a guess.' },
+        { emoji: '✨', title: 'Watch the demo — notice every detail', text: 'Teacher flips the bottle. Water stays in. Teacher pushes toothpicks through — they float UP. Teacher tilts the bottle — water pours out immediately. For each thing you see, write: WHAT happened, and WHY you think it happened. Focus on the moment the bottle tilts — what changes that causes the water to fall? (Hint: something gets in.)', tip: 'Scientists write observations AS THEY HAPPEN — not from memory afterward. Keep your pencil ready.' },
+        { emoji: '🧪', title: 'Partner exploration — try to break it', text: 'Get your plastic bottle (filled to the brim), mesh, rubber band and toothpicks. Challenge 1: Both partners flip and hold it. Challenge 2: Push toothpicks in while upside down — how many before it leaks? What do you think causes the leak? Challenge 3: Let the tiniest bit of air in with one finger — what happens instantly? Challenge 4: Try tilting slowly — at roughly what angle does it fail? Compare your angle with another pair.', tip: 'When you test one thing at a time (like just tilting vs just adding toothpicks), that is called a controlled experiment.' },
+        { emoji: '🗣️', title: 'Reflection — explain the science', text: 'Come back together. Review your predictions — who was right? Now explain in your own words: (1) Why did the water stay in? (Air pushes UP from outside, surface tension seals the mesh holes — together they hold the water against gravity.) (2) Why did the toothpick go UP? (Wood is less dense than water, so it always floats — even when up is actually down.) (3) Why did tilting break it? (Air got in — once air is inside, the upward push is gone and gravity wins.)', tip: 'A good science explanation uses BECAUSE and names the forces or properties involved. Try to use: air pressure, surface tension, density, float.' },
+        { emoji: '🌍', title: 'Connect to the real world', text: 'Where do we see these forces at work? STRAWS: you remove air from the straw — pressure outside pushes the drink UP. SUCTION CUPS: same idea — no air inside = pressure holds it to the wall. WATER STRIDER BUGS: walk on the surface tension skin of water. BOATS AND FISH: stay up because of buoyancy — water pushes them up. Pick one and draw it with labels showing which direction the forces push. Share with the group.', tip: 'Extra challenge: can you think of a time when air pressure works against us rather than for us? (Hint: what happens to a bag of chips on a plane?)' },
+      ],
+    },
+  },
+
+  // ── G3-4 Week 3: Spinning Magnetic Pen ─────────────────────────────────────
+  {
+    gradeBand: 'g3-4',
+    weekNumber: 3,
     title: 'Spinning Magnetic Pen',
     stepCount: 7,
     metadata: {

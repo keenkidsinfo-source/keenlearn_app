@@ -92,6 +92,55 @@ const projects = [
     },
   },
 
+  // ── G1-2 Week 3: Pokémon Catcher ────────────────────────────────────────────
+  // Topic: sensing (touching), score variable, repeat loop
+  // G1-2 version: Pikachu moves left/right, spacebar throws Poké Ball, catches one Pokémon
+  {
+    gradeBand: 'g1-2',
+    weekNumber: 3,
+    metadata: {
+      language: 'scratch',
+      challenge: 'Pokémon Catcher!',
+      tagline: 'Move Pikachu and throw a Poké Ball to catch a Pokémon!',
+      starterUrl: '/scratch-starters/g1-2-w3-starter.sb3',
+      steps: [
+        '🎮 Today we build a Pokémon catching game! First, set the scene. Delete the cat sprite (right-click → Delete). Click the backdrop icon (bottom-right) → search "Forest" or "Blue Sky" and pick one.',
+        '⚡ Add Pikachu! Click the sprite icon (bottom-right) → search "Pikachu" → add it. If you can\'t find Pikachu, search "cat" and we\'ll pretend! Place Pikachu near the bottom of the stage by dragging it.',
+        '⬅️➡️ Make Pikachu move left and right with arrow keys. Click Events (yellow) → drag "when [right arrow] key pressed" → Motion (blue) → snap "change x by 10" under it. Then make a NEW stack: "when [left arrow] key pressed" → "change x by -10". Test it — Pikachu should slide left and right!',
+        '🔴 Add the Poké Ball! Click the sprite icon → search "Ball" → add a red/white ball. Make it smaller (Size = 40). Place it on top of Pikachu. Now make it throw upward: Events → "when [space] key pressed" → Motion → "go to x: (Pikachu x) y: (Pikachu y)" then "glide 0.5 secs to x: (same x) y: 160". The ball flies up!',
+        '🐾 Add a Pokémon to catch! Click sprite icon → search "Caterpie", "Abra", or any Pokémon you like → add it. Make it smaller (Size = 60). Place it near the top of the stage.',
+        '🏆 Make the Pokémon disappear when hit! Click your POKÉMON sprite → Events → "when 🚩 clicked" → Control → snap "forever" under it. Inside forever: Control → drag "if...then" → Sensing → drag "touching [Ball]?" into the if slot. Inside the if: Looks → "hide". Click the green flag and throw the ball at the Pokémon — it disappears when you hit it!',
+        '🔢 Add a score! Click Variables → Make a Variable → name it "Score". Tick the checkbox so it shows on stage. Now click your POKÉMON sprite → inside the "if touching Ball" block → Variables → drag "change Score by 1" above the "hide" block. Catch the Pokémon — your score goes up! 🎉',
+      ],
+    },
+  },
+
+  // ── G3-4 Week 3: Pokémon Battle Game ────────────────────────────────────────
+  // Topic: variables (HP, score, timer), conditionals, multiple sprites, game loop
+  // Full game: Pikachu moves, throws ball, multiple Pokémon with HP bars, 30-second timer
+  {
+    gradeBand: 'g3-4',
+    weekNumber: 3,
+    metadata: {
+      language: 'scratch',
+      challenge: 'Pokémon Battle Game!',
+      tagline: 'Build a full Pokémon catching game with HP, score, and a countdown timer!',
+      starterUrl: '/scratch-starters/g3-4-w3-starter.sb3',
+      steps: [
+        '🎮 Today we build a REAL Pokémon game with score, HP, and a timer! Start fresh: delete the cat, pick a forest or sky backdrop. Add a Pikachu sprite near the bottom (search "Pikachu"). Set its Size to 80.',
+        '⬅️➡️ Arrow key movement for Pikachu. Click Pikachu → Events → "when [right arrow] key pressed" → Motion → "change x by 15". New stack: "when [left arrow] key pressed" → "change x by -15". Test — Pikachu slides left and right.',
+        '🔴 Throwing the Poké Ball. Add a Ball sprite (Size 40). Click it → Events → "when [space] key pressed" → Motion → "go to x: (Pikachu\'s x position) y: (Pikachu\'s y position)". Then Motion → "glide 0.3 secs to x: (same x) y: 170". The ball flies up fast! Tip: use Sensing blocks to get Pikachu\'s actual x position dynamically.',
+        '🐾 Add 3 different Pokémon sprites (e.g. Caterpie, Abra, Psyduck). Place them at different x positions near the top. Make them different sizes. Each one needs its own set of scripts — click each one separately.',
+        '❤️ Set up HP and Score variables. Click Variables → Make a Variable → "Score" (for all sprites). Make another: "HP" (for all sprites). In your GAME SETUP: Events → "when 🚩 clicked" → Variables → "set Score to 0" → "set HP to 3". Tick the checkboxes so both show on stage.',
+        '💥 Make each Pokémon react to the ball. Click your FIRST Pokémon → "when 🚩 clicked" → Control → "forever". Inside forever: if → Sensing → "touching [Ball]?" → inside if: Variables → "change Score by 1" → "change HP by -1" → Motion → move the Pokémon to a random new position (Motion → "go to [random position]") → Control → "wait 0.5 secs". Repeat this for each of your 3 Pokémon sprites!',
+        '⏱️ Add a 30-second countdown timer. Make a Variable "Time". Click on the STAGE (not a sprite) → Events → "when 🚩 clicked" → Variables → "set Time to 30" → Control → "repeat 30" → "wait 1 secs" → "change Time by -1". After the repeat: Control → "stop [all]". The game stops after 30 seconds!',
+        '💀 Game over when HP reaches 0. Click each Pokémon → inside its forever loop, add another if: "if HP = 0" → Looks → "say [Game Over! You lost!] for 2 secs" → Control → "stop [all]". Now losing 3 Pokémon (letting them escape) ends the game!',
+        '🎨 Polish your game! Add sound effects: click Pikachu → Sounds tab → add "Meow" or "Pop" → Code tab → Sound → "play sound [] until done" inside the throwing script. Add a "You Win!" message: click Stage → if Time = 0 and Score > 5 → Looks → "say [You caught em all!]".',
+        '🏆 CHALLENGE: Make the Pokémon move on their own! Click each Pokémon → add a SECOND "when 🚩 clicked" stack → Control → "forever" → Motion → "move 3 steps" → "if on edge, bounce". Now they drift across the screen — much harder to catch! Can you still get a score above 5? 🎉',
+      ],
+    },
+  },
+
   // ── G3-4 Week 2: Make it Dance! ──────────────────────────────────────────────
   // Topic: Loops (repeat vs forever), motion + sound, sprite animation
   // Students arrive with their W1 Moving Car project — arrow keys + change x/y.

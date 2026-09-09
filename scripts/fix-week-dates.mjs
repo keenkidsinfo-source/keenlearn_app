@@ -17,7 +17,7 @@
  */
 
 const SCHOOL_START = '2026-08-31'   // Monday of Week 1
-const TOTAL_WEEKS  = 2              // how many weeks of curriculum are seeded
+const TOTAL_WEEKS  = 3              // how many weeks of curriculum are seeded
 
 import { readFileSync } from 'fs'
 import { resolve } from 'path'

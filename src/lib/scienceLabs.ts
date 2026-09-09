@@ -361,9 +361,24 @@ export function getLabForDashboard(): ScienceLab | null {
   ) ?? null
 }
 
-/** Returns the most recent past lab (used on the /science/lab student page) */
+/** Returns the lab for this week (Mon–Fri), or the most recent past lab */
 export function getCurrentLab(): ScienceLab | null {
-  const today = new Date().toISOString().slice(0, 10)
+  const now  = new Date()
+  const pad  = (n: number) => String(n).padStart(2, '0')
+  const dow  = now.getDay()
+  const mon  = new Date(now)
+  mon.setDate(now.getDate() + (dow === 0 ? -6 : 1 - dow))
+  const fri  = new Date(mon)
+  fri.setDate(mon.getDate() + 4)
+  const monStr = `${mon.getFullYear()}-${pad(mon.getMonth() + 1)}-${pad(mon.getDate())}`
+  const friStr = `${fri.getFullYear()}-${pad(fri.getMonth() + 1)}-${pad(fri.getDate())}`
+
+  // This week's lab first
+  const thisWeek = scienceLabs.find(l => l.date >= monStr && l.date <= friStr)
+  if (thisWeek) return thisWeek
+
+  // Fall back to most recent past lab
+  const today = now.toISOString().slice(0, 10)
   const past  = scienceLabs.filter(l => l.date <= today)
   if (past.length === 0) return scienceLabs[0] ?? null
   return past[past.length - 1]
