@@ -8,13 +8,24 @@ import { TeacherSidebar } from '../TeacherSidebar'
 
 interface Props { searchParams: Promise<{ week?: string }> }
 
+/** Default to the most recent lab whose date <= today; fall back to first */
+function getCurrentWeekIndex(): number {
+  const today = new Date().toISOString().slice(0, 10)
+  let idx = 0
+  for (let i = 0; i < scienceLabs.length; i++) {
+    if (scienceLabs[i].date <= today) idx = i
+  }
+  return idx
+}
+
 export default async function TeacherSciencePage({ searchParams }: Props) {
   const session = await getSession()
   if (!session) redirect('/login')
   if (session.role === 'student') redirect('/dashboard')
 
   const { week } = await searchParams
-  const weekIndex = Math.max(0, Math.min(scienceLabs.length - 1, parseInt(week ?? '1', 10) - 1))
+  const defaultWeek = getCurrentWeekIndex() + 1  // 1-based
+  const weekIndex = Math.max(0, Math.min(scienceLabs.length - 1, parseInt(week ?? String(defaultWeek), 10) - 1))
   const lab = scienceLabs[weekIndex]
   const isFirst = weekIndex === 0
   const isLast  = weekIndex === scienceLabs.length - 1
