@@ -22,6 +22,7 @@ export interface DiscussionQuestion {
 export interface ScienceLab {
   id: string
   date: string          // YYYY-MM-DD (Thursday)
+  weekNumber?: number   // 1-based school week number
   emoji: string
   title: string
   conceptShort: string  // 1-line for students
@@ -43,6 +44,7 @@ export const scienceLabs: ScienceLab[] = [
   {
     id: 'aug-21-fire-extinguisher',
     date: '2026-09-03',
+    weekNumber: 1,
     emoji: '🔥',
     title: 'The Invisible Fire Extinguisher',
     conceptShort: 'Chemical Reactions · Carbon Dioxide · Combustion',
@@ -185,6 +187,7 @@ export const scienceLabs: ScienceLab[] = [
   {
     id: 'sep-10-water-bottle',
     date: '2026-09-10',
+    weekNumber: 2,
     emoji: '🙃',
     title: 'The Upside-Down Water Bottle',
     conceptShort: 'Air Pressure · Surface Tension · Buoyancy',
@@ -315,6 +318,122 @@ export const scienceLabs: ScienceLab[] = [
       'Use a tray under all bottle experiments to catch spills. The glass bottle is for teacher demo only — give students plastic bottles. Keep towels nearby. This experiment is water only — no risk beyond wet floors.',
     referenceVideo: '',
   },
+
+  {
+    id: 'sep-17-magnetic-pen',
+    date: '2026-09-17',
+    weekNumber: 3,
+    emoji: '🧲',
+    title: 'Spinning Magnetic Pen',
+    conceptShort: 'Magnetism · Repulsion · Equilibrium',
+    wowFactor: 'A pen floats in mid-air and keeps spinning — held up entirely by invisible magnetic force!',
+    kidExplanation:
+      'Every magnet has two ends called poles — a North pole and a South pole. Here\'s the rule: SAME poles push each other away (repel), and OPPOSITE poles pull each other together (attract). In today\'s demo, the magnets on the pen and on the base have the SAME pole facing each other — so they push apart. When the push-up force of the magnets exactly balances the pull-down force of gravity, the pen floats in mid-air! Give it a spin and it keeps spinning because there\'s nothing touching it to slow it down.',
+    vocab: [
+      { word: 'Magnetism', definition: 'An invisible force that makes magnets attract or repel each other', color: 'blue' },
+      { word: 'Repulsion', definition: 'When same poles push each other away', color: 'red' },
+      { word: 'Attraction', definition: 'When opposite poles pull toward each other', color: 'green' },
+      { word: 'Equilibrium', definition: 'When two forces are exactly balanced — the pen floats because the push up equals the pull down', color: 'orange' },
+      { word: 'Gravity', definition: 'The force pulling everything downward toward Earth', color: 'purple' },
+    ],
+    realWorld: [
+      '🚄 Maglev trains float above the track using magnetic repulsion — no friction means 600+ km/h!',
+      '🧭 Compass needles are tiny magnets that align with Earth\'s magnetic field',
+      '🔊 Speakers use magnets to create sound vibrations',
+      '🏥 MRI machines use powerful electromagnets to take pictures inside your body',
+      '💳 Credit cards have a magnetic strip storing data',
+    ],
+    materials: [
+      '1 magnetic levitation pen kit (pen with ring magnets + base with ring magnets)',
+      'Optional: extra ring magnets to show attract vs repel',
+      'Small piece of paper for each student (to draw force diagrams)',
+    ],
+    setupNotes: [
+      'Practice the demo before class — finding the sweet spot where the pen floats takes a little feel for it.',
+      'The pen must be aligned so the SAME poles face each other (N up on base, N down on pen, or S/S).',
+      'Once floating, a gentle spin makes it dramatic — it keeps spinning for a long time.',
+      'Let kids push the pen down and feel the invisible force pushing back up — that moment is always memorable.',
+      'Keep extra magnets handy to demonstrate attract vs repel before the floating demo.',
+    ],
+    sessionPlan: [
+      {
+        time: '0–5 min',
+        phase: 'Hook — feel the force',
+        instructions: [
+          'Give each kid two magnets. Ask them to stick them together — that\'s ATTRACT.',
+          'Now flip one magnet around. They push apart — that\'s REPEL.',
+          'Ask: *"Can you feel the invisible force? What do you think would happen if the repel force was strong enough to fight gravity?"*',
+          '**Build mystery: show the pen and base without explaining. "Today we use this force to do something impossible."**',
+        ],
+      },
+      {
+        time: '5–10 min',
+        phase: 'Predictions',
+        instructions: [
+          'Ask every kid to write: *"I predict the pen will ___ because ___."*',
+          'Thumbs UP if you think it floats. DOWN if you think gravity always wins.',
+          'Count the split. **Do not confirm either way.**',
+          '**G3–4:** Also ask: *"What force equation would need to be true for the pen to float?"* (Hint: F_up = F_down)',
+        ],
+      },
+      {
+        time: '10–20 min',
+        phase: 'Demo',
+        instructions: [
+          '**STEP 1:** Slowly lower the pen toward the base. Kids watch — notice when it starts to resist.',
+          '**STEP 2:** Release the pen — it floats! Let the moment land. Give it a gentle spin.',
+          '**STEP 3:** Invite a kid to push the pen DOWN. They feel it push back harder the closer it gets.',
+          '**STEP 4:** Show attract: flip the pen — it immediately snaps down to the base. *"Same poles repel. Opposite poles attract."*',
+          '**STEP 5:** Flip back to repel and float it again.',
+        ],
+      },
+      {
+        time: '20–32 min',
+        phase: 'Discussion & Science',
+        instructions: [
+          'Ask: *"Which poles must be facing each other — same or opposite?"* (Same — they repel).',
+          '*"What two forces are acting on the pen right now?"* (Magnetic repulsion up, gravity down).',
+          '*"When it\'s floating — which force is bigger?"* (Neither — they\'re EQUAL. That\'s equilibrium).',
+          '**Write on board: SAME POLES REPEL · EQUILIBRIUM = forces balanced**',
+          '**G3–4:** *"Why does the pen stay upright instead of tipping sideways?"* (Gyroscopic effect from spinning)',
+        ],
+      },
+      {
+        time: '32–40 min',
+        phase: 'Real World — Maglev',
+        instructions: [
+          'Ask: *"If magnets can float a pen, what else could they float?"*',
+          'Introduce MAGLEV trains: same principle, massive electromagnets, 600+ km/h.',
+          '*"Why do maglev trains need computers but the pen doesn\'t?"* (Pen sits in a magnetic bowl — stable. Train on a flat track can drift sideways — needs correction).',
+          '**G3–4:** Discuss why maglev trains are more common in Asia than the US or Europe (cost, infrastructure).',
+        ],
+      },
+      {
+        time: '40–48 min',
+        phase: 'Draw & Write',
+        instructions: [
+          'Kids draw the floating pen and base.',
+          'Add TWO arrows: one pointing UP (magnetic repulsion), one pointing DOWN (gravity).',
+          'Label both arrows. Write one sentence: *"The pen floats because ___."*',
+          '**G3–4:** Draw the N/S poles on both magnets and explain in writing why same poles repel.',
+          '3–4 kids share their drawings. Close: *"This invisible force holds a 40-tonne train in the air. You just felt it with your own hands."*',
+        ],
+      },
+    ],
+    discussionQuestions: [
+      { question: 'What rule do magnets follow?', answer: 'Same poles repel (push apart). Opposite poles attract (pull together).' },
+      { question: 'What two forces act on the floating pen?', answer: 'Magnetic repulsion pushing up, and gravity pulling down' },
+      { question: 'What does equilibrium mean?', answer: 'The two forces are exactly equal — so the pen doesn\'t move' },
+      { question: 'Why does the pen keep spinning?', answer: 'Nothing is touching it to slow it down — no friction' },
+      { question: 'How do maglev trains use this same idea?', answer: 'Powerful electromagnets push the train up off the track — no friction means very high speeds' },
+      { question: 'What happened when you flipped the pen to attract instead of repel?', answer: 'It snapped down to the base — opposite poles pull toward each other' },
+    ],
+    scienceBehindIt:
+      'Magnetic repulsion occurs when two magnets are oriented with the same poles facing each other (N–N or S–S). The repulsive force follows an inverse-square-like relationship with distance: as the magnets get closer, the force increases rapidly. The floating pen reaches equilibrium when the upward magnetic repulsion exactly equals the downward gravitational force (F_magnetic = mg). The ring magnet geometry creates a magnetic "bowl" — if the pen drifts sideways, the field geometry pushes it back to centre, providing passive lateral stability. Spinning the pen adds gyroscopic stability, keeping it upright rather than tumbling. Maglev trains use the same principle with powerful electromagnets, but require active computer control because the flat track geometry offers no passive lateral stability.',
+    safetyNotes:
+      'Keep ring magnets away from credit cards, phones and pacemakers. Do not let students snap magnets together hard — they can pinch fingers or chip. Supervise closely when students handle extra magnets.',
+    referenceVideo: '',
+  },
 ]
 
 /**
@@ -359,6 +478,11 @@ export function getLabForDashboard(): ScienceLab | null {
     (l.date >= monStr && l.date <= friStr) ||   // this week
     (l.date > today && l.date <= soonStr)        // coming up within 3 days
   ) ?? null
+}
+
+/** Look up a lab by school week number (preferred over date-based lookup) */
+export function getLabByWeek(weekNumber: number): ScienceLab | null {
+  return scienceLabs.find(l => l.weekNumber === weekNumber) ?? null
 }
 
 /** Returns the lab for this week (Mon–Fri), or the most recent past lab */

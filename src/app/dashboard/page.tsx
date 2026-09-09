@@ -129,6 +129,7 @@ export default async function DashboardPage({
     science:         subjectToDay.get('science')?.id         ?? null,
     math:            subjectToDay.get('math')?.id            ?? null,
     arts:            subjectToDay.get('arts')?.id            ?? null,
+    weekNumber:      null,
   }
 
   return (

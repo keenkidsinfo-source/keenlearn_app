@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth/jwt'
-import { getCurrentLab } from '@/lib/scienceLabs'
+import { getCurrentLab, getLabByWeek } from '@/lib/scienceLabs'
 import { ScienceLabClient } from './ScienceLabClient'
 import { StudentSidebar } from '@/app/dashboard/StudentSidebar'
 import { getWeekNavFromClassroom } from '@/lib/student-week-nav'
@@ -11,12 +11,14 @@ export default async function ScienceLabPage() {
   const session = await getSession()
   if (!session) redirect('/login')
 
-  const lab = getCurrentLab()
-  if (!lab) redirect('/dashboard')
-
+  // Prefer week-number-based lookup (matches classroom DB assignment)
+  // Fall back to calendar date if no classroom or week not found
   const nav = session.classroomId
     ? await getWeekNavFromClassroom(session.classroomId)
-    : { build: null, coding: null, public_speaking: null, science: null, math: null, arts: null }
+    : { build: null, coding: null, public_speaking: null, science: null, math: null, arts: null, weekNumber: null }
+
+  const lab = (nav.weekNumber != null ? getLabByWeek(nav.weekNumber) : null) ?? getCurrentLab()
+  if (!lab) redirect('/dashboard')
 
   return (
     <div className="flex h-screen overflow-hidden">

@@ -8,7 +8,7 @@ import {
   classroomCurriculum, curriculum, curriculumDays, curriculumContent, contentItems,
   classroomTeachers,
 } from '@/lib/db/schema'
-import { eq, and, isNull, inArray } from 'drizzle-orm'
+import { eq, and, isNull, inArray, lte, desc } from 'drizzle-orm'
 import Link from 'next/link'
 import { SUBJECT_EMOJI, SUBJECT_LABEL } from '@/lib/utils'
 import type { Subject } from '@/lib/db/schema'
