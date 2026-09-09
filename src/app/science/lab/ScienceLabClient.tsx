@@ -337,7 +337,6 @@ export function ScienceLabClient({
         <div className="flex-1 min-w-0">
           <h1 className="font-black text-lg truncate">🔬 {lab.title}</h1>
           <p className="text-teal-200 text-xs">{lab.conceptShort}</p>
-          <p className="text-yellow-300 text-xs">id={lab.id} wb={String(isWaterBottle)}</p>
         </div>
         {gradeBand && (
           <span className="text-xs font-bold bg-teal-500 px-2 py-1 rounded-xl shrink-0">

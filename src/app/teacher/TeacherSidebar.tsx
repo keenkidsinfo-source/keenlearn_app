@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-export type TeacherPage = 'dashboard' | 'build' | 'science' | 'speaking' | 'coding' | 'students' | 'curriculum'
+export type TeacherPage = 'dashboard' | 'build' | 'science' | 'speaking' | 'coding' | 'students' | 'curriculum' | 'curriculum-guide'
 export type ActivitySubject = 'build' | 'science' | 'speaking' | 'coding'
 
 interface Props {
@@ -20,8 +20,9 @@ interface Props {
 // Fixed top/bottom items
 const TOP_ITEM = { key: 'dashboard' as TeacherPage, label: 'Dashboard', emoji: '🏠', staticHref: '/teacher' }
 const BOTTOM_ITEMS: { key: TeacherPage; label: string; emoji: string; staticHref: string }[] = [
-  { key: 'students',   label: 'Students',   emoji: '👥', staticHref: '/teacher#students' },
-  { key: 'curriculum', label: 'Curriculum', emoji: '📚', staticHref: '/teacher/curriculum' },
+  { key: 'students',         label: 'Students',   emoji: '👥', staticHref: '/teacher#students' },
+  { key: 'curriculum',       label: 'Curriculum', emoji: '📚', staticHref: '/teacher/curriculum' },
+  { key: 'curriculum-guide', label: 'Add Week',   emoji: '➕', staticHref: '/teacher/curriculum-guide' },
 ]
 
 // Activity items — reordered per school (coding removed from sidebar)
