@@ -16,22 +16,24 @@ export interface WeekNav {
   arts: string | null
 }
 
-/** Get nav from any day's classroomId + current Monday (for pages with no dayId like /science/lab) */
+/** Get nav from any day's classroomId + current date (for pages with no dayId like /science/lab) */
 export async function getWeekNavFromClassroom(classroomId: string): Promise<WeekNav> {
   const { db: _db } = await import('@/lib/db')
   const { classroomCurriculum, curriculumDays: cdTable } = await import('@/lib/db/schema')
-  const { eq: _eq } = await import('drizzle-orm')
+  const { eq: _eq, and: _and, lte: _lte, desc: _desc } = await import('drizzle-orm')
 
   const today = new Date()
-  const diff = today.getDay() === 0 ? -6 : 1 - today.getDay()
-  const mon = new Date(today); mon.setDate(today.getDate() + diff)
   const pad = (n: number) => String(n).padStart(2, '0')
-  const mondayStr = `${mon.getFullYear()}-${pad(mon.getMonth() + 1)}-${pad(mon.getDate())}`
+  const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`
 
+  // Pick the most recent week whose start date is ≤ today (same logic as dashboard)
   const [ccRow] = await _db.select({ curriculumId: classroomCurriculum.curriculumId })
     .from(classroomCurriculum)
-    .where(_eq(classroomCurriculum.classroomId, classroomId) as any)
-    // pick the row matching current week
+    .where(_and(
+      _eq(classroomCurriculum.classroomId, classroomId),
+      _lte(classroomCurriculum.weekStartDate, todayStr),
+    ) as any)
+    .orderBy(_desc(classroomCurriculum.weekStartDate))
     .limit(1)
 
   if (!ccRow) return { build: null, coding: null, public_speaking: null, science: null, math: null, arts: null }
