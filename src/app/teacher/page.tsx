@@ -412,7 +412,7 @@ export default async function TeacherDashboardPage({
               {/* Subject header row — exclude math and coding */}
               {weekSubjects.length > 0 && (
                 <div className="flex items-center gap-2 mb-2 pl-[52px]">
-                  {weekSubjects.filter(ws => ws.subject !== 'math' && ws.subject !== 'coding').map(ws => (
+                  {weekSubjects.filter(ws => ws.subject !== 'math').map(ws => (
                     <div key={ws.contentItemId} className="w-9 text-center" title={SUBJECT_LABEL[ws.subject as Subject]}>
                       <span className="text-xl">{SUBJECT_EMOJI[ws.subject as Subject]}</span>
                     </div>
@@ -460,7 +460,7 @@ export default async function TeacherDashboardPage({
                         </div>
                         {weekSubjects.length > 0 ? (
                           <div className="flex items-center gap-2">
-                            {weekSubjects.filter(ws => ws.subject !== 'math' && ws.subject !== 'coding').map(ws => {
+                            {weekSubjects.filter(ws => ws.subject !== 'math').map(ws => {
                               const done  = completedIds.has(ws.contentItemId)
                               const going = inProgressIds.has(ws.contentItemId)
                               return (
