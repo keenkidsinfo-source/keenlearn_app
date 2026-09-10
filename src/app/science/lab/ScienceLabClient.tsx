@@ -462,7 +462,7 @@ export function ScienceLabClient({
               <textarea
                 value={observations}
                 onChange={e => handleObservations(e.target.value)}
-                placeholder={observePlaceholder}
+                placeholder=""
                 rows={isG12 ? 3 : 4}
                 className="w-full border-2 border-teal-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:border-teal-500 resize-none"
               />
@@ -478,7 +478,7 @@ export function ScienceLabClient({
                 <textarea
                   value={whatHappened}
                   onChange={e => handleWhatHappened(e.target.value)}
-                  placeholder={causePlaceholder}
+                  placeholder=""
                   rows={4}
                   className="w-full border-2 border-teal-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:border-teal-500 resize-none"
                 />
@@ -494,7 +494,7 @@ export function ScienceLabClient({
                 <textarea
                   value={whatHappened}
                   onChange={e => handleWhatHappened(e.target.value)}
-                  placeholder={causePlaceholder}
+                  placeholder=""
                   rows={3}
                   className="w-full border-2 border-teal-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:border-teal-500 resize-none"
                 />
@@ -570,7 +570,7 @@ export function ScienceLabClient({
               <textarea
                 value={whatILearned}
                 onChange={e => handleWhatILearned(e.target.value)}
-                placeholder={learnedPlaceholder}
+                placeholder=""
                 rows={isG12 ? 2 : 4}
                 className="w-full border-2 border-teal-200 rounded-xl px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:border-teal-500 resize-none"
               />

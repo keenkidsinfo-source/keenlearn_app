@@ -13,14 +13,18 @@ import { SpeakingSession } from './SpeakingSession'
 import { getTeacherClassroom } from '@/lib/teacher-classroom'
 import { TeacherSidebar } from '../../TeacherSidebar'
 
-interface Props { params: Promise<{ dayId: string }> }
+interface Props {
+  params: Promise<{ dayId: string }>
+  searchParams: Promise<{ classroomId?: string }>
+}
 
-export default async function TeacherSpeakingPage({ params }: Props) {
+export default async function TeacherSpeakingPage({ params, searchParams }: Props) {
   const session = await getSession()
   if (!session) redirect('/login')
   if (session.role === 'student') redirect('/dashboard')
 
   const { dayId } = await params
+  const { classroomId: qClassroomId } = await searchParams
 
   // Load the curriculum day
   const [day] = await db
@@ -53,8 +57,11 @@ export default async function TeacherSpeakingPage({ params }: Props) {
   if (items.length === 0) notFound()
   const item = items[0]
 
-  // Load teacher's classroom
-  const classroom = await getTeacherClassroom(session.sub)
+  // Load teacher's classroom — admins can override via ?classroomId=
+  const classroom = await getTeacherClassroom(
+    session.sub,
+    session.role === 'admin' ? qClassroomId : undefined,
+  )
   if (!classroom) redirect('/teacher')
 
   // Load students

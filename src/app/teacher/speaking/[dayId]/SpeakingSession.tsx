@@ -405,13 +405,24 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
     })
 
     try {
-      await fetch('/api/v1/teacher/speaking/mark', {
+      const res = await fetch('/api/v1/teacher/speaking/mark', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ studentId, contentItemId, done: nowDone }),
       })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        console.error('Mark failed:', res.status, err)
+        // Revert on error
+        setDoneIds(prev => {
+          const next = new Set(prev)
+          nowDone ? next.delete(studentId) : next.add(studentId)
+          return next
+        })
+        alert(`Could not save: ${err?.error ?? res.statusText}`)
+      }
     } catch {
-      // Revert on error
+      // Revert on network error
       setDoneIds(prev => {
         const next = new Set(prev)
         nowDone ? next.delete(studentId) : next.add(studentId)
@@ -805,7 +816,7 @@ export function SpeakingSession({ contentItemId, meta, students, initialDoneIds 
                   <button
                     key={student.id}
                     onClick={() => toggleDone(student.id)}
-                    disabled={loading}
+                    disabled={loading || done}
                     className={cn(
                       'flex items-center gap-2.5 p-3 rounded-xl border-2 text-left transition-all active:scale-95',
                       done

@@ -260,7 +260,7 @@ export default async function TeacherDashboardPage({
       <div className="flex flex-1">
         <TeacherSidebar
           activePage="dashboard"
-          speakingHref={speakingDay ? `/teacher/speaking/${speakingDay.dayId}` : null}
+          speakingHref={speakingDay ? `/teacher/speaking/${speakingDay.dayId}${isAdmin && qClassroomId ? `?classroomId=${qClassroomId}` : ''}` : null}
           buildDayId={buildDay?.dayId ?? null}
           subjectOrder={weekSubjects.map(ws => ws.subject as ActivitySubject)}
           email={session.email}
@@ -319,7 +319,7 @@ export default async function TeacherDashboardPage({
                 const label = SUBJECT_LABEL[ws.subject as Subject]
                 let href = '/teacher'
                 if (ws.subject === 'build') href = `/build/day/${ws.dayId}`
-                else if (ws.subject === 'public_speaking' && speakingDay) href = `/teacher/speaking/${speakingDay.dayId}`
+                else if (ws.subject === 'public_speaking' && speakingDay) href = `/teacher/speaking/${speakingDay.dayId}${isAdmin && qClassroomId ? `?classroomId=${qClassroomId}` : ''}`
                 else if (ws.subject === 'science') href = '/teacher/science'
                 return (
                   <Link key={ws.contentItemId} href={href}
