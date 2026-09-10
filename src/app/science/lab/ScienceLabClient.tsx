@@ -215,10 +215,10 @@ export function ScienceLabClient({
   const [showExplain, setShowExplain]   = useState(false)
 
   // Load: first from localStorage (instant), then sync from server (authoritative)
+  // Note: phase is intentionally NOT restored — always start at predict
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey) ?? '{}')
-      if (saved.phase)        setPhase(saved.phase)
       if (saved.vote)         setVote(saved.vote)
       if (saved.observations) setObservations(saved.observations)
       if (saved.whatHappened) setWhatHappened(saved.whatHappened)
@@ -234,7 +234,7 @@ export function ScienceLabClient({
       .then(res => {
         const data = res?.data?.sessionData
         if (!data) return
-        if (data.phase)        setPhase(data.phase)
+        // phase intentionally not restored — always start at predict
         if (data.vote)         setVote(data.vote)
         if (data.observations) setObservations(data.observations)
         if (data.whatHappened) setWhatHappened(data.whatHappened)

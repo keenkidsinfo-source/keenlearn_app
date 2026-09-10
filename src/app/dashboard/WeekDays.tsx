@@ -102,7 +102,8 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                 ? `/build/day/${dayId}/results`
                 : isG12Build && dayId
                   ? `/build/day/${dayId}/watch`
-                  : dayId && subject !== 'build' ? `/${subject}/day/${dayId}` : '#'
+                  : subject === 'science' ? '/science/lab'
+                : dayId && subject !== 'build' ? `/${subject}/day/${dayId}` : '#'
               return (
                 <div key={dow} className={`${colors.light} border-2 ${colors.border} rounded-3xl p-6 mb-6`}>
                   <p className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-1">Today</p>
@@ -112,7 +113,7 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                         <span className="text-5xl">{SUBJECT_EMOJI[subject as Subject]}</span>
                         <div>
                           <h2 className={`text-2xl font-black ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</h2>
-                          {theme && <p className="text-gray-600 mt-0.5">{theme}</p>}
+                          {theme && subject !== 'science' && <p className="text-gray-600 mt-0.5">{theme}</p>}
                         </div>
                       </div>
                       <div className="mt-4 rounded-2xl bg-orange-100 border border-orange-200 text-orange-700 font-bold text-center py-3 px-4">
@@ -125,7 +126,7 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                         <span className="text-5xl">{SUBJECT_EMOJI[subject as Subject]}</span>
                         <div>
                           <h2 className={`text-2xl font-black ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</h2>
-                          {theme && <p className="text-gray-600 mt-0.5">{theme}</p>}
+                          {theme && subject !== 'science' && <p className="text-gray-600 mt-0.5">{theme}</p>}
                         </div>
                       </div>
                       <div className={`mt-4 btn-subject ${isBuild ? 'bg-teal-600' : colors.bg} text-white w-full text-center`}>
@@ -154,6 +155,7 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                 ? `/build/day/${dayId}/results`
                 : isG12Build
                   ? `/build/day/${dayId}/watch`
+                  : subject === 'science' ? '/science/lab'
                   : subject !== 'build' && dayId ? `/${subject}/day/${dayId}` : undefined
 
               const tileClass = `flex items-center gap-4 p-4 rounded-2xl border-2 transition-all
@@ -166,7 +168,7 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                   <div className="flex-1">
                     <p className="font-bold text-gray-700">{DAY_LABELS[dow]}</p>
                     <p className={`font-semibold ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</p>
-                    {theme && <p className="text-sm text-gray-400">{theme}</p>}
+                    {theme && subject !== 'science' && <p className="text-sm text-gray-400">{theme}</p>}
                     {isBuild && dayId && (
                       <p className="text-xs font-bold text-teal-600 mt-0.5">📊 Enter My Results →</p>
                     )}
