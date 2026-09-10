@@ -113,7 +113,7 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                         <span className="text-5xl">{SUBJECT_EMOJI[subject as Subject]}</span>
                         <div>
                           <h2 className={`text-2xl font-black ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</h2>
-                          {theme && subject !== 'science' && <p className="text-gray-600 mt-0.5">{theme}</p>}
+                          {theme && (subject as string) !== 'science' && <p className="text-gray-600 mt-0.5">{theme}</p>}
                         </div>
                       </div>
                       <div className="mt-4 rounded-2xl bg-orange-100 border border-orange-200 text-orange-700 font-bold text-center py-3 px-4">
@@ -126,7 +126,7 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                         <span className="text-5xl">{SUBJECT_EMOJI[subject as Subject]}</span>
                         <div>
                           <h2 className={`text-2xl font-black ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</h2>
-                          {theme && subject !== 'science' && <p className="text-gray-600 mt-0.5">{theme}</p>}
+                          {theme && (subject as string) !== 'science' && <p className="text-gray-600 mt-0.5">{theme}</p>}
                         </div>
                       </div>
                       <div className={`mt-4 btn-subject ${isBuild ? 'bg-teal-600' : colors.bg} text-white w-full text-center`}>
@@ -168,7 +168,7 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
                   <div className="flex-1">
                     <p className="font-bold text-gray-700">{DAY_LABELS[dow]}</p>
                     <p className={`font-semibold ${colors.text}`}>{SUBJECT_LABEL[subject as Subject]}</p>
-                    {theme && subject !== 'science' && <p className="text-sm text-gray-400">{theme}</p>}
+                    {theme && (subject as string) !== 'science' && <p className="text-sm text-gray-400">{theme}</p>}
                     {isBuild && dayId && (
                       <p className="text-xs font-bold text-teal-600 mt-0.5">📊 Enter My Results →</p>
                     )}
