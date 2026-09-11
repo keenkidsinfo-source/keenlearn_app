@@ -110,9 +110,9 @@ const builds = [
     tagline: 'Design and build a winding marble run — meet all 4 requirements, then go for the fastest time!',
     resultFields: {
       a:               { label: 'All 4 requirements met? (Yes / No)',    key: 'requirementsMet' },
-      b:               { label: 'Best time (seconds)',                    key: 'bestTime'        },
+      b:               { label: 'Slowest time (seconds) 🏆',              key: 'bestTime'        },
       unit:            'seconds',
-      leaderboard:     'less',
+      leaderboard:     'more',
       showLeaderboard: true,
     },
     steps: [
