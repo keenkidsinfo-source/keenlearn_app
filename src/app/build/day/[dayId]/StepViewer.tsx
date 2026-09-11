@@ -81,7 +81,7 @@ const PREP_INFO: Record<string, { image?: string; steps: string[]; warning: stri
     warning: '⚠️ Build your demo marble run the night before and test it at least 5 times. Know every failure point before class starts!',
     steps: [
       'Per kid (G1-2): 4 cardstock sheets, 3 pre-cut cardboard strips (~3 cm wide), 1 paper cup, scissors, tape, 1 marble.',
-      'Per kid (G3-4): 4 cardstock sheets, 3–4 cardstock strips, 1 corrugated cardboard strip, 1 straw, 1 paper cup, scissors, tape, 1 marble.',
+      'Per kid (G3-4): 4 cardstock sheets, 1 corrugated paper strip, 1 paper cup, 2 straws, 1 ice cream stick, scissors, tape, 1 marble.',
       'Pre-cut cardboard shelf strips to 3 cm wide — one per shelf. Pre-cut wall strips from Sheet 3 for G1-2.',
       'Test all marbles before class — a misshapen marble will stop on every ramp.',
       'Build your own demo: G1-2 box with 3 alternating shelves + catcher. G3-4 winding run with curve, obstacle, and catcher.',
