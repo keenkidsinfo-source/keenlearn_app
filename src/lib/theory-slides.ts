@@ -577,7 +577,255 @@ const balanceScaleDeck: TheoryDeck = {
   ],
 }
 
-export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck, seesawDeck, balanceScaleDeck]
+// ── G1-2 · Marble Run · Gravity + Friction + Ramps ──────────────────────────
+
+const marbleRunG12Deck: TheoryDeck = {
+  gradeBand: 'g1-2',
+  weekNumber: 3,
+  title: 'Marble Run Science!',
+  subject: 'Motion & Transportation',
+  slides: [
+    {
+      emoji: '🎱',
+      color: 'blue',
+      title: 'What Are We Building?',
+      headline: 'A zigzag marble run — the marble travels down 3 shelves into a catcher cup!',
+      bullets: [
+        'A cardstock **box** with 3 shelves inside — alternating left and right.',
+        'The **marble** starts at the top and falls from shelf to shelf.',
+        'A **paper cup catcher** at the bottom catches the marble.',
+        'Every build is different — YOUR ramp angles decide if it works!',
+      ],
+      tryThis: 'Predict: do you think the marble will make it all the way to the catcher?',
+      speakerNotes: [
+        'Hold up the demo run. "Today you\'re building a marble run from scratch — like a mini roller coaster made of cardboard."',
+        '"Every single build will look different. The marble doesn\'t know your plan — the ANGLE of your shelves decides everything."',
+        'Take hands: who thinks the marble will make it on the first try? Who thinks it won\'t? "Let\'s see — but first, we need to understand the science."',
+      ],
+    },
+    {
+      emoji: '🌍',
+      color: 'green',
+      title: 'Force #1: GRAVITY',
+      headline: 'Gravity pulls the marble DOWN the ramp — it\'s our engine!',
+      bullets: [
+        'Gravity pulls EVERYTHING downward — the marble, you, everything.',
+        'On a ramp, gravity pulls the marble **along the slope** and down.',
+        'No ramp = marble falls straight down. With a ramp = it rolls down the slope.',
+        'Gravity never stops working — it\'s always pulling the marble!',
+      ],
+      vocab: { word: 'Gravity', definition: 'An invisible force that pulls everything downward toward Earth' },
+      tryThis: 'Drop your marble — which direction? Gravity ALWAYS goes the same way.',
+      speakerNotes: [
+        'Have a kid drop a marble. "See how it goes DOWN? That\'s gravity. It NEVER goes sideways or up."',
+        '"Our marble run only works because of gravity — there\'s no battery, no motor. Just gravity."',
+        '"The ramp doesn\'t fight gravity — it GUIDES the marble while gravity pulls it down."',
+      ],
+    },
+    {
+      emoji: '🛑',
+      color: 'red',
+      title: 'Force #2: FRICTION',
+      headline: 'Friction slows the marble down when it rubs against the ramp.',
+      bullets: [
+        'Rough surfaces → **MORE friction** → marble slows down faster.',
+        'Smooth surfaces → **LESS friction** → marble keeps going.',
+        'Our cardstock shelves are fairly smooth — but the marble still loses energy.',
+        'Too much friction = marble STOPS before reaching the catcher.',
+      ],
+      vocab: { word: 'Friction', definition: 'A force that slows things down when two surfaces rub together' },
+      tryThis: 'Rub your hands together fast — feel the warmth? That\'s friction making heat!',
+      speakerNotes: [
+        'Everyone rubs their hands together now. "Feel the warmth? The marble feels that same heat every time it rolls — and it slows down because of it."',
+        '"If your marble stops on a shelf, friction probably won. The fix is making the shelf steeper so gravity fights back harder."',
+        '"Cardstock has less friction than cardboard — that\'s why we use it for the shelves."',
+      ],
+    },
+    {
+      emoji: '📐',
+      color: 'orange',
+      title: 'Angle = Speed',
+      headline: 'Steeper ramp = faster marble. Flatter ramp = slower marble.',
+      bullets: [
+        '**Steep angle** → gravity pulls harder along the slope → marble goes FASTER.',
+        '**Flat angle** → gravity pull is weaker along the slope → marble goes SLOWER.',
+        'Too flat → friction wins → marble STOPS on the shelf.',
+        'Too steep → marble goes too fast and flies off instead of landing on the next shelf!',
+      ],
+      vocab: { word: 'Angle', definition: 'How steep or flat the ramp is — controls the marble\'s speed' },
+      tryThis: 'Tilt your arm at a steep angle vs. a flat angle — which would a marble roll faster on?',
+      speakerNotes: [
+        'Hold up a cardstock strip and tilt it steeply — "fast." Then flatten it — "slow. Then even flatter — stops."',
+        '"You are in charge of angle. This is the most important design decision you\'ll make today."',
+        '"Aim for about 30–45 degrees for each shelf — steep enough to roll but not so steep it bounces off."',
+      ],
+    },
+    {
+      emoji: '⚔️',
+      color: 'red',
+      title: 'Gravity vs. Friction',
+      headline: 'Whoever wins decides what our marble does!',
+      bullets: [
+        '**GRAVITY** wants to pull the marble DOWN the shelf.',
+        '**FRICTION** wants to SLOW the marble and STOP it.',
+        'If gravity wins → marble rolls all the way! 🎉',
+        'If friction wins → marble stops on the shelf. 😬',
+        'Steeper shelf = gravity wins. Flatter shelf = friction might win.',
+      ],
+      tryThis: 'Predict before you build: do you think gravity or friction will win on your run?',
+      speakerNotes: [
+        '"Every time you test your marble run, you\'re finding out who won — gravity or friction."',
+        '"If the marble stops: friction won. Your fix is to make the shelf steeper so gravity fights back."',
+        '"If the marble flies off: gravity won too hard! Make the shelf a little flatter. Let\'s build and find out who wins!"',
+      ],
+    },
+    {
+      emoji: '🏆',
+      color: 'purple',
+      title: 'Build Rule to Remember!',
+      headline: 'Steep enough = marble beats friction and reaches the catcher!',
+      bullets: [
+        '**Too flat** → friction wins → marble stops on the shelf.',
+        '**Just right** → marble rolls to the edge and falls to the next shelf. ✅',
+        '**Too steep** → marble flies off sideways instead of landing below.',
+        'Science words today: **GRAVITY · FRICTION · ANGLE · RAMP**',
+      ],
+      tryThis: 'Ready to build? Remember: if your marble stops, make the shelf steeper. Let\'s go!',
+      speakerNotes: [
+        '"One rule to remember while you build: if it stops, steeper. If it flies off, flatter."',
+        '"Say it with me: steeper = faster. Flatter = slower. Got it? Now let\'s build!"',
+        'Hand out materials. Move straight into the base-building step.',
+      ],
+    },
+  ],
+}
+
+// ── G3-4 · Marble Run · Gravity + Friction + Momentum ───────────────────────
+
+const marbleRunG34Deck: TheoryDeck = {
+  gradeBand: 'g3-4',
+  weekNumber: 3,
+  title: 'Marble Run Engineering',
+  subject: 'Motion & Transportation',
+  slides: [
+    {
+      emoji: '🎱',
+      color: 'blue',
+      title: 'What Are We Engineering?',
+      headline: 'A winding marble run that meets 4 requirements — then race for the fastest time!',
+      bullets: [
+        '**3+ track sections** — each is a separate piece of track.',
+        '**1 curve or turn** — marble changes direction.',
+        '**1 obstacle** — accordion fold, straw gate, or cup tunnel.',
+        '**A catcher** — marble lands safely in a cup at the end.',
+      ],
+      tryThis: 'Plan your route BEFORE you tape anything. Engineers design before they build!',
+      speakerNotes: [
+        'Run the demo marble run in front of the class. "Watch it go — count the sections." Count together.',
+        '"Your run has to meet all 4 requirements AND be as fast as possible. Those two goals sometimes fight each other — more sections = more time."',
+        '"Engineers solve this every day: make it meet the spec AND make it perform. That\'s your challenge today."',
+      ],
+    },
+    {
+      emoji: '🌍',
+      color: 'green',
+      title: 'Force: GRAVITY',
+      headline: 'Gravity pulls the marble down — steeper angle means bigger push along the slope.',
+      bullets: [
+        'On a ramp, gravity splits into two parts: one pressing INTO the surface, one pushing ALONG the slope.',
+        'The **along-slope push** is what accelerates the marble.',
+        '**Steeper ramp** → bigger along-slope push → marble gains speed faster.',
+        'No motor, no battery — gravity is the ONLY engine in your marble run.',
+      ],
+      vocab: { word: 'Gravity', definition: 'Force pulling everything toward Earth — the marble\'s only engine' },
+      tryThis: 'Which section of your planned run will be fastest? (Steepest = fastest.)',
+      speakerNotes: [
+        '"Think of it like this: flat surface → gravity pushes straight DOWN into the surface, none along it → marble doesn\'t move. Tilt the surface → some gravity shifts to push the marble forward."',
+        '"Steeper = more of gravity\'s force pushes the marble along. This is why the starting ramp must be steep."',
+        '"The marble has no engine — the only energy it ever has is what gravity gives it on the starting ramp. So design that first section to be steep!"',
+      ],
+    },
+    {
+      emoji: '🛑',
+      color: 'red',
+      title: 'Force: FRICTION',
+      headline: 'Friction steals energy at every surface contact — the marble can\'t get it back.',
+      bullets: [
+        '**Corrugated cardboard** → rough → HIGH friction → marble slows quickly.',
+        '**Smooth cardstock** → lower friction → marble loses less speed.',
+        'Curves force the marble sideways → more contact → more friction → more energy lost.',
+        'Accordion obstacle = many direction changes → highest friction point in your run.',
+      ],
+      vocab: { word: 'Friction', definition: 'Resistance force between surfaces — converts the marble\'s kinetic energy to heat' },
+      tryThis: 'Feel the corrugated cardboard vs. smooth cardstock. Which creates more friction?',
+      speakerNotes: [
+        'Pass around a piece of corrugated cardboard and a cardstock strip. "Run your finger along each. Feel the difference? The marble feels that too."',
+        '"Every time the marble touches a surface — especially at a curve or accordion fold — it loses a tiny bit of energy to friction. Enough lost energy and the marble stops."',
+        '"Your obstacle is deliberately creating friction. The challenge is: enough to be an obstacle, not so much the marble dies there."',
+      ],
+    },
+    {
+      emoji: '💨',
+      color: 'orange',
+      title: 'MOMENTUM',
+      headline: 'A fast marble keeps moving even on flat sections — momentum carries it through.',
+      bullets: [
+        '**Momentum** = mass × velocity. The faster and heavier, the more momentum.',
+        'A steep starting ramp builds HIGH momentum early — marble "coasts" through flatter parts.',
+        'Low momentum at the start → marble dies at the obstacle or on a flat section.',
+        'Think of it like a cyclist: big speed on the downhill keeps them going uphill.',
+      ],
+      vocab: { word: 'Momentum', definition: 'A moving object\'s tendency to keep moving — mass × velocity' },
+      tryThis: 'Why does your starting ramp NEED to be steep? (To build enough momentum for the whole run!)',
+      speakerNotes: [
+        '"This is the key insight for today: the starting ramp doesn\'t just launch the marble — it stores energy as momentum that the marble USES for the rest of the run."',
+        '"A marble that starts slowly will lose ALL its momentum before it reaches the catcher. A marble that starts fast can push through friction and obstacles."',
+        '"Design rule: if in doubt, make the first ramp steeper. You can always flatten it later. A marble with too much momentum is easier to fix than one with too little."',
+      ],
+    },
+    {
+      emoji: '🥤',
+      color: 'blue',
+      title: 'Energy Transfer at the Catcher',
+      headline: 'When the marble hits the cup, its kinetic energy transfers — tape the cup or it flies away!',
+      bullets: [
+        '**Kinetic energy** = energy of a moving object.',
+        'Marble hits cup → kinetic energy transfers to cup → cup tries to slide.',
+        'Cup not taped → cup slides away, marble bounces out.',
+        'Cup firmly taped → energy is absorbed, marble stops inside.',
+        'Same principle as highway crash barriers — absorb energy to stop vehicles safely.',
+      ],
+      vocab: { word: 'Kinetic Energy', definition: 'The energy of a moving object — depends on its mass and speed' },
+      tryThis: 'Tape your catcher cup FIRMLY. If it moves when the marble arrives, it\'s not taped enough.',
+      speakerNotes: [
+        '"Kinetic energy is why the catcher matters. The marble has been building speed — all that energy has to go somewhere when it stops."',
+        '"Untaped cup: energy goes into sliding the cup. Taped cup: energy is absorbed by the tape and base. Same physics as car airbags and crumple zones."',
+        '"Rule: always tape the catcher cup before you test. A marble that escapes is a slip hazard — and your run doesn\'t count."',
+      ],
+    },
+    {
+      emoji: '🏆',
+      color: 'green',
+      title: 'Design for Speed',
+      headline: 'Steeper + smoother + fewer turns = fastest time. But you still need all 4 requirements!',
+      bullets: [
+        '**Steeper angles** → more gravity along slope → marble accelerates faster.',
+        '**Fewer direction changes** → less energy lost at turns.',
+        '**Smooth cardstock** over corrugated → less friction along the track.',
+        '**Shorter total track** → less friction contact overall → faster time.',
+        'Vocab: **GRAVITY · FRICTION · MOMENTUM · KINETIC ENERGY · VELOCITY · ANGLE**',
+      ],
+      tryThis: 'After you time your run — what ONE change would make it faster? Predict it, then test it.',
+      speakerNotes: [
+        '"These are your four engineering levers for speed. Every fast marble run in history uses the same principles."',
+        '"But — you still need 3 sections, a curve, an obstacle, and a catcher. Fast AND compliant. That\'s the engineering challenge."',
+        '"Time to plan. Arrows on your base before you tape a single thing. Go!"',
+      ],
+    },
+  ],
+}
+
+export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck, seesawDeck, balanceScaleDeck, marbleRunG12Deck, marbleRunG34Deck]
 
 // Returns null if no deck exists for that week — caller should hide the Theory button
 export function getTheoryDeck(gradeBand: string, weekNumber: number): TheoryDeck | null {
