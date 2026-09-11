@@ -77,6 +77,19 @@ const PREP_INFO: Record<string, { image: string; steps: string[]; warning: strin
       'Write on the board: BEAM | FULCRUM | PIVOT | PRECISION — for vocabulary reference.',
     ],
   },
+  'Marble Run': {
+    image: '/images/build/cable-car/zipline_setup.png',
+    warning: '⚠️ Build your demo marble run the night before and test it at least 5 times. Know every failure point before class starts!',
+    steps: [
+      'Per kid (G1-2): 4 cardstock sheets, 3 pre-cut cardboard strips (~3 cm wide), 1 paper cup, scissors, tape, 1 marble.',
+      'Per kid (G3-4): 4 cardstock sheets, 3–4 cardstock strips, 1 corrugated cardboard strip, 1 straw, 1 paper cup, scissors, tape, 1 marble.',
+      'Pre-cut cardboard shelf strips to 3 cm wide — one per shelf. Pre-cut wall strips from Sheet 3 for G1-2.',
+      'Test all marbles before class — a misshapen marble will stop on every ramp.',
+      'Build your own demo: G1-2 box with 3 alternating shelves + catcher. G3-4 winding run with curve, obstacle, and catcher.',
+      'Set up a class chart on the board — G1-2: Name | Reached catcher? | After fix? G3-4: Name | Req. met? | Time (seconds).',
+      'COLLECT ALL MARBLES before clean-up — marbles on the floor are a serious slip hazard.',
+    ],
+  },
 }
 
 export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps, initialStep, completed, gradeBand, startWithSetup = true, backHref = '/teacher' }: Props) {
