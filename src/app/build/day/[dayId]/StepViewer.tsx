@@ -27,7 +27,7 @@ interface Props {
 }
 
 // Instructor prep data keyed by title keyword
-const PREP_INFO: Record<string, { image: string; steps: string[]; warning: string }> = {
+const PREP_INFO: Record<string, { image?: string; steps: string[]; warning: string }> = {
   'Cable Car': {
     image: '/images/build/cable-car/zipline_setup.png',
     warning: '⚠️ Set up zip lines BEFORE kids arrive. String must be pulled TIGHT — no sag!',
@@ -78,7 +78,6 @@ const PREP_INFO: Record<string, { image: string; steps: string[]; warning: strin
     ],
   },
   'Marble Run': {
-    image: '/images/build/cable-car/zipline_setup.png',
     warning: '⚠️ Build your demo marble run the night before and test it at least 5 times. Know every failure point before class starts!',
     steps: [
       'Per kid (G1-2): 4 cardstock sheets, 3 pre-cut cardboard strips (~3 cm wide), 1 paper cup, scissors, tape, 1 marble.',
@@ -250,11 +249,13 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
             <div className="bg-yellow-400 text-yellow-900 rounded-xl px-4 py-2 font-bold text-sm text-center">
               {prep.warning}
             </div>
-            {/* Setup image */}
-            <div className="w-full bg-white rounded-xl shadow overflow-hidden" style={{ maxHeight: 260 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={prep.image} alt="Setup diagram" className="w-full h-full object-contain" style={{ maxHeight: 260 }} />
-            </div>
+            {/* Setup image — optional */}
+            {prep.image && (
+              <div className="w-full bg-white rounded-xl shadow overflow-hidden" style={{ maxHeight: 260 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={prep.image} alt="Setup diagram" className="w-full h-full object-contain" style={{ maxHeight: 260 }} />
+              </div>
+            )}
             {/* Setup steps */}
             <ol className="space-y-2">
               {prep.steps.map((s, i) => (
