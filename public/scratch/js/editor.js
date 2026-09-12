@@ -49611,6 +49611,47 @@ class Interface extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
       document.title = "".concat(title, " - ").concat(_lib_brand_js__WEBPACK_IMPORTED_MODULE_28__["APP_NAME"]);
     }
   }
+  componentDidMount() {
+    // KK_LOAD_PROJECT: parent sends starter .sb3 as base64 data URL via postMessage.
+    // This is more reliable than the localStorage+reload chain because it fires
+    // directly into an already-running VM without needing a second iframe load.
+    window.addEventListener('message', function(ev) {
+      if (!ev.data || ev.data.type !== 'KK_LOAD_PROJECT') return;
+      var data = ev.data.data;
+      if (!data || !window.vm) return;
+      try {
+        console.log('[KK] KK_LOAD_PROJECT received, len:', data.length);
+        var b64 = data.startsWith('data:application/zip;base64,')
+          ? data.slice('data:application/zip;base64,'.length)
+          : data;
+        var binStr = atob(b64);
+        var bytes = new Uint8Array(binStr.length);
+        for (var i = 0; i < binStr.length; i++) { bytes[i] = binStr.charCodeAt(i); }
+        window.vm.loadProject(bytes.buffer)
+          .then(function() {
+            console.log('[KK] KK_LOAD_PROJECT loadProject done');
+            try {
+              var ws = window.Blockly && typeof window.Blockly.getMainWorkspace === 'function' && window.Blockly.getMainWorkspace();
+              if (ws && typeof ws.refreshToolboxSelection_ === 'function') ws.refreshToolboxSelection_();
+              if (window.vm && window.vm.runtime && window.vm.runtime.targets) {
+                var sprites = window.vm.runtime.targets.filter(function(t) { return !t.isStage; });
+                if (sprites.length > 0 && typeof window.vm.setEditingTarget === 'function') window.vm.setEditingTarget(sprites[0].id);
+              }
+            } catch(e2) { console.warn('[KK] toolbox refresh after KK_LOAD_PROJECT failed:', e2); }
+            window.__kkProjectLoaded = true;
+            window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*');
+          })
+          .catch(function(err) {
+            console.warn('[KK] KK_LOAD_PROJECT loadProject failed:', err);
+            window.__kkProjectLoaded = true;
+            window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*');
+          });
+      } catch(err) {
+        console.warn('[KK] KK_LOAD_PROJECT error:', err);
+        window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*');
+      }
+    });
+  }
   render() {
     if (isInvalidEmbed) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_components_tw_invalid_embed_invalid_embed_jsx__WEBPACK_IMPORTED_MODULE_27__["default"], null);

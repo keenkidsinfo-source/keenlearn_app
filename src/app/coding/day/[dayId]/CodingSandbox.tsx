@@ -311,37 +311,32 @@ export function CodingSandbox({
       if (starterUrl && !projectUrl && !starterInjectedRef.current) {
         starterInjectedRef.current = true
         try {
-          const res = await fetch(`${starterUrl}?v=4`)
+          const res = await fetch(`${starterUrl}?v=5`)
           if (!res.ok) throw new Error(`fetch ${res.status}`)
           // Two cases:
-          // 1. /scratch-starters/*.sb3 → binary blob → needs FileReader encoding
-          // 2. /api/v1/coding/[id]/data → returns the base64 data URL as text directly
+          // 1. /scratch-starters/*.sb3 → binary blob → encode to base64
+          // 2. /api/v1/coding/[id]/data → already a base64 data URL as text
           const contentType = res.headers.get('Content-Type') ?? ''
           let base64: string
           if (contentType.includes('application/json') || contentType.includes('text/')) {
-            // Already a "data:application/zip;base64,..." string — use directly
             base64 = (await res.text()).trim()
             if (!base64.startsWith('data:application/zip;base64,')) {
               throw new Error('unexpected data format from project API')
             }
           } else {
-            // Binary .sb3 file — encode via FileReader
-            const blob = await res.blob()
-            base64 = await new Promise<string>((resolve, reject) => {
-              const reader = new FileReader()
-              reader.onload = () => {
-                const raw = reader.result as string
-                const b64 = raw.replace(/^data:[^;]+;base64,/, '')
-                resolve(`data:application/zip;base64,${b64}`)
-              }
-              reader.onerror = reject
-              reader.readAsDataURL(blob)
-            })
+            const buf = await res.arrayBuffer()
+            const bytes = new Uint8Array(buf)
+            let binary = ''
+            for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i])
+            base64 = `data:application/zip;base64,${btoa(binary)}`
           }
-          localStorage.setItem('kk_project', base64)
-          console.log('[KK] starter written to localStorage, reloading iframe')
-          setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
-          return  // wait for second KK_PROJECT_LOADED to set projectReadyRef
+          // Send directly to the iframe VM via postMessage — no localStorage or reload needed
+          const iframeWin = iframeRef.current?.contentWindow
+          if (iframeWin) {
+            console.log('[KK] sending KK_LOAD_PROJECT to iframe')
+            iframeWin.postMessage({ type: 'KK_LOAD_PROJECT', data: base64 }, '*')
+          }
+          return  // wait for KK_PROJECT_LOADED that KK_LOAD_PROJECT handler posts back
         } catch (err) {
           console.warn('[KK] starter load failed, using default project', err)
         }
