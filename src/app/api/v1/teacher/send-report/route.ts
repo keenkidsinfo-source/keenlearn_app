@@ -147,8 +147,11 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 6. Send emails ──────────────────────────────────────────────────────────
+  // pool:true reuses SMTP connections; maxConnections keeps Gmail from throttling
   const transporter = nodemailer.createTransport({
     service: 'gmail',
+    pool: true,
+    maxConnections: 3,
     auth: { user: GMAIL_USER, pass: GMAIL_PASS },
   })
   const results: { student: string; status: 'sent' | 'no_email' | 'error'; parentEmail?: string; errorMsg?: string }[] = []
@@ -167,18 +170,19 @@ export async function POST(req: NextRequest) {
     </div>`
   }
 
-  for (const student of students) {
+  // Send all emails in parallel for speed
+  await Promise.all(students.map(async (student) => {
     const studentName = (student.displayName ?? student.name).trim()
 
     if (!student.parentEmail) {
       results.push({ student: studentName, status: 'no_email' })
-      continue
+      return
     }
 
     // Skip if teacher deselected this student
     if (selectedEmails && !selectedEmails.includes(student.parentEmail)) {
       results.push({ student: studentName, status: 'no_email' })
-      continue
+      return
     }
 
     const studentSess = sessionsByStudent.get(student.id) ?? new Map()
@@ -322,10 +326,11 @@ export async function POST(req: NextRequest) {
       })
 
       await transporter.sendMail({
-        from:        `"KeenKids Enrichment" <${GMAIL_USER}>`,
-        replyTo:     `"${teacherName}" <${teacherEmail}>`,
-        to:          student.parentEmail,
-        subject:     `${studentName}'s KeenKids Week — ${weekRow.title}`,
+        from:    `"KeenKids Enrichment" <${GMAIL_USER}>`,
+        replyTo: `"${teacherName}" <${teacherEmail}>`,
+        to:      student.parentEmail,
+        bcc:     [teacherEmail, GMAIL_USER].filter((e, i, a) => e && a.indexOf(e) === i).join(','), // teacher + keenkids account both get a copy
+        subject: `${studentName}'s KeenKids Week — ${weekRow.title}`,
         html,
         attachments,
       })
@@ -334,7 +339,9 @@ export async function POST(req: NextRequest) {
       console.error(`[send-report] email failed for ${studentName}:`, err)
       results.push({ student: studentName, status: 'error', parentEmail: student.parentEmail, errorMsg: err?.message ?? String(err) })
     }
-  }
+  }))
+
+  transporter.close()
 
   return apiOk({
     weekStartDate,
