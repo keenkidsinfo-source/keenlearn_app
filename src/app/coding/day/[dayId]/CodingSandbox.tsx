@@ -501,9 +501,14 @@ export function CodingSandbox({
           {/* Reload iframe — saves first then reloads TurboWarp; fixes stuck/missing blocks */}
           <button
             onClick={async () => {
-              if (projectReadyRef.current && hasProject) await saveScratch()
+              if (projectReadyRef.current) await saveScratch()
+              // Write current project to localStorage so TurboWarp reloads it directly.
+              // Do NOT reset starterInjectedRef — that would cause the blank starter to
+              // overwrite the student's saved work on the next KK_PROJECT_LOADED signal.
+              const iframeWin = iframeRef.current?.contentWindow as any
+              const lastSb3 = iframeWin?.__kkLastSb3
+              if (lastSb3) localStorage.setItem('kk_project', lastSb3)
               projectReadyRef.current = false
-              starterInjectedRef.current = false
               setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
             }}
             className="text-purple-300 hover:text-white text-xs font-semibold shrink-0"
