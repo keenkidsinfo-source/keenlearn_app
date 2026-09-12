@@ -96,8 +96,8 @@ export function CodingSandbox({
   // from firing before TurboWarp has finished initialising (which could write
   // stale or empty state over a real project).
   const projectReadyRef       = useRef(false)
-  const starterInjectedRef    = useRef(false)   // prevents double-injection of starter .sb3
   const pyCode                = useRef('')
+  const sb3UploadRef          = useRef<HTMLInputElement>(null)
   const [currentStep, setCurrentStep] = useState(
     steps && initialStep >= steps.length ? 0 : initialStep
   )
@@ -130,17 +130,12 @@ export function CodingSandbox({
     }).catch(() => {})
   }, [sessionContentItemId, steps])
   const [hasProject, setHasProject]   = useState(!!projectId)
-  // For saved projects: start null — don't render the iframe until kk_project is
-  // in localStorage. This eliminates the T0/T1 double-load race where T0 (empty
-  // default project) could cache an empty __kkLastSb3 before T1 (real project) loads.
-  // For brand-new projects with a starterUrl (no prior project row): also start null,
-  // load starter .sb3 first. If a project row already exists (projectId), skip the
-  // starter even if projectData is empty — treat as blank editor, not a first visit.
-  // For saved projects: start null until kk_project is in localStorage (prevents double-load race).
-  // For new projects (with or without starter): start TurboWarp immediately; starter is injected
-  // after KK_PROJECT_LOADED by writing to localStorage and reloading the iframe.
+  // iframeSrc starts null when we need to pre-load data into localStorage first:
+  //   • saved projects: fetch projectUrl → localStorage → iframe
+  //   • new projects with a starterUrl: fetch starter → localStorage → iframe
+  // For truly blank new projects (no starter, no saved project): start immediately.
   const [iframeSrc, setIframeSrc] = useState<string | null>(
-    projectUrl ? null : `/scratch/editor.html?kk=${Date.now()}`
+    (projectUrl || starterUrl) ? null : `/scratch/editor.html?kk=${Date.now()}`
   )
 
   // ── KeeBot state ──────────────────────────────────────────────────────────
@@ -299,54 +294,16 @@ export function CodingSandbox({
   }, [uploadProject])
 
   // ── Listen for TurboWarp "project fully loaded" signal ─────────────────────
-  // For brand-new projects with a starterUrl: on the FIRST KK_PROJECT_LOADED we write
-  // the starter .sb3 to localStorage and reload the iframe. This is reliable because:
-  //   1. TurboWarp has already initialised (it just sent KK_PROJECT_LOADED)
-  //   2. localStorage is written before the new iframe load starts — no race
-  //   3. The second KK_PROJECT_LOADED (after the reload) sets projectReadyRef
+  // Starters are pre-fetched into localStorage BEFORE the iframe loads (see useEffect below),
+  // so by the time KK_PROJECT_LOADED fires, the project is already loaded. Just gate saves.
   useEffect(() => {
-    const handler = async (e: MessageEvent) => {
+    const handler = (e: MessageEvent) => {
       if (e.data?.type !== 'KK_PROJECT_LOADED') return
-
-      if (starterUrl && !projectUrl && !starterInjectedRef.current) {
-        starterInjectedRef.current = true
-        try {
-          const res = await fetch(`${starterUrl}?v=5`)
-          if (!res.ok) throw new Error(`fetch ${res.status}`)
-          // Two cases:
-          // 1. /scratch-starters/*.sb3 → binary blob → encode to base64
-          // 2. /api/v1/coding/[id]/data → already a base64 data URL as text
-          const contentType = res.headers.get('Content-Type') ?? ''
-          let base64: string
-          if (contentType.includes('application/json') || contentType.includes('text/')) {
-            base64 = (await res.text()).trim()
-            if (!base64.startsWith('data:application/zip;base64,')) {
-              throw new Error('unexpected data format from project API')
-            }
-          } else {
-            const buf = await res.arrayBuffer()
-            const bytes = new Uint8Array(buf)
-            let binary = ''
-            for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i])
-            base64 = `data:application/zip;base64,${btoa(binary)}`
-          }
-          // Send directly to the iframe VM via postMessage — no localStorage or reload needed
-          const iframeWin = iframeRef.current?.contentWindow
-          if (iframeWin) {
-            console.log('[KK] sending KK_LOAD_PROJECT to iframe')
-            iframeWin.postMessage({ type: 'KK_LOAD_PROJECT', data: base64 }, '*')
-          }
-          return  // wait for KK_PROJECT_LOADED that KK_LOAD_PROJECT handler posts back
-        } catch (err) {
-          console.warn('[KK] starter load failed, using default project', err)
-        }
-      }
-
       projectReadyRef.current = true
     }
     window.addEventListener('message', handler)
     return () => window.removeEventListener('message', handler)
-  }, [starterUrl, projectUrl])
+  }, [])
 
   // ── Auto-save (change-detection) ──────────────────────────────────────────
   // Checks every 60 s but only fires a real DB write when content has changed
@@ -406,26 +363,22 @@ export function CodingSandbox({
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [language, contentItemId])
 
-  // ── New project: clear stale localStorage so TurboWarp starts blank ─────────
-  // Without this, TurboWarp reads kk_project from a previous week and loads the
-  // wrong project. Starter injection happens via vm.loadProject() AFTER TurboWarp
-  // loads, so we always want a clean slate in localStorage for new projects.
+  // ── Blank new project: clear stale kk_project so TurboWarp starts empty ──────
   useEffect(() => {
-    if (language !== 'scratch' || projectUrl) return
+    if (language !== 'scratch' || projectUrl || starterUrl) return
     localStorage.removeItem('kk_project')
-  }, [language, projectUrl])
+    // iframeSrc already set in useState — nothing else to do
+  }, [language, projectUrl, starterUrl])
 
-  // ── Fetch saved project in parent frame → localStorage → TurboWarp reads it ─
-  // (Fetching here avoids any auth issues inside the TurboWarp iframe)
+  // ── Fetch saved project → localStorage → TurboWarp (single load) ────────────
   useEffect(() => {
     if (!projectUrl) return
     let cancelled = false
     fetch(projectUrl)
       .then(r => r.ok ? r.text() : null)
-      .then(json => {
-        if (!cancelled && json) {
-          localStorage.setItem('kk_project', json)
-          // Re-set iframeSrc to force iframe reload so TurboWarp picks up the localStorage entry
+      .then(data => {
+        if (!cancelled && data) {
+          localStorage.setItem('kk_project', data)
           setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
         }
       })
@@ -433,7 +386,40 @@ export function CodingSandbox({
     return () => { cancelled = true }
   }, [projectUrl])
 
-  // (Starter injection now happens in the KK_PROJECT_LOADED handler via localStorage + iframe reload)
+  // ── Pre-fetch starter → localStorage → TurboWarp (single load, no reload) ───
+  // For brand-new projects: fetch the starter .sb3 BEFORE the iframe opens so
+  // TurboWarp's own componentDidUpdate loads it in ONE load, the same as saved projects.
+  // This is simpler and more reliable than the postMessage approach.
+  useEffect(() => {
+    if (!starterUrl || projectUrl) return
+    let cancelled = false
+    async function loadStarter() {
+      try {
+        const res = await fetch(`${starterUrl}?v=5`)
+        if (!res.ok) throw new Error(`fetch ${res.status}`)
+        const contentType = res.headers.get('Content-Type') ?? ''
+        let toStore: string
+        if (contentType.includes('application/json') || contentType.includes('text/')) {
+          // Could be a base64 data URL (from storage) or raw JSON (vm.toJSON() save)
+          // Either way, TurboWarp's componentDidUpdate handles both formats
+          toStore = (await res.text()).trim()
+        } else {
+          // Binary .sb3 — encode to base64 data URL
+          const buf = await res.arrayBuffer()
+          const bytes = new Uint8Array(buf)
+          let binary = ''
+          for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i])
+          toStore = `data:application/zip;base64,${btoa(binary)}`
+        }
+        if (!cancelled) localStorage.setItem('kk_project', toStore)
+      } catch (err) {
+        console.warn('[KK] starter fetch failed, starting blank', err)
+      }
+      if (!cancelled) setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
+    }
+    loadStarter()
+    return () => { cancelled = true }
+  }, [starterUrl, projectUrl])
 
   // ── Shared header content ───────────────────────────────────────────────────
   const headerStatus = (
@@ -493,15 +479,42 @@ export function CodingSandbox({
             className="font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all shrink-0 bg-green-500 hover:bg-green-400 text-white"
             title="Download your project as a file"
           >⬇ Download</button>
+          {/* Load .sb3 from disk — lets students restore a downloaded backup */}
+          <input
+            ref={sb3UploadRef}
+            type="file"
+            accept=".sb3"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0]
+              if (!file) return
+              e.target.value = ''
+              const buf = await file.arrayBuffer()
+              const bytes = new Uint8Array(buf)
+              let binary = ''
+              for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i])
+              const base64 = `data:application/zip;base64,${btoa(binary)}`
+              // Write to localStorage then reload — single-load approach
+              localStorage.setItem('kk_project', base64)
+              projectReadyRef.current = false
+              setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
+            }}
+          />
+          <button
+            onClick={() => sb3UploadRef.current?.click()}
+            className="text-purple-300 hover:text-white text-xs font-semibold shrink-0"
+            title="Load a saved .sb3 file"
+          >📂 Load</button>
           {/* Reload iframe — saves first then reloads TurboWarp; fixes stuck/missing blocks */}
           <button
             onClick={async () => {
               if (projectReadyRef.current) await saveScratch()
-              // Write current project to localStorage so TurboWarp reloads it directly.
-              // Do NOT reset starterInjectedRef — that would cause the blank starter to
-              // overwrite the student's saved work on the next KK_PROJECT_LOADED signal.
               const iframeWin = iframeRef.current?.contentWindow as any
-              const lastSb3 = iframeWin?.__kkLastSb3
+              // Use cached sb3 or compute it fresh
+              let lastSb3: string | null = iframeWin?.__kkLastSb3 ?? null
+              if (!lastSb3 && typeof iframeWin?.__kkGetProjectSb3 === 'function') {
+                lastSb3 = await iframeWin.__kkGetProjectSb3()
+              }
               if (lastSb3) localStorage.setItem('kk_project', lastSb3)
               projectReadyRef.current = false
               setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
