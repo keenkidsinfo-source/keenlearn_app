@@ -366,13 +366,13 @@ export function CodingSandbox({
         const currentSb3 = iframeWin?.__kkLastSb3 as string | null | undefined
         if (currentSb3 && currentSb3 === lastSavedSb3.current) return // no change
         saveScratch()
-      }, 300_000)
+      }, 90_000)
     } else {
       autoSaveTimer.current = setInterval(() => {
         // Only save when Python code has changed since the last successful save
         if (pyCode.current === lastSavedPy.current) return
         savePython()
-      }, 300_000)
+      }, 90_000)
     }
     return () => { if (autoSaveTimer.current) clearInterval(autoSaveTimer.current) }
   }, [language, saveScratch, savePython])
@@ -388,13 +388,24 @@ export function CodingSandbox({
     const handleBeforeUnload = () => {
       const iframeWin = iframeRef.current?.contentWindow as any
       const lastSb3   = iframeWin?.__kkLastSb3 as string | null | undefined
-      if (!lastSb3 || !currentProjectId.current || !projectReadyRef.current) return
-      fetch(`/api/v1/coding/${currentProjectId.current}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ projectJson: lastSb3, curriculumContentId: contentItemId }),
-        keepalive: true,
-      })
+      if (!lastSb3 || !projectReadyRef.current) return
+      if (currentProjectId.current) {
+        // Existing project — update it
+        fetch(`/api/v1/coding/${currentProjectId.current}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectJson: lastSb3, curriculumContentId: contentItemId }),
+          keepalive: true,
+        })
+      } else {
+        // Brand-new project — create it so work isn't lost
+        fetch('/api/v1/coding', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ curriculumContentId: contentItemId, title, language: 'scratch', projectJson: lastSb3 }),
+          keepalive: true,
+        })
+      }
     }
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
@@ -487,6 +498,17 @@ export function CodingSandbox({
             className="font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all shrink-0 bg-green-500 hover:bg-green-400 text-white"
             title="Download your project as a file"
           >⬇ Download</button>
+          {/* Reload iframe — saves first then reloads TurboWarp; fixes stuck/missing blocks */}
+          <button
+            onClick={async () => {
+              if (projectReadyRef.current && hasProject) await saveScratch()
+              projectReadyRef.current = false
+              starterInjectedRef.current = false
+              setIframeSrc(`/scratch/editor.html?kk=${Date.now()}`)
+            }}
+            className="text-purple-300 hover:text-white text-xs font-semibold shrink-0"
+            title="Reload coding editor (fixes missing blocks)"
+          >🔄 Reload</button>
           <button
             onClick={saveScratch}
             className={`font-bold px-3 py-1 rounded-xl text-sm active:scale-95 transition-all shrink-0

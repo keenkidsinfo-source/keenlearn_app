@@ -49572,7 +49572,30 @@ class Interface extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
               toLoad = kkSaved;
             }
             window.vm.loadProject(toLoad)
-              .then(function() { console.log('[KK] loadProject done'); window.__kkProjectLoaded = true; window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); })
+              .then(function() {
+                console.log('[KK] loadProject done');
+                // Force Blockly toolbox refresh so motion/looks/sound blocks always appear.
+                // On slower machines the toolbox can be left stale after loadProject().
+                setTimeout(function() {
+                  try {
+                    var ws = window.Blockly && typeof window.Blockly.getMainWorkspace === 'function' && window.Blockly.getMainWorkspace();
+                    if (ws && typeof ws.refreshToolboxSelection_ === 'function') {
+                      ws.refreshToolboxSelection_();
+                      console.log('[KK] toolbox refreshed');
+                    }
+                    // Re-select first non-stage sprite so block palette shows sprite blocks
+                    if (window.vm && window.vm.runtime && window.vm.runtime.targets) {
+                      var sprites = window.vm.runtime.targets.filter(function(t) { return !t.isStage; });
+                      if (sprites.length > 0 && typeof window.vm.setEditingTarget === 'function') {
+                        window.vm.setEditingTarget(sprites[0].id);
+                        console.log('[KK] re-selected sprite:', sprites[0].getName());
+                      }
+                    }
+                  } catch(e) { console.warn('[KK] toolbox refresh failed:', e); }
+                  window.__kkProjectLoaded = true;
+                  window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*');
+                }, 300);
+              })
               .catch(function(e) { console.warn('[KK] loadProject failed:',e); window.__kkProjectLoaded = true; window.parent.postMessage({type:'KK_PROJECT_LOADED'}, '*'); });
           }
         } else {
