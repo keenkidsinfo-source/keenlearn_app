@@ -60,9 +60,10 @@ export default async function CodingDayPage({ params }: Props) {
 
   // If no saved project for this week and it's Scratch, try to use the previous week's
   // project as the starter so students continue building on their prior work.
-  // Previous week takes priority over the generic starterUrl in metadata.
+  // BUT: if the metadata already has a specific starterUrl (e.g. a Pokémon .sb3),
+  // that takes priority — don't override it with the previous week's project.
   let starterUrl: string | null = meta?.starterUrl ?? null
-  if (!project && language === 'scratch') {
+  if (!project && language === 'scratch' && !starterUrl) {
     const [thisCurriculum] = await db
       .select({ weekNumber: curriculum.weekNumber, gradeBand: curriculum.gradeBand })
       .from(curriculum)
