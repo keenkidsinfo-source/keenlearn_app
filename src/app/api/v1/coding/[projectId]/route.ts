@@ -37,15 +37,21 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ proj
     const body = await req.json().catch(() => null)
     if (!body?.projectJson) return apiError('Invalid body', 'VALIDATION_ERROR', 400)
 
-    // Upload .sb3 to Supabase Storage — keeps project_data column empty
-    const storagePath = await uploadProject(projectId, body.projectJson)
-
+    // Always save inline to project_data — guaranteed to work.
+    // Also attempt Supabase Storage upload as a secondary copy (for future CDN/perf use),
+    // but never let a storage failure block the save.
     const updates: Record<string, unknown> = {
-      r2Key: storagePath,
-      projectData: null,   // clear any old inline blob
+      projectData: body.projectJson,
       lastSavedAt: new Date(),
     }
     if (body.curriculumContentId) updates.curriculumContentId = body.curriculumContentId
+
+    try {
+      const storagePath = await uploadProject(projectId, body.projectJson)
+      updates.r2Key = storagePath
+    } catch (storageErr: any) {
+      console.warn('[PUT /api/v1/coding/:id] storage upload failed (inline save still succeeds):', storageErr?.message)
+    }
 
     await db
       .update(codingProjects)
