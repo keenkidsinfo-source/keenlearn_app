@@ -308,7 +308,7 @@ export function CodingSandbox({
     const handler = async (e: MessageEvent) => {
       if (e.data?.type !== 'KK_PROJECT_LOADED') return
 
-      if (starterUrl && !projectId && !starterInjectedRef.current) {
+      if (starterUrl && !projectUrl && !starterInjectedRef.current) {
         starterInjectedRef.current = true
         try {
           const res = await fetch(`${starterUrl}?v=4`)
@@ -351,7 +351,7 @@ export function CodingSandbox({
     }
     window.addEventListener('message', handler)
     return () => window.removeEventListener('message', handler)
-  }, [starterUrl, projectId])
+  }, [starterUrl, projectUrl])
 
   // ── Auto-save (change-detection) ──────────────────────────────────────────
   // Checks every 60 s but only fires a real DB write when content has changed
