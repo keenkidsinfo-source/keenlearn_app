@@ -1,15 +1,22 @@
 /**
- * E2E: Scratch project save/load survives logout → login
+ * E2E: Scratch project save/load
  *
- * What this tests:
+ * Test 1 — logout → login survival:
  *   1. Student opens a scratch coding day and the TurboWarp iframe loads.
  *   2. Clicking 💾 Save triggers POST or PUT to /api/v1/coding[/:id] and
  *      the response contains { saved: true }.
  *   3. GET /api/v1/coding/:id/data returns 200 with non-empty content
  *      immediately after save (so projectData is in the DB).
  *   4. After logout + login, navigating to the same coding day causes
- *      GET /api/v1/coding/:id/data to be fetched again and return 200 —
- *      meaning the iframe will load the saved project, not a blank editor.
+ *      GET /api/v1/coding/:id/data to be fetched again and return 200.
+ *
+ * Test 2 — Reload button writes live snapshot to localStorage:
+ *   1. Student opens a scratch coding day, waits for TurboWarp.
+ *   2. Clicks 🔄 Reload.
+ *   3. Asserts localStorage kk_project is non-null immediately after Reload
+ *      (meaning __kkGetProjectSb3 was called and wrote the live VM state,
+ *      not a stale __kkLastSb3 cache that could be up to 1 s behind).
+ *   4. Asserts the iframe reloads (new src appears) and TurboWarp boots again.
  *
  * Required env vars (add to .env.playwright and GitHub Secrets):
  *   CI_SCRATCH_DAY_ID  — the dayId (UUID) of a Week 3 scratch coding day
@@ -165,5 +172,57 @@ test.describe('Scratch project save/load', () => {
     await expect(
       page.locator('iframe[src*="/scratch/editor.html"]'),
     ).toBeVisible({ timeout: 20_000 })
+  })
+
+  test('Reload button writes live VM snapshot to localStorage (not stale cache)', async ({ page }) => {
+    const scratchDayId = requiredEnv('CI_SCRATCH_DAY_ID')
+    const codingUrl = `/coding/day/${scratchDayId}`
+
+    // ── 1. Login and open the coding day ─────────────────────────────────
+    await studentLogin(page)
+    await page.goto(codingUrl)
+
+    const iframe = page.locator('iframe[src*="/scratch/editor.html"]')
+    await expect(iframe).toBeVisible({ timeout: 20_000 })
+
+    // Wait for TurboWarp to fully initialise and fire KK_PROJECT_LOADED.
+    // 5 s is conservative — the polling cache (__kkLastSb3) ticks every 1 s,
+    // so after 5 s it has run at least 4 times. The bug was: Reload used the
+    // cache instead of the live __kkGetProjectSb3(). After the fix, Reload
+    // always calls __kkGetProjectSb3() which is synchronously accurate.
+    await page.waitForTimeout(5_000)
+
+    // ── 2. Record the iframe src BEFORE reload ────────────────────────────
+    const srcBefore = await iframe.getAttribute('src')
+
+    // ── 3. Clear localStorage so we can verify Reload wrote to it ─────────
+    await page.evaluate(() => localStorage.removeItem('kk_project'))
+
+    // ── 4. Click the Reload button ────────────────────────────────────────
+    const reloadBtn = page.getByRole('button', { name: /reload/i })
+      .or(page.locator('button[title*="Reload"], button[aria-label*="Reload"]'))
+      .or(page.locator('button').filter({ hasText: '🔄' }))
+    await reloadBtn.first().click()
+
+    // ── 5. Assert kk_project was written to localStorage ──────────────────
+    // Give it up to 8 s for __kkGetProjectSb3 (async) to complete and write.
+    await expect.poll(
+      () => page.evaluate(() => localStorage.getItem('kk_project')),
+      { timeout: 8_000, message: 'kk_project should be written to localStorage by Reload' },
+    ).not.toBeNull()
+
+    const stored = await page.evaluate(() => localStorage.getItem('kk_project'))
+    expect(stored).toBeTruthy()
+    expect(stored!.length).toBeGreaterThan(100) // real .sb3 base64 is thousands of chars
+
+    // ── 6. Assert iframe reloaded with a NEW src ──────────────────────────
+    // Reload sets iframeSrc to /scratch/editor.html?kk=<new timestamp>
+    await expect.poll(
+      () => iframe.getAttribute('src'),
+      { timeout: 10_000, message: 'iframe src should change after Reload' },
+    ).not.toBe(srcBefore)
+
+    // ── 7. Assert TurboWarp boots again in the reloaded iframe ────────────
+    await expect(iframe).toBeVisible({ timeout: 15_000 })
   })
 })
