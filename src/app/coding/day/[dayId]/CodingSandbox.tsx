@@ -510,10 +510,13 @@ export function CodingSandbox({
             onClick={async () => {
               if (projectReadyRef.current) await saveScratch()
               const iframeWin = iframeRef.current?.contentWindow as any
-              // Use cached sb3 or compute it fresh
-              let lastSb3: string | null = iframeWin?.__kkLastSb3 ?? null
-              if (!lastSb3 && typeof iframeWin?.__kkGetProjectSb3 === 'function') {
+              // Always call __kkGetProjectSb3 (live) — __kkLastSb3 is a 1s polling
+              // cache and may be stale if the student just added blocks/variables.
+              let lastSb3: string | null = null
+              if (typeof iframeWin?.__kkGetProjectSb3 === 'function') {
                 lastSb3 = await iframeWin.__kkGetProjectSb3()
+              } else {
+                lastSb3 = iframeWin?.__kkLastSb3 ?? null
               }
               if (lastSb3) localStorage.setItem('kk_project', lastSb3)
               projectReadyRef.current = false
