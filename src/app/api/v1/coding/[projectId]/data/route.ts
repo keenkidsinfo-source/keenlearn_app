@@ -24,11 +24,13 @@ export async function GET(
 
   let data: string | null = null
 
-  // Prefer storage (r2Key) over inline project_data
-  if (project.r2Key) {
+  // Prefer inline projectData (always written by PUT) — fast and reliable.
+  // Fall back to r2Key (Supabase Storage) only for old projects that pre-date
+  // the inline-save fix and have no projectData column yet.
+  if (project.projectData) {
+    data = project.projectData
+  } else if (project.r2Key) {
     data = await downloadProject(project.r2Key)
-  } else {
-    data = project.projectData ?? null
   }
 
   if (!data) return new NextResponse('Not found', { status: 404 })
