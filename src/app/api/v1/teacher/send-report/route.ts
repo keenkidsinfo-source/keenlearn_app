@@ -394,13 +394,16 @@ export async function POST(req: NextRequest) {
         }
       })
 
+      // Collapse whitespace to keep email under Gmail's ~102KB clip threshold
+      const minHtml = html.replace(/<!--.*?-->/gs, '').replace(/\s{2,}/g, ' ').replace(/> </g, '><')
+
       await transporter.sendMail({
         from:    `"KeenKids Enrichment" <${GMAIL_USER}>`,
         replyTo: `"${teacherName}" <${teacherEmail}>`,
         to:      student.parentEmail,
-        bcc:     [teacherEmail, GMAIL_USER].filter((e, i, a) => e && a.indexOf(e) === i).join(','), // teacher + keenkids account both get a copy
+        bcc:     [teacherEmail, GMAIL_USER].filter((e, i, a) => e && a.indexOf(e) === i).join(','),
         subject: `${studentName}'s KeenKids Week ${weekRow.weekNumber} — ${weekLabel}`,
-        html,
+        html: minHtml,
         attachments,
       })
       results.push({ student: studentName, status: 'sent', parentEmail: student.parentEmail })
