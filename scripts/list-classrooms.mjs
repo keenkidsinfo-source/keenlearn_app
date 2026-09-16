@@ -23,20 +23,42 @@ const classrooms = await sql`
   LEFT JOIN schools s ON s.id = c.school_id
   ORDER BY s.name, c.grade_band
 `
-console.log('\nClassroom records:')
+
+const todayStr = new Date().toISOString().slice(0, 10)
+console.log(`Today (UTC): ${todayStr}`)
+
 for (const c of classrooms) {
-  console.log(`\n  [${c.school_name}] "${c.name}" | ${c.grade_band} | id=${c.id}`)
-  const cc = await sql`
-    SELECT cc.week_start_date, cur.week_number
+  console.log(`\n[${c.school_name}] "${c.name}" (${c.grade_band})`)
+
+  // Show all rows
+  const rows = await sql`
+    SELECT cc.week_start_date, cur.week_number, cur.id as cur_id,
+           COUNT(cd.id) as day_count
+    FROM classroom_curriculum cc
+    JOIN curriculum cur ON cur.id = cc.curriculum_id
+    LEFT JOIN curriculum_days cd ON cd.curriculum_id = cur.id
+    WHERE cc.classroom_id = ${c.id}
+    GROUP BY cc.week_start_date, cur.week_number, cur.id
+    ORDER BY cc.week_start_date DESC
+    LIMIT 6
+  `
+  for (const r of rows) {
+    const d = typeof r.week_start_date === 'string' ? r.week_start_date : new Date(r.week_start_date).toISOString().slice(0,10)
+    const active = d <= todayStr ? ' ← eligible' : ''
+    console.log(`  W${r.week_number} | ${d} | days=${r.day_count}${active}`)
+  }
+
+  // What the dashboard lte query would pick
+  const [best] = await sql`
+    SELECT cur.week_number, cc.week_start_date
     FROM classroom_curriculum cc
     JOIN curriculum cur ON cur.id = cc.curriculum_id
     WHERE cc.classroom_id = ${c.id}
-    ORDER BY cc.week_start_date
+      AND cc.week_start_date <= ${todayStr}
+    ORDER BY cc.week_start_date DESC
+    LIMIT 1
   `
-  for (const r of cc) {
-    const isThisWeek = new Date(r.week_start_date).toISOString().slice(0,10) === '2026-09-14'
-    console.log(`    → W${r.week_number} | ${r.week_start_date}${isThisWeek ? '  ← THIS WEEK' : ''}`)
-  }
+  console.log(`  → Dashboard would show: W${best?.week_number} (${best?.week_start_date})`)
 }
 
 await sql.end()

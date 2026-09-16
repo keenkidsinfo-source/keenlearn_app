@@ -34,8 +34,8 @@ try {
 const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' })
 
 // ── Config ────────────────────────────────────────────────────────────────────
-// Monday of Week 1
-const WEEK1_MONDAY = new Date('2026-09-14') // adjust if your actual W1 start differs
+// Monday of Week 1 — matches the original seeded dates (Aug 31 UTC = Aug 30 PDT)
+const WEEK1_MONDAY = new Date('2026-08-31')
 
 function weekMonday(weekNumber) {
   const d = new Date(WEEK1_MONDAY)

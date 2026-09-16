@@ -20,7 +20,9 @@ export default async function ScienceLabPage() {
     ? await getWeekNavFromClassroom(session.classroomId)
     : { build: null, coding: null, public_speaking: null, science: null, math: null, arts: null, weekNumber: null }
 
-  const lab = (nav.weekNumber != null ? getLabByWeek(nav.weekNumber) : null) ?? getCurrentLab()
+  // Prefer the date-based lookup (always accurate for current week) and fall back to
+  // the DB-resolved weekNumber only when no date-matched lab is found (e.g. school holiday)
+  const lab = getCurrentLab() ?? (nav.weekNumber != null ? getLabByWeek(nav.weekNumber) : null)
   if (!lab) redirect('/dashboard')
 
   // Look up the real content item ID so student observations are saved to the DB
