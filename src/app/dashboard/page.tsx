@@ -16,14 +16,10 @@ import { StudentSidebar } from './StudentSidebar'
 
 import type { WeekNav } from '@/lib/student-week-nav'
 
-function getMondayStr(): string {
+function getTodayStr(): string {
   const today = new Date()
-  const day = today.getDay()
-  const diff = day === 0 ? -6 : 1 - day
-  const monday = new Date(today)
-  monday.setDate(today.getDate() + diff)
   const pad = (n: number) => String(n).padStart(2, '0')
-  return `${monday.getFullYear()}-${pad(monday.getMonth() + 1)}-${pad(monday.getDate())}`
+  return `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`
 }
 
 export default async function DashboardPage({
@@ -37,7 +33,9 @@ export default async function DashboardPage({
 
   const { week } = await searchParams
   // Accept ?week=YYYY-MM-DD so students can browse past weeks
-  const mondayStr = (week && /^\d{4}-\d{2}-\d{2}$/.test(week)) ? week : getMondayStr()
+  const todayStr = getTodayStr()
+  // For ?week= navigation use that date; otherwise use today for lte comparison
+  const weekOverride = (week && /^\d{4}-\d{2}-\d{2}$/.test(week)) ? week : null
 
   // Load student's school name
   const [student] = await db
@@ -68,19 +66,23 @@ export default async function DashboardPage({
 
   const dayToSubject = new Map(scheduleRows.map(r => [r.dayOfWeek, r.subject as Subject]))
 
-  // Find assigned curriculum for this week
+  // Find assigned curriculum: most recent week whose start date ≤ today
+  // (lte + desc avoids timezone-sensitive exact-match issues)
+  const compareDateStr = weekOverride ?? todayStr
   const [assigned] = await db
     .select({
-      curriculumId: classroomCurriculum.curriculumId,
-      weekTitle:    curriculum.title,
-      theme:        curriculum.theme,
+      curriculumId:  classroomCurriculum.curriculumId,
+      weekTitle:     curriculum.title,
+      theme:         curriculum.theme,
+      weekStartDate: classroomCurriculum.weekStartDate,
     })
     .from(classroomCurriculum)
     .innerJoin(curriculum, eq(classroomCurriculum.curriculumId, curriculum.id))
     .where(and(
       eq(classroomCurriculum.classroomId, session.classroomId!),
-      eq(classroomCurriculum.weekStartDate, mondayStr),
+      lte(classroomCurriculum.weekStartDate, compareDateStr),
     ))
+    .orderBy(desc(classroomCurriculum.weekStartDate))
     .limit(1)
 
   // Load curriculum days keyed by subject
@@ -115,7 +117,7 @@ export default async function DashboardPage({
         .where(and(
           eq(classroomCurriculum.classroomId, classroom.id),
           eq(curriculumDays.subject, 'build'),
-          lte(classroomCurriculum.weekStartDate, mondayStr),
+          lte(classroomCurriculum.weekStartDate, todayStr),
         ))
         .orderBy(desc(classroomCurriculum.weekStartDate))
         .limit(1)
@@ -153,7 +155,7 @@ export default async function DashboardPage({
         </header>
 
       <main className="max-w-2xl mx-auto px-4 py-6 flex flex-col gap-6">
-        <WeekDays weekDays={weekDays} weekStart={mondayStr} hasContent={!!assigned || !!nearestBuildDayId} canEnterResults={canEnterResults} />
+        <WeekDays weekDays={weekDays} weekStart={assigned?.weekStartDate ?? todayStr} hasContent={!!assigned || !!nearestBuildDayId} canEnterResults={canEnterResults} />
 
         {/* Build Day card — only shown when the build day isn't already visible as a tile in the current week */}
         {nearestBuildDayId && !weekDays.some(d => d.subject === 'build' && d.dayId) && (
