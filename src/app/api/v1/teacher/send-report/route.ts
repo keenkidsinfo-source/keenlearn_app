@@ -195,12 +195,12 @@ export async function POST(req: NextRequest) {
 
   // ── "This Week's Enrichment" summary block (inserted once per email) ────────
   const weekSummaryRows: string[] = []
+  if (buildTitle)   weekSummaryRows.push(`<span style="margin-right:16px">🔨 <strong>Build:</strong> ${buildTitle}</span>`)
+  if (codingTitle)  weekSummaryRows.push(`<span style="margin-right:16px">💻 <strong>Coding:</strong> ${codingTitle}</span>`)
   if (speakingPillar || speakingWord) {
     const label = [speakingPillar, speakingWord ? `"${speakingWord}"` : ''].filter(Boolean).join(' · ')
     weekSummaryRows.push(`<span style="margin-right:16px">🎤 <strong>Speaking:</strong> ${label}</span>`)
   }
-  if (codingTitle)  weekSummaryRows.push(`<span style="margin-right:16px">💻 <strong>Coding:</strong> ${codingTitle}</span>`)
-  if (buildTitle)   weekSummaryRows.push(`<span style="margin-right:16px">🔨 <strong>Build:</strong> ${buildTitle}</span>`)
   if (scienceTitle) weekSummaryRows.push(`<span style="margin-right:16px">🔬 <strong>Science:</strong> ${scienceTitle}</span>`)
 
   const weekSummaryHtml = weekSummaryRows.length > 0
