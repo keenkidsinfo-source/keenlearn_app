@@ -231,13 +231,17 @@ export async function POST(req: NextRequest) {
             : 'Not recorded yet — the teacher will submit build results after class. ⬜'))
         }
       } else if (subject === 'science') {
-        if (done && data) {
-          const vote = data.vote === 'up' ? '👍 Yes!' : data.vote === 'down' ? '👎 No' : data.vote === 'maybe' ? '🤔 Not sure' : ''
+        // Show observations/reflections whenever the student has entered anything —
+        // don't gate on sess.completed, which requires the full reflect phase to be done.
+        const hasAnyData = data && (data.vote || data.observations || data.whatHappened || data.whatILearned)
+        if (hasAnyData) {
+          const voteMap: Record<string, string> = { up: '👍 Yes!', side: '🤔 Not sure', down: '👎 No' }
+          const voteLabel = data!.vote ? (voteMap[data!.vote as string] ?? '') : ''
           const rows = [
-            vote              ? `<strong>My prediction:</strong> ${vote}` : '',
-            data.observations ? `<strong>I observed:</strong> ${data.observations}` : '',
-            data.whatHappened ? `<strong>What happened:</strong> ${data.whatHappened}` : '',
-            data.whatILearned ? `<strong>I learned:</strong> ${data.whatILearned}` : '',
+            voteLabel          ? `<strong>My prediction:</strong> ${voteLabel}` : '',
+            data!.observations ? `<strong>I observed:</strong> ${data!.observations}` : '',
+            data!.whatHappened ? `<strong>What I think caused it:</strong> ${data!.whatHappened}` : '',
+            data!.whatILearned ? `<strong>I learned:</strong> ${data!.whatILearned}` : '',
           ].filter(Boolean).join('<br/>')
           cards.push(card('🔬', 'Science Lab', '#06b6d4', rows || 'Completed ✅'))
         } else {
