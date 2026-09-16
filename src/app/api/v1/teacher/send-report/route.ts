@@ -395,7 +395,7 @@ export async function POST(req: NextRequest) {
       })
 
       // Collapse whitespace to keep email under Gmail's ~102KB clip threshold
-      const minHtml = html.replace(/<!--.*?-->/gs, '').replace(/\s{2,}/g, ' ').replace(/> </g, '><')
+      const minHtml = html.replace(/<!--[\s\S]*?-->/g, '').replace(/\s{2,}/g, ' ').replace(/> </g, '><')
 
       await transporter.sendMail({
         from:    `"KeenKids Enrichment" <${GMAIL_USER}>`,
