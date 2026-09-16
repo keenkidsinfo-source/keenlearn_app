@@ -195,17 +195,17 @@ export async function POST(req: NextRequest) {
 
   // ── "This Week's Enrichment" summary block (inserted once per email) ────────
   const weekSummaryRows: string[] = []
-  if (buildTitle)   weekSummaryRows.push(`<span style="margin-right:16px">🔨 <strong>Build:</strong> ${buildTitle}</span>`)
-  if (codingTitle)  weekSummaryRows.push(`<span style="margin-right:16px">💻 <strong>Coding:</strong> ${codingTitle}</span>`)
+  if (buildTitle)   weekSummaryRows.push(`<div style="margin-bottom:6px">🔨 <strong>Build:</strong> ${buildTitle}</div>`)
+  if (codingTitle)  weekSummaryRows.push(`<div style="margin-bottom:6px">💻 <strong>Coding:</strong> ${codingTitle}</div>`)
   if (speakingPillar || speakingWord) {
     const label = [speakingPillar, speakingWord ? `"${speakingWord}"` : ''].filter(Boolean).join(' · ')
-    weekSummaryRows.push(`<span style="margin-right:16px">🎤 <strong>Speaking:</strong> ${label}</span>`)
+    weekSummaryRows.push(`<div style="margin-bottom:6px">🎤 <strong>Speaking:</strong> ${label}</div>`)
   }
-  if (scienceTitle) weekSummaryRows.push(`<span style="margin-right:16px">🔬 <strong>Science:</strong> ${scienceTitle}</span>`)
+  if (scienceTitle) weekSummaryRows.push(`<div style="margin-bottom:0">🔬 <strong>Science:</strong> ${scienceTitle}</div>`)
 
   const weekSummaryHtml = weekSummaryRows.length > 0
-    ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#0c4a6e;line-height:2">
-        <strong style="display:block;margin-bottom:4px;font-size:14px;color:#0369a1">📚 This Week's Enrichment</strong>
+    ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:#0c4a6e;line-height:1.5">
+        <strong style="display:block;margin-bottom:10px;font-size:14px;color:#0369a1">📚 This Week's Enrichment</strong>
         ${weekSummaryRows.join('')}
       </div>`
     : ''
@@ -332,7 +332,7 @@ export async function POST(req: NextRequest) {
   <div style="background:linear-gradient(135deg,#0d9488,#0891b2);border-radius:12px;padding:24px;margin-bottom:20px;text-align:center">
     <p style="margin:0;font-size:13px;color:#99f6e4;text-transform:uppercase;letter-spacing:1px">KeenKids Enrichment</p>
     <h1 style="margin:8px 0 4px;font-size:24px;color:#fff">🌟 ${studentName}'s Week</h1>
-    <p style="margin:0;font-size:13px;color:#ccfbf1">${weekRow.title} &nbsp;·&nbsp; ${weekLabel}</p>
+    <p style="margin:0;font-size:13px;color:#ccfbf1">Week ${weekRow.weekNumber} &nbsp;·&nbsp; ${weekLabel}</p>
     <p style="margin:6px 0 0;font-size:13px;color:#ccfbf1">${schoolName}</p>
   </div>
 
@@ -385,7 +385,7 @@ export async function POST(req: NextRequest) {
         replyTo: `"${teacherName}" <${teacherEmail}>`,
         to:      student.parentEmail,
         bcc:     [teacherEmail, GMAIL_USER].filter((e, i, a) => e && a.indexOf(e) === i).join(','), // teacher + keenkids account both get a copy
-        subject: `${studentName}'s KeenKids Week — ${weekRow.title}`,
+        subject: `${studentName}'s KeenKids Week ${weekRow.weekNumber} — ${weekLabel}`,
         html,
         attachments,
       })
