@@ -199,36 +199,12 @@ export async function POST(req: NextRequest) {
   // Format date nicely e.g. "August 17, 2026"
   const weekLabel = new Date(weekStartDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
-  // ── "This Week's Enrichment" summary block (inserted once per email) ────────
-  function summaryRow(emoji: string, label: string, title: string, desc: string, last = false) {
-    return `<div style="margin-bottom:${last ? '0' : '12px'}">
-      <div style="font-size:14px;color:#0c4a6e">${emoji} <strong>${label}:</strong> ${title}</div>
-      ${desc ? `<div style="font-size:13px;color:#374151;margin-top:2px;padding-left:22px">${desc}</div>` : ''}
-    </div>`
-  }
-
-  const weekSummaryRows: string[] = []
-  if (buildTitle)   weekSummaryRows.push(summaryRow('🔨', 'Build', buildTitle, buildTagline))
-  if (codingTitle)  weekSummaryRows.push(summaryRow('💻', 'Coding', codingTitle, codingTagline))
-  if (speakingPillar || speakingWord) {
-    const label = [speakingPillar, speakingWord ? `"${speakingWord}"` : ''].filter(Boolean).join(' · ')
-    const desc  = speakingWordDef ? `Week word: ${speakingWordDef}` : ''
-    weekSummaryRows.push(summaryRow('🎤', 'Speaking', label, desc))
-  }
-  if (scienceTitle) weekSummaryRows.push(summaryRow('🔬', 'Science', scienceTitle, scienceConcept, true))
-
-  const weekSummaryHtml = weekSummaryRows.length > 0
-    ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 16px;margin-bottom:20px;line-height:1.5">
-        <strong style="display:block;margin-bottom:12px;font-size:14px;color:#0369a1">📚 This Week's Enrichment</strong>
-        ${weekSummaryRows.join('')}
-      </div>`
-    : ''
-
-  function card(emoji: string, title: string, color: string, body: string) {
-    return `
-    <div style="background:#fff;border:1px solid #e5e7eb;border-left:4px solid ${color};border-radius:8px;padding:14px 16px;margin-bottom:12px">
-      <p style="margin:0 0 6px;font-size:15px;font-weight:700;color:#111">${emoji} ${title}</p>
-      <div style="font-size:14px;color:#374151;line-height:1.6">${body}</div>
+  // Unified card: subject title + description + student result in one block
+  function subjectCard(emoji: string, label: string, title: string, desc: string, color: string, result: string) {
+    return `<div style="background:#fff;border:1px solid #e5e7eb;border-left:4px solid ${color};border-radius:8px;padding:14px 16px;margin-bottom:12px">
+      <p style="margin:0 0 2px;font-size:15px;font-weight:700;color:#111">${emoji} ${label}: ${title}</p>
+      ${desc ? `<p style="margin:0 0 10px;font-size:13px;color:#6b7280">${desc}</p>` : '<p style="margin:0 0 10px"></p>'}
+      <div style="font-size:14px;color:#374151;line-height:1.6;border-top:1px solid #f3f4f6;padding-top:8px">${result}</div>
     </div>`
   }
 
@@ -259,42 +235,37 @@ export async function POST(req: NextRequest) {
       const started = !!sess && !done
 
       if (subject === 'build') {
-        // G3-4 students self-submit results; shape: { buildResults: { cranksNoLoad, ... } }
         const studentBuildData = data?.buildResults as Record<string, unknown> | undefined
-        // Teacher-submitted results have gradeBand at top level
         const teacherSubmitted = done && data && ('gradeBand' in data)
         const hasAnyResults    = teacherSubmitted || !!studentBuildData
+        const bDesc = buildTagline
 
         if (hasAnyResults) {
-          const gradeBand  = (data?.gradeBand as string) ?? classroom.gradeBand ?? ''
-          const buildTitle = (data?.buildTitle as string) ?? 'Build Project'
+          const gradeBand   = (data?.gradeBand as string) ?? classroom.gradeBand ?? ''
+          const bTitleLabel = (data?.buildTitle as string) ?? buildTitle ?? 'Build Project'
           if (gradeBand === 'g1-2') {
-            // Keys: minRocks (current), round1Clips/maxClips (legacy)
             const minR = data!.minRocks    ?? data!.round1Clips ?? null
             const maxR = data!.maxRocks    ?? data!.maxClips    ?? null
             const r1   = minR != null ? `Minimum rocks to slide: ${minR}` : ''
             const best = maxR != null ? `<strong>Best: ${maxR} rocks carried! 🎉</strong>` : ''
             const note = data!.note ? `<em>${data!.note}</em>` : ''
-            cards.push(card('🔨', `Build — ${buildTitle}`, '#f59e0b',
+            cards.push(subjectCard('🔨', 'Build', bTitleLabel, bDesc, '#f59e0b',
               [r1, best, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
           } else {
-            // G3-4: student-submitted (nested under buildResults) or teacher-submitted (flat)
-            const src = studentBuildData ?? data!
-            const c1  = src.cranksNoLoad   != null ? `First attempt: ${src.cranksNoLoad} rocks` : ''
-            const c2  = src.cranksWithLoad != null ? `After adjustment: ${src.cranksWithLoad} rocks` : ''
-            const c3  = src.cranksImproved != null ? `<strong>Best: ${src.cranksImproved} rocks held 🎉</strong>` : ''
+            const src  = studentBuildData ?? data!
+            const c1   = src.cranksNoLoad   != null ? `First attempt: ${src.cranksNoLoad} rocks` : ''
+            const c2   = src.cranksWithLoad != null ? `After adjustment: ${src.cranksWithLoad} rocks` : ''
+            const c3   = src.cranksImproved != null ? `<strong>Best: ${src.cranksImproved} rocks held 🎉</strong>` : ''
             const note = (src.note as string) ? `<em>${src.note}</em>` : ''
-            cards.push(card('🔨', `Build — ${buildTitle}`, '#f59e0b',
+            cards.push(subjectCard('🔨', 'Build', bTitleLabel, bDesc, '#f59e0b',
               [c1, c2, c3, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
           }
         } else {
-          cards.push(card('🔨', 'Build', '#d1d5db', started
+          cards.push(subjectCard('🔨', 'Build', buildTitle || 'Build', bDesc, '#f59e0b', started
             ? 'In progress — results will be added by the teacher after class. 🔄'
             : 'Not recorded yet — the teacher will submit build results after class. ⬜'))
         }
       } else if (subject === 'science') {
-        // Show observations/reflections whenever the student has entered anything —
-        // don't gate on sess.completed, which requires the full reflect phase to be done.
         const hasAnyData = data && (data.vote || data.observations || data.whatHappened || data.whatILearned)
         if (hasAnyData) {
           const voteMap: Record<string, string> = { up: '👍 Yes!', side: '🤔 Not sure', down: '👎 No' }
@@ -305,25 +276,29 @@ export async function POST(req: NextRequest) {
             data!.whatHappened ? `<strong>What I think caused it:</strong> ${data!.whatHappened}` : '',
             data!.whatILearned ? `<strong>I learned:</strong> ${data!.whatILearned}` : '',
           ].filter(Boolean).join('<br/>')
-          cards.push(card('🔬', 'Science Lab', '#06b6d4', rows || 'Completed ✅'))
+          cards.push(subjectCard('🔬', 'Science', scienceTitle || 'Science Lab', scienceConcept, '#06b6d4', rows || 'Completed ✅'))
         } else {
-          cards.push(card('🔬', 'Science Lab', '#d1d5db', started
+          cards.push(subjectCard('🔬', 'Science', scienceTitle || 'Science Lab', scienceConcept, '#d1d5db', started
             ? `Started — waiting for ${studentName} to submit their observations. 🔄`
             : `Not completed yet — ${studentName} will record their observations during class. ⬜`))
         }
       } else if (subject === 'coding') {
         if (done) {
-          cards.push(card('💻', 'Coding', '#8b5cf6', `Finished their coding project this week! Great job debugging and creating. ✅`))
+          cards.push(subjectCard('💻', 'Coding', codingTitle || 'Coding', codingTagline, '#8b5cf6',
+            `Finished their coding project this week! Great job debugging and creating. ✅`))
         } else {
-          cards.push(card('💻', 'Coding', '#d1d5db', started
+          cards.push(subjectCard('💻', 'Coding', codingTitle || 'Coding', codingTagline, '#d1d5db', started
             ? `In progress — ${studentName} has started but hasn't finished yet. 🔄`
             : `Not started yet — ${studentName} will work on their coding project in class. ⬜`))
         }
       } else if (subject === 'public_speaking') {
+        const spLabel = [speakingPillar, speakingWord ? `"${speakingWord}"` : ''].filter(Boolean).join(' · ') || 'Public Speaking'
+        const spDesc  = speakingWordDef ? `Week word: ${speakingWordDef}` : ''
         if (done) {
-          cards.push(card('🎤', 'Public Speaking', '#ec4899', `Practiced speaking in front of the class this week — a big deal! ✅`))
+          cards.push(subjectCard('🎤', 'Speaking', spLabel, spDesc, '#ec4899',
+            `Practiced speaking in front of the class this week — a big deal! ✅`))
         } else {
-          cards.push(card('🎤', 'Public Speaking', '#d1d5db', started
+          cards.push(subjectCard('🎤', 'Speaking', spLabel, spDesc, '#d1d5db', started
             ? `In progress. 🔄`
             : `Not recorded yet — the teacher marks this after speaking class. ⬜`))
         }
@@ -354,10 +329,6 @@ export async function POST(req: NextRequest) {
   <p style="margin:0 0 16px;font-size:15px;color:#111">${greeting}</p>
   <p style="margin:0 0 16px;font-size:15px;color:#374151">Here's what <strong>${studentName}</strong> got up to in enrichment this week!</p>
 
-  <!-- Week at a glance -->
-  ${weekSummaryHtml}
-
-  <!-- Activity cards -->
   ${cardsHtml}
 
   <!-- Attendance -->
