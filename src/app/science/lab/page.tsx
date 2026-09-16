@@ -7,37 +7,45 @@ import { ScienceLabClient } from './ScienceLabClient'
 import { StudentSidebar } from '@/app/dashboard/StudentSidebar'
 import { getWeekNavFromClassroom } from '@/lib/student-week-nav'
 import { db } from '@/lib/db'
-import { classroomCurriculum, curriculum, curriculumDays, curriculumContent } from '@/lib/db/schema'
-import { eq, and } from 'drizzle-orm'
+import { classroomCurriculum, curriculumDays, curriculumContent } from '@/lib/db/schema'
+import { eq, and, lte, desc } from 'drizzle-orm'
+
+function getTodayStr(): string {
+  const d = new Date()
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+}
 
 export default async function ScienceLabPage() {
   const session = await getSession()
   if (!session) redirect('/login')
 
-  // Prefer week-number-based lookup (matches classroom DB assignment)
-  // Fall back to calendar date if no classroom or week not found
+  // Sidebar nav (uses lte+desc — correct week links)
   const nav = session.classroomId
     ? await getWeekNavFromClassroom(session.classroomId)
     : { build: null, coding: null, public_speaking: null, science: null, math: null, arts: null, weekNumber: null }
 
-  // Prefer the date-based lookup (always accurate for current week) and fall back to
-  // the DB-resolved weekNumber only when no date-matched lab is found (e.g. school holiday)
+  // Lab content: prefer date-based (always accurate for current Mon–Fri week)
+  // Fall back to DB week number only if no date-matched lab exists (e.g. holiday week)
   const lab = getCurrentLab() ?? (nav.weekNumber != null ? getLabByWeek(nav.weekNumber) : null)
   if (!lab) redirect('/dashboard')
 
-  // Look up the real content item ID so student observations are saved to the DB
-  // (not just localStorage) and show up in the weekly parent report.
+  // Content item lookup: use lte+desc same as dashboard — NOT nav.weekNumber which can be stale.
+  // This ensures saves always go to the classroom's actual current-week content item.
   let contentItemId: string | null = null
-  if (session.classroomId && nav.weekNumber != null) {
+  if (session.classroomId) {
     try {
+      const todayStr = getTodayStr()
+
+      // Most recent classroom week whose start ≤ today
       const [cc] = await db
         .select({ curriculumId: classroomCurriculum.curriculumId })
         .from(classroomCurriculum)
-        .innerJoin(curriculum, eq(curriculum.id, classroomCurriculum.curriculumId))
         .where(and(
           eq(classroomCurriculum.classroomId, session.classroomId),
-          eq(curriculum.weekNumber, nav.weekNumber),
+          lte(classroomCurriculum.weekStartDate, todayStr),
         ))
+        .orderBy(desc(classroomCurriculum.weekStartDate))
         .limit(1)
 
       if (cc) {
@@ -59,7 +67,7 @@ export default async function ScienceLabPage() {
           contentItemId = content?.contentItemId ?? null
         }
       }
-    } catch { /* non-fatal — lab still works, just won't persist to DB */ }
+    } catch { /* non-fatal — lab still works, observations just won't persist */ }
   }
 
   return (
