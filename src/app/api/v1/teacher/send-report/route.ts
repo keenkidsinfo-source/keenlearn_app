@@ -12,6 +12,7 @@ import { eq, and, inArray, isNull } from 'drizzle-orm'
 import { apiOk, apiError } from '@/lib/utils'
 import { getSession } from '@/lib/auth/jwt'
 import { getTeacherClassroom } from '@/lib/teacher-classroom'
+import { getLabByWeek } from '@/lib/scienceLabs'
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 
@@ -92,7 +93,7 @@ export async function POST(req: NextRequest) {
 
   // ── 2. Load curriculum for the week ─────────────────────────────────────────
   const [weekRow] = await db
-    .select({ curriculumId: classroomCurriculum.curriculumId, title: curriculum.title, theme: curriculum.theme })
+    .select({ curriculumId: classroomCurriculum.curriculumId, title: curriculum.title, theme: curriculum.theme, weekNumber: curriculum.weekNumber })
     .from(classroomCurriculum)
     .innerJoin(curriculum, eq(classroomCurriculum.curriculumId, curriculum.id))
     .where(and(
@@ -112,6 +113,36 @@ export async function POST(req: NextRequest) {
 
   const contentItemIds = dayItems.map(d => d.contentItemId)
   const subjectByItem  = new Map(dayItems.map(d => [d.contentItemId, d.subject]))
+
+  // ── 3b. Load content item titles + metadata for "this week at a glance" ────
+  const itemDetails = contentItemIds.length > 0
+    ? await db
+        .select({ id: contentItems.id, title: contentItems.title, subject: contentItems.subject, metadata: contentItems.metadata })
+        .from(contentItems)
+        .where(inArray(contentItems.id, contentItemIds))
+    : []
+
+  // Build subject → content item map
+  const contentBySubject = new Map<string, typeof itemDetails[0]>()
+  for (const item of itemDetails) {
+    const subject = subjectByItem.get(item.id)
+    if (subject) contentBySubject.set(subject, item)
+  }
+
+  // Extract per-subject highlights for the week summary
+  const speakingItem   = contentBySubject.get('public_speaking')
+  const speakingMeta   = speakingItem?.metadata as Record<string, unknown> | null ?? null
+  const speakingPillar = (speakingMeta?.pillar as string) ?? ''
+  const speakingWord   = (speakingMeta?.weekWord as string) ?? ''
+
+  const codingItem   = contentBySubject.get('coding')
+  const codingTitle  = codingItem?.title ?? ''
+
+  const buildItem   = contentBySubject.get('build')
+  const buildTitle  = buildItem?.title ?? ''
+
+  const scienceLab   = weekRow.weekNumber != null ? getLabByWeek(weekRow.weekNumber) : null
+  const scienceTitle = scienceLab?.title ?? ''
 
   // ── 4. Load students ─────────────────────────────────────────────────────────
   const students = await db
@@ -161,6 +192,23 @@ export async function POST(req: NextRequest) {
 
   // Format date nicely e.g. "August 17, 2026"
   const weekLabel = new Date(weekStartDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+
+  // ── "This Week's Enrichment" summary block (inserted once per email) ────────
+  const weekSummaryRows: string[] = []
+  if (speakingPillar || speakingWord) {
+    const label = [speakingPillar, speakingWord ? `"${speakingWord}"` : ''].filter(Boolean).join(' · ')
+    weekSummaryRows.push(`<span style="margin-right:16px">🎤 <strong>Speaking:</strong> ${label}</span>`)
+  }
+  if (codingTitle)  weekSummaryRows.push(`<span style="margin-right:16px">💻 <strong>Coding:</strong> ${codingTitle}</span>`)
+  if (buildTitle)   weekSummaryRows.push(`<span style="margin-right:16px">🔨 <strong>Build:</strong> ${buildTitle}</span>`)
+  if (scienceTitle) weekSummaryRows.push(`<span style="margin-right:16px">🔬 <strong>Science:</strong> ${scienceTitle}</span>`)
+
+  const weekSummaryHtml = weekSummaryRows.length > 0
+    ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#0c4a6e;line-height:2">
+        <strong style="display:block;margin-bottom:4px;font-size:14px;color:#0369a1">📚 This Week's Enrichment</strong>
+        ${weekSummaryRows.join('')}
+      </div>`
+    : ''
 
   function card(emoji: string, title: string, color: string, body: string) {
     return `
@@ -290,7 +338,10 @@ export async function POST(req: NextRequest) {
 
   <!-- Greeting -->
   <p style="margin:0 0 16px;font-size:15px;color:#111">${greeting}</p>
-  <p style="margin:0 0 20px;font-size:15px;color:#374151">Here's what <strong>${studentName}</strong> got up to in enrichment this week!</p>
+  <p style="margin:0 0 16px;font-size:15px;color:#374151">Here's what <strong>${studentName}</strong> got up to in enrichment this week!</p>
+
+  <!-- Week at a glance -->
+  ${weekSummaryHtml}
 
   <!-- Activity cards -->
   ${cardsHtml}
