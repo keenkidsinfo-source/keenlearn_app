@@ -130,19 +130,25 @@ export async function POST(req: NextRequest) {
   }
 
   // Extract per-subject highlights for the week summary
-  const speakingItem   = contentBySubject.get('public_speaking')
-  const speakingMeta   = speakingItem?.metadata as Record<string, unknown> | null ?? null
-  const speakingPillar = (speakingMeta?.pillar as string) ?? ''
-  const speakingWord   = (speakingMeta?.weekWord as string) ?? ''
+  const speakingItem    = contentBySubject.get('public_speaking')
+  const speakingMeta    = speakingItem?.metadata as Record<string, unknown> | null ?? null
+  const speakingPillar  = (speakingMeta?.pillar as string) ?? ''
+  const speakingWord    = (speakingMeta?.weekWord as string) ?? ''
+  const speakingWordDef = (speakingMeta?.weekWordDef as string) ?? ''
 
-  const codingItem   = contentBySubject.get('coding')
-  const codingTitle  = codingItem?.title ?? ''
+  const codingItem    = contentBySubject.get('coding')
+  const codingTitle   = codingItem?.title ?? ''
+  const codingMeta    = codingItem?.metadata as Record<string, unknown> | null ?? null
+  const codingTagline = (codingMeta?.tagline as string) ?? ''
 
-  const buildItem   = contentBySubject.get('build')
-  const buildTitle  = buildItem?.title ?? ''
+  const buildItem    = contentBySubject.get('build')
+  const buildTitle   = buildItem?.title ?? ''
+  const buildMeta    = buildItem?.metadata as Record<string, unknown> | null ?? null
+  const buildTagline = (buildMeta?.tagline as string) ?? ''
 
-  const scienceLab   = weekRow.weekNumber != null ? getLabByWeek(weekRow.weekNumber) : null
-  const scienceTitle = scienceLab?.title ?? ''
+  const scienceLab    = weekRow.weekNumber != null ? getLabByWeek(weekRow.weekNumber) : null
+  const scienceTitle  = scienceLab?.title ?? ''
+  const scienceConcept = scienceLab?.conceptShort ?? ''
 
   // ── 4. Load students ─────────────────────────────────────────────────────────
   const students = await db
@@ -194,18 +200,26 @@ export async function POST(req: NextRequest) {
   const weekLabel = new Date(weekStartDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
   // ── "This Week's Enrichment" summary block (inserted once per email) ────────
+  function summaryRow(emoji: string, label: string, title: string, desc: string, last = false) {
+    return `<div style="margin-bottom:${last ? '0' : '12px'}">
+      <div style="font-size:14px;color:#0c4a6e">${emoji} <strong>${label}:</strong> ${title}</div>
+      ${desc ? `<div style="font-size:13px;color:#374151;margin-top:2px;padding-left:22px">${desc}</div>` : ''}
+    </div>`
+  }
+
   const weekSummaryRows: string[] = []
-  if (buildTitle)   weekSummaryRows.push(`<div style="margin-bottom:6px">🔨 <strong>Build:</strong> ${buildTitle}</div>`)
-  if (codingTitle)  weekSummaryRows.push(`<div style="margin-bottom:6px">💻 <strong>Coding:</strong> ${codingTitle}</div>`)
+  if (buildTitle)   weekSummaryRows.push(summaryRow('🔨', 'Build', buildTitle, buildTagline))
+  if (codingTitle)  weekSummaryRows.push(summaryRow('💻', 'Coding', codingTitle, codingTagline))
   if (speakingPillar || speakingWord) {
     const label = [speakingPillar, speakingWord ? `"${speakingWord}"` : ''].filter(Boolean).join(' · ')
-    weekSummaryRows.push(`<div style="margin-bottom:6px">🎤 <strong>Speaking:</strong> ${label}</div>`)
+    const desc  = speakingWordDef ? `Week word: ${speakingWordDef}` : ''
+    weekSummaryRows.push(summaryRow('🎤', 'Speaking', label, desc))
   }
-  if (scienceTitle) weekSummaryRows.push(`<div style="margin-bottom:0">🔬 <strong>Science:</strong> ${scienceTitle}</div>`)
+  if (scienceTitle) weekSummaryRows.push(summaryRow('🔬', 'Science', scienceTitle, scienceConcept, true))
 
   const weekSummaryHtml = weekSummaryRows.length > 0
-    ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:#0c4a6e;line-height:1.5">
-        <strong style="display:block;margin-bottom:10px;font-size:14px;color:#0369a1">📚 This Week's Enrichment</strong>
+    ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:14px 16px;margin-bottom:20px;line-height:1.5">
+        <strong style="display:block;margin-bottom:12px;font-size:14px;color:#0369a1">📚 This Week's Enrichment</strong>
         ${weekSummaryRows.join('')}
       </div>`
     : ''
