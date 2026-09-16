@@ -118,6 +118,67 @@ function MagnetAnimation() {
   )
 }
 
+// ── Animated illustration: Water Balloon Over Flame ──────────────────────────
+function WaterBalloonAnimation() {
+  return (
+    <div className="relative w-full flex justify-center items-center" style={{ height: 200 }}>
+      <style>{`
+        @keyframes flicker2 {
+          0%,100% { transform: scaleY(1) scaleX(1); opacity:1 }
+          25% { transform: scaleY(1.15) scaleX(0.88); opacity:.9 }
+          50% { transform: scaleY(0.9) scaleX(1.1); opacity:1 }
+          75% { transform: scaleY(1.1) scaleX(0.92); opacity:.95 }
+        }
+        @keyframes heatRise {
+          0% { opacity:0; transform: translateY(0) scaleX(1); }
+          40% { opacity:0.4; }
+          100% { opacity:0; transform: translateY(-28px) scaleX(1.3); }
+        }
+        @keyframes sootGrow {
+          0%,40% { opacity:0; }
+          60%,100% { opacity:0.55; }
+        }
+        .balloon-flame { animation: flicker2 0.65s ease-in-out infinite; transform-origin: bottom center; }
+        .heat-wave1 { animation: heatRise 1.2s ease-out infinite; }
+        .heat-wave2 { animation: heatRise 1.2s ease-out infinite 0.4s; }
+        .heat-wave3 { animation: heatRise 1.2s ease-out infinite 0.8s; }
+        .soot { animation: sootGrow 3s ease-in-out infinite; }
+      `}</style>
+      <svg viewBox="0 0 320 200" width="300" height="188" xmlns="http://www.w3.org/2000/svg">
+        {/* Table */}
+        <rect x="20" y="172" width="280" height="7" rx="3" fill="#d1d5db"/>
+        {/* Candle */}
+        <rect x="148" y="148" width="24" height="26" rx="3" fill="#fef9c3" stroke="#e5e7eb" strokeWidth="1"/>
+        <rect x="158" y="144" width="4" height="8" rx="1" fill="#9ca3af"/>
+        {/* Candle flame */}
+        <g className="balloon-flame" style={{transformOrigin:'160px 142px'}}>
+          <ellipse cx="160" cy="134" rx="7" ry="11" fill="#f97316" opacity="0.9"/>
+          <ellipse cx="160" cy="138" rx="4.5" ry="6" fill="#fbbf24"/>
+          <ellipse cx="160" cy="141" rx="2.5" ry="3" fill="#fef08a"/>
+        </g>
+        {/* Heat waves rising */}
+        <ellipse cx="155" cy="118" rx="4" ry="7" fill="#f97316" opacity="0" className="heat-wave1"/>
+        <ellipse cx="163" cy="112" rx="3" ry="6" fill="#fb923c" opacity="0" className="heat-wave2"/>
+        <ellipse cx="158" cy="108" rx="3.5" ry="5" fill="#fbbf24" opacity="0" className="heat-wave3"/>
+        {/* Balloon — water inside */}
+        <ellipse cx="160" cy="72" rx="42" ry="48" fill="#93c5fd" opacity="0.7" stroke="#3b82f6" strokeWidth="1.5"/>
+        {/* Water fill inside balloon */}
+        <ellipse cx="160" cy="88" rx="36" ry="26" fill="#60a5fa" opacity="0.5"/>
+        {/* Balloon knot */}
+        <rect x="156" y="118" width="8" height="6" rx="2" fill="#3b82f6"/>
+        {/* Soot mark at bottom of balloon where flame touches */}
+        <ellipse cx="160" cy="117" rx="10" ry="4" fill="#374151" opacity="0" className="soot"/>
+        {/* Heat arrows going INTO water */}
+        <text x="200" y="96" fontSize="9" fill="#ef4444" fontWeight="bold">🔥→💧</text>
+        <text x="160" y="192" textAnchor="middle" fontSize="9" fill="#6b7280">water absorbs the heat — balloon survives!</text>
+        {/* Labels */}
+        <text x="90" y="75" fontSize="8" fill="#3b82f6">💧 water</text>
+        <text x="90" y="88" fontSize="8" fill="#3b82f6">inside</text>
+      </svg>
+    </div>
+  )
+}
+
 // ── Animated illustration: Upside-Down Water Bottle ───────────────────────────
 function WaterBottleAnimation() {
   return (
@@ -202,7 +263,8 @@ export function ScienceLabClient({
   const isG12 = gradeBand === 'g1-2'
 
   const isFireLab      = lab.title.toLowerCase().includes('fire') || lab.title.toLowerCase().includes('extinguisher')
-  const isWaterBottle  = lab.title.toLowerCase().includes('water') || lab.title.toLowerCase().includes('bottle')
+  const isWaterBalloon = lab.title.toLowerCase().includes('balloon')
+  const isWaterBottle  = !isWaterBalloon && (lab.title.toLowerCase().includes('water') || lab.title.toLowerCase().includes('bottle'))
   // any other lab falls through to magnet defaults
 
   // Load saved state from localStorage
@@ -298,6 +360,23 @@ export function ScienceLabClient({
     observePlaceholder = 'e.g. The candles went out one by one when the bowl was tilted…'
     causePlaceholder   = 'e.g. I think the gas pushed the air away from the flames…'
     learnedPlaceholder = "e.g. I learned that CO₂ is heavier than air and that's why fire extinguishers work…"
+  } else if (isWaterBalloon) {
+    labAnimation       = <WaterBalloonAnimation />
+    setupCaption       = 'The teacher will hold a water-filled balloon over a candle flame. Watch carefully — will it pop?'
+    predictionQ        = isG12
+      ? 'What will happen when the teacher holds the water balloon over the flame?'
+      : 'Will the water balloon pop over the flame? What do you think will happen to the heat — where will it go?'
+    voteUp             = { emoji: '💥', label: 'It will POP!' }
+    voteSide           = { emoji: '🤔', label: "I'm not sure…" }
+    voteDown           = { emoji: '🎈', label: 'It stays whole!' }
+    observePlaceholder = 'e.g. The water balloon did not pop! I saw a black soot mark at the bottom but it stayed whole…'
+    causePlaceholder   = isG12
+      ? 'e.g. I think the water inside stopped the balloon from getting too hot…'
+      : 'e.g. I think the water absorbed the heat energy before the rubber could get hot enough to burst…'
+    learnedPlaceholder = isG12
+      ? 'e.g. I learned that water absorbs heat and can protect things from fire!'
+      : 'e.g. I learned that water has a high specific heat capacity — it absorbs a lot of heat energy before its temperature rises much…'
+    predictionCorrectIsDown = true
   } else if (isWaterBottle) {
     labAnimation       = <WaterBottleAnimation />
     setupCaption       = isG12 ? 'Watch the teacher flip the water bottle upside down. Will the water fall out?' : 'The teacher will flip a bottle of water upside down with mesh over the opening. Predict what happens!'

@@ -23,7 +23,7 @@ try {
   }
 } catch {}
 
-const sql = postgres(process.env.DATABASE_URL)
+const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' })
 
 const newSessionPlan = [
   { startMin:0, endMin:8, label:'WARM-UP', emoji:'🎭', title:'Mirror Me',
@@ -52,29 +52,36 @@ const newSessionPlan = [
 ]
 
 async function run() {
-  // Find G1-2 W3 speaking session
-  const [session] = await sql`
-    SELECT ss.id, ss.title
-    FROM speaking_sessions ss
-    WHERE ss.grade_band = 'g1-2'
-      AND ss.week_number = 3
-    ORDER BY ss.created_at DESC
+  // Find G1-2 W3 public_speaking content item
+  const [item] = await sql`
+    SELECT ci.id, ci.title, ci.metadata
+    FROM content_items ci
+    JOIN curriculum_content cc ON cc.content_item_id = ci.id
+    JOIN curriculum_days cd    ON cd.id = cc.curriculum_day_id
+    JOIN curriculum c          ON c.id  = cd.curriculum_id
+    WHERE ci.subject    = 'public_speaking'
+      AND ci.grade_band = 'g1-2'
+      AND c.week_number = 3
+      AND c.grade_band  = 'g1-2'
+    ORDER BY ci.created_at DESC
     LIMIT 1
   `
 
-  if (!session) {
-    console.error('❌ No G1-2 W3 speaking session found — has seed-speakup.mjs been run?')
+  if (!item) {
+    console.error('❌ No G1-2 W3 public_speaking content item found — has seed-speakup.mjs been run?')
     await sql.end()
     process.exit(1)
   }
 
+  const updatedMeta = { ...item.metadata, sessionPlan: newSessionPlan }
+
   await sql`
-    UPDATE speaking_sessions
-    SET session_plan = ${JSON.stringify(newSessionPlan)}
-    WHERE id = ${session.id}
+    UPDATE content_items
+    SET metadata = ${updatedMeta}
+    WHERE id = ${item.id}
   `
 
-  console.log(`✓ Patched G1-2 W3 session: "${session.title}" — sentence starters added to 22:00 step`)
+  console.log(`✓ Patched G1-2 W3: "${item.title}" — sentence starters added to 22:00 step`)
   await sql.end()
   console.log('\n✅ Done.')
 }

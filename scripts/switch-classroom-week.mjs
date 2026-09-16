@@ -55,22 +55,32 @@ for (const c of classrooms) {
     continue
   }
   const newCurriculum = curricula[0]
+
+  // Always use this week's Monday as the week_start_date
+  const today = new Date()
+  const dayOfWeek = today.getDay() // 0=Sun, 1=Mon, ..., 6=Sat
+  const daysToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
+  const monday = new Date(today)
+  monday.setDate(today.getDate() + daysToMonday)
+  const weekStartDate = monday.toISOString().slice(0, 10)
+
   const existing = await sql`
-    SELECT curriculum_id FROM classroom_curriculum WHERE classroom_id = ${c.id}
+    SELECT id FROM classroom_curriculum WHERE classroom_id = ${c.id}
   `
   if (existing.length) {
     await sql`
       UPDATE classroom_curriculum
-      SET curriculum_id = ${newCurriculum.id}
+      SET curriculum_id   = ${newCurriculum.id},
+          week_start_date = ${weekStartDate}
       WHERE classroom_id = ${c.id}
     `
   } else {
     await sql`
-      INSERT INTO classroom_curriculum (classroom_id, curriculum_id)
-      VALUES (${c.id}, ${newCurriculum.id})
+      INSERT INTO classroom_curriculum (classroom_id, curriculum_id, week_start_date)
+      VALUES (${c.id}, ${newCurriculum.id}, ${weekStartDate})
     `
   }
-  console.log(`  ✓ Switched "${c.name}" → W${targetWeek} curriculum (${newCurriculum.id})`)
+  console.log(`  ✓ Switched "${c.name}" → W${targetWeek} curriculum, week_start_date=${weekStartDate}`)
 }
 
 await sql.end()
