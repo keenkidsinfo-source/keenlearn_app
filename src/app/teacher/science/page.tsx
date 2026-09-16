@@ -8,9 +8,24 @@ import { TeacherSidebar } from '../TeacherSidebar'
 
 interface Props { searchParams: Promise<{ week?: string }> }
 
-/** Default to the most recent lab whose date <= today; fall back to first */
+/** Default to the lab for the current Mon–Fri week; fall back to most recent past lab */
 function getCurrentWeekIndex(): number {
-  const today = new Date().toISOString().slice(0, 10)
+  const now = new Date()
+  const pad = (n: number) => String(n).padStart(2, '0')
+  const dow = now.getDay()
+  const mon = new Date(now)
+  mon.setDate(now.getDate() + (dow === 0 ? -6 : 1 - dow))
+  const fri = new Date(mon)
+  fri.setDate(mon.getDate() + 4)
+  const monStr = `${mon.getFullYear()}-${pad(mon.getMonth() + 1)}-${pad(mon.getDate())}`
+  const friStr = `${fri.getFullYear()}-${pad(fri.getMonth() + 1)}-${pad(fri.getDate())}`
+
+  // Prefer a lab that falls within the current school week
+  const thisWeekIdx = scienceLabs.findIndex(l => l.date >= monStr && l.date <= friStr)
+  if (thisWeekIdx >= 0) return thisWeekIdx
+
+  // Fall back to the most recent past lab
+  const today = now.toISOString().slice(0, 10)
   let idx = 0
   for (let i = 0; i < scienceLabs.length; i++) {
     if (scienceLabs[i].date <= today) idx = i
