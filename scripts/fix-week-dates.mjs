@@ -19,11 +19,9 @@
 const SCHOOL_START = '2026-08-31'   // Monday of Week 1
 const TOTAL_WEEKS  = 4              // how many weeks of curriculum are seeded
 
-// Override specific weeks with custom dates (remove before class starts!)
-// e.g. set Week 4 to today to verify content before the real Monday start
-const WEEK_OVERRIDES = {
-  4: '2026-09-17',   // ← TEMP: remove before Sep 21 class starts
-}
+// Override specific weeks with custom dates (add entries here for breaks, short weeks, etc.)
+// e.g. { 4: '2026-09-17' } to make Week 4 visible before its real Monday start date
+const WEEK_OVERRIDES = {}
 
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
