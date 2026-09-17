@@ -68,6 +68,7 @@ export default async function TeacherDashboardPage({
           gradeBand:  classrooms.gradeBand,
           schoolId:   classrooms.schoolId,
           accessCode: classrooms.accessCode,
+          activeWeek: classrooms.activeWeek,
           schoolName: schools.name,
         })
         .from(classroomTeachers)
@@ -105,6 +106,28 @@ export default async function TeacherDashboardPage({
       ).map(r => r.weekNumber)
     : []
 
+  // Teacher preview: if activeWeek is set, resolve its Monday date so the dashboard
+  // shows that week's content. Students are unaffected — they never read activeWeek.
+  const classroomActiveWeek: number | null = (classroom as any)?.activeWeek ?? null
+  let effectiveMondayStr = mondayStr
+  if (classroom && classroomActiveWeek != null && !week) {
+    // Look up the week_start_date for the pinned week
+    const [pinRow] = await db
+      .select({ weekStartDate: classroomCurriculum.weekStartDate })
+      .from(classroomCurriculum)
+      .innerJoin(curriculum, eq(classroomCurriculum.curriculumId, curriculum.id))
+      .where(and(
+        eq(classroomCurriculum.classroomId, classroom.id),
+        eq(curriculum.weekNumber, classroomActiveWeek),
+      ))
+      .limit(1)
+    if (pinRow?.weekStartDate) {
+      effectiveMondayStr = typeof pinRow.weekStartDate === 'string'
+        ? pinRow.weekStartDate
+        : (pinRow.weekStartDate as Date).toISOString().slice(0, 10)
+    }
+  }
+
   // Load this week's curriculum assignment
   const [thisWeek] = classroom
     ? await db
@@ -113,7 +136,7 @@ export default async function TeacherDashboardPage({
         .innerJoin(curriculum, eq(classroomCurriculum.curriculumId, curriculum.id))
         .where(and(
           eq(classroomCurriculum.classroomId, classroom.id),
-          eq(classroomCurriculum.weekStartDate, mondayStr),
+          eq(classroomCurriculum.weekStartDate, effectiveMondayStr),
         ))
         .limit(1)
     : [undefined]

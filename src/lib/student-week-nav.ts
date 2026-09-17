@@ -17,33 +17,33 @@ export interface WeekNav {
   weekNumber: number | null
 }
 
-/** Get nav from any day's classroomId + current date (for pages with no dayId like /science/lab) */
-export async function getWeekNavFromClassroom(classroomId: string): Promise<WeekNav> {
+/**
+ * Get nav from classroomId.
+ * Pass `overrideWeek` (number) to force a specific week — teachers use this for preview.
+ * Students always pass undefined/null so they always get the date-based week.
+ */
+export async function getWeekNavFromClassroom(classroomId: string, overrideWeek?: number | null): Promise<WeekNav> {
   const { db: _db } = await import('@/lib/db')
-  const { classrooms: classroomsTable, classroomCurriculum, curriculumDays: cdTable, curriculum: curriculumTable } = await import('@/lib/db/schema')
+  const { classroomCurriculum, curriculumDays: cdTable, curriculum: curriculumTable } = await import('@/lib/db/schema')
   const { eq: _eq, and: _and, lte: _lte, desc: _desc } = await import('drizzle-orm')
 
   const empty: WeekNav = { build: null, coding: null, public_speaking: null, science: null, math: null, arts: null, weekNumber: null }
 
-  // Check for an active_week override on the classroom
-  const [clRow] = await _db.select({ activeWeek: classroomsTable.activeWeek })
-    .from(classroomsTable).where(_eq(classroomsTable.id, classroomId)).limit(1)
-
   let ccRow: { curriculumId: string } | undefined
 
-  if (clRow?.activeWeek != null) {
-    // Teacher has pinned a specific week — find that week's curriculum directly
+  if (overrideWeek != null) {
+    // Teacher preview: find the pinned week's curriculum directly
     const [pinned] = await _db.select({ curriculumId: classroomCurriculum.curriculumId })
       .from(classroomCurriculum)
       .innerJoin(curriculumTable, _eq(curriculumTable.id, classroomCurriculum.curriculumId))
       .where(_and(
         _eq(classroomCurriculum.classroomId, classroomId),
-        _eq(curriculumTable.weekNumber, clRow.activeWeek),
+        _eq(curriculumTable.weekNumber, overrideWeek),
       ) as any)
       .limit(1)
     ccRow = pinned
   } else {
-    // Fall back to date-based logic: most recent week whose start date ≤ today
+    // Date-based logic (students always take this path): most recent week whose start date ≤ today
     const today = new Date()
     const pad = (n: number) => String(n).padStart(2, '0')
     const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`

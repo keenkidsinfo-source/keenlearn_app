@@ -45,7 +45,7 @@ export function WeekOverrideControl({ classroomId, currentActiveWeek, assignedWe
       </select>
       {active != null && (
         <span className="text-xs bg-amber-100 text-amber-700 px-2 py-1 rounded-full font-medium">
-          Preview only — students see Week {active}
+          👁 Teacher preview — students see their current week
         </span>
       )}
     </div>
