@@ -37,23 +37,115 @@ const updates = [
     challenge: 'Harry vs Voldemort!',
     tagline: 'Shoot lightning bolts at Voldemort before time runs out!',
     steps: [
-      '🧙 Set up the arena! Your sprite list already has HARRY, VOLDEMORT, and LIGHTNING_BOLT loaded. Drag HARRY to the bottom-centre of the stage. Drag VOLDEMORT to the top-centre. Click the little landscape icon at the very bottom-right → "Choose a Backdrop" → search "Castle" or "Stars" → click one. Dueling arena ready! ⚡',
+      `🧙 Set up the dueling arena!
 
-      '⬅️➡️ Make Harry move! Click HARRY in the sprite list. Events → "when [right arrow] key pressed" onto the white area. Motion → "change x by 10" → snap under. Now drag a SECOND "when [left arrow] key pressed" to an EMPTY spot (not connected!). Motion → "change x by 10" → change 10 to -10. Press the arrow keys — Harry slides left and right! ⬅️➡️',
+① Drag HARRY to the bottom of the stage
+② Drag VOLDEMORT to the top of the stage
+③ Click the landscape icon (bottom-right corner)
+④ Click "Choose a Backdrop" → search "Castle" → click it
 
-      '⚡ Make Harry shoot lightning! Click LIGHTNING_BOLT. Events → "when [space] key pressed". Motion → "go to x: 0 y: -130" → snap under (bolt starts at the bottom). Motion → "glide 0.5 secs to x: 0 y: 160" → snap under (fires UP!). Motion → "go to x: 0 y: -130" → snap last (resets for the next shot). Press Space — lightning flies up and comes back! ⚡',
+✅ You should see Harry at the bottom and Voldemort at the top!`,
 
-      '🏆 Make a Score! Variables → "Make a Variable" → type Score → OK. A Score box appears on stage! Now click VOLDEMORT. Events → "when 🚩 clicked". CONTROL → "forever" → snap under. CONTROL → "if...then" → snap inside the forever. This is where the magic happens next! 🎉',
+      `⬅️➡️ Make Harry move left and right!
 
-      '💥 Voldemort reacts when hit! Still on VOLDEMORT — fill in the "if" block. SENSING → "touching [mouse-pointer]?" → drop into the diamond → click dropdown → change to "Lightning_Bolt". Inside the if: VARIABLES → "change Score by 1". MOTION → "go to [random position]". Click 🚩 and press Space — hit Voldemort and score goes up! 💥',
+Click HARRY in the sprite list, then:
 
-      '🧙 Make Voldemort bounce! Still on VOLDEMORT — find an EMPTY spot. Drag a NEW "when 🚩 clicked" (not connected to anything). CONTROL → "forever". Inside: MOTION → "move 3 steps". MOTION → "if on edge, bounce". Click 🚩 — Voldemort bounces around the screen! Much harder to hit now. 🧙',
+① Yellow EVENTS → "when [right arrow] key pressed" → drag to white area
+② Blue MOTION → "change x by 10" → snap underneath
 
-      '⏱️ Add a 30-second timer! Variables → "Make a Variable" → type Time → OK. Click the STAGE (small grey box to the LEFT of the sprite list). Events → "when 🚩 clicked". Variables → "set Score to 0" → snap under. Variables → "set Time to 30" → snap under. CONTROL → "repeat 30" → snap inside. Inside repeat: CONTROL → "wait 1 secs". VARIABLES → "change Time by -1". OUTSIDE and below the repeat: LOOKS → "say [Time\'s up! ⏰] for 2 secs". CONTROL → "stop [all]". Click 🚩 — 30 seconds on the clock! ⏱️',
+Now for the LEFT — drag to an EMPTY spot (not connected!):
+③ Yellow EVENTS → "when [left arrow] key pressed"
+④ Blue MOTION → "change x by 10" → change 10 to -10
 
-      '🌟 CHALLENGE: Harry shouts the spell! Click HARRY → find an empty spot → Events → "when [space] key pressed" → Looks → "say [Expelliarmus! ⚡] for 0.5 secs". Now Harry shouts every time you shoot! 🧙',
+✅ Press the arrow keys — Harry slides!`,
 
-      '⭐ SUPER CHALLENGE: Voldemort shoots back! Click DARK_CURSE. Events → "when 🚩 clicked". CONTROL → "forever". Inside: CONTROL → "wait [pick random 2 to 4] secs". Motion → "go to [Voldemort]". Motion → "glide 1 secs to x: 0 y: -170". Motion → "go to x: 0 y: 170". Click 🚩 — dark curses fire down! Can Harry dodge AND shoot back? 🔮 Show your teacher!',
+      `⚡ Make Harry shoot lightning!
+
+Click LIGHTNING_BOLT in the sprite list, then:
+
+① Yellow EVENTS → "when [space] key pressed"
+② Blue MOTION → "go to x: 0 y: -130" → snap under (bolt starts at bottom)
+③ Blue MOTION → "glide 0.5 secs to x: 0 y: 160" → snap under (fires up!)
+④ Blue MOTION → "go to x: 0 y: -130" → snap last (resets for next shot)
+
+✅ Press Space — lightning flies up and comes back!`,
+
+      `🏆 Make a Score counter!
+
+① Orange VARIABLES → "Make a Variable" → type Score → OK
+   A Score box appears on screen!
+
+Now click VOLDEMORT in the sprite list:
+② Yellow EVENTS → "when 🚩 clicked"
+③ Orange CONTROL → "forever" → snap under
+④ Orange CONTROL → "if...then" → snap INSIDE the forever
+
+✅ You have the "if" block ready — next step fills it in!`,
+
+      `💥 Voldemort jumps away when hit!
+
+Still on VOLDEMORT — fill in the "if" block:
+
+① Light-blue SENSING → "touching [mouse-pointer]?"
+   → drag it into the diamond slot of the "if"
+   → click the dropdown → change to "Lightning_Bolt"
+
+Inside the if, add:
+② Orange VARIABLES → "change Score by 1"
+③ Blue MOTION → "go to [random position]"
+
+✅ Click 🚩 and press Space — hit Voldemort and score goes up!`,
+
+      `🧙 Make Voldemort bounce around!
+
+Still on VOLDEMORT — find an EMPTY spot on the white area:
+
+① Yellow EVENTS → "when 🚩 clicked" (drag to empty spot — NOT connected!)
+② Orange CONTROL → "forever" → snap under
+③ Blue MOTION → "move 3 steps" → snap inside
+④ Blue MOTION → "if on edge, bounce" → snap inside
+
+✅ Click 🚩 — Voldemort bounces! Much harder to hit now.`,
+
+      `⏱️ Add a 30-second timer!
+
+① Orange VARIABLES → "Make a Variable" → type Time → OK
+
+Click the STAGE (small grey box to the LEFT of the sprite list):
+② Yellow EVENTS → "when 🚩 clicked"
+③ Orange VARIABLES → "set Score to 0" → snap under
+④ Orange VARIABLES → "set Time to 30" → snap under
+⑤ Orange CONTROL → "repeat 30" → snap under
+   Inside repeat: CONTROL → "wait 1 secs"
+   Inside repeat: VARIABLES → "change Time by -1"
+⑥ After the repeat (snap OUTSIDE below it):
+   Purple LOOKS → "say [Time's up! ⏰] for 2 secs"
+   Orange CONTROL → "stop [all]"
+
+✅ Click 🚩 — the timer counts down from 30!`,
+
+      `⭐ CHALLENGE: Harry shouts the spell!
+
+Click HARRY → find an empty spot → build this stack:
+
+① Yellow EVENTS → "when [space] key pressed"
+② Purple LOOKS → "say [Expelliarmus! ⚡] for 0.5 secs"
+
+✅ Harry shouts every time you shoot! 🧙`,
+
+      `⭐⭐ SUPER CHALLENGE: Voldemort shoots back!
+
+Click DARK_CURSE in the sprite list, then:
+
+① Yellow EVENTS → "when 🚩 clicked"
+② Orange CONTROL → "forever" → snap under
+   Inside forever:
+③ CONTROL → "wait [pick random 2 to 4] secs"
+④ Blue MOTION → "go to [Voldemort]"
+⑤ Blue MOTION → "glide 1 secs to x: 0 y: -170"
+⑥ Blue MOTION → "go to x: 0 y: 170"
+
+✅ Click 🚩 — dark curses fire down at Harry! Show your teacher! 🔮`,
     ],
   },
 
@@ -62,29 +154,190 @@ const updates = [
     gradeBand: 'g3-4',
     weekNumber: 4,
     challenge: 'The Dueling Championship!',
-    tagline: 'Code Voldemort\'s AI brain — HP bars, targeted curses, beat your personal best!',
+    tagline: "Code Voldemort's AI brain — HP bars, targeted curses, beat your personal best!",
     steps: [
-      '🧙 Set up the dueling stage! Your sprite list has HARRY, VOLDEMORT, LIGHTNING_BOLT, and DARK_CURSE pre-loaded. Drag HARRY to the bottom-left. Drag VOLDEMORT to the top-centre. Click the landscape icon → "Choose a Backdrop" → search "Castle" or "Space" → click one. Stage set! ⚡',
+      `🧙 Set up the dueling stage!
 
-      '⬅️➡️ Make Harry move smoothly! Click HARRY. Events → "when 🚩 clicked". CONTROL → "forever" → snap under. Inside the forever: CONTROL → "if...then" → SENSING → "key [right arrow] pressed?" into the diamond. Inside: MOTION → "change x by 12". Add a SECOND "if...then" below (still inside forever): SENSING → "key [left arrow] pressed?" → inside: MOTION → "change x by -12". Add a THIRD "if...then": SENSING → "touching [edge]?" → inside: MOTION → "go to x: 0 y: -130". Hold the arrow keys — Harry glides smoothly! ⬅️➡️',
+① Drag HARRY to the bottom-left of the stage
+② Drag VOLDEMORT to the top-centre
+③ Click the landscape icon (bottom-right corner)
+④ "Choose a Backdrop" → search "Castle" → click it
 
-      '❤️ Set up HP variables! Variables → "Make a Variable" for each: Harry_HP, Voldemort_HP, Score, Personal_Best → OK each time. Click the STAGE. Events → "when 🚩 clicked". Variables → "set Harry_HP to 3" → snap under. Variables → "set Voldemort_HP to 5" → snap under. Variables → "set Score to 0" → snap under. (Leave Personal_Best alone — it keeps its value between games!) Click 🚩 — HP bars and Score show on stage. ❤️',
+✅ Harry at the bottom, Voldemort at the top — let the duel begin! ⚡`,
 
-      '⚡ Lightning bolt fires from Harry! Click LIGHTNING_BOLT. Events → "when [space] key pressed". Motion → "go to [Harry]" → click dropdown → choose Harry (bolt teleports to Harry\'s position!). Motion → "glide 0.2 secs to x: 0 y: 170" → snap under (fires up fast). Motion → "go to x: 0 y: -170" → snap last (resets). Press Space — bolt shoots from Harry straight up! 🚀',
+      `⬅️➡️ Make Harry move smoothly!
 
-      '💥 Lightning hits Voldemort! Click VOLDEMORT. Events → "when 🚩 clicked". CONTROL → "forever". Inside: "if...then" → SENSING → "touching [Lightning_Bolt]?" into diamond. Inside the if: Variables → "change Voldemort_HP by -1". CONTROL → "wait 0.3 secs" (stops one bolt counting as multiple hits — this is called invincibility frames!). Press Space and hit Voldemort — watch Voldemort_HP drop! 💥',
+Click HARRY in the sprite list, then build ONE stack:
 
-      '💀 Voldemort respawns when HP runs out! Still on VOLDEMORT, inside the forever — add a SECOND "if...then" BELOW the first. Operators → "[ ] < [ ]" → put Voldemort_HP on the left, type 1 on the right → drop into diamond. Inside: Variables → "change Score by 1". Variables → "set Voldemort_HP to 5". Motion → "go to [random position]". Looks → "say [I\'ll be back! 💀] for 0.5 secs". Shoot Voldemort 5 times — he respawns and Score goes up! 🎉',
+① Yellow EVENTS → "when 🚩 clicked"
+② Orange CONTROL → "forever" → snap under
+   Inside the forever, add 3 "if...then" blocks:
 
-      '🤖 Voldemort\'s AI — he shoots dark curses! You are now coding Voldemort\'s brain! Click DARK_CURSE. Events → "when 🚩 clicked". CONTROL → "forever". Inside: CONTROL → "wait [pick random 2 to 4] secs" (random timing = unpredictable AI). Motion → "go to [Voldemort]". Motion → "glide 0.8 secs to x: 0 y: -170". Motion → "go to x: 0 y: 170". Click 🚩 — curses fire every few seconds. This is Voldemort\'s BASIC AI. We\'ll make him smarter in the challenge steps! 🔮',
+③ CONTROL → "if...then"
+   Light-blue SENSING → "key [right arrow] pressed?" → into diamond
+   Inside: Blue MOTION → "change x by 12"
 
-      '❤️ Harry takes damage! Click HARRY. Find an EMPTY spot. Drag a NEW "when 🚩 clicked" (separate — not connected to anything). CONTROL → "forever". Inside: "if...then" → SENSING → "touching [Dark_Curse]?" into diamond. Inside: Variables → "change Harry_HP by -1". Looks → "say [Ouch! 😣] for 0.5 secs". CONTROL → "wait 1 secs" (invincibility — one curse can\'t wipe you instantly). Add a SECOND "if...then" below: Operators → Harry_HP < 1 → inside: Looks → "say [Voldemort wins... 💀] for 2 secs". CONTROL → "stop [all]". Game over when HP hits 0! ❤️',
+④ CONTROL → "if...then" (below the first, still inside forever)
+   SENSING → "key [left arrow] pressed?" → into diamond
+   Inside: MOTION → "change x by -12"
 
-      '⏱️ 60-second timer + Personal Best! Click the STAGE. Add to your "when 🚩 clicked" stack: Variables → "set Time to 60" → snap under the HP lines. CONTROL → "repeat 60". Inside: CONTROL → "wait 1 secs". VARIABLES → "change Time by -1". OUTSIDE the repeat: CONTROL → "if...then" → Operators → Score > Personal_Best → inside: Variables → "set Personal_Best to Score". Looks → "say [🏆 New Personal Best!] for 2 secs". CONTROL → "stop [all]". Full 60-second duel — beat your own best score each time! ⏱️',
+⑤ CONTROL → "if...then" (below that)
+   SENSING → "touching [edge]?" → into diamond
+   Inside: MOTION → "go to x: 0 y: -130"
 
-      '🎯 CHALLENGE: Make Voldemort AIM at Harry! Right now dark curses always fall to x:0 — the middle. Harry can stand to the side and never get hit! Click DARK_CURSE. Find the "glide 0.8 secs to x: 0 y: -170" block. Click the 0 in the x slot → DELETE it → SENSING → "x position of [Harry]" → click dropdown → choose Harry → drop it into the x slot. Now the curse flies to wherever Harry IS standing. Click 🚩 — curses chase Harry! You just upgraded Voldemort\'s AI from random to targeted. 🎯',
+✅ Hold the arrow keys — Harry glides smoothly!`,
 
-      '😤 SUPER CHALLENGE: Rage mode at low HP! When Voldemort is about to die he should panic and shoot faster. Click DARK_CURSE. Inside the forever, BEFORE the "wait [pick random 2 to 4] secs" — add "if...then" → Operators → Voldemort_HP < 2 → inside: Looks → "set [color] effect to 50" (curses glow!). CONTROL → "wait [pick random 0.5 to 1.5] secs". CONTROL → "stop [this script]" (skips the normal slower wait so it fires faster). When Voldemort hits 1 HP he goes into RAGE MODE — coloured curses, twice as fast. The final hit is the hardest! 💥 Show your teacher your full duel!',
+      `❤️ Set up HP bars and score!
+
+Make 4 variables (orange VARIABLES → "Make a Variable" for each):
+① Harry_HP   → OK
+② Voldemort_HP → OK
+③ Score → OK
+④ Personal_Best → OK
+
+Now click the STAGE (grey box to the LEFT of the sprite list):
+⑤ Yellow EVENTS → "when 🚩 clicked"
+⑥ VARIABLES → "set Harry_HP to 3" → snap under
+⑦ VARIABLES → "set Voldemort_HP to 5" → snap under
+⑧ VARIABLES → "set Score to 0" → snap under
+   (Leave Personal_Best alone — it saves your best between games!)
+
+✅ Click 🚩 — HP bars and Score appear on screen!`,
+
+      `⚡ Make lightning fire from Harry!
+
+Click LIGHTNING_BOLT in the sprite list:
+
+① Yellow EVENTS → "when [space] key pressed"
+② Blue MOTION → "go to [Harry]"
+   → click the dropdown → choose Harry
+   (bolt teleports to wherever Harry is standing!)
+③ MOTION → "glide 0.2 secs to x: 0 y: 170" → snap under
+④ MOTION → "go to x: 0 y: -170" → snap last (resets)
+
+✅ Press Space — bolt fires from Harry straight up!`,
+
+      `💥 Lightning hits Voldemort!
+
+Click VOLDEMORT in the sprite list:
+
+① Yellow EVENTS → "when 🚩 clicked"
+② Orange CONTROL → "forever" → snap under
+   Inside the forever:
+③ CONTROL → "if...then"
+   SENSING → "touching [Lightning_Bolt]?" → into diamond
+   Inside the if:
+④ VARIABLES → "change Voldemort_HP by -1"
+⑤ CONTROL → "wait 0.3 secs"
+   (this stops one bolt from counting as 3 hits)
+
+✅ Press Space and aim at Voldemort — watch the HP drop!`,
+
+      `💀 Voldemort respawns when HP reaches 0!
+
+Still on VOLDEMORT — add a SECOND "if...then" BELOW the first (inside the forever):
+
+① Orange OPERATORS → "[ ] < [ ]" block
+   → put Voldemort_HP on the left, type 1 on the right
+   → drop into the diamond slot
+   Inside this if:
+② VARIABLES → "change Score by 1"
+③ VARIABLES → "set Voldemort_HP to 5"
+④ MOTION → "go to [random position]"
+⑤ LOOKS → "say [I'll be back! 💀] for 0.5 secs"
+
+✅ Shoot Voldemort 5 times — he respawns and your score goes up!`,
+
+      `🤖 Code Voldemort's AI — he shoots back!
+
+You are coding Voldemort's brain! Click DARK_CURSE:
+
+① Yellow EVENTS → "when 🚩 clicked"
+② Orange CONTROL → "forever" → snap under
+   Inside the forever:
+③ CONTROL → "wait [pick random 2 to 4] secs"
+   (random timing makes the AI unpredictable!)
+④ MOTION → "go to [Voldemort]"
+⑤ MOTION → "glide 0.8 secs to x: 0 y: -170"
+⑥ MOTION → "go to x: 0 y: 170"
+
+✅ Click 🚩 — dark curses fire every few seconds! This is Voldemort's basic AI. 🔮`,
+
+      `❤️ Harry takes damage from curses!
+
+Click HARRY → find an EMPTY spot on the white area:
+
+Build a SEPARATE stack (not connected to the first one):
+① Yellow EVENTS → "when 🚩 clicked"
+② CONTROL → "forever"
+   Inside:
+③ CONTROL → "if...then"
+   SENSING → "touching [Dark_Curse]?" → into diamond
+   Inside the if:
+④ VARIABLES → "change Harry_HP by -1"
+⑤ LOOKS → "say [Ouch! 😣] for 0.5 secs"
+⑥ CONTROL → "wait 1 secs"
+   (gives Harry 1 second where he can't be hit again)
+
+Below the first if, add a second:
+⑦ CONTROL → "if...then"
+   OPERATORS → Harry_HP < 1 → into diamond
+   Inside: LOOKS → "say [Voldemort wins! 💀] for 2 secs"
+   Then: CONTROL → "stop [all]"
+
+✅ Let a curse hit Harry — HP drops! 3 hits and it's game over.`,
+
+      `⏱️ 60-second timer + Personal Best!
+
+Click the STAGE — add to the bottom of your "when 🚩 clicked" stack:
+
+① VARIABLES → "set Time to 60" → snap under the HP lines
+② CONTROL → "repeat 60"
+   Inside repeat:
+   CONTROL → "wait 1 secs"
+   VARIABLES → "change Time by -1"
+③ After the repeat (snap OUTSIDE below it):
+   CONTROL → "if...then"
+   OPERATORS → Score > Personal_Best → into diamond
+   Inside: VARIABLES → "set Personal_Best to Score"
+   Then: LOOKS → "say [🏆 New Personal Best!] for 2 secs"
+④ CONTROL → "stop [all]"
+
+✅ 60-second duel! Beat your own best score each round.`,
+
+      `🎯 CHALLENGE: Make Voldemort AIM at Harry!
+
+Right now curses always fall to x: 0 (the middle).
+Harry can stand to the side and never get hit!
+
+Click DARK_CURSE. Find this block:
+"glide 0.8 secs to x: 0 y: -170"
+
+① Click the "0" in the x slot → delete it
+② Light-blue SENSING → "x position of [Harry]"
+   → click dropdown → choose Harry
+   → drag it into the x slot
+
+Now the block reads: "glide 0.8 secs to x: (x position of Harry) y: -170"
+
+✅ Click 🚩 — curses now fly to wherever Harry is standing! You upgraded the AI to targeted mode. 🎯`,
+
+      `😤 SUPER CHALLENGE: Rage mode!
+
+When Voldemort is almost dead, he panics and shoots FASTER.
+
+Click DARK_CURSE. Inside the forever, BEFORE the "wait [pick random 2 to 4] secs":
+
+① CONTROL → "if...then"
+   OPERATORS → Voldemort_HP < 2 → into diamond
+   Inside the if:
+② LOOKS → "set [color] effect to 50" (curses glow red!)
+③ CONTROL → "wait [pick random 0.5 to 1.5] secs"
+④ CONTROL → "stop [this script]"
+   (this skips the slower normal wait — so he fires twice as fast!)
+
+✅ Click 🚩 — when Voldemort hits 1 HP, glowing curses fly twice as fast!
+The final hit is the hardest. Show your teacher your full duel! 💥`,
     ],
   },
 ]
