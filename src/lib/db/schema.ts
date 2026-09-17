@@ -30,6 +30,7 @@ export const classrooms = pgTable('classrooms', {
   gradeLevel:  text('grade_level').notNull(), // '1','2','3','4'
   gradeBand:   text('grade_band').notNull(),  // 'g1-2' | 'g3-4'
   accessCode:  text('access_code').notNull().unique(), // 6-char code e.g. KEEN42
+  activeWeek:  integer('active_week'),        // nullable — overrides date-based week when set
   createdAt:   timestamp('created_at').defaultNow().notNull(),
 })
 

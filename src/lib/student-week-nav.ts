@@ -20,31 +20,48 @@ export interface WeekNav {
 /** Get nav from any day's classroomId + current date (for pages with no dayId like /science/lab) */
 export async function getWeekNavFromClassroom(classroomId: string): Promise<WeekNav> {
   const { db: _db } = await import('@/lib/db')
-  const { classroomCurriculum, curriculumDays: cdTable } = await import('@/lib/db/schema')
+  const { classrooms: classroomsTable, classroomCurriculum, curriculumDays: cdTable, curriculum: curriculumTable } = await import('@/lib/db/schema')
   const { eq: _eq, and: _and, lte: _lte, desc: _desc } = await import('drizzle-orm')
 
-  const today = new Date()
-  const pad = (n: number) => String(n).padStart(2, '0')
-  const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`
+  const empty: WeekNav = { build: null, coding: null, public_speaking: null, science: null, math: null, arts: null, weekNumber: null }
 
-  // Pick the most recent week whose start date is ≤ today (same logic as dashboard)
-  const { curriculum: curriculumTable } = await import('@/lib/db/schema')
-  const [ccRow] = await _db.select({ curriculumId: classroomCurriculum.curriculumId })
-    .from(classroomCurriculum)
-    .where(_and(
-      _eq(classroomCurriculum.classroomId, classroomId),
-      _lte(classroomCurriculum.weekStartDate, todayStr),
-    ) as any)
-    .orderBy(_desc(classroomCurriculum.weekStartDate))
-    .limit(1)
+  // Check for an active_week override on the classroom
+  const [clRow] = await _db.select({ activeWeek: classroomsTable.activeWeek })
+    .from(classroomsTable).where(_eq(classroomsTable.id, classroomId)).limit(1)
 
-  if (!ccRow) return { build: null, coding: null, public_speaking: null, science: null, math: null, arts: null, weekNumber: null }
+  let ccRow: { curriculumId: string } | undefined
 
-  // Also fetch the week number
+  if (clRow?.activeWeek != null) {
+    // Teacher has pinned a specific week — find that week's curriculum directly
+    const [pinned] = await _db.select({ curriculumId: classroomCurriculum.curriculumId })
+      .from(classroomCurriculum)
+      .innerJoin(curriculumTable, _eq(curriculumTable.id, classroomCurriculum.curriculumId))
+      .where(_and(
+        _eq(classroomCurriculum.classroomId, classroomId),
+        _eq(curriculumTable.weekNumber, clRow.activeWeek),
+      ) as any)
+      .limit(1)
+    ccRow = pinned
+  } else {
+    // Fall back to date-based logic: most recent week whose start date ≤ today
+    const today = new Date()
+    const pad = (n: number) => String(n).padStart(2, '0')
+    const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`
+    const [dated] = await _db.select({ curriculumId: classroomCurriculum.curriculumId })
+      .from(classroomCurriculum)
+      .where(_and(
+        _eq(classroomCurriculum.classroomId, classroomId),
+        _lte(classroomCurriculum.weekStartDate, todayStr),
+      ) as any)
+      .orderBy(_desc(classroomCurriculum.weekStartDate))
+      .limit(1)
+    ccRow = dated
+  }
+
+  if (!ccRow) return empty
+
   const [currRow] = await _db.select({ weekNumber: curriculumTable.weekNumber })
-    .from(curriculumTable)
-    .where(_eq(curriculumTable.id, ccRow.curriculumId))
-    .limit(1)
+    .from(curriculumTable).where(_eq(curriculumTable.id, ccRow.curriculumId)).limit(1)
   const weekNumber = currRow?.weekNumber ?? null
 
   const days = await _db.select({ id: cdTable.id, subject: cdTable.subject })

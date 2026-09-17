@@ -16,6 +16,7 @@ import { StudentManager } from './StudentManager'
 import { SendReportButton } from './SendReportButton'
 import { CoTeacherPanel } from './CoTeacherPanel'
 import { TeacherSidebar, type ActivitySubject } from './TeacherSidebar'
+import { WeekOverrideControl } from './WeekOverrideControl'
 import { getMondayStr, addDays, formatWeekLabel, summarizeClassProgress } from '@/lib/teacher-dashboard'
 
 const AVATARS = ['🦊','🐼','🦁','🐸','🦋','🐬','🦄','🐉']
@@ -91,6 +92,17 @@ export default async function TeacherDashboardPage({
         .from(users)
         .where(and(eq(users.classroomId, classroom.id), eq(users.role, 'student'), isNull(users.deletedAt)))
         .orderBy(users.name)
+    : []
+
+  // Load all assigned weeks for the week-override dropdown
+  const assignedWeeks = classroom
+    ? (await db
+        .select({ weekNumber: curriculum.weekNumber })
+        .from(classroomCurriculum)
+        .innerJoin(curriculum, eq(classroomCurriculum.curriculumId, curriculum.id))
+        .where(eq(classroomCurriculum.classroomId, classroom.id))
+        .orderBy(curriculum.weekNumber)
+      ).map(r => r.weekNumber)
     : []
 
   // Load this week's curriculum assignment
@@ -277,6 +289,18 @@ export default async function TeacherDashboardPage({
           </div>
           <div className="text-5xl">🔑</div>
         </div>
+
+        {/* ── Week Preview Override ── */}
+        {classroom && (
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-3 flex items-center justify-between">
+            <WeekOverrideControl
+              classroomId={classroom.id}
+              currentActiveWeek={(classroom as any).activeWeek ?? null}
+              assignedWeeks={assignedWeeks}
+            />
+            <p className="text-xs text-amber-600 hidden sm:block">Set to <strong>Auto</strong> before class starts</p>
+          </div>
+        )}
 
         {/* ── This Week ── */}
         <div className="bg-white rounded-2xl shadow-sm p-5">

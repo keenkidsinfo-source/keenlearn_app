@@ -17,7 +17,13 @@
  */
 
 const SCHOOL_START = '2026-08-31'   // Monday of Week 1
-const TOTAL_WEEKS  = 3              // how many weeks of curriculum are seeded
+const TOTAL_WEEKS  = 4              // how many weeks of curriculum are seeded
+
+// Override specific weeks with custom dates (remove before class starts!)
+// e.g. set Week 4 to today to verify content before the real Monday start
+const WEEK_OVERRIDES = {
+  4: '2026-09-17',   // ← TEMP: remove before Sep 21 class starts
+}
 
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
@@ -45,10 +51,10 @@ function addWeeks(dateStr, weeks) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 }
 
-// Build the week_number → Monday map
+// Build the week_number → Monday map (overrides take priority)
 const WEEK_DATES = {}
 for (let w = 1; w <= TOTAL_WEEKS; w++) {
-  WEEK_DATES[w] = addWeeks(SCHOOL_START, w - 1)
+  WEEK_DATES[w] = WEEK_OVERRIDES[w] ?? addWeeks(SCHOOL_START, w - 1)
 }
 
 async function run() {
