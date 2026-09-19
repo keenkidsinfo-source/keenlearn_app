@@ -78,10 +78,11 @@ export async function POST(req: NextRequest) {
   const classroom = await getTeacherClassroom(session.sub, session.role === 'admin' ? adminClassroomId : undefined)
   if (!classroom) return apiError('No classroom found', 'NOT_FOUND', 404)
 
+  // Use the requesting teacher's own record for name + email
   const [teacher] = await db
     .select({ name: users.name, email: users.email })
     .from(users)
-    .where(eq(users.id, classroom.teacherId!))
+    .where(eq(users.id, session.sub))
     .limit(1)
   const teacherEmail = teacher?.email ?? GMAIL_USER
   const teacherName  = teacher?.name  ?? 'Your Teacher'
