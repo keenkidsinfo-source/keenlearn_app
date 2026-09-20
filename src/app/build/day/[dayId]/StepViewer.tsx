@@ -77,6 +77,16 @@ const PREP_INFO: Record<string, { image?: string; steps: string[]; warning: stri
       'Write on the board: BEAM | FULCRUM | PIVOT | PRECISION — for vocabulary reference.',
     ],
   },
+  'Paper Fan': {
+    warning: '⚠️ Pre-cut all materials before class. Test that the skewer spins freely inside the cup before kids start!',
+    steps: [
+      'Per student: 1 sheet of paper (for fan blade), 1 bamboo skewer, 1 paper cup, 1 strip of paper (~2 cm wide), string (~30 cm), tape, scissors.',
+      'Pre-draw the fan blade shape on paper for G1-2 kids so they just need to cut it out.',
+      'Test that the skewer pokes cleanly through the paper cup top without splitting — use a sharp point.',
+      'Cut string to 30 cm per student and pre-tie a loop at one end.',
+      'Have a completed demo fan ready so kids can see the finished product and how it spins.',
+    ],
+  },
   'Marble Run': {
     warning: '⚠️ Build your demo marble run the night before and test it at least 5 times. Know every failure point before class starts!',
     steps: [
