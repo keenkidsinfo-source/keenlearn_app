@@ -17,6 +17,8 @@ export interface TheorySlide {
   tryThis?: string
   /** Teacher-only speaking notes — what to say aloud while showing this slide */
   speakerNotes?: string[]
+  /** G3-4 challenge question shown below the slide visual */
+  challenge?: string
 }
 
 export interface TheoryDeck {
@@ -947,7 +949,148 @@ const paperFanG12Deck: TheoryDeck = {
 }
 
 
-export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck, seesawDeck, balanceScaleDeck, marbleRunG12Deck, marbleRunG34Deck, paperFanG12Deck]
+// ── G3-4 · Paper Fan · Propellers + Energy Conversion + Blade Design ─────────
+
+const paperFanG34Deck: TheoryDeck = {
+  gradeBand: 'g3-4',
+  weekNumber: 4,
+  title: 'Paper Fan: Propeller Science',
+  subject: 'Energy & Engineering',
+  slides: [
+    {
+      emoji: '🌀',
+      color: 'orange',
+      title: 'What Did We Build?',
+      headline: 'A string-powered propeller. Let\'s use the right words.',
+      bullets: [
+        'Fan blade = **propeller** (converts rotation into airflow)',
+        'Skewer = **axle** (the spinning shaft)',
+        'Wound string = **stored potential energy**',
+        'Pull → release energy → axle spins → propeller pushes air → **thrust**',
+      ],
+      vocab: { word: 'Propeller', definition: 'A rotating blade that converts spinning motion into airflow or thrust' },
+      challenge: 'The string is wound 10 times. If each full wind = 1 rotation of the blade, how many spins do you get? What if wound 20 times?',
+      speakerNotes: [
+        '"G1-2 called it a fan. You\'re going to call it a propeller — because that\'s the correct engineering term."',
+        '"A propeller\'s job is to take rotation and turn it into moving air. Same principle as an airplane propeller or a helicopter rotor."',
+        '"Today you\'re not just building — you\'re engineering. That means predicting, testing, measuring."',
+      ],
+    },
+    {
+      emoji: '💨',
+      color: 'blue',
+      title: 'Airflow & Thrust',
+      headline: 'The propeller pushes air backwards — that reaction pushes wind forward.',
+      bullets: [
+        '**Airflow** = the stream of air the propeller creates.',
+        '**Thrust** = the force produced by pushing air in one direction.',
+        'Newton\'s 3rd Law: push air one way → air pushes back the other way.',
+        'Faster spin = more air moved per second = more thrust.',
+      ],
+      vocab: { word: 'Thrust', definition: 'Force produced by pushing air in one direction — the reaction moves the object the other way' },
+      challenge: 'If the fan spins twice as fast, do you get exactly twice the wind? More? Less? Predict first, then test after you build.',
+      speakerNotes: [
+        '"Think of a boat propeller — it pushes water backwards, which pushes the boat forwards. Same physics, different fluid."',
+        '"Newton\'s 3rd Law: every action has an equal and opposite reaction. The propeller pushes air one way; that creates a force the other way."',
+        '"This is why airplane propellers face forward — they pull the plane through the air by pushing air backwards."',
+      ],
+    },
+    {
+      emoji: '🎁',
+      color: 'green',
+      title: 'Potential Energy',
+      headline: 'Winding the string stores potential energy — like a compressed spring.',
+      bullets: [
+        '**Potential energy** = stored energy waiting to be released.',
+        'Each wind of the string adds more potential energy to the system.',
+        'More winds = more potential energy = longer / faster spin.',
+        'The tighter the wind, the more energy density in the string.',
+      ],
+      vocab: { word: 'Potential Energy', definition: 'Stored energy — in our fan, it\'s held in the wound string, ready to release' },
+      challenge: 'Wind 5 turns vs 10 turns. Time how long the fan spins each time. Is the ratio exactly 2:1? Why or why not?',
+      speakerNotes: [
+        '"Potential energy is energy that hasn\'t done anything yet — it\'s just waiting."',
+        '"A stretched rubber band, a raised weight, a wound spring — all the same idea: stored energy."',
+        '"The ratio challenge: 10 winds vs 5 winds. Most students assume exactly double spin time. It\'s usually not — friction, air resistance, and slack all affect it."',
+      ],
+    },
+    {
+      emoji: '🚀',
+      color: 'red',
+      title: 'Energy Conversion Chain',
+      headline: 'Potential → Kinetic (spin) → Kinetic (airflow). Energy changes form, never disappears.',
+      bullets: [
+        '**Potential energy** (wound string) → **Kinetic energy** (spinning axle)',
+        '**Kinetic energy** (spinning axle) → **Kinetic energy** (moving air = airflow)',
+        'Some energy is lost to **friction** at the cup hole and the string.',
+        'Energy lost to friction = heat. That\'s why the cup hole gets slightly warm.',
+      ],
+      vocab: { word: 'Kinetic Energy', definition: 'Energy of motion — the spinning axle and moving air both have kinetic energy' },
+      challenge: 'What limits the top spin speed of the fan? Name two sources of friction in the system.',
+      speakerNotes: [
+        '"In science, energy never disappears — it just changes form. Today\'s chain: stored → spinning → wind."',
+        '"Some energy is always lost. To what? Friction at the cup hole, air resistance on the blade, string drag."',
+        '"The two friction sources students usually spot: the hole in the cup (axle rubs against it) and the string unwinding (creates drag). Good engineers try to minimise both."',
+      ],
+    },
+    {
+      emoji: '🌍',
+      color: 'purple',
+      title: 'Propellers in the Real World',
+      headline: 'Same principle — from toy fans to jet engines.',
+      bullets: [
+        '✈️ **Airplane propeller** — spins to push air back, pulling plane forward.',
+        '🚁 **Helicopter rotor** — horizontal propeller generates lift, not forward thrust.',
+        '🌬️ **Wind turbine** — propeller in REVERSE: wind spins it → generates electricity.',
+        '🚢 **Ship propeller** — same physics, but in water (denser fluid = more thrust per spin).',
+      ],
+      challenge: 'Draw the energy chain for a wind turbine. Start with "wind (kinetic energy)" and end with "electricity". How many steps?',
+      speakerNotes: [
+        '"Notice wind turbines are the reverse of our fan: our fan uses energy to make wind. A turbine uses wind to make energy."',
+        '"Ship propellers are much smaller than airplane ones — why? Water is 800x denser than air, so you need far fewer blade rotations to get the same thrust."',
+        '"Helicopter rotors: the blade is tilted at an angle so the airflow goes downward — the reaction lifts the helicopter up."',
+      ],
+    },
+    {
+      emoji: '🏆',
+      color: 'orange',
+      title: 'Engineering Challenge Preview',
+      headline: 'After you build: test two blade designs and measure which makes more wind.',
+      bullets: [
+        '**Variable 1 — Blade angle (pitch):** flat vs tilted. Which pushes more air?',
+        '**Variable 2 — Blade width:** narrow vs wide. How does area affect airflow?',
+        'Hold a strip of tissue 10 cm from the blade. More deflection = more wind.',
+        '**Rule:** change ONE variable at a time. Control everything else.',
+      ],
+      challenge: 'Predict before you test: will a wider blade or a more tilted blade produce more wind? Write your prediction and your reasoning.',
+      speakerNotes: [
+        '"This is a real engineering test. Real propeller designers do the same thing — vary angle and area systematically."',
+        '"The tissue strip is your measurement tool. It\'s simple but it works — and the degree of deflection gives you a rough comparison."',
+        '"Remind them: change ONE thing at a time. If they change both angle and width, they can\'t know which caused the difference."',
+      ],
+    },
+    {
+      emoji: '🙋',
+      color: 'blue',
+      title: 'Let\'s Review!',
+      headline: 'Name the concepts — use the right words.',
+      bullets: [
+        '❓ What do we call the fan blade? → **Propeller**',
+        '❓ What energy is stored in the wound string? → **Potential energy**',
+        '❓ What does the propeller produce? → **Thrust / airflow**',
+        '❓ What\'s the full energy chain? → **Potential → Kinetic (spin) → Kinetic (airflow)**',
+      ],
+      challenge: 'If you could make ONE change to get the most wind possible from the same number of winds — what would you change and why?',
+      speakerNotes: [
+        '"Quick fire round — engineering vocabulary edition."',
+        '"For the final challenge: accept any well-reasoned answer. Wider blade, steeper pitch, reduce friction at the cup hole — all valid."',
+        '"Key message: you\'re not just building a fan today. You\'re testing a propeller system. Think like an engineer."',
+      ],
+    },
+  ],
+}
+
+export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck, seesawDeck, balanceScaleDeck, marbleRunG12Deck, marbleRunG34Deck, paperFanG12Deck, paperFanG34Deck]
 
 // Returns null if no deck exists for that week — caller should hide the Theory button
 export function getTheoryDeck(gradeBand: string, weekNumber: number): TheoryDeck | null {

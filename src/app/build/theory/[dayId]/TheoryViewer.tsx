@@ -1864,6 +1864,16 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
     5: SvgFanDiscovery,
     6: SvgFanReview,
   },
+  // G3-4 Week 4 — Paper Fan / Propeller (same visuals + challenge banners)
+  'g3-4-4': {
+    0: SvgFanWhatDidWeBuild,
+    1: SvgFanWind,
+    2: SvgFanStoredEnergy,
+    3: SvgFanRelease,
+    4: SvgFanRealWorld,
+    5: SvgFanDiscovery,
+    6: SvgFanReview,
+  },
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -1902,31 +1912,36 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
         <span className="text-white/50 text-xs shrink-0">{slide + 1}/{total}</span>
       </header>
 
-      {/* SLIDE — SVG or text card */}
-      <div className={cn('flex-1 flex items-center justify-center p-4 overflow-y-auto', Visual != null ? 'bg-white' : colors.bg)}>
-        {Visual != null ? (
+      {/* SLIDE — visual + text together */}
+      <div className={cn('flex-1 flex flex-col items-center p-4 overflow-y-auto gap-3', Visual != null ? 'bg-white' : colors.bg)}>
+        {/* SVG visual */}
+        {Visual != null && (
           <div className="w-full max-w-4xl">
             <Visual />
           </div>
-        ) : (
-          /* Text layout for slides without a custom SVG (e.g. W2 Seesaw / Balance Scale) */
-          <div className="w-full max-w-2xl space-y-4">
-            {/* Emoji + headline */}
+        )}
+
+        {/* Text content below visual (or standalone when no visual) */}
+        <div className={cn('w-full space-y-2', Visual != null ? 'max-w-4xl' : 'max-w-2xl')}>
+          {/* Headline + emoji — only shown when no visual */}
+          {Visual == null && (
             <div className={cn('rounded-2xl p-5 border-2', colors.border)}>
               <div className="text-6xl text-center mb-3">{current.emoji}</div>
               <p className={cn('text-xl font-black text-center leading-snug', colors.text)}>{current.headline}</p>
             </div>
-            {/* Vocab word */}
-            {current.vocab && (
-              <div className={cn('rounded-xl px-4 py-3 flex items-start gap-3', colors.headlineBg, 'border', colors.border)}>
-                <span className={cn('text-xs font-black uppercase tracking-widest mt-0.5 shrink-0', colors.text)}>WORD</span>
-                <div>
-                  <p className={cn('font-black text-base', colors.text)}>{current.vocab.word}</p>
-                  <p className={cn('text-sm', colors.text)}>{current.vocab.definition}</p>
-                </div>
+          )}
+          {/* Vocab word */}
+          {current.vocab && (
+            <div className={cn('rounded-xl px-4 py-2.5 flex items-start gap-3', colors.headlineBg, 'border', colors.border)}>
+              <span className={cn('text-xs font-black uppercase tracking-widest mt-0.5 shrink-0', colors.text)}>WORD</span>
+              <div>
+                <p className={cn('font-black text-sm', colors.text)}>{current.vocab.word}</p>
+                <p className={cn('text-xs', colors.text)}>{current.vocab.definition}</p>
               </div>
-            )}
-            {/* Bullet points */}
+            </div>
+          )}
+          {/* Bullet points — only shown when no visual */}
+          {Visual == null && (
             <div className="space-y-2">
               {current.bullets.map((b, i) => (
                 <div key={i} className={cn('rounded-xl px-4 py-3 border', colors.headlineBg, colors.border)}>
@@ -1937,14 +1952,20 @@ export function TheoryViewer({ deck, buildDayId }: Props) {
                 </div>
               ))}
             </div>
-            {/* Try this */}
-            {current.tryThis && (
-              <div className="rounded-xl bg-yellow-50 border border-yellow-200 px-4 py-3">
-                <p className="text-yellow-800 text-sm font-semibold">🙋 {current.tryThis}</p>
-              </div>
-            )}
-          </div>
-        )}
+          )}
+          {/* Try this */}
+          {current.tryThis && (
+            <div className="rounded-xl bg-yellow-50 border border-yellow-200 px-4 py-2.5">
+              <p className="text-yellow-800 text-sm font-semibold">🙋 {current.tryThis}</p>
+            </div>
+          )}
+          {/* G3-4 challenge */}
+          {current.challenge && (
+            <div className="rounded-xl bg-amber-50 border-2 border-amber-400 px-4 py-2.5">
+              <p className="text-amber-900 text-sm font-bold">🔬 Think: {current.challenge}</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Speaker notes — collapsed by default, teacher taps to peek */}
