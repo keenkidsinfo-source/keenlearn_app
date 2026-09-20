@@ -1789,7 +1789,7 @@ function SvgFanReview() {
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
       <rect width="760" height="340" fill="#eff6ff" rx="16"/>
-      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Let's Review! 🙋 Shout it out!</text>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">{"Let's Review! 🙋 Shout it out!"}</text>
 
       {[
         { q: '❓ What is WIND?',             a: '→  Moving air!',              bg: '#1d4ed8', light: '#dbeafe' },
@@ -1806,7 +1806,7 @@ function SvgFanReview() {
       ))}
 
       <rect x="60" y="310" width="640" height="24" rx="10" fill="#1e293b"/>
-      <text x="380" y="326" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Ready to build? Let's make WIND! 🌀💨</text>
+      <text x="380" y="326" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">{"Ready to build? Let's make WIND! 🌀💨"}</text>
     </svg>
   )
 }
