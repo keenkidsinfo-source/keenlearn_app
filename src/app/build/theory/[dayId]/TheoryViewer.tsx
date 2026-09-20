@@ -1500,6 +1500,317 @@ function SvgBalanceScaleReview() {
   )
 }
 
+// ── G1-2 · Week 4 · Paper Fan SVGs ───────────────────────────────────────────
+
+function SvgFanWhatDidWeBuild() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fff7ed" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What Did We Build? 🌀</text>
+
+      {/* Fan blade at top */}
+      <ellipse cx="380" cy="75" rx="70" ry="35" fill="#fbbf24" stroke="#d97706" strokeWidth="3"/>
+      <text x="380" y="80" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#78350f">FAN BLADE</text>
+
+      {/* Skewer */}
+      <rect x="372" y="55" width="16" height="175" rx="4" fill="#92400e"/>
+
+      {/* String wound on skewer (wiggly lines) */}
+      <path d="M372,130 Q360,124 372,118 Q384,112 372,106 Q360,100 372,94 Q384,88 372,82" fill="none" stroke="#3b82f6" strokeWidth="3"/>
+      <text x="310" y="112" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#1d4ed8">STRING</text>
+      <text x="310" y="126" textAnchor="middle" fontSize="11" fill="#1d4ed8">(wound tight)</text>
+      <line x1="340" y1="112" x2="368" y2="108" stroke="#1d4ed8" strokeWidth="1.5" strokeDasharray="4,2"/>
+
+      {/* String hanging down */}
+      <line x1="372" y1="140" x2="372" y2="200" stroke="#3b82f6" strokeWidth="3" strokeDasharray="6,3"/>
+      <text x="310" y="180" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#1d4ed8">PULL</text>
+      <text x="310" y="194" textAnchor="middle" fontSize="11" fill="#1d4ed8">this end!</text>
+      <line x1="340" y1="182" x2="368" y2="178" stroke="#1d4ed8" strokeWidth="1.5" strokeDasharray="4,2"/>
+
+      {/* Cup */}
+      <polygon points="342,190 420,190 408,240 354,240" fill="#d4956a" stroke="#92400e" strokeWidth="3"/>
+      <line x1="342" y1="190" x2="420" y2="190" stroke="#92400e" strokeWidth="3"/>
+      <text x="380" y="222" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#78350f">PAPER CUP</text>
+
+      {/* 4 label cards at bottom */}
+      <rect x="20" y="260" width="158" height="64" rx="12" fill="#f97316"/>
+      <text x="99" y="282" textAnchor="middle" fontSize="22">🌬️</text>
+      <text x="99" y="302" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Fan Blade</text>
+      <text x="99" y="318" textAnchor="middle" fontSize="11" fill="#ffedd5">pushes the air</text>
+
+      <rect x="196" y="260" width="158" height="64" rx="12" fill="#92400e"/>
+      <text x="275" y="282" textAnchor="middle" fontSize="22">🥢</text>
+      <text x="275" y="302" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Skewer</text>
+      <text x="275" y="318" textAnchor="middle" fontSize="11" fill="#fef3c7">spins and turns fan</text>
+
+      <rect x="372" y="260" width="158" height="64" rx="12" fill="#1d4ed8"/>
+      <text x="451" y="282" textAnchor="middle" fontSize="22">🪢</text>
+      <text x="451" y="302" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">String</text>
+      <text x="451" y="318" textAnchor="middle" fontSize="11" fill="#bfdbfe">stores energy when wound</text>
+
+      <rect x="548" y="260" width="190" height="64" rx="12" fill="#7c3aed"/>
+      <text x="643" y="282" textAnchor="middle" fontSize="22">🥤</text>
+      <text x="643" y="302" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Paper Cup</text>
+      <text x="643" y="318" textAnchor="middle" fontSize="11" fill="#e9d5ff">holds it all together</text>
+    </svg>
+  )
+}
+
+function SvgFanWind() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#eff6ff" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What is WIND? 💨</text>
+
+      {/* Left: Still air */}
+      <rect x="30" y="50" width="310" height="240" rx="16" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
+      <text x="185" y="80" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#64748b">Still air</text>
+      <text x="185" y="160" textAnchor="middle" fontSize="60">😐</text>
+      <text x="185" y="210" textAnchor="middle" fontSize="14" fill="#94a3b8">No wind.</text>
+      <text x="185" y="230" textAnchor="middle" fontSize="14" fill="#94a3b8">Nothing moving.</text>
+      <rect x="80" y="252" width="210" height="28" rx="10" fill="#e2e8f0"/>
+      <text x="185" y="270" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#64748b">Air is still = NO WIND</text>
+
+      {/* Arrow in middle */}
+      <text x="380" y="185" textAnchor="middle" fontSize="36" fill="#3b82f6">→</text>
+
+      {/* Right: Moving air = WIND */}
+      <rect x="420" y="50" width="310" height="240" rx="16" fill="#dbeafe" stroke="#3b82f6" strokeWidth="2"/>
+      <text x="575" y="80" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#1d4ed8">Moving air</text>
+      {/* Fan spinning */}
+      <text x="510" y="155" textAnchor="middle" fontSize="55">🌀</text>
+      {/* Wind arrows */}
+      <line x1="560" y1="130" x2="680" y2="110" stroke="#3b82f6" strokeWidth="3" markerEnd="url(#windArr)"/>
+      <line x1="560" y1="150" x2="690" y2="150" stroke="#3b82f6" strokeWidth="3" markerEnd="url(#windArr)"/>
+      <line x1="560" y1="170" x2="680" y2="190" stroke="#3b82f6" strokeWidth="3" markerEnd="url(#windArr)"/>
+      <defs><marker id="windArr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#3b82f6"/></marker></defs>
+      {/* Happy face feeling wind */}
+      <text x="700" y="160" textAnchor="middle" fontSize="40">😄</text>
+      <rect x="460" y="252" width="230" height="28" rx="10" fill="#1d4ed8"/>
+      <text x="575" y="270" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Fan pushes air = WIND! 💨</text>
+    </svg>
+  )
+}
+
+function SvgFanStoredEnergy() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#f0fdf4" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Storing Energy 🎁</text>
+
+      {/* Left: loose string */}
+      <rect x="30" y="55" width="310" height="220" rx="16" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
+      <text x="185" y="85" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#64748b">String loose</text>
+      {/* skewer */}
+      <rect x="178" y="100" width="14" height="130" rx="4" fill="#92400e"/>
+      {/* loose string hanging */}
+      <path d="M185,130 Q170,145 185,160 Q200,175 185,190 Q170,205 185,220" fill="none" stroke="#94a3b8" strokeWidth="3" strokeDasharray="5,3"/>
+      <rect x="60" y="232" width="250" height="28" rx="10" fill="#e2e8f0"/>
+      <text x="185" y="250" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#64748b">No energy stored 😴</text>
+
+      {/* Arrow */}
+      <text x="380" y="185" textAnchor="middle" fontSize="36" fill="#22c55e">→</text>
+      <text x="380" y="210" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#22c55e">WIND</text>
+      <text x="380" y="226" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#22c55e">IT!</text>
+
+      {/* Right: wound string */}
+      <rect x="420" y="55" width="310" height="220" rx="16" fill="#dcfce7" stroke="#22c55e" strokeWidth="2"/>
+      <text x="575" y="85" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#166534">String WOUND TIGHT</text>
+      {/* skewer */}
+      <rect x="568" y="100" width="14" height="130" rx="4" fill="#92400e"/>
+      {/* wound string loops */}
+      <ellipse cx="575" cy="120" rx="20" ry="6" fill="none" stroke="#3b82f6" strokeWidth="3"/>
+      <ellipse cx="575" cy="133" rx="20" ry="6" fill="none" stroke="#3b82f6" strokeWidth="3"/>
+      <ellipse cx="575" cy="146" rx="20" ry="6" fill="none" stroke="#3b82f6" strokeWidth="3"/>
+      <ellipse cx="575" cy="159" rx="20" ry="6" fill="none" stroke="#3b82f6" strokeWidth="3"/>
+      <ellipse cx="575" cy="172" rx="20" ry="6" fill="none" stroke="#3b82f6" strokeWidth="3"/>
+      {/* energy burst */}
+      <text x="630" y="155" textAnchor="middle" fontSize="36">⚡</text>
+      <rect x="450" y="232" width="250" height="28" rx="10" fill="#16a34a"/>
+      <text x="575" y="250" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Energy stored! Ready to go! 🚀</text>
+
+      {/* Wind-up toy comparison */}
+      <rect x="200" y="295" width="360" height="34" rx="12" fill="#1e293b"/>
+      <text x="380" y="316" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Just like a wind-up toy car! 🚗💨</text>
+    </svg>
+  )
+}
+
+function SvgFanRelease() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fff1f2" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Pull the String → WIND! 🚀</text>
+
+      {/* 4-step chain */}
+      {/* Step 1: Pull */}
+      <rect x="18" y="55" width="155" height="175" rx="16" fill="#fef2f2" stroke="#ef4444" strokeWidth="3"/>
+      <text x="95" y="85" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#dc2626">① PULL</text>
+      <text x="95" y="145" textAnchor="middle" fontSize="52">👇</text>
+      <text x="95" y="195" textAnchor="middle" fontSize="12" fill="#dc2626">Pull the</text>
+      <text x="95" y="211" textAnchor="middle" fontSize="12" fill="#dc2626">string down</text>
+
+      <text x="194" y="152" textAnchor="middle" fontSize="28" fill="#f97316">→</text>
+
+      {/* Step 2: Spin skewer */}
+      <rect x="210" y="55" width="155" height="175" rx="16" fill="#fff7ed" stroke="#f97316" strokeWidth="3"/>
+      <text x="287" y="85" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#c2410c">② SPIN</text>
+      <text x="287" y="145" textAnchor="middle" fontSize="52">🔄</text>
+      <text x="287" y="195" textAnchor="middle" fontSize="12" fill="#c2410c">Skewer</text>
+      <text x="287" y="211" textAnchor="middle" fontSize="12" fill="#c2410c">spins fast!</text>
+
+      <text x="386" y="152" textAnchor="middle" fontSize="28" fill="#eab308">→</text>
+
+      {/* Step 3: Fan spins */}
+      <rect x="402" y="55" width="155" height="175" rx="16" fill="#fefce8" stroke="#eab308" strokeWidth="3"/>
+      <text x="479" y="85" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#a16207">③ FAN SPINS</text>
+      <text x="479" y="145" textAnchor="middle" fontSize="52">🌀</text>
+      <text x="479" y="195" textAnchor="middle" fontSize="12" fill="#a16207">Fan blade</text>
+      <text x="479" y="211" textAnchor="middle" fontSize="12" fill="#a16207">goes round!</text>
+
+      <text x="578" y="152" textAnchor="middle" fontSize="28" fill="#22c55e">→</text>
+
+      {/* Step 4: WIND! */}
+      <rect x="590" y="55" width="155" height="175" rx="16" fill="#f0fdf4" stroke="#22c55e" strokeWidth="3"/>
+      <text x="667" y="85" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#166534">④ WIND! 💨</text>
+      <text x="667" y="145" textAnchor="middle" fontSize="52">😄</text>
+      <text x="667" y="195" textAnchor="middle" fontSize="12" fill="#166534">Air moves!</text>
+      <text x="667" y="211" textAnchor="middle" fontSize="12" fill="#166534">You feel it!</text>
+
+      {/* Bottom rule */}
+      <rect x="40" y="258" width="680" height="40" rx="14" fill="#1e293b"/>
+      <text x="380" y="278" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">Faster you pull → faster it spins → MORE wind! 💨💨💨</text>
+      <text x="380" y="293" textAnchor="middle" fontSize="12" fill="#94a3b8">Try it: pull slowly, then pull FAST. Which makes more wind?</text>
+    </svg>
+  )
+}
+
+function SvgFanRealWorld() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fdf4ff" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Fans in the Real World! 🌍</text>
+
+      {/* 4 cards in 2x2 grid */}
+      {/* Hand fan */}
+      <rect x="30" y="50" width="330" height="120" rx="14" fill="white" stroke="#e9d5ff" strokeWidth="2"/>
+      <text x="60" y="97" textAnchor="middle" fontSize="50">🪭</text>
+      <text x="200" y="85" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#1e293b">Hand Fan</text>
+      <text x="200" y="108" textAnchor="middle" fontSize="13" fill="#64748b">People used these</text>
+      <text x="200" y="126" textAnchor="middle" fontSize="13" fill="#64748b">3,000 years ago! 🏯</text>
+      <text x="200" y="148" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#7c3aed">Waving = pushing air!</text>
+
+      {/* Electric fan */}
+      <rect x="400" y="50" width="330" height="120" rx="14" fill="white" stroke="#bfdbfe" strokeWidth="2"/>
+      <text x="430" y="97" textAnchor="middle" fontSize="50">💨</text>
+      <text x="570" y="85" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#1e293b">Electric Fan</text>
+      <text x="570" y="108" textAnchor="middle" fontSize="13" fill="#64748b">Same spinning idea —</text>
+      <text x="570" y="126" textAnchor="middle" fontSize="13" fill="#64748b">powered by electricity</text>
+      <text x="570" y="148" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#1d4ed8">Motor replaces our string!</text>
+
+      {/* Wind turbine */}
+      <rect x="30" y="190" width="330" height="120" rx="14" fill="white" stroke="#bbf7d0" strokeWidth="2"/>
+      <text x="60" y="237" textAnchor="middle" fontSize="50">🌬️</text>
+      <text x="200" y="225" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#1e293b">Wind Turbine</text>
+      <text x="200" y="248" textAnchor="middle" fontSize="13" fill="#64748b">Wind pushes blades →</text>
+      <text x="200" y="266" textAnchor="middle" fontSize="13" fill="#64748b">makes electricity!</text>
+      <text x="200" y="288" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#16a34a">Our fan BACKWARDS! 🔄</text>
+
+      {/* Propeller */}
+      <rect x="400" y="190" width="330" height="120" rx="14" fill="white" stroke="#fed7aa" strokeWidth="2"/>
+      <text x="430" y="237" textAnchor="middle" fontSize="50">✈️</text>
+      <text x="570" y="225" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#1e293b">Airplane Propeller</text>
+      <text x="570" y="248" textAnchor="middle" fontSize="13" fill="#64748b">Spinning blades push</text>
+      <text x="570" y="266" textAnchor="middle" fontSize="13" fill="#64748b">air → plane moves!</text>
+      <text x="570" y="288" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#ea580c">Same science — bigger!</text>
+    </svg>
+  )
+}
+
+function SvgFanDiscovery() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fffbeb" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What We Discovered! 🏆</text>
+
+      {/* Big chain summary */}
+      {/* Box 1 */}
+      <rect x="20" y="60" width="128" height="96" rx="14" fill="#3b82f6"/>
+      <text x="84" y="98" textAnchor="middle" fontSize="36">🪢</text>
+      <text x="84" y="124" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Wind string</text>
+      <text x="84" y="140" textAnchor="middle" fontSize="11" fill="#bfdbfe">= store energy</text>
+
+      <text x="168" y="115" textAnchor="middle" fontSize="28" fill="#f97316">→</text>
+
+      {/* Box 2 */}
+      <rect x="192" y="60" width="128" height="96" rx="14" fill="#ef4444"/>
+      <text x="256" y="98" textAnchor="middle" fontSize="36">👇</text>
+      <text x="256" y="124" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Pull string</text>
+      <text x="256" y="140" textAnchor="middle" fontSize="11" fill="#fecaca">= release energy</text>
+
+      <text x="340" y="115" textAnchor="middle" fontSize="28" fill="#f97316">→</text>
+
+      {/* Box 3 */}
+      <rect x="364" y="60" width="128" height="96" rx="14" fill="#f97316"/>
+      <text x="428" y="98" textAnchor="middle" fontSize="36">🔄</text>
+      <text x="428" y="124" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Skewer spins</text>
+      <text x="428" y="140" textAnchor="middle" fontSize="11" fill="#ffedd5">fan spins too!</text>
+
+      <text x="512" y="115" textAnchor="middle" fontSize="28" fill="#f97316">→</text>
+
+      {/* Box 4 */}
+      <rect x="536" y="60" width="204" height="96" rx="14" fill="#22c55e"/>
+      <text x="638" y="98" textAnchor="middle" fontSize="36">💨😄</text>
+      <text x="638" y="124" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">Fan pushes air</text>
+      <text x="638" y="140" textAnchor="middle" fontSize="11" fill="#dcfce7">= WIND you feel!</text>
+
+      {/* 3 key words */}
+      <rect x="20" y="178" width="220" height="58" rx="14" fill="#1d4ed8"/>
+      <text x="130" y="202" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">💨 WIND</text>
+      <text x="130" y="222" textAnchor="middle" fontSize="12" fill="#bfdbfe">= moving air</text>
+
+      <rect x="270" y="178" width="220" height="58" rx="14" fill="#7c3aed"/>
+      <text x="380" y="202" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">🎁 STORED ENERGY</text>
+      <text x="380" y="222" textAnchor="middle" fontSize="12" fill="#e9d5ff">= wound-up string</text>
+
+      <rect x="520" y="178" width="220" height="58" rx="14" fill="#16a34a"/>
+      <text x="630" y="202" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">🚀 RELEASE</text>
+      <text x="630" y="222" textAnchor="middle" fontSize="12" fill="#bbf7d0">= pull → spin → wind!</text>
+
+      {/* Bottom bar */}
+      <rect x="20" y="258" width="720" height="56" rx="16" fill="#1e293b"/>
+      <text x="380" y="282" textAnchor="middle" fontSize="15" fontWeight="bold" fill="#fbbf24">No battery. No electricity.</text>
+      <text x="380" y="303" textAnchor="middle" fontSize="13" fill="#94a3b8">Just a string, a skewer, and the energy YOU put in! ⚡</text>
+    </svg>
+  )
+}
+
+function SvgFanReview() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#eff6ff" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Let's Review! 🙋 Shout it out!</text>
+
+      {[
+        { q: '❓ What is WIND?',             a: '→  Moving air!',              bg: '#1d4ed8', light: '#dbeafe' },
+        { q: '❓ What does winding the string do?', a: '→  Stores energy!',     bg: '#7c3aed', light: '#ede9fe' },
+        { q: '❓ What makes the fan spin?',   a: '→  Pulling the string!',       bg: '#16a34a', light: '#dcfce7' },
+        { q: '❓ How do we make MORE wind?',  a: '→  Pull FASTER!',              bg: '#f97316', light: '#fff7ed' },
+      ].map((row, i) => (
+        <g key={i}>
+          <rect x="30" y={56 + i * 62} width="325" height="50" rx="12" fill={row.light} stroke={row.bg} strokeWidth="2"/>
+          <text x="192" y={85 + i * 62} textAnchor="middle" fontSize="14" fontWeight="bold" fill={row.bg}>{row.q}</text>
+          <rect x="378" y={56 + i * 62} width="352" height="50" rx="12" fill={row.bg}/>
+          <text x="554" y={85 + i * 62} textAnchor="middle" fontSize="15" fontWeight="bold" fill="white">{row.a}</text>
+        </g>
+      ))}
+
+      <rect x="60" y="310" width="640" height="24" rx="10" fill="#1e293b"/>
+      <text x="380" y="326" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Ready to build? Let's make WIND! 🌀💨</text>
+    </svg>
+  )
+}
+
 // Map "gradeBand-weekNumber" + slideIndex → SVG component
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g1-2-1': {
@@ -1542,6 +1853,16 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
     5: SvgBalanceScaleRealWorld,
     6: SvgMassMeasurement,
     7: SvgBalanceScaleReview,
+  },
+  // G1-2 Week 4 — Paper Fan (7 slides)
+  'g1-2-4': {
+    0: SvgFanWhatDidWeBuild,
+    1: SvgFanWind,
+    2: SvgFanStoredEnergy,
+    3: SvgFanRelease,
+    4: SvgFanRealWorld,
+    5: SvgFanDiscovery,
+    6: SvgFanReview,
   },
 }
 
