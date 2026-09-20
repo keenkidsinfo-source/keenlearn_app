@@ -281,7 +281,13 @@ export function StepViewer({ contentItemId, dayId, title, theme, stepUrls, steps
               onClick={() => router.push(`/build/theory/${dayId}`)}
               className="w-full py-3 rounded-xl bg-purple-600 text-white font-bold text-sm shadow"
             >
-              ✅ Setup done — go to Theory Slides →
+              🔬 Go to Theory Slides →
+            </button>
+            <button
+              onClick={() => setShowPrep(false)}
+              className="w-full py-3 rounded-xl bg-orange-500 text-white font-bold text-sm shadow"
+            >
+              🔨 Start Build Steps →
             </button>
           </div>
         </div>
