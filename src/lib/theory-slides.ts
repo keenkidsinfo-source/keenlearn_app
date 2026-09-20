@@ -825,7 +825,156 @@ const marbleRunG34Deck: TheoryDeck = {
   ],
 }
 
-export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck, seesawDeck, balanceScaleDeck, marbleRunG12Deck, marbleRunG34Deck]
+// ── G1-2 · Paper Fan · Wind + Stored Energy + Spinning ─────────────────────
+
+const paperFanG12Deck: TheoryDeck = {
+  gradeBand: 'g1-2',
+  weekNumber: 4,
+  title: 'Paper Fan Science!',
+  subject: 'Energy & Wind',
+  slides: [
+    {
+      emoji: '🌀',
+      color: 'orange',
+      title: 'What Did We Build?',
+      headline: 'A fan that spins when you pull a string — no batteries needed!',
+      bullets: [
+        'A **paper fan blade** we cut out ourselves.',
+        'A **bamboo skewer** that spins and carries the fan.',
+        'A **string** wrapped tightly around the skewer.',
+        'A **paper cup** that holds everything in place.',
+        'Pull the string → skewer spins → fan spins → makes **WIND!** 💨',
+      ],
+      tryThis: 'Before we pull — can you guess why pulling the string makes the fan spin?',
+      speakerNotes: [
+        'Hold up a finished demo fan. "This fan has no motor, no battery — just a string and some paper."',
+        '"When I pull this string, something amazing happens. Watch." Pull it slowly.',
+        '"The string makes the stick spin. The stick carries the fan. The fan pushes air. That pushed air is wind!"',
+        '"Today we\'re going to find out WHY that works."',
+      ],
+    },
+    {
+      emoji: '💨',
+      color: 'blue',
+      title: 'What is WIND?',
+      headline: 'Wind is just AIR that is MOVING!',
+      bullets: [
+        'Still air = no wind. **Moving air = WIND!**',
+        'Our fan blades **push air** when they spin fast.',
+        'The pushed air flows toward you — that\'s the wind you feel!',
+        '**Faster spin = more air pushed = more wind you feel!**',
+      ],
+      vocab: { word: 'Wind', definition: 'Air that is moving — our fan pushes air to make wind' },
+      tryThis: 'Wave your hand fast in front of your face. Feel that? You just made wind!',
+      speakerNotes: [
+        '"Air is all around us right now — but we can\'t feel it because it\'s still."',
+        '"When air MOVES, it becomes wind. Our fan\'s job is to make the air move."',
+        'Have kids wave their hands in front of their faces. "Feel that breeze? You just moved air. You made wind!"',
+        '"Our fan does the same thing — but faster, because it spins."',
+      ],
+    },
+    {
+      emoji: '🎁',
+      color: 'green',
+      title: 'Storing Energy',
+      headline: 'When we WIND the string, we store energy — like winding up a toy!',
+      bullets: [
+        'Winding the string tight puts **stored energy** into the skewer.',
+        'Think of a wind-up toy car — the more you wind it, the further it goes!',
+        '**The tighter the string is wound, the more energy is stored.**',
+        'That energy is just waiting... ready to be let go!',
+      ],
+      vocab: { word: 'Stored Energy', definition: 'Energy saved up and ready to use — like a wound-up spring or string' },
+      tryThis: 'Wind the string tightly on your skewer. Can you feel it trying to spin back?',
+      speakerNotes: [
+        '"Has anyone played with a wind-up toy? Like a wind-up car or a music box?" Take hands.',
+        '"When you wind it, you\'re STORING energy inside. The tighter you wind, the more energy you store."',
+        '"Our string works the same way. Winding it up is storing energy. Pulling it out releases that energy."',
+        '"Right now, our fan is like a toy that\'s been wound up — ready to go!"',
+      ],
+    },
+    {
+      emoji: '🚀',
+      color: 'red',
+      title: 'Let the Energy OUT!',
+      headline: 'Pull the string — the stored energy comes OUT and makes the fan SPIN!',
+      bullets: [
+        'When you pull the string, the stored energy is **let go.**',
+        'The energy goes into the **skewer** — making it spin fast.',
+        'The spinning skewer carries the **fan blade** — it spins too!',
+        'The spinning fan pushes air → **you feel the wind!** 🌬️',
+      ],
+      tryThis: 'Pull slowly vs. pull fast — which makes more wind? Why?',
+      speakerNotes: [
+        '"Here\'s the chain of events — let\'s say it together: pull string → skewer spins → fan spins → pushes air → WIND!"',
+        '"Pull the string slowly. Not much wind." Demonstrate. "Now pull fast." Show the difference.',
+        '"When you pull faster, you release the energy faster. The fan spins faster. More air gets pushed. More wind!"',
+        '"This is called a chain reaction — one thing causes the next, all the way to wind."',
+      ],
+    },
+    {
+      emoji: '🌍',
+      color: 'purple',
+      title: 'Fans in the Real World!',
+      headline: 'People have used spinning fans for thousands of years!',
+      bullets: [
+        '🪭 **Hand fans** — people used them 3,000 years ago to cool down in China and Japan!',
+        '💨 **Electric fans** — same spinning idea, but powered by electricity instead of a string.',
+        '🌬️ **Wind turbines** — giant fans that spin in the wind to make electricity.',
+        '✈️ **Airplane propellers** — spinning fan blades that push the plane forward through the air.',
+      ],
+      tryThis: 'Can you think of another spinning thing that moves air? Look around your home tonight!',
+      speakerNotes: [
+        '"The same idea — spinning blades push air — shows up all over the world."',
+        '"Hand fans are thousands of years old! People figured out long ago that spinning things move air."',
+        '"Wind turbines are like our fan going backwards — instead of the spinning making wind, the wind makes the spinning, which makes electricity!"',
+        '"Propellers on small planes? Same idea. Helicopter blades? Same. Ceiling fans? Same."',
+        '"One simple idea: spinning = moving air. It shows up everywhere."',
+      ],
+    },
+    {
+      emoji: '🏆',
+      color: 'orange',
+      title: 'What We Discovered!',
+      headline: 'Wind the string → store energy → pull → fan spins → makes WIND!',
+      bullets: [
+        '💨 **Wind** = moving air. Our fan PUSHES air to make wind.',
+        '🎁 **Winding** the string stores energy — like a wind-up toy.',
+        '🚀 **Pulling** the string lets the energy out — makes the skewer and fan spin.',
+        '⚡ **Faster spin** = more air pushed = more wind you feel!',
+      ],
+      tryThis: 'Tell the person next to you: "I made wind by ___."',
+      speakerNotes: [
+        '"Let\'s recap the whole chain one more time together: pull string → skewer spins → fan spins → pushes air → wind!"',
+        '"You didn\'t use any batteries. No electricity. Just a string and the energy you put in by winding it up."',
+        '"That\'s what engineers do — they find clever ways to store and release energy."',
+        '"You are all engineers today!"',
+      ],
+    },
+    {
+      emoji: '🙋',
+      color: 'blue',
+      title: 'Let\'s Review!',
+      headline: 'Shout out the answers!',
+      bullets: [
+        '❓ What is WIND? → **Moving air!**',
+        '❓ What happens when we wind the string? → **We store energy!**',
+        '❓ What makes the fan spin? → **Pulling the string lets the stored energy out!**',
+        '❓ How do we make MORE wind? → **Pull faster — the fan spins faster!**',
+      ],
+      tryThis: 'Ready to pull your string and make real wind? Let\'s go! 🌀',
+      speakerNotes: [
+        '"Quick fire — I ask, you shout. Ready?"',
+        '"What is wind?" → moving air!',
+        '"What does winding the string do?" → stores energy!',
+        '"What makes the fan spin?" → pulling the string!',
+        '"You\'ve got the science. Now let\'s build. Materials are out — GO!"',
+      ],
+    },
+  ],
+}
+
+export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck, seesawDeck, balanceScaleDeck, marbleRunG12Deck, marbleRunG34Deck, paperFanG12Deck]
 
 // Returns null if no deck exists for that week — caller should hide the Theory button
 export function getTheoryDeck(gradeBand: string, weekNumber: number): TheoryDeck | null {
