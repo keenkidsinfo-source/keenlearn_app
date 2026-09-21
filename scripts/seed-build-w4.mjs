@@ -33,8 +33,8 @@ const sql = postgres(process.env.DATABASE_URL)
 const fanSteps = [
   {
     emoji: '✂️',
-    title: 'Draw and cut out your fan',
-    text: 'Draw a fan blade shape on your paper — like a wide rounded leaf. It should be wider at the top and taper toward the bottom. Cut it out carefully.',
+    title: 'Cut out your fan blade',
+    text: 'You\'ll get a piece of paper already cut to size. Cut it into a fan blade shape — like a wide rounded leaf, wider at the top and narrower at the bottom. Make it your own!',
     tip: 'The bigger and wider your fan blade, the more air it will push when it spins!',
     image: '/images/build/paper-fan/step-01.jpg',
   },
@@ -69,8 +69,8 @@ const fanSteps = [
   {
     emoji: '🔧',
     title: 'Poke holes in the cup',
-    text: 'Use the skewer to carefully poke two holes in the paper cup: one at the TOP (centre of the base) and one on the SIDE near the bottom.',
-    tip: 'Ask your teacher for help poking the holes — the skewer is sharp! Make the holes just big enough for the skewer to slide through.',
+    text: 'Use a push pin on top of a sponge or folded rag to poke two holes in the paper cup: one at the TOP (centre of the base) and one on the SIDE near the bottom.',
+    tip: 'Rest the cup on the sponge so the pin goes through cleanly. Make the holes just big enough for the skewer to slide through.',
     image: '/images/build/paper-fan/step-06.jpg',
   },
   {
@@ -104,8 +104,8 @@ const fanSteps = [
   {
     emoji: '🌬️',
     title: 'Attach the fan on top',
-    text: 'Poke the TOP of the skewer (with the paper wrapped around it) through the fan blade you cut in Step 1. The fan blade should sit on top of the cup with the skewer holding it up.',
-    tip: 'Position the fan so it sits flat and balanced. If it tilts to one side, shift it until it looks even.',
+    text: 'Stick the TOP of the skewer to the centre of the fan blade you cut in Step 1. The fan blade sits on top — just stick and press, no poking through!',
+    tip: 'Centre the fan blade on the skewer tip and press firmly. If it tilts, re-centre it until it sits flat and balanced.',
     image: '/images/build/paper-fan/step-11.jpg',
   },
   {
@@ -120,8 +120,8 @@ const fanSteps = [
 const fanStepsG34 = [
   {
     emoji: '✂️',
-    title: 'Design and cut your fan blade',
-    text: 'Design a fan blade (propeller) on paper — wide at the top, tapering toward the base. The shape determines how much air it displaces per rotation. Cut it out precisely.',
+    title: 'Design and cut your propeller blade',
+    text: 'You\'ll get a pre-portioned piece of paper. Cut it into a propeller blade shape — wide at the top, tapering toward the base. The shape determines how much air it displaces per rotation.',
     tip: 'Wider blades catch more air but create more drag. Predict: will a wider blade make MORE or LESS wind when pulled at the same speed?',
     image: '/images/build/paper-fan/step-01.jpg',
   },
@@ -156,8 +156,8 @@ const fanStepsG34 = [
   {
     emoji: '🔧',
     title: 'Pierce the bearing holes in the cup',
-    text: 'Carefully pierce two holes in the cup: one through the centre of the base (top bearing) and one on the side near the bottom (string exit point). These holes guide the axle and constrain the string path.',
-    tip: 'Ask your teacher for help. Why do both holes need to be centred — what happens to the spin if the axle wobbles off-centre?',
+    text: 'Use a push pin on a sponge or folded rag to pierce two holes in the cup: one through the centre of the base (top bearing) and one on the side near the bottom (string exit point).',
+    tip: 'Why do both holes need to be centred — what happens to the spin if the axle wobbles off-centre? Think: bearing alignment affects all rotating machinery.',
     image: '/images/build/paper-fan/step-06.jpg',
   },
   {
@@ -191,8 +191,8 @@ const fanStepsG34 = [
   {
     emoji: '🌬️',
     title: 'Mount the propeller on the axle',
-    text: 'Push the top of the skewer through the fan blade you cut in Step 1. The propeller (fan blade) should sit level and balanced on top of the housing. An unbalanced propeller creates vibration and loses efficiency.',
-    tip: 'Centre the blade on the axle. What do you think happens to the airflow if the blade tilts to one side? How do engineers balance real propellers?',
+    text: 'Stick the top of the skewer to the centre of the propeller blade — press and hold. The blade sits on top; you\'re not poking through it. It should sit level and balanced.',
+    tip: 'An unbalanced propeller creates vibration and loses efficiency. Centre it carefully — how do engineers balance real propellers at high RPM?',
     image: '/images/build/paper-fan/step-11.jpg',
   },
   {
