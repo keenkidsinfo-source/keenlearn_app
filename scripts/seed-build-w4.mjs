@@ -117,6 +117,93 @@ const fanSteps = [
   },
 ]
 
+const fanStepsG34 = [
+  {
+    emoji: '✂️',
+    title: 'Design and cut your fan blade',
+    text: 'Design a fan blade (propeller) on paper — wide at the top, tapering toward the base. The shape determines how much air it displaces per rotation. Cut it out precisely.',
+    tip: 'Wider blades catch more air but create more drag. Predict: will a wider blade make MORE or LESS wind when pulled at the same speed?',
+    image: '/images/build/paper-fan/step-01.jpg',
+  },
+  {
+    emoji: '🪡',
+    title: 'Collect your axle and winding strip',
+    text: 'Gather one bamboo skewer (this is your axle — the rotating shaft) and one narrow paper strip (~2 cm wide). The strip will wrap around the axle and convert the string\'s linear pull into rotational motion.',
+    tip: 'In real machines, axles transmit torque (rotational force). Can you think of another machine that uses an axle to transfer energy?',
+    image: '/images/build/paper-fan/step-02.jpg',
+  },
+  {
+    emoji: '📌',
+    title: 'Anchor the skewer to the paper strip',
+    text: 'Lay the paper strip flat. Align the skewer along one long edge and tape it firmly on both sides. This anchor point is critical — it prevents the wrap from sliding axially.',
+    tip: 'Why does it matter WHERE on the strip you attach the skewer? Think about what happens to the wrap if the skewer shifts during winding.',
+    image: '/images/build/paper-fan/step-03.jpg',
+  },
+  {
+    emoji: '🌀',
+    title: 'Coil the paper tightly around the axle',
+    text: 'Roll the paper strip tightly and evenly around the skewer from one end to the other. Tape the final edge to lock the coil. This paper sleeve will grip the axle and transmit rotation.',
+    tip: 'A loose coil slips instead of spinning. How does friction between the paper and skewer affect the energy transfer?',
+    image: '/images/build/paper-fan/step-04.jpg',
+  },
+  {
+    emoji: '⭕',
+    title: 'Trace and cut the base cap',
+    text: 'Invert the paper cup and trace around its rim. Cut the circle out — this cap will form the bearing surface at the bottom that stabilises the axle during operation.',
+    tip: 'Cut just inside the pencil line so the cap fits snugly. Why is it important for the cap to be centred on the axle?',
+    image: '/images/build/paper-fan/step-05.jpg',
+  },
+  {
+    emoji: '🔧',
+    title: 'Pierce the bearing holes in the cup',
+    text: 'Carefully pierce two holes in the cup: one through the centre of the base (top bearing) and one on the side near the bottom (string exit point). These holes guide the axle and constrain the string path.',
+    tip: 'Ask your teacher for help. Why do both holes need to be centred — what happens to the spin if the axle wobbles off-centre?',
+    image: '/images/build/paper-fan/step-06.jpg',
+  },
+  {
+    emoji: '⬇️',
+    title: 'Thread the axle through the top bearing',
+    text: 'Insert the paper-coiled skewer through the TOP hole (centre of cup base) from outside inward. The coil sits inside the cup cavity, which acts as the housing for the drive mechanism.',
+    tip: 'The skewer should rotate freely but not rattle. Too tight = friction loss. Too loose = wobble. This is called a bearing clearance — engineers size this precisely.',
+    image: '/images/build/paper-fan/step-07.jpg',
+  },
+  {
+    emoji: '🪢',
+    title: 'Secure the string with a double knot',
+    text: 'Thread string onto the lower end of the skewer. Tie a firm double knot — it must not slip under tension. This knot is the attachment point where the string\'s potential energy will be stored as it winds.',
+    tip: 'A single knot fails under repeated loading. Think of it like an engineering safety factor. What other places do you see double-knotted or redundant fasteners?',
+    image: '/images/build/paper-fan/step-08.jpg',
+  },
+  {
+    emoji: '🌀',
+    title: 'Wind the string — store potential energy',
+    text: 'Coil the string around the skewer in the same direction, then thread the free end through the SIDE hole and out. Each wind stores potential energy in the tensioned string that will be released as kinetic energy when pulled.',
+    tip: 'Wind consistently clockwise. Predict: if you wind 5 turns vs 10 turns, how does the spin speed and duration change? Test it!',
+    image: '/images/build/paper-fan/step-09.jpg',
+  },
+  {
+    emoji: '🔩',
+    title: 'Attach the bottom bearing cap',
+    text: 'Pierce the cap circle onto the lower end of the skewer and tape it to the cup base. Trim excess skewer, leaving a small tip. This cap completes the housing and provides the second bearing point that keeps the axle aligned.',
+    tip: 'Two bearing points (top + bottom) prevent the axle from tilting — the same reason a bicycle wheel has bearings on both sides of the fork.',
+    image: '/images/build/paper-fan/step-10.jpg',
+  },
+  {
+    emoji: '🌬️',
+    title: 'Mount the propeller on the axle',
+    text: 'Push the top of the skewer through the fan blade you cut in Step 1. The propeller (fan blade) should sit level and balanced on top of the housing. An unbalanced propeller creates vibration and loses efficiency.',
+    tip: 'Centre the blade on the axle. What do you think happens to the airflow if the blade tilts to one side? How do engineers balance real propellers?',
+    image: '/images/build/paper-fan/step-11.jpg',
+  },
+  {
+    emoji: '🎉',
+    title: 'Launch! Convert stored energy to wind',
+    text: 'Hold the housing steady. Pull the string in one smooth downward motion. The stored potential energy converts to kinetic energy → axle rotation → propeller spin → air displacement = WIND! 💨',
+    tip: 'Experiment: vary pull speed, number of winds, and blade size. Record your results. Which variable has the biggest effect on wind strength? Can you find the optimal configuration?',
+    image: '/images/build/paper-fan/step-12.jpg',
+  },
+]
+
 const builds = [
   {
     gradeBand: 'g1-2',
@@ -132,7 +219,20 @@ const builds = [
     },
     steps: fanSteps,
   },
-  // G3-4 TBD — not seeded yet
+  {
+    gradeBand: 'g3-4',
+    weekNumber: 4,
+    title: 'Paper Fan',
+    tagline: 'Engineer a propeller-axle system that converts stored string energy into rotational motion and airflow.',
+    resultFields: {
+      a: { label: 'Does your propeller spin? (Yes / No)', key: 'spins' },
+      b: { label: 'Wind strength rating (1–5 stars)', key: 'speedRating' },
+      unit: 'winds',
+      leaderboard: 'more',
+      showLeaderboard: false,
+    },
+    steps: fanStepsG34,
+  },
 ]
 
 async function run() {
