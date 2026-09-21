@@ -970,9 +970,9 @@ const paperFanG34Deck: TheoryDeck = {
       vocab: { word: 'Propeller', definition: 'A rotating blade with curved surfaces that converts spin into airflow or thrust' },
       challenge: 'The string is wound 10 times. If each full wind = 1 rotation of the blade, how many spins do you get? What if wound 20 times?',
       speakerNotes: [
-        '"G1-2 called it a fan. You\'re going to call it a propeller — because that\'s the correct engineering term."',
-        '"Curved blades slice through air and shove it backward — that backward push creates the forward force."',
-        '"Today you\'re not just building — you\'re engineering. That means predicting, testing, measuring."',
+        'Point to each part: "This curved blade — we call it a propeller. This stick — the axle. The wound string — stored energy."',
+        '"Same thing as a fan, but now we use the right words."',
+        '"Ask the challenge question and let them guess before you move on."',
       ],
     },
     {
@@ -988,9 +988,9 @@ const paperFanG34Deck: TheoryDeck = {
       vocab: { word: 'Thrust', definition: 'The forward force created when a propeller pushes air or water backward' },
       challenge: 'If the fan spins twice as fast, do you get exactly twice the wind? More? Less? Predict first, then test after you build.',
       speakerNotes: [
-        '"By pushing the air backward, it creates a force called thrust that shoots the vehicle forward."',
-        '"Think of a boat propeller — it pushes water backwards, which pushes the boat forwards. Same physics, different fluid."',
-        '"This is why airplane propellers face forward — they pull the plane through the air by pushing air backwards."',
+        '"Blades push air backward → that creates a push forward. We call that push thrust."',
+        '"Think of a boat propeller pushing water backward — the boat goes forward. Same idea."',
+        '"Ask them to predict the challenge before building — they\'ll find out when they test."',
       ],
     },
     {
@@ -1007,9 +1007,9 @@ const paperFanG34Deck: TheoryDeck = {
       vocab: { word: 'Potential Energy', definition: 'Stored energy — in our fan, it\'s held in the wound string, ready to release' },
       challenge: 'Wind 5 turns vs 10 turns. Time how long the fan spins each time. Is the ratio exactly 2:1? Why or why not?',
       speakerNotes: [
-        '"Potential energy is energy that hasn\'t done anything yet — it\'s just waiting."',
-        '"A stretched rubber band, a raised weight, a wound spring — all the same idea: stored energy."',
-        '"The ratio challenge: 10 winds vs 5 winds. Most students assume exactly double spin time. It\'s usually not — friction, air resistance, and slack all affect it."',
+        '"Wind the string — you\'re storing energy. Nothing is happening yet, but the energy is there, waiting."',
+        '"Like a stretched rubber band — pull it back and it\'s ready to go."',
+        '"They\'ll test this with the challenge — let them discover if 10 winds = exactly double the spin time."',
       ],
     },
     {
@@ -1026,9 +1026,9 @@ const paperFanG34Deck: TheoryDeck = {
       vocab: { word: 'Kinetic Energy', definition: 'Energy of motion — the spinning axle and moving air both have kinetic energy' },
       challenge: 'What limits the top spin speed of the fan? Name two sources of friction in the system.',
       speakerNotes: [
-        '"In science, energy never disappears — it just changes form. Today\'s chain: stored → spinning → wind."',
-        '"Some energy is always lost. To what? Friction at the cup hole, air resistance on the blade, string drag."',
-        '"The two friction sources students usually spot: the hole in the cup (axle rubs against it) and the string unwinding (creates drag). Good engineers try to minimise both."',
+        '"Energy doesn\'t disappear — it just changes shape. Stored energy becomes spinning, spinning becomes wind."',
+        '"Where does the energy go that doesn\'t become wind? Friction — heat at the hole, drag on the string."',
+        '"For the challenge: the two friction spots most kids find are the cup hole and the string itself."',
       ],
     },
     {
@@ -1044,9 +1044,9 @@ const paperFanG34Deck: TheoryDeck = {
       ],
       challenge: 'Describe (or sketch) the energy chain for a wind turbine. Start with "wind (kinetic energy)" and end with "electricity". How many steps in between?',
       speakerNotes: [
-        '"Notice wind turbines are the reverse of our fan: our fan uses energy to make wind. A turbine uses wind to make energy."',
-        '"Ship propellers are much smaller than airplane ones — why? Water is 800x denser than air, so you need far fewer blade rotations to get the same thrust."',
-        '"Helicopter rotors: the blade is tilted at an angle so the airflow goes downward — the reaction lifts the helicopter up."',
+        '"Our fan uses energy to make wind. A wind turbine does the opposite — wind makes energy."',
+        '"Point at each card and ask kids what they think each one does."',
+        '"The challenge gets them to think backwards through the energy chain."',
       ],
     },
     {
@@ -1062,9 +1062,9 @@ const paperFanG34Deck: TheoryDeck = {
       ],
       challenge: 'Predict before you test: will a wider blade or a more tilted blade produce more wind? Write your prediction and your reasoning.',
       speakerNotes: [
-        '"This is a real engineering test. Real propeller designers do the same thing — vary angle and area systematically."',
-        '"The tissue strip is your measurement tool. It\'s simple but it works — and the degree of deflection gives you a rough comparison."',
-        '"Remind them: change ONE thing at a time. If they change both angle and width, they can\'t know which caused the difference."',
+        '"After they build, they can change the blade shape and test which makes more wind."',
+        '"Remind them: change only ONE thing at a time, or they won\'t know what caused the difference."',
+        '"The tissue strip trick is simple — hold it in front of the fan and see how much it moves."',
       ],
     },
     {
@@ -1080,9 +1080,9 @@ const paperFanG34Deck: TheoryDeck = {
       ],
       challenge: 'If you could make ONE change to get the most wind possible from the same number of winds — what would you change and why?',
       speakerNotes: [
-        '"Quick fire round — engineering vocabulary edition."',
-        '"For the final challenge: accept any well-reasoned answer. Wider blade, steeper pitch, reduce friction at the cup hole — all valid."',
-        '"Key message: you\'re not just building a fan today. You\'re testing a propeller system. Think like an engineer."',
+        '"Quick-fire questions — point to students and get them to shout answers."',
+        '"For the final challenge, any well-reasoned answer works — wider blade, tilted blade, less friction at the hole."',
+        '"Then send them off to build!"',
       ],
     },
   ],
