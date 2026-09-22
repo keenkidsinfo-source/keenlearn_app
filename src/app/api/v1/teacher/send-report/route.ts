@@ -13,6 +13,7 @@ import { apiOk, apiError } from '@/lib/utils'
 import { getSession } from '@/lib/auth/jwt'
 import { getTeacherClassroom } from '@/lib/teacher-classroom'
 import { getLabByWeek } from '@/lib/scienceLabs'
+import { getResultFields } from '@/lib/build-result-fields'
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 
@@ -146,13 +147,10 @@ export async function POST(req: NextRequest) {
   const buildTitle   = buildItem?.title ?? ''
   const buildMeta    = buildItem?.metadata as Record<string, unknown> | null ?? null
   const buildTagline = (buildMeta?.tagline as string) ?? ''
-  // Dynamic result fields — vary per week/project (e.g. Paper Fan uses 'spins'/'speedRating')
-  const buildResultFields = (buildMeta?.resultFields ?? null) as {
-    a?: { label: string; key: string }
-    b?: { label: string; key: string }
-    c?: { label: string; key: string }
-    unit?: string
-  } | null
+  // Dynamic result fields — vary per week/project, falls back to grade-band defaults
+  const buildResultFields = buildItem
+    ? getResultFields(buildMeta as Record<string, any> ?? {}, classroom.gradeBand ?? 'g3-4')
+    : null
 
   const scienceLab    = weekRow.weekNumber != null ? getLabByWeek(weekRow.weekNumber) : null
   const scienceTitle  = scienceLab?.title ?? ''
