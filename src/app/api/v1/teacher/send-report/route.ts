@@ -146,6 +146,13 @@ export async function POST(req: NextRequest) {
   const buildTitle   = buildItem?.title ?? ''
   const buildMeta    = buildItem?.metadata as Record<string, unknown> | null ?? null
   const buildTagline = (buildMeta?.tagline as string) ?? ''
+  // Dynamic result fields — vary per week/project (e.g. Paper Fan uses 'spins'/'speedRating')
+  const buildResultFields = (buildMeta?.resultFields ?? null) as {
+    a?: { label: string; key: string }
+    b?: { label: string; key: string }
+    c?: { label: string; key: string }
+    unit?: string
+  } | null
 
   const scienceLab    = weekRow.weekNumber != null ? getLabByWeek(weekRow.weekNumber) : null
   const scienceTitle  = scienceLab?.title ?? ''
@@ -227,8 +234,17 @@ export async function POST(req: NextRequest) {
     const studentSess = sessionsByStudent.get(student.id) ?? new Map()
     const cards: string[] = []
 
-    for (const [itemId, subject] of Array.from(subjectByItem.entries())) {
-      if (subject === 'math') continue // not loaded yet
+    // Fixed display order: Build → Coding → Speaking → Science
+    const SUBJECT_ORDER = ['build', 'coding', 'public_speaking', 'science']
+    const sortedItems = Array.from(subjectByItem.entries())
+      .filter(([, s]) => s !== 'math')
+      .sort(([, a], [, b]) => {
+        const ai = SUBJECT_ORDER.indexOf(a)
+        const bi = SUBJECT_ORDER.indexOf(b)
+        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
+      })
+
+    for (const [itemId, subject] of sortedItems) {
 
       const sess = studentSess.get(itemId)
       const data = sess?.sessionData as Record<string, unknown> | null
@@ -236,31 +252,32 @@ export async function POST(req: NextRequest) {
       const started = !!sess && !done
 
       if (subject === 'build') {
-        const studentBuildData = data?.buildResults as Record<string, unknown> | undefined
         const teacherSubmitted = done && data && ('gradeBand' in data)
-        const hasAnyResults    = teacherSubmitted || !!studentBuildData
+        const hasAnyResults    = teacherSubmitted
         const bDesc = buildTagline
 
         if (hasAnyResults) {
-          const gradeBand   = (data?.gradeBand as string) ?? classroom.gradeBand ?? ''
-          const bTitleLabel = (data?.buildTitle as string) ?? buildTitle ?? 'Build Project'
-          if (gradeBand === 'g1-2') {
-            const minR = data!.minRocks    ?? data!.round1Clips ?? null
-            const maxR = data!.maxRocks    ?? data!.maxClips    ?? null
-            const r1   = minR != null ? `Minimum rocks to slide: ${minR}` : ''
-            const best = maxR != null ? `<strong>Best: ${maxR} rocks carried! 🎉</strong>` : ''
-            const note = data!.note ? `<em>${data!.note}</em>` : ''
-            cards.push(subjectCard('🔨', 'Build', bTitleLabel, bDesc, '#f59e0b',
-              [r1, best, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
-          } else {
-            const src  = studentBuildData ?? data!
-            const c1   = src.cranksNoLoad   != null ? `First attempt: ${src.cranksNoLoad} rocks` : ''
-            const c2   = src.cranksWithLoad != null ? `After adjustment: ${src.cranksWithLoad} rocks` : ''
-            const c3   = src.cranksImproved != null ? `<strong>Best: ${src.cranksImproved} rocks held 🎉</strong>` : ''
-            const note = (src.note as string) ? `<em>${src.note}</em>` : ''
-            cards.push(subjectCard('🔨', 'Build', bTitleLabel, bDesc, '#f59e0b',
-              [c1, c2, c3, note].filter(Boolean).join('<br/>') || 'Completed ✅'))
+          const bTitleLabel = (data!.buildTitle as string) ?? buildTitle ?? 'Build Project'
+          const note = data!.note ? `<em>${data!.note}</em>` : ''
+
+          // Use dynamic resultFields from the content item metadata
+          const rows: string[] = []
+          if (buildResultFields?.a?.key) {
+            const val = data![buildResultFields.a.key]
+            if (val != null) rows.push(`${buildResultFields.a.label}: <strong>${val}</strong>`)
           }
+          if (buildResultFields?.b?.key) {
+            const val = data![buildResultFields.b.key]
+            if (val != null) rows.push(`${buildResultFields.b.label}: <strong>${val}</strong>`)
+          }
+          if (buildResultFields?.c?.key) {
+            const val = data![buildResultFields.c.key]
+            if (val != null) rows.push(`${buildResultFields.c.label}: <strong>${val} 🎉</strong>`)
+          }
+          if (note) rows.push(note)
+
+          cards.push(subjectCard('🔨', 'Build', bTitleLabel, bDesc, '#f59e0b',
+            rows.join('<br/>') || 'Completed ✅'))
         } else {
           cards.push(subjectCard('🔨', 'Build', buildTitle || 'Build', bDesc, '#f59e0b', started
             ? 'In progress — results will be added by the teacher after class. 🔄'
