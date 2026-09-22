@@ -662,18 +662,17 @@ function StepPanel({
 }) {
   const [toast, setToast] = useState<string | null>(null)
 
-
   if (!steps || steps.length === 0) return null
   const total   = steps.length
-  const step    = steps[currentStep] ?? ''
+  const step    = (steps[currentStep] ?? '').trim()
   const isFirst = currentStep === 0
   const isLast  = currentStep === total - 1
 
   function handleNext() {
     if (isLast) {
       setToast('🎉 All steps done! Amazing work!')
-      onComplete?.()   // ← save completed=true to DB
-      setTimeout(() => onDone?.(), 1200)  // brief pause so toast shows, then go home
+      onComplete?.()
+      setTimeout(() => onDone?.(), 1200)
     } else {
       setToast(`✅ Step ${currentStep + 1} done! On to step ${currentStep + 2}!`)
       onStepChange(currentStep + 1)
@@ -683,7 +682,7 @@ function StepPanel({
 
   return (
     <div className="bg-yellow-50 border-b border-yellow-200 shrink-0 relative">
-      {/* Toast — fixed so it's never hidden behind the header */}
+      {/* Toast */}
       {toast && (
         <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
           <div className="bg-green-500 text-white text-sm font-black px-5 py-2.5 rounded-2xl shadow-xl animate-bounce whitespace-nowrap">
@@ -706,7 +705,7 @@ function StepPanel({
           <p className="text-xs font-bold text-yellow-500 leading-none mb-0.5">
             🎯 {challenge ?? 'Challenge'} · Step {currentStep + 1} of {total}
           </p>
-          <p className="text-sm text-gray-700 leading-snug whitespace-pre-line max-h-28 overflow-y-auto">{step}</p>
+          <p className="text-sm text-gray-700 leading-snug whitespace-pre-line">{step}</p>
         </div>
 
         {/* Read aloud */}
