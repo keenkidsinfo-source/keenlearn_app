@@ -664,7 +664,7 @@ function StepPanel({
 
   if (!steps || steps.length === 0) return null
   const total   = steps.length
-  const step    = (steps[currentStep] ?? '').trim()
+  const step    = (steps[currentStep] ?? '').trim().replace(/\n{2,}/g, '\n')
   const isFirst = currentStep === 0
   const isLast  = currentStep === total - 1
 
@@ -705,7 +705,7 @@ function StepPanel({
           <p className="text-xs font-bold text-yellow-500 leading-none mb-0.5">
             🎯 {challenge ?? 'Challenge'} · Step {currentStep + 1} of {total}
           </p>
-          <p className="text-sm text-gray-700 leading-snug whitespace-pre-line max-h-40 overflow-y-auto">{step}</p>
+          <p className="text-sm text-gray-700 leading-snug whitespace-pre-line">{step}</p>
         </div>
 
         {/* Read aloud */}
