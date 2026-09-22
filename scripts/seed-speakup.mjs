@@ -1702,6 +1702,7 @@ async function run() {
       const s = sessions[i]
       const weekNum = i + 1
       const weekStart = WEEK_STARTS[i + weekOffset]
+      if (!weekStart) { console.warn(`⚠  No week start date for ${gradeBand} session ${weekNum} — skipping`); continue }
 
       // Find the curriculum already assigned to this classroom for this week
       // (the enrichment curriculum that has build/science/coding days)
