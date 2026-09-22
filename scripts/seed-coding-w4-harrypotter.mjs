@@ -44,29 +44,34 @@ const updates = [
 ③ Click the landscape icon (bottom-right corner)
 ④ Click "Choose a Backdrop" → search "Castle" → click it
 
-✅ You should see Harry at the bottom and Voldemort at the top!`,
+✅ Harry at the bottom, Voldemort at the top — let the duel begin!`,
 
-      `⬅️➡️ Make Harry move left and right!
+      `➡️ Harry moves RIGHT!
 
-Click HARRY in the sprite list, then:
+Click HARRY in the sprite list, then drag to the white area:
 
-① Yellow EVENTS → "when [right arrow] key pressed" → drag to white area
+① Yellow EVENTS → "when [right arrow] key pressed"
 ② Blue MOTION → "change x by 10" → snap underneath
 
-Now for the LEFT — drag to an EMPTY spot (not connected!):
-③ Yellow EVENTS → "when [left arrow] key pressed"
-④ Blue MOTION → "change x by 10" → change 10 to -10
+✅ Press the right arrow — Harry slides right!`,
 
-✅ Press the arrow keys — Harry slides!`,
+      `⬅️ Harry moves LEFT!
 
-      `⚡ Make Harry shoot lightning!
+Still on HARRY — drag to an EMPTY spot (not connected to the first stack!):
+
+① Yellow EVENTS → "when [left arrow] key pressed"
+② Blue MOTION → "change x by 10" → change 10 to -10
+
+✅ Press both arrow keys — Harry slides left and right!`,
+
+      `⚡ Harry shoots lightning!
 
 Click LIGHTNING_BOLT in the sprite list, then:
 
 ① Yellow EVENTS → "when [space] key pressed"
-② Blue MOTION → "go to x: 0 y: -130" → snap under (bolt starts at bottom)
-③ Blue MOTION → "glide 0.5 secs to x: 0 y: 160" → snap under (fires up!)
-④ Blue MOTION → "go to x: 0 y: -130" → snap last (resets for next shot)
+② Blue MOTION → "go to x: 0 y: -130" (bolt starts at bottom)
+③ Blue MOTION → "glide 0.5 secs to x: 0 y: 160" (fires up!)
+④ Blue MOTION → "go to x: 0 y: -130" (resets for next shot)
 
 ✅ Press Space — lightning flies up and comes back!`,
 
@@ -80,34 +85,33 @@ Now click VOLDEMORT in the sprite list:
 ③ Orange CONTROL → "forever" → snap under
 ④ Orange CONTROL → "if...then" → snap INSIDE the forever
 
-✅ You have the "if" block ready — next step fills it in!`,
+✅ "if" block is ready — next step fills it in!`,
 
-      `💥 Voldemort jumps away when hit!
+      `💥 Voldemort jumps when hit!
 
 Still on VOLDEMORT — fill in the "if" block:
 
 ① Light-blue SENSING → "touching [mouse-pointer]?"
-   → drag it into the diamond slot of the "if"
-   → click the dropdown → change to "Lightning_Bolt"
+   → into the diamond slot → dropdown → Lightning_Bolt
 
 Inside the if, add:
 ② Orange VARIABLES → "change Score by 1"
 ③ Blue MOTION → "go to [random position]"
 
-✅ Click 🚩 and press Space — hit Voldemort and score goes up!`,
+✅ Hit Voldemort — score goes up and he jumps away!`,
 
-      `🧙 Make Voldemort bounce around!
+      `🧙 Voldemort bounces around!
 
-Still on VOLDEMORT — find an EMPTY spot on the white area:
+Still on VOLDEMORT — find an EMPTY spot (NOT connected to the first stack!):
 
-① Yellow EVENTS → "when 🚩 clicked" (drag to empty spot — NOT connected!)
+① Yellow EVENTS → "when 🚩 clicked"
 ② Orange CONTROL → "forever" → snap under
 ③ Blue MOTION → "move 3 steps" → snap inside
 ④ Blue MOTION → "if on edge, bounce" → snap inside
 
 ✅ Click 🚩 — Voldemort bounces! Much harder to hit now.`,
 
-      `⏱️ Add a 30-second timer!
+      `⏱️ Set up the timer!
 
 ① Orange VARIABLES → "Make a Variable" → type Time → OK
 
@@ -115,18 +119,24 @@ Click the STAGE (small grey box to the LEFT of the sprite list):
 ② Yellow EVENTS → "when 🚩 clicked"
 ③ Orange VARIABLES → "set Score to 0" → snap under
 ④ Orange VARIABLES → "set Time to 30" → snap under
-⑤ Orange CONTROL → "repeat 30" → snap under
-   Inside repeat: CONTROL → "wait 1 secs"
-   Inside repeat: VARIABLES → "change Time by -1"
-⑥ After the repeat (snap OUTSIDE below it):
-   Purple LOOKS → "say [Time's up! ⏰] for 2 secs"
+
+✅ Score and Time are reset every time you start!`,
+
+      `⏳ Countdown from 30!
+
+Still on the STAGE — snap below the "set Time to 30":
+
+① Orange CONTROL → "repeat 30" → snap under
+   Inside: CONTROL → "wait 1 secs"
+   Inside: VARIABLES → "change Time by -1"
+② After the repeat (snap OUTSIDE below):
    Orange CONTROL → "stop [all]"
 
-✅ Click 🚩 — the timer counts down from 30!`,
+✅ Click 🚩 — timer counts down from 30 to 0!`,
 
       `⭐ CHALLENGE: Harry shouts the spell!
 
-Click HARRY → find an empty spot → build this stack:
+Click HARRY → find an empty spot → new stack:
 
 ① Yellow EVENTS → "when [space] key pressed"
 ② Purple LOOKS → "say [Expelliarmus! ⚡] for 0.5 secs"
@@ -135,17 +145,16 @@ Click HARRY → find an empty spot → build this stack:
 
       `⭐⭐ SUPER CHALLENGE: Voldemort shoots back!
 
-Click DARK_CURSE in the sprite list, then:
+Click DARK_CURSE in the sprite list:
 
 ① Yellow EVENTS → "when 🚩 clicked"
 ② Orange CONTROL → "forever" → snap under
-   Inside forever:
-③ CONTROL → "wait [pick random 2 to 4] secs"
-④ Blue MOTION → "go to [Voldemort]"
-⑤ Blue MOTION → "glide 1 secs to x: 0 y: -170"
-⑥ Blue MOTION → "go to x: 0 y: 170"
+   Inside: CONTROL → "wait [pick random 2 to 4] secs"
+   Inside: Blue MOTION → "go to [Voldemort]"
+   Inside: Blue MOTION → "glide 1 secs to x: 0 y: -170"
+   Inside: Blue MOTION → "go to x: 0 y: 170"
 
-✅ Click 🚩 — dark curses fire down at Harry! Show your teacher! 🔮`,
+✅ Click 🚩 — curses fire down at Harry! Show your teacher! 🔮`,
     ],
   },
 
@@ -211,11 +220,15 @@ Click LIGHTNING_BOLT in the sprite list:
 ① Yellow EVENTS → "when [space] key pressed"
 ② Blue MOTION → "go to [Harry]"
    → click the dropdown → choose Harry
-   (bolt teleports to wherever Harry is standing!)
-③ MOTION → "glide 0.2 secs to x: 0 y: 170" → snap under
-④ MOTION → "go to x: 0 y: -170" → snap last (resets)
+   (bolt starts wherever Harry is standing!)
+③ MOTION → "point towards [Voldemort]" → snap under
+   → click dropdown → choose Voldemort
+   (bolt faces Voldemort — no matter where he moved!)
+④ MOTION → "glide 0.3 secs to [Voldemort]" → snap under
+   → click dropdown → choose Voldemort
+⑤ MOTION → "go to [Harry]" → snap last (resets to Harry)
 
-✅ Press Space — bolt fires from Harry straight up!`,
+✅ Press Space — bolt flies from Harry directly to Voldemort!`,
 
       `💥 Lightning hits Voldemort!
 
@@ -228,7 +241,9 @@ Click VOLDEMORT in the sprite list:
    SENSING → "touching [Lightning_Bolt]?" → into diamond
    Inside the if:
 ④ VARIABLES → "change Voldemort_HP by -1"
-⑤ CONTROL → "wait 0.3 secs"
+⑤ VARIABLES → "change Score by 1"
+   (score goes up every time Voldemort takes a hit!)
+⑥ CONTROL → "wait 0.3 secs"
    (this stops one bolt from counting as 3 hits)
 
 ✅ Press Space and aim at Voldemort — watch the HP drop!`,
@@ -241,8 +256,7 @@ Still on VOLDEMORT — add a SECOND "if...then" BELOW the first (inside the fore
    → put Voldemort_HP on the left, type 1 on the right
    → drop into the diamond slot
    Inside this if:
-② VARIABLES → "change Score by 1"
-③ VARIABLES → "set Voldemort_HP to 5"
+② VARIABLES → "set Voldemort_HP to 5"
 ④ MOTION → "go to [random position]"
 ⑤ LOOKS → "say [I'll be back! 💀] for 0.5 secs"
 
@@ -275,24 +289,28 @@ Build a SEPARATE stack (not connected to the first one):
    SENSING → "touching [Dark_Curse]?" → into diamond
    Inside the if:
 ④ VARIABLES → "change Harry_HP by -1"
-⑤ LOOKS → "say [Ouch! 😣] for 0.5 secs"
-⑥ CONTROL → "wait 1 secs"
+⑤ VARIABLES → "change Score by -1"
+   (score goes down each time Harry takes a hit!)
+⑥ LOOKS → "say [Ouch! 😣] for 0.5 secs"
+⑦ CONTROL → "wait 1 secs"
    (gives Harry 1 second where he can't be hit again)
 
 Below the first if, add a second:
-⑦ CONTROL → "if...then"
+⑧ CONTROL → "if...then"
    OPERATORS → Harry_HP < 1 → into diamond
    Inside: LOOKS → "say [Voldemort wins! 💀] for 2 secs"
    Then: CONTROL → "stop [all]"
 
-✅ Let a curse hit Harry — HP drops! 3 hits and it's game over.`,
+✅ Let a curse hit Harry — HP drops AND score goes down! 3 hits and it's game over.`,
 
       `⏱️ 60-second timer + Personal Best!
 
 Click the STAGE — add to the bottom of your "when 🚩 clicked" stack:
 
 ① VARIABLES → "set Time to 60" → snap under the HP lines
-② CONTROL → "repeat 60"
+② CONTROL → "repeat until [ ]"
+   OPERATORS → "[ ] < [ ]" block → drag into the diamond
+   Put Time on the left, type 1 on the right → reads: "repeat until Time < 1"
    Inside repeat:
    CONTROL → "wait 1 secs"
    VARIABLES → "change Time by -1"
@@ -368,7 +386,7 @@ async function main() {
     }
 
     const updatedMeta = {
-      ...(item.metadata),
+      ...(item.metadata ?? {}),
       challenge: u.challenge,
       tagline:   u.tagline,
       steps:     u.steps,
@@ -376,7 +394,8 @@ async function main() {
 
     await sql`
       UPDATE content_items
-      SET metadata = ${JSON.stringify(updatedMeta)}
+      SET metadata = ${sql.json(updatedMeta)},
+          step_count = ${u.steps.length}
       WHERE id = ${item.id}
     `
 
