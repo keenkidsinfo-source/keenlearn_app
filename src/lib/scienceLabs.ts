@@ -454,6 +454,144 @@ export const scienceLabs: ScienceLab[] = [
       '🔥 Teacher demonstration only — students must not hold balloons over an open flame. Keep all flammable materials away from the candle. Place the candle inside a tray. Keep water nearby to extinguish the flame. Students stay a safe distance from the demo table. Wear safety goggles. Never leave the flame unattended. Extinguish immediately after the experiment.',
     referenceVideo: '',
   },
+
+  {
+    id: 'sep-25-food-detective',
+    date: '2026-09-25',
+    weekNumber: 4,
+    emoji: '🕵️',
+    title: 'The Food Detective Experiment',
+    conceptShort: 'Food Science · Dissolving · Mixtures · Observation',
+    wowFactor: 'Students become food detectives and compare cookie cream with real dairy cream to see how differently they behave in water!',
+    kidExplanation:
+      'Different foods are made from different ingredients. When we put them into water, they can behave differently. Some things mix easily, while others stay in lumps, float, or separate. Today, we are food detectives — using our eyes and observations to look for clues about how cookie cream and dairy cream are different!',
+    vocab: [
+      { word: 'Observation', definition: 'Something we notice using our senses or tools', color: 'blue' },
+      { word: 'Dissolve', definition: 'When a substance mixes evenly into a liquid', color: 'green' },
+      { word: 'Mixture', definition: 'Two or more substances combined together', color: 'orange' },
+      { word: 'Separate', definition: 'When parts of a mixture move apart instead of staying evenly mixed', color: 'purple' },
+      { word: 'Fair Test', definition: 'An experiment where we keep important things the same so we can compare results', color: 'red' },
+      { word: 'Evidence', definition: 'Information or observations that help us answer a question', color: 'blue' },
+    ],
+    realWorld: [
+      '🥗 Salad dressing — oil and water separate because fats don\'t mix with water',
+      '🥛 Chocolate milk — we stir ingredients together to make a mixture',
+      '🧈 Butter — contains a lot of fat and behaves differently from water',
+      '🧃 Drink powders — some dissolve in water while others don\'t',
+      '🧪 Food scientists test foods to understand their ingredients and properties',
+    ],
+    materials: [
+      'Cream-filled cookies or biscuits',
+      'Real dairy cream',
+      '2 clear transparent cups per group',
+      'Water',
+      'Measuring tablespoon',
+      'Spoon or small scraper',
+      'Stirring sticks or spoons',
+      'Labels or masking tape + marker',
+      'Timer',
+      'Observation worksheet or paper',
+    ],
+    setupNotes: [
+      'Separate the cream from several cookies before class — collect 2 tablespoons.',
+      'Measure 2 tablespoons of real dairy cream separately.',
+      'Prepare two clear cups labelled: CUP A — COOKIE CREAM · CUP B — DAIRY CREAM.',
+      'Add the same amount of water to each cup.',
+      '⚠️ Check for food allergies before conducting the experiment.',
+      'Keep samples hidden or covered before the prediction stage for more mystery.',
+      'Dairy cream should not sit unrefrigerated for long — prepare close to class time.',
+      'Have students wash hands after handling food materials.',
+      'Dispose of all mixtures after the activity — do not allow eating after mixing.',
+    ],
+    sessionPlan: [
+      {
+        time: '0–5 min',
+        phase: '🕵️ Hook & Mystery Question',
+        instructions: [
+          'Hold up a cream-filled cookie. Ask: "What do you think this white cream is made of?" (Students may say: milk, cream, sugar, butter, dairy.)',
+          'Ask: "Do you think the cream inside this cookie is the same as real dairy cream?"',
+          'Do NOT answer yet. Say: "Today, you are going to become FOOD DETECTIVES!"',
+          '"Scientists don\'t just guess — they compare, observe, and collect evidence."',
+        ],
+      },
+      {
+        time: '5–10 min',
+        phase: '🔮 Predictions',
+        instructions: [
+          'Show both samples: 🍪 Cookie cream and 🥛 Real dairy cream.',
+          'Ask: "If we put both into water, will they behave the same way?"',
+          'Students write: "I think the cookie cream and dairy cream will __________ because __________."',
+          'Class vote: 👍 Same behaviour / 👎 Different behaviour. Ask 2–3 to explain.',
+        ],
+      },
+      {
+        time: '10–20 min',
+        phase: '🧪 The Experiment',
+        instructions: [
+          'CUP A — COOKIE CREAM: Measure 2 tbsp cookie cream into Cup A. Add your chosen equal amount of water. Observe BEFORE stirring: colour, texture, thickness, float/sink.',
+          'CUP B — DAIRY CREAM: Measure exactly the same amount of dairy cream into Cup B. Add exactly the same amount of water. Ask: "Does this look the same before stirring?"',
+          'STIR: Start timer. Stir both cups for the same 10–20 seconds at similar speed. Ask: "What is happening?"',
+          'STOP stirring. Wait and watch — what happens when you stop?',
+        ],
+      },
+      {
+        time: '20–32 min',
+        phase: '🔍 Detective Observations',
+        instructions: [
+          'Students compare both cups using an observation chart: colour, mixed easily?, lumps?, separation?, float or sink?, what happened after stirring?',
+          'Challenge 1 — Which mixed faster?',
+          'Challenge 2 — Look for lumps: "Do you see any pieces left behind?"',
+          'Challenge 3 — Wait and watch: observe separation, floating, or settling.',
+          'Challenge 4 — The verdict: "Based on evidence, do you think these two creams behave the same way?"',
+          'Remind: "One experiment gives us CLUES. Scientists usually need more than one test to prove something."',
+        ],
+      },
+      {
+        time: '32–40 min',
+        phase: '💡 Explain the Science',
+        instructions: [
+          'Ask: "Why might these two creams behave differently in water?"',
+          '🥛 Dairy cream contains water, fat, and proteins from milk.',
+          '🍪 Cookie filling is usually a manufactured mixture — often sugar, vegetable fats/oils, and flavourings.',
+          'When put into water, foods may: dissolve, form a mixture, separate, float, sink, or form lumps.',
+          'Many fats and oils do NOT mix easily with water — this is why we see differences.',
+          'This experiment gives us CLUES, but to know exactly what\'s inside, scientists need additional tests.',
+        ],
+      },
+      {
+        time: '40–45 min',
+        phase: '🌍 Real-World Connections',
+        instructions: [
+          'Ask: "Where else do we see things that don\'t mix?"',
+          '🥗 Salad dressing — oil and water separate. 🥛 Chocolate milk — stir to mix. 🧈 Butter — lots of fat.',
+          '🧃 Some drink powders dissolve; others don\'t. 🧪 Food scientists test foods professionally.',
+        ],
+      },
+      {
+        time: '45–50 min',
+        phase: '✏️ Draw & Write / Share Out',
+        instructions: [
+          'Students draw: 🟦 Cup A (Cookie Cream + Water) and 🟩 Cup B (Dairy Cream + Water) — what they actually observed.',
+          'G1–2: Complete "The two creams were __________." and "I noticed that __________."',
+          'G3–4: Write "My evidence shows that the cookie cream and dairy cream behaved differently because __________."',
+          'Encourage use of: observe, mix, dissolve, separate, evidence.',
+          'Close: "Today you became food detectives! You tested, compared, and collected evidence — that\'s exactly what scientists do!"',
+        ],
+      },
+    ],
+    discussionQuestions: [
+      { question: 'Did both creams behave the same way in water?', answer: 'Students answer based on their own observations.' },
+      { question: 'Why did we use the same amount of water in both cups?', answer: 'To make it a fair test — so the only difference is the type of cream.' },
+      { question: 'Why did we use the same amount of cream?', answer: 'So we could compare the two samples fairly.' },
+      { question: 'Why did we stir both cups for the same amount of time?', answer: 'To keep the experiment fair — same stirring, same conditions.' },
+      { question: 'Can one experiment tell us everything about what a food contains?', answer: 'No. Scientists often need multiple tests and evidence to draw conclusions.' },
+    ],
+    scienceBehindIt:
+      'Foods are made from different ingredients that interact with water in different ways. Real dairy cream contains water, fat, and proteins — some of which can mix with water. Cookie filling typically contains sugar, vegetable oils or fats, and flavourings. Many fats and oils are hydrophobic (they repel water), which is why they may form lumps, float, or separate rather than dissolving evenly. Observing how a substance behaves in water gives us clues about its composition — a key technique in food science.',
+    safetyNotes:
+      '⚠️ Check for food allergies before conducting this experiment. Do NOT allow students to eat samples after mixing with water. Use clean utensils when preparing dairy cream. Dairy cream should not sit unrefrigerated for long. Dispose of all mixtures after the activity. Students should wash hands after handling food materials.',
+    referenceVideo: '',
+  },
 ]
 
 /**
