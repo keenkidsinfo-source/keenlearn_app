@@ -3,7 +3,7 @@ import { getSession } from '@/lib/auth/jwt'
 import { db } from '@/lib/db'
 import { curriculumDays, curriculum, curriculumContent, classrooms } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { scienceLabs } from '@/lib/scienceLabs'
+import { getLabByWeek } from '@/lib/scienceLabs'
 import { ScienceLabClient } from '@/app/science/lab/ScienceLabClient'
 import { StudentSidebar } from '@/app/dashboard/StudentSidebar'
 import { getWeekNav } from '@/lib/student-week-nav'
@@ -35,11 +35,10 @@ export default async function ScienceDayPage({ params }: Props) {
     .where(eq(curriculumContent.curriculumDayId, dayId))
     .limit(1)
 
-  // Week 1 → lab index 0 (fire extinguisher), Week 2 → lab index 1 (spinning pen)
   const weekNumber = curriculumRow?.weekNumber ?? 1
-  const lab = scienceLabs[weekNumber - 1] ?? scienceLabs[0]
+  const lab = getLabByWeek(weekNumber)
 
-  if (!lab) redirect('/dashboard')
+  if (!lab) redirect('/science/lab')
 
   const nav = await getWeekNav(dayId)
   const [classroom] = session.classroomId
