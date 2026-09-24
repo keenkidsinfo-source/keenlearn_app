@@ -388,6 +388,25 @@ export function ScienceLabClient({
     causePlaceholder   = isG12 ? 'e.g. I think the screen kept the water from falling out…' : 'e.g. I think air pressure pushing up through the mesh holds the water in against gravity…'
     learnedPlaceholder = isG12 ? 'e.g. I learned that air can hold water up!' : 'e.g. I learned that air pressure pushes in all directions and surface tension seals tiny holes…'
     predictionCorrectIsDown = true
+  } else if (lab.title.toLowerCase().includes('food') || lab.title.toLowerCase().includes('detective') || lab.title.toLowerCase().includes('dairy') || lab.title.toLowerCase().includes('cream')) {
+    labAnimation       = null
+    setupCaption       = 'Watch your teacher mix cookie cream and real dairy cream with water. Observe carefully!'
+    predictionQ        = isG12
+      ? 'Do you think cookie cream and dairy cream will behave the same way in water?'
+      : 'If we put cookie cream and dairy cream into water, will they behave the same way? What evidence do you predict you will see?'
+    voteUp             = { emoji: '👍', label: 'They will behave the same!' }
+    voteSide           = { emoji: '🤔', label: "I'm not sure…" }
+    voteDown           = { emoji: '🔍', label: 'They will be different!' }
+    observePlaceholder = isG12
+      ? 'e.g. The cookie cream made lumps, but the dairy cream mixed more easily…'
+      : 'e.g. Cup A (cookie cream) formed lumps and separated. Cup B (dairy cream) mixed differently with the water…'
+    causePlaceholder   = isG12
+      ? 'e.g. I think they are made from different ingredients…'
+      : 'e.g. I think cookie cream has vegetable fats that don\'t mix well with water, while dairy cream has different properties…'
+    learnedPlaceholder = isG12
+      ? 'e.g. I learned that different foods can behave differently in water!'
+      : 'e.g. I learned that fats and oils don\'t mix easily with water, and observing how a food behaves in water gives us clues about its ingredients…'
+    predictionCorrectIsDown = true
   } else {
     // magnet / fallback
     labAnimation       = <MagnetAnimation />
