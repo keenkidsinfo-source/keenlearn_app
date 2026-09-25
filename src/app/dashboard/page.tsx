@@ -95,6 +95,11 @@ export default async function DashboardPage({
 
   const subjectToDay = new Map(currDays.map(d => [d.subject, d]))
 
+  // DEBUG: log what we found so we can check Vercel function logs
+  console.log('[dashboard] week param:', weekOverride, '| assigned curriculumId:', assigned?.curriculumId, '| weekStartDate:', assigned?.weekStartDate)
+  console.log('[dashboard] currDays subjects:', currDays.map(d => d.subject))
+  console.log('[dashboard] dayToSubject entries:', [...dayToSubject.entries()])
+
   // Build week view: 5 days using school schedule
   // Note: today-detection moved to WeekDays client component to use browser's local clock
   const weekDays = [1, 2, 3, 4, 5].map(dow => {
