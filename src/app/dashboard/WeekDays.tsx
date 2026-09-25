@@ -146,8 +146,9 @@ export function WeekDays({ weekDays, weekStart, hasContent, canEnterResults = tr
             {weekDays.map(({ dow, subject, dayId, theme }) => {
               if (!subject) return null
               const colors  = SUBJECT_COLORS[subject as Subject]
+              const isFutureWeek = weekStart > currentMonday
               const isToday = isCurrentWeek && dow === todayIndex
-              const isPast  = isCurrentWeek ? (dow < todayIndex) : true
+              const isPast  = isCurrentWeek ? (dow < todayIndex) : (isFutureWeek ? false : true)
               const isBuild = subject === 'build' && canEnterResults
               // G1-2 build tile: display-only (teacher records their score)
               const isG12Build = subject === 'build' && !canEnterResults && !!dayId
