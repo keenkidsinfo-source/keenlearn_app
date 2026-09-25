@@ -123,6 +123,7 @@ export default async function CodingDayPage({ params }: Props) {
       challenge={meta?.challenge}
       tagline={meta?.tagline}
       steps={meta?.steps}
+      g12StopAfter={meta?.g12StopAfter}
       initialStep={sessionData?.lastStepIndex ?? 0}
     />
   )

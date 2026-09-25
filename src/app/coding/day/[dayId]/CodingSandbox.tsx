@@ -19,6 +19,7 @@ interface Props {
   tagline?: string
   steps?: string[]
   initialStep?: number
+  g12StopAfter?: number  // 1-based step number where G1-2 finish (G3-4 sees a challenge banner after)
 }
 
 // ── Text-to-speech helper ──────────────────────────────────────────────────
@@ -73,7 +74,7 @@ function speak(text: string, baseRate = 0.6) {
 
 export function CodingSandbox({
   contentItemId, sessionContentItemId, title, theme, language, projectId, projectUrl,
-  starterUrl, savedCode, gradeBand, challenge, tagline, steps, initialStep = 0,
+  starterUrl, savedCode, gradeBand, challenge, tagline, steps, initialStep = 0, g12StopAfter,
 }: Props) {
   // G1-2 gets a noticeably slower reading speed (younger ears need more time)
   const ttsRate = gradeBand === 'g1-2' ? 0.5 : 0.6
@@ -538,7 +539,7 @@ export function CodingSandbox({
         </header>
 
         <StepPanel
-          steps={steps} challenge={challenge}
+          steps={steps} challenge={challenge} g12StopAfter={g12StopAfter}
           currentStep={currentStep} onStepChange={handleStepChange}
           onComplete={handleStepComplete}
           onDone={() => router.push('/dashboard')}
@@ -613,7 +614,7 @@ export function CodingSandbox({
       </header>
 
       <StepPanel
-        steps={steps} challenge={challenge}
+        steps={steps} challenge={challenge} g12StopAfter={g12StopAfter}
         currentStep={currentStep} onStepChange={handleStepChange}
         onComplete={handleStepComplete}
         onDone={() => router.push('/dashboard')}
@@ -647,7 +648,7 @@ export function CodingSandbox({
 
 // ── Step-by-step panel — one step at a time ───────────────────────────────
 function StepPanel({
-  steps, challenge, currentStep, onStepChange, onComplete, onDone, onSpeak, onKeeBotToggle, keeBotOpen, gradeBand,
+  steps, challenge, currentStep, onStepChange, onComplete, onDone, onSpeak, onKeeBotToggle, keeBotOpen, gradeBand, g12StopAfter,
 }: {
   steps?: string[]
   challenge?: string
@@ -659,6 +660,7 @@ function StepPanel({
   onKeeBotToggle?: () => void
   keeBotOpen?: boolean
   gradeBand?: string
+  g12StopAfter?: number // 1-based: first G3-4-only step is g12StopAfter+1
 }) {
   const [toast, setToast] = useState<string | null>(null)
 
@@ -667,6 +669,8 @@ function StepPanel({
   const step    = (steps[currentStep] ?? '').trim().replace(/\n{2,}/g, '\n')
   const isFirst = currentStep === 0
   const isLast  = currentStep === total - 1
+  // Show G3-4 challenge banner when we've crossed the G1-2 finish line
+  const isChallenge = g12StopAfter != null && currentStep >= g12StopAfter
 
   function handleNext() {
     if (isLast) {
@@ -702,9 +706,16 @@ function StepPanel({
 
         {/* Step text */}
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold text-yellow-500 leading-none mb-0.5">
-            🎯 {challenge ?? 'Challenge'} · Step {currentStep + 1} of {total}
+          <p className="text-xs font-bold leading-none mb-0.5" style={{ color: isChallenge ? '#7c3aed' : undefined }} >
+            {isChallenge
+              ? `🔥 G3-4 Challenge · Step ${currentStep + 1} of ${total}`
+              : `🎯 ${challenge ?? 'Challenge'} · Step ${currentStep + 1} of ${total}`}
           </p>
+          {isChallenge && (
+            <p className="text-xs font-semibold text-purple-600 bg-purple-50 rounded px-1.5 py-0.5 mb-1 leading-tight">
+              G1-2 — great job, you&apos;re done! G3-4 — keep going! 🚀
+            </p>
+          )}
           <div className="h-32 overflow-y-auto">
             <p className="text-sm text-gray-700 leading-snug whitespace-pre-line">{step}</p>
           </div>
