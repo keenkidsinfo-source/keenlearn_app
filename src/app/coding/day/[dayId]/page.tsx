@@ -55,11 +55,20 @@ export default async function CodingDayPage({ params, searchParams }: Props) {
   const meta = item.metadata as any
   const language: 'scratch' | 'python' = meta?.language ?? (session.gradeBand === 'g3-4' ? 'python' : 'scratch')
 
-  const projectUrl = (language === 'scratch' && project && (project.projectData || project.r2Key))
-    ? `/api/v1/coding/${project.id}/data`
+  // If the student clicked "Start fresh", wipe the saved project server-side so the
+  // blank editor is guaranteed — even if the client-side DELETE request failed.
+  if (fresh && project) {
+    await db.delete(codingProjects).where(
+      and(eq(codingProjects.id, project.id), eq(codingProjects.studentId, session.sub))
+    )
+  }
+  const effectiveProject = fresh ? null : project
+
+  const projectUrl = (language === 'scratch' && effectiveProject && (effectiveProject.projectData || effectiveProject.r2Key))
+    ? `/api/v1/coding/${effectiveProject.id}/data`
     : null
-  const savedCode = (language === 'python' && project?.projectData)
-    ? project.projectData
+  const savedCode = (language === 'python' && effectiveProject?.projectData)
+    ? effectiveProject.projectData
     : null
 
   // If no saved project for this week and it's Scratch, try to use the previous week's
@@ -120,7 +129,7 @@ export default async function CodingDayPage({ params, searchParams }: Props) {
       title={item.title}
       theme={day.theme ?? ''}
       language={language}
-      projectId={project?.id ?? null}
+      projectId={effectiveProject?.id ?? null}
       projectUrl={projectUrl}
       starterUrl={starterUrl}
       savedCode={savedCode}
