@@ -32,102 +32,123 @@ const sql = postgres(process.env.DATABASE_URL)
 const coreSteps = [
   `🏎️ Set up your kart!
 
-① Click the sprite icon (bottom right) → "Choose a Sprite"
-② Search "Car" → click it → rename it "Kart"
-③ Delete the Cat sprite (right-click → delete)
-④ Click the backdrop icon → "Choose a Backdrop" → search "Neon Tunnel" → click it
-⑤ EVENTS → "when 🚩 clicked"
-   LOOKS → "set size to 50 %"
+① Bottom-right: click the 🐱 Cat sprite → right-click → Delete
+② Click the sprite icon (bottom-right, looks like a face with +) → Choose a Sprite → search "Car" → click it
+③ Click the name "Car" below the sprite → type "Kart" → press Enter
+④ Click the backdrop icon (bottom-right, looks like a photo with +) → Choose a Backdrop → search "Neon Tunnel" → click it
+⑤ Click Kart in the sprite list → drag these blocks to the code area on the right:
+   EVENTS "when 🚩 clicked"
+   LOOKS "set size to 50 %"
 
-✅ Your kart is on a cool track!`,
+✅ Press the green flag — kart appears on the track!`,
 
   `➡️ Turn right!
 
-Click KART — drag to the white area:
-① EVENTS → "when [right arrow] key pressed"
-② MOTION → "turn ↻ 15 degrees"
+① Click Kart in the sprite list
+② Drag these two blocks to the code area — they snap together:
+   EVENTS "when [right arrow] key pressed"
+   MOTION "turn ↻ 15 degrees"
 
-✅ Press right arrow — kart turns right!`,
+✅ Press the right arrow key — kart turns right!`,
 
   `⬅️ Turn left!
 
-Still on KART — drag to an EMPTY spot:
-① EVENTS → "when [left arrow] key pressed"
-② MOTION → "turn ↺ 15 degrees"
+① Still on Kart — drag to a NEW empty spot in the code area (not touching the last stack):
+   EVENTS "when [left arrow] key pressed"
+   MOTION "turn ↺ 15 degrees"
 
-✅ Press both arrows — kart turns left and right!`,
+✅ Press left and right arrows — kart turns both ways!`,
 
-  `🚀 Drive forward!
+  `🚀 Drive forward + stay on screen!
 
-Still on KART — drag to an EMPTY spot:
-① EVENTS → "when [up arrow] key pressed"
-② MOTION → "move 10 steps"
+① Still on Kart — drag to a NEW empty spot:
+   EVENTS "when [up arrow] key pressed"
+   MOTION "move 10 steps"
 
-✅ Press up arrow — kart drives in the direction it's facing!`,
+② Find your "when 🚩 clicked" stack from Step 1.
+   Add at the bottom:
+   MOTION "if on edge, bounce"
+   Wait — that won't work there. Instead, do this:
+
+③ Drag to yet another NEW empty spot:
+   EVENTS "when 🚩 clicked"
+   CONTROL "forever"
+   Inside the forever: MOTION "if on edge, bounce"
+
+✅ Press ↑ to drive. Kart bounces back instead of disappearing off screen!`,
 
   `🏆 Make a Laps counter!
 
-Still on KART:
-① VARIABLES → "Make a Variable" → type "Laps" → OK
-② Find your "when 🚩 clicked" stack
-③ Add: VARIABLES → "set Laps to 0"
+① Still on Kart → VARIABLES → "Make a Variable" → type "Laps" → click OK
+② Find your "when 🚩 clicked + set size to 50%" stack from Step 1
+③ Snap onto the bottom: VARIABLES "set Laps to 0"
 
-✅ Laps counter appears on screen!`,
+✅ A "Laps 0" counter appears on the screen!`,
 
-  `🏁 Cross the finish line!
+  `🏁 Draw the finish line!
 
-① Click sprite icon → "Paint" → draw a wide stripe across the track
-② Name it "FinishLine"
-③ Click KART — new stack:
-   EVENTS "when 🚩 clicked" + CONTROL "forever"
-   Inside: if SENSING "touching [FinishLine]?"
-   VARIABLES "change Laps by 1"
-   CONTROL "wait 1 secs" (stops counting twice)
+① In the sprite list, click the sprite icon (face with +) → Paint (the paint brush)
+② A blank white canvas opens — use the Rectangle tool to draw a wide stripe across the middle
+③ Click the blue "Costume" tab at the top → click the name field that says "costume1" → type "FinishLine" → press Enter
 
-✅ Cross the line — Laps goes up!`,
+Now add the code:
+④ Click Kart in the sprite list → drag to a NEW empty spot:
+   EVENTS "when 🚩 clicked"
+   CONTROL "forever"
 
-  `⏱️ 30-second timer — race!
+⑤ Inside the forever, add:
+   CONTROL "if < > then" ← the block with a pointy gap
+   Inside the pointy gap: SENSING "touching [FinishLine v]?"
+   Inside the if-then mouth: VARIABLES "change Laps by 1"
+   Below that (still inside): CONTROL "wait 1 secs"
 
-Still on KART:
-① VARIABLES → "Make a Variable" → "Timer"
-② New stack: EVENTS "when 🚩 clicked"
+✅ Drive over the stripe — the Laps number goes up by 1!`,
+
+  `⏱️ 30-second race!
+
+① Still on Kart → VARIABLES → "Make a Variable" → type "Timer" → OK
+② Drag to a NEW empty spot:
+   EVENTS "when 🚩 clicked"
    VARIABLES "set Timer to 30"
-③ CONTROL "repeat until Timer < 1"
-   Inside: CONTROL "wait 1 secs"
-   Inside: VARIABLES "change Timer by -1"
-④ LOOKS "say [Time's up! 🏁] for 2 secs"
-   CONTROL "stop [all]"
+③ Snap on: CONTROL "repeat until < >"
+   Inside the gap: OPERATORS "[ ] < [ ]" → left box: VARIABLES "Timer", right box: type 1
+   Inside the repeat: CONTROL "wait 1 secs"
+   Inside the repeat: VARIABLES "change Timer by -1"
+④ After the repeat (outside it):
+   LOOKS "say [ ] for [ ] secs" → type "Time's up! 🏁" → 2 secs
+   CONTROL "stop [all v]"
 
-✅ 30 seconds — how many laps can you get?`,
+✅ Press the green flag — Timer counts down from 30. How many laps can you get?`,
 ]
 
 // ── G3-4 challenge steps 8–10 ─────────────────────────────────────────────────
 const challengeSteps = [
-  `🔄 Bounce off the edges!
-
-Click KART — find your "when 🚩 clicked + forever" stack:
-① Inside the forever, add:
-   MOTION → "if on edge, bounce"
-
-✅ Kart bounces back instead of going off-screen!`,
-
   `⏱️ Race for 60 seconds!
 
-Find your timer stack:
-① Change "set Timer to 30" → change 30 to 60
+① Find your timer stack — the one with "set Timer to 30"
+② Click the number 30 → change it to 60
 
-✅ Twice the time — twice the laps!`,
+✅ Now you have twice as long — go for more laps!`,
 
   `🏆 Personal Best!
 
-Still on KART:
-① VARIABLES → "Make a Variable" → "PersonalBest"
-② After the timer loop (before "stop all"), add:
-   CONTROL "if" + OPERATORS "Laps > PersonalBest"
-   Inside: VARIABLES "set PersonalBest to Laps"
-   LOOKS "say [New Record! 🏆] for 2 secs"
+① Still on Kart → VARIABLES → "Make a Variable" → type "PersonalBest" → OK
+② Find your timer stack. After the repeat loop ends (outside it, before "stop all"), add:
+   CONTROL "if < > then"
+   Inside the gap: OPERATORS "[ ] > [ ]" → left: VARIABLES "Laps", right: VARIABLES "PersonalBest"
+   Inside the if-then mouth: VARIABLES "set PersonalBest to Laps"
+   Below that (still inside): LOOKS "say [ ] for [ ] secs" → type "New Record! 🏆" → 2 secs
 
-✅ Beat your record every round!`,
+✅ If your laps beat your record, the kart says "New Record!"`,
+
+  `🎉 Challenge: Make it harder!
+
+Pick one (or all!) to try:
+① Make the kart faster: find "move 10 steps" → change 10 to 15
+② Make it harder to turn: find "turn 15 degrees" → change 15 to 10
+③ Add a second finish line on the other side of the track — does it count double?
+
+✅ Share your best lap count with the class!`,
 ]
 
 // ── Update G1-2 content item ──────────────────────────────────────────────────
