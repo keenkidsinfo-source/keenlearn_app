@@ -450,8 +450,9 @@ export function CodingSandbox({
               onClick={async () => {
                 if (!confirm('Start a brand-new project? Your saved work will be cleared.')) return
                 await fetch(`/api/v1/coding/${currentProjectId.current}`, { method: 'DELETE' })
-                // reload so server sees no project and shows blank TurboWarp
-                window.location.reload()
+                // reload with ?fresh=1 so server skips the "use prev week as starter" fallback
+                localStorage.removeItem('kk_project')
+                window.location.href = window.location.pathname + '?fresh=1'
               }}
               className="text-purple-300 hover:text-white text-xs font-semibold shrink-0"
               title="Clear saved project and start fresh"

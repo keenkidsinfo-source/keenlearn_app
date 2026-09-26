@@ -7,13 +7,17 @@ import { curriculum, curriculumDays, curriculumContent, contentItems, codingProj
 import { eq, and } from 'drizzle-orm'
 import { CodingSandbox } from './CodingSandbox'
 
-interface Props { params: Promise<{ dayId: string }> }
+interface Props {
+  params: Promise<{ dayId: string }>
+  searchParams: Promise<{ fresh?: string }>
+}
 
-export default async function CodingDayPage({ params }: Props) {
+export default async function CodingDayPage({ params, searchParams }: Props) {
   const session = await getSession()
   if (!session) redirect('/login')
 
   const { dayId } = await params
+  const { fresh } = await searchParams
 
   const [day] = await db.select().from(curriculumDays).where(eq(curriculumDays.id, dayId)).limit(1)
   if (!day || day.subject !== 'coding') notFound()
@@ -63,7 +67,8 @@ export default async function CodingDayPage({ params }: Props) {
   // BUT: if the metadata already has a specific starterUrl (e.g. a Pokémon .sb3),
   // that takes priority — don't override it with the previous week's project.
   let starterUrl: string | null = meta?.starterUrl ?? null
-  if (!project && language === 'scratch' && !starterUrl) {
+  // Skip prev-week fallback when student clicked "Start fresh" — they want a blank project
+  if (!project && language === 'scratch' && !starterUrl && !fresh) {
     const [thisCurriculum] = await db
       .select({ weekNumber: curriculum.weekNumber, gradeBand: curriculum.gradeBand })
       .from(curriculum)
