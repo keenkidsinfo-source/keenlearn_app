@@ -1828,14 +1828,14 @@ function SvgWhatFallsFaster() {
       {/* stone shape */}
       <ellipse cx="205" cy="122" rx="28" ry="24" fill="#78716c" stroke="#57534e" strokeWidth="2"/>
       <ellipse cx="198" cy="117" rx="8" ry="6" fill="#a8a29e"/>
-      {/* gravity arrow — strong */}
-      <line x1="205" y1="150" x2="205" y2="218" stroke="#ef4444" strokeWidth="5"/>
-      <polygon points="196,216 214,216 205,232" fill="#ef4444"/>
-      <text x="238" y="195" fontSize="12" fontWeight="bold" fill="#ef4444">GRAVITY</text>
-      {/* small air resistance arrow */}
-      <line x1="155" y1="185" x2="155" y2="162" stroke="#3b82f6" strokeWidth="3"/>
-      <polygon points="148,164 162,164 155,150" fill="#3b82f6"/>
-      <text x="60" y="185" fontSize="10" fill="#3b82f6">tiny push</text>
+      {/* small air resistance arrow + label — kept INSIDE card */}
+      <line x1="152" y1="185" x2="152" y2="158" stroke="#3b82f6" strokeWidth="4"/>
+      <polygon points="145,160 159,160 152,146" fill="#3b82f6"/>
+      <text x="152" y="202" textAnchor="middle" fontSize="10" fill="#3b82f6">tiny push</text>
+      {/* gravity arrow — strong, with label inside */}
+      <line x1="240" y1="150" x2="240" y2="218" stroke="#ef4444" strokeWidth="6"/>
+      <polygon points="231,216 249,216 240,232" fill="#ef4444"/>
+      <text x="270" y="190" fontSize="11" fontWeight="bold" fill="#ef4444">GRAVITY</text>
       {/* FAST badge */}
       <rect x="135" y="252" width="140" height="34" rx="10" fill="#ef4444"/>
       <text x="205" y="272" textAnchor="middle" fontSize="15" fontWeight="bold" fill="white">LANDS FIRST 💨</text>
@@ -1852,12 +1852,10 @@ function SvgWhatFallsFaster() {
       <line x1="555" y1="155" x2="555" y2="185" stroke="#ef4444" strokeWidth="3"/>
       <polygon points="549,183 561,183 555,196" fill="#ef4444"/>
       <text x="568" y="178" fontSize="10" fill="#ef4444">gravity</text>
-      {/* BIG air resistance arrow */}
-      <line x1="505" y1="210" x2="505" y2="170" stroke="#3b82f6" strokeWidth="6"/>
-      <polygon points="496,172 514,172 505,158" fill="#3b82f6"/>
-      <text x="516" y="202" fontSize="12" fontWeight="bold" fill="#3b82f6">AIR</text>
-      <text x="516" y="218" fontSize="12" fontWeight="bold" fill="#3b82f6">PUSHES</text>
-      <text x="516" y="234" fontSize="12" fontWeight="bold" fill="#3b82f6">UP!</text>
+      {/* BIG air resistance arrow + single-line label */}
+      <line x1="490" y1="215" x2="490" y2="165" stroke="#3b82f6" strokeWidth="7"/>
+      <polygon points="481,168 499,168 490,152" fill="#3b82f6"/>
+      <text x="490" y="232" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#3b82f6">AIR pushes UP! ↑</text>
       {/* SLOW badge */}
       <rect x="480" y="252" width="150" height="34" rx="10" fill="#3b82f6"/>
       <text x="555" y="272" textAnchor="middle" fontSize="15" fontWeight="bold" fill="white">DRIFTS SLOWLY 🌸</text>
