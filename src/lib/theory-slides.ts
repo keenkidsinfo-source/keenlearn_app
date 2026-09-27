@@ -1088,7 +1088,186 @@ const paperFanG34Deck: TheoryDeck = {
   ],
 }
 
-export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck, seesawDeck, balanceScaleDeck, marbleRunG12Deck, marbleRunG34Deck, paperFanG12Deck, paperFanG34Deck]
+// ── G1-2 · Plastic Bag Parachute · Air Resistance ───────────────────────────
+
+const parachuteG12Deck: TheoryDeck = {
+  gradeBand: 'g1-2',
+  weekNumber: 5,
+  title: 'Parachute Science!',
+  subject: 'Air & Forces',
+  slides: [
+    {
+      emoji: '🍂',
+      color: 'blue',
+      title: 'What Falls Faster?',
+      headline: 'Drop a feather and a stone — which hits the ground first?',
+      bullets: [
+        'The **stone** wins — it is heavy and cuts through the air.',
+        'The **feather** drifts slowly — air pushes up against it.',
+        'Air is not empty! It pushes back on things that fall through it.',
+        'That push is called **AIR RESISTANCE**.',
+      ],
+      vocab: { word: 'Air Resistance', definition: 'The push that air gives to a falling object' },
+      tryThis: 'Drop a flat sheet of paper. Now scrunch it into a tight ball and drop it again. Which is faster? Why?',
+      speakerNotes: [
+        '"Hold up a feather (or tissue) in one hand and a coin in the other. Drop at the same time."',
+        '"Ask: why did they land at different times? Lead them to: the feather has more surface touching the air."',
+        '"Then reveal the word: Air Resistance."',
+      ],
+    },
+    {
+      emoji: '💨',
+      color: 'green',
+      title: 'Air Resistance — the Invisible Cushion',
+      headline: 'Air pushes BACK on things that move through it.',
+      bullets: [
+        'The **bigger** the surface, the **more** air pushes back.',
+        'A tiny pebble has very little surface — air barely slows it.',
+        'A big flat bag has **lots** of surface — air pushes up hard!',
+        'More surface = more air resistance = **slower fall**.',
+      ],
+      vocab: { word: 'Surface Area', definition: 'How much of an object is touching the air' },
+      speakerNotes: [
+        '"Show your hand flat and then edge-on. Which has more surface touching the air?"',
+        '"Bigger surface = more air molecules bumping into it = more push back up."',
+      ],
+    },
+    {
+      emoji: '🛍️',
+      color: 'orange',
+      title: 'Why Your Parachute Works',
+      headline: 'The big plastic square catches air — and that slows everything down!',
+      bullets: [
+        'As the bag falls, air **piles up** underneath and pushes up.',
+        'The cup + tan bark chips are pulled DOWN by **gravity**.',
+        'Air pushing UP vs gravity pulling DOWN — they fight each other!',
+        'When they balance, the parachute falls **slowly and gently**.',
+      ],
+      tryThis: 'What happens if you use a BIGGER bag? Try it after you build!',
+      speakerNotes: [
+        '"Draw two arrows on the board: one pointing up (air), one pointing down (gravity)."',
+        '"Ask: which arrow wins if the bag is tiny? Which wins if the bag is huge?"',
+      ],
+    },
+    {
+      emoji: '🚀',
+      color: 'purple',
+      title: 'Your Challenge Today!',
+      headline: 'Build it, drop it, improve it — and enter your score!',
+      bullets: [
+        '🛍️ **Build**: tape strings to a plastic bag square and a cup.',
+        '🌿 **Test**: drop with tan bark chips — count how many it carries!',
+        '🔬 **Improve**: change ONE thing (bigger bag? shorter strings?).',
+        '📊 **Record**: enter your best tan bark count on the class chart.',
+      ],
+      speakerNotes: [
+        '"Remind them: change only ONE thing at a time so they know what helped."',
+        '"The class chart shows everyone\'s best score — who can carry the most chips?"',
+      ],
+    },
+  ],
+}
+
+// ── G3-4 · Origami Parachute · Drag + Terminal Velocity ──────────────────────
+
+const parachuteG34Deck: TheoryDeck = {
+  gradeBand: 'g3-4',
+  weekNumber: 5,
+  title: 'Parachute Engineering',
+  subject: 'Forces & Air Resistance',
+  slides: [
+    {
+      emoji: '⬇️',
+      color: 'blue',
+      title: 'Two Forces, One Race',
+      headline: 'Gravity pulls down. Air resistance pushes up. They are always fighting.',
+      bullets: [
+        '**Gravity** pulls every object downward — always, no exceptions.',
+        '**Air resistance (drag)** pushes back in the opposite direction of motion.',
+        'When gravity > drag: the object **speeds up**.',
+        'When drag = gravity: speed stops increasing — constant fall.',
+      ],
+      vocab: { word: 'Forces', definition: 'Pushes or pulls acting on an object — here, gravity (down) vs drag (up)' },
+      speakerNotes: [
+        '"Draw the two force arrows. Gravity always the same. Drag gets bigger as speed increases."',
+        '"Key question: what happens to drag as the object falls faster?"',
+      ],
+    },
+    {
+      emoji: '💨',
+      color: 'green',
+      title: 'Drag — What Changes It?',
+      headline: 'Drag depends on surface area, shape, and speed.',
+      bullets: [
+        '**Surface area**: bigger canopy → more air molecules hit it → more drag.',
+        '**Shape**: a dome cups air underneath — more effective than a flat sheet.',
+        '**Speed**: fall faster → more drag. This self-corrects the fall speed!',
+        '**Weight of payload**: heavier = gravity wins more = need bigger canopy.',
+      ],
+      vocab: { word: 'Drag', definition: 'The scientific name for air resistance — opposes motion through air' },
+      challenge: 'If you double the canopy area, what happens to drag — double, more than double, or less than double? Why?',
+      speakerNotes: [
+        '"Dome shape is key — it traps air underneath like a cup."',
+        '"Flat plastic just deflects air sideways. A dome holds it."',
+      ],
+    },
+    {
+      emoji: '🏁',
+      color: 'purple',
+      title: 'Terminal Velocity',
+      headline: 'Every falling object reaches a maximum speed — then stays there.',
+      bullets: [
+        'At first: gravity > drag → object **speeds up**.',
+        'As speed increases: drag increases too (more air hitting it per second).',
+        'Eventually: **drag = gravity** → no more acceleration → constant speed.',
+        'That top speed is called **terminal velocity**.',
+        'Parachute goal: make terminal velocity as LOW as possible.',
+      ],
+      vocab: { word: 'Terminal Velocity', definition: 'The constant maximum speed reached when drag equals gravity' },
+      challenge: 'A skydiver without a parachute reaches ~200 km/h. With one: ~20 km/h. What does the parachute change — gravity, or drag?',
+      speakerNotes: [
+        '"Terminal velocity sounds fancy but the idea is simple: drag keeps growing until it matches gravity."',
+        '"Then: no net force, so no acceleration, so constant speed. That\'s the goal of a parachute!"',
+      ],
+    },
+    {
+      emoji: '📐',
+      color: 'orange',
+      title: 'Designing Your Origami Parachute',
+      headline: 'Three variables decide how well your dome works.',
+      bullets: [
+        '**Canopy area**: your folded dome — bigger = more drag.',
+        '**String length**: longer strings let the dome open fully before the basket jerks.',
+        '**Payload weight**: more coins = more gravity = needs more drag to balance.',
+        'The **dome shape** cups air — flat plastic just deflects it sideways.',
+      ],
+      challenge: 'Predict before you drop: how many coins will your parachute carry before it collapses? Write your prediction and your reasoning.',
+      speakerNotes: [
+        '"Get them to predict before the first drop — science starts with a hypothesis."',
+        '"String length is often overlooked — too short and the dome can\'t open in time."',
+      ],
+    },
+    {
+      emoji: '🏆',
+      color: 'red',
+      title: 'Engineering Challenge',
+      headline: 'Build → test → measure → improve. One variable at a time.',
+      bullets: [
+        '📐 **Build**: fold the paper dome + origami basket, connect with 4 equal strings.',
+        '📏 **Measure**: drop height (cm) and coins carried → enter on the class chart.',
+        '🔬 **Improve**: change ONE variable — string length, canopy, or payload.',
+        '🏆 **Score**: most coins + highest drop height wins.',
+      ],
+      challenge: 'At what point does adding one more coin tip your parachute from "drifts down" to "plummets"? Observe carefully — what does terminal velocity look like?',
+      speakerNotes: [
+        '"Stress: change ONE variable only. This is controlled experimentation."',
+        '"The failure point question is excellent — watch their faces when it suddenly drops fast. That\'s physics happening!"',
+      ],
+    },
+  ],
+}
+
+export const theoryDecks: TheoryDeck[] = [cableCarDeck, wellPulleyDeck, seesawDeck, balanceScaleDeck, marbleRunG12Deck, marbleRunG34Deck, paperFanG12Deck, paperFanG34Deck, parachuteG12Deck, parachuteG34Deck]
 
 // Returns null if no deck exists for that week — caller should hide the Theory button
 export function getTheoryDeck(gradeBand: string, weekNumber: number): TheoryDeck | null {
