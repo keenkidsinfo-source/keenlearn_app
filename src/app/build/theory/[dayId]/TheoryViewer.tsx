@@ -1811,6 +1811,240 @@ function SvgFanReview() {
   )
 }
 
+// ── G1-2 Week 5 — Parachute / Air Resistance ─────────────────────────────────
+
+function SvgWhatFallsFaster() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#eff6ff" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">What Falls Faster? 🍂</text>
+      <text x="380" y="52" textAnchor="middle" fontSize="13" fill="#64748b">Drop a feather and a stone at the same time — which lands first?</text>
+
+      {/* ── STONE ── */}
+      <rect x="80" y="58" width="250" height="240" rx="14" fill="white" stroke="#6b7280" strokeWidth="2.5"/>
+      <rect x="80" y="58" width="250" height="36" rx="14" fill="#6b7280"/>
+      <rect x="80" y="80" width="250" height="14" fill="#6b7280"/>
+      <text x="205" y="83" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🪨 Stone</text>
+      {/* stone shape */}
+      <ellipse cx="205" cy="122" rx="28" ry="24" fill="#78716c" stroke="#57534e" strokeWidth="2"/>
+      <ellipse cx="198" cy="117" rx="8" ry="6" fill="#a8a29e"/>
+      {/* gravity arrow — strong */}
+      <line x1="205" y1="150" x2="205" y2="218" stroke="#ef4444" strokeWidth="5"/>
+      <polygon points="196,216 214,216 205,232" fill="#ef4444"/>
+      <text x="238" y="195" fontSize="12" fontWeight="bold" fill="#ef4444">GRAVITY</text>
+      {/* small air resistance arrow */}
+      <line x1="155" y1="185" x2="155" y2="162" stroke="#3b82f6" strokeWidth="3"/>
+      <polygon points="148,164 162,164 155,150" fill="#3b82f6"/>
+      <text x="60" y="185" fontSize="10" fill="#3b82f6">tiny push</text>
+      {/* FAST badge */}
+      <rect x="135" y="252" width="140" height="34" rx="10" fill="#ef4444"/>
+      <text x="205" y="272" textAnchor="middle" fontSize="15" fontWeight="bold" fill="white">LANDS FIRST 💨</text>
+
+      {/* ── FEATHER ── */}
+      <rect x="430" y="58" width="250" height="240" rx="14" fill="white" stroke="#3b82f6" strokeWidth="2.5"/>
+      <rect x="430" y="58" width="250" height="36" rx="14" fill="#3b82f6"/>
+      <rect x="430" y="80" width="250" height="14" fill="#3b82f6"/>
+      <text x="555" y="83" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🪶 Feather</text>
+      {/* feather shape — simple curved oval */}
+      <ellipse cx="555" cy="120" rx="14" ry="28" fill="#fde68a" stroke="#d97706" strokeWidth="2" transform="rotate(-15,555,120)"/>
+      <line x1="555" y1="100" x2="555" y2="148" stroke="#d97706" strokeWidth="1.5"/>
+      {/* gravity arrow — small */}
+      <line x1="555" y1="155" x2="555" y2="185" stroke="#ef4444" strokeWidth="3"/>
+      <polygon points="549,183 561,183 555,196" fill="#ef4444"/>
+      <text x="568" y="178" fontSize="10" fill="#ef4444">gravity</text>
+      {/* BIG air resistance arrow */}
+      <line x1="505" y1="210" x2="505" y2="170" stroke="#3b82f6" strokeWidth="6"/>
+      <polygon points="496,172 514,172 505,158" fill="#3b82f6"/>
+      <text x="516" y="202" fontSize="12" fontWeight="bold" fill="#3b82f6">AIR</text>
+      <text x="516" y="218" fontSize="12" fontWeight="bold" fill="#3b82f6">PUSHES</text>
+      <text x="516" y="234" fontSize="12" fontWeight="bold" fill="#3b82f6">UP!</text>
+      {/* SLOW badge */}
+      <rect x="480" y="252" width="150" height="34" rx="10" fill="#3b82f6"/>
+      <text x="555" y="272" textAnchor="middle" fontSize="15" fontWeight="bold" fill="white">DRIFTS SLOWLY 🌸</text>
+
+      {/* Bottom callout */}
+      <rect x="80" y="305" width="600" height="28" rx="10" fill="#1e293b"/>
+      <text x="380" y="324" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Air pushes back on things that fall — that push is called AIR RESISTANCE!</text>
+    </svg>
+  )
+}
+
+function SvgAirResistanceCushion() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#f0fdf4" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Air Resistance — the Invisible Cushion 💨</text>
+      <text x="380" y="50" textAnchor="middle" fontSize="13" fill="#15803d">Bigger surface = more air hits it = MORE resistance = SLOWER fall</text>
+
+      {/* ── Column 1: Small pebble ── */}
+      <rect x="18" y="62" width="218" height="230" rx="14" fill="white" stroke="#94a3b8" strokeWidth="2.5"/>
+      <rect x="18" y="62" width="218" height="36" rx="14" fill="#94a3b8"/>
+      <rect x="18" y="84" width="218" height="14" fill="#94a3b8"/>
+      <text x="127" y="87" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">🪨 Tiny pebble</text>
+      <ellipse cx="127" cy="128" rx="18" ry="16" fill="#78716c" stroke="#57534e" strokeWidth="2"/>
+      {/* 2 air arrows */}
+      <line x1="90" y1="162" x2="90" y2="148" stroke="#3b82f6" strokeWidth="3"/>
+      <polygon points="84,150 96,150 90,140" fill="#3b82f6"/>
+      <line x1="165" y1="162" x2="165" y2="148" stroke="#3b82f6" strokeWidth="3"/>
+      <polygon points="159,150 171,150 165,140" fill="#3b82f6"/>
+      <text x="127" y="180" textAnchor="middle" fontSize="11" fill="#64748b">Very few air molecules</text>
+      <text x="127" y="196" textAnchor="middle" fontSize="11" fill="#64748b">hit the surface</text>
+      <rect x="47" y="220" width="160" height="28" rx="9" fill="#94a3b8"/>
+      <text x="127" y="237" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">TINY surface area</text>
+      <rect x="47" y="254" width="160" height="28" rx="9" fill="#ef4444"/>
+      <text x="127" y="271" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">FALLS FAST 💨</text>
+
+      {/* ── Column 2: Crumpled ball ── */}
+      <rect x="271" y="62" width="218" height="230" rx="14" fill="white" stroke="#f59e0b" strokeWidth="2.5"/>
+      <rect x="271" y="62" width="218" height="36" rx="14" fill="#f59e0b"/>
+      <rect x="271" y="84" width="218" height="14" fill="#f59e0b"/>
+      <text x="380" y="87" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">📄 Scrunched ball</text>
+      <circle cx="380" cy="128" r="24" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2"/>
+      <line x1="370" y1="115" x2="390" y2="125" stroke="#94a3b8" strokeWidth="1.5"/>
+      <line x1="358" y1="132" x2="372" y2="120" stroke="#94a3b8" strokeWidth="1.5"/>
+      <line x1="385" y1="138" x2="395" y2="122" stroke="#94a3b8" strokeWidth="1.5"/>
+      {/* 4 arrows */}
+      {[320,345,415,440].map((x,i) => (
+        <g key={i}>
+          <line x1={x} y1="162" x2={x} y2="148" stroke="#3b82f6" strokeWidth="3"/>
+          <polygon points={`${x-6},150 ${x+6},150 ${x},140`} fill="#3b82f6"/>
+        </g>
+      ))}
+      <text x="380" y="180" textAnchor="middle" fontSize="11" fill="#64748b">Some air molecules</text>
+      <text x="380" y="196" textAnchor="middle" fontSize="11" fill="#64748b">hit it — smaller than flat</text>
+      <rect x="300" y="220" width="160" height="28" rx="9" fill="#f59e0b"/>
+      <text x="380" y="237" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">MEDIUM surface</text>
+      <rect x="300" y="254" width="160" height="28" rx="9" fill="#f59e0b"/>
+      <text x="380" y="271" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">MEDIUM speed 🌬️</text>
+
+      {/* ── Column 3: Big flat bag ── */}
+      <rect x="524" y="62" width="218" height="230" rx="14" fill="#f0fdf4" stroke="#16a34a" strokeWidth="3"/>
+      <rect x="524" y="62" width="218" height="36" rx="14" fill="#16a34a"/>
+      <rect x="524" y="84" width="218" height="14" fill="#16a34a"/>
+      <text x="633" y="87" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">🛍️ Big flat bag!</text>
+      {/* wide flat rectangle = bag */}
+      <rect x="564" y="105" width="138" height="46" rx="6" fill="#bbf7d0" stroke="#16a34a" strokeWidth="2"/>
+      <text x="633" y="132" textAnchor="middle" fontSize="11" fill="#15803d">PLASTIC BAG</text>
+      {/* 7 upward arrows below the bag */}
+      {[574,590,606,622,638,654,670,686].map((x,i) => (
+        <g key={i}>
+          <line x1={x} y1="170" x2={x} y2="155" stroke="#3b82f6" strokeWidth="4"/>
+          <polygon points={`${x-5},157 ${x+5},157 ${x},147`} fill="#3b82f6"/>
+        </g>
+      ))}
+      <text x="633" y="193" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1d4ed8">LOTS of air hits it!</text>
+      <rect x="553" y="214" width="160" height="28" rx="9" fill="#16a34a"/>
+      <text x="633" y="231" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">HUGE surface area</text>
+      <rect x="553" y="248" width="160" height="28" rx="9" fill="#16a34a"/>
+      <text x="633" y="265" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">FALLS SLOWEST 🐢</text>
+
+      {/* Bottom callout */}
+      <rect x="60" y="302" width="640" height="30" rx="10" fill="#1e293b"/>
+      <text x="380" y="322" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Our parachute bag has the BIGGEST surface — so air pushes up hard! 💪</text>
+    </svg>
+  )
+}
+
+function SvgWhyParachuteWorks() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#fff7ed" rx="16"/>
+      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Why Your Parachute Works 🛍️</text>
+      <text x="380" y="50" textAnchor="middle" fontSize="13" fill="#92400e">Two forces fight — when they balance, it falls gently!</text>
+
+      {/* ── BIG parachute diagram in centre ── */}
+      {/* Canopy — large rounded square */}
+      <rect x="270" y="58" width="220" height="110" rx="16" fill="#bbf7d0" stroke="#16a34a" strokeWidth="3"/>
+      <text x="380" y="92" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#15803d">PLASTIC BAG</text>
+      <text x="380" y="112" textAnchor="middle" fontSize="12" fill="#15803d">CANOPY</text>
+      {/* 5 strings from corners + middle bottom to cup */}
+      <line x1="278" y1="168" x2="330" y2="220" stroke="#92400e" strokeWidth="2"/>
+      <line x1="340" y1="168" x2="355" y2="220" stroke="#92400e" strokeWidth="2"/>
+      <line x1="380" y1="168" x2="380" y2="220" stroke="#92400e" strokeWidth="2"/>
+      <line x1="420" y1="168" x2="405" y2="220" stroke="#92400e" strokeWidth="2"/>
+      <line x1="482" y1="168" x2="430" y2="220" stroke="#92400e" strokeWidth="2"/>
+      {/* Cup */}
+      <polygon points="330,220 430,220 418,265 342,265" fill="#d4956a" stroke="#92400e" strokeWidth="3"/>
+      <line x1="330" y1="220" x2="430" y2="220" stroke="#92400e" strokeWidth="3"/>
+      {/* Tan bark chips in cup */}
+      <ellipse cx="358" cy="248" rx="8" ry="5" fill="#92400e"/>
+      <ellipse cx="375" cy="255" rx="7" ry="4" fill="#78350f"/>
+      <ellipse cx="393" cy="248" rx="8" ry="5" fill="#92400e"/>
+      <ellipse cx="410" cy="255" rx="6" ry="4" fill="#78350f"/>
+
+      {/* ── AIR RESISTANCE arrows (LARGE, upward) ── */}
+      <text x="60" y="100" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#2563eb">AIR</text>
+      <text x="60" y="118" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#2563eb">RESISTANCE</text>
+      <text x="60" y="136" textAnchor="middle" fontSize="12" fill="#2563eb">pushes UP</text>
+      <line x1="100" y1="168" x2="230" y2="100" stroke="#2563eb" strokeWidth="3"/>
+      <polygon points="222,96 240,98 230,114" fill="#2563eb"/>
+      <line x1="60" y1="140" x2="60" y2="72" stroke="#2563eb" strokeWidth="6"/>
+      <polygon points="52,74 68,74 60,58" fill="#2563eb"/>
+
+      {/* ── GRAVITY arrows (downward, on cup) ── */}
+      <text x="680" y="248" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#ef4444">GRAVITY</text>
+      <text x="680" y="266" textAnchor="middle" fontSize="12" fill="#ef4444">pulls DOWN</text>
+      <line x1="640" y1="240" x2="500" y2="266" stroke="#ef4444" strokeWidth="3"/>
+      <polygon points="500,258 508,274 494,272" fill="#ef4444"/>
+      <line x1="680" y1="270" x2="680" y2="310" stroke="#ef4444" strokeWidth="6"/>
+      <polygon points="672,308 688,308 680,325" fill="#ef4444"/>
+
+      {/* ── BALANCE callout ── */}
+      <rect x="80" y="294" width="260" height="36" rx="10" fill="#2563eb"/>
+      <text x="210" y="312" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">↑ Air resistance pushing UP</text>
+      <text x="380" y="312" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#fbbf24">=</text>
+      <rect x="420" y="294" width="260" height="36" rx="10" fill="#ef4444"/>
+      <text x="550" y="312" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">↓ Gravity pulling DOWN</text>
+    </svg>
+  )
+}
+
+function SvgParachuteChallenge() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#faf5ff" rx="16"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Your Challenge Today! 🚀</text>
+
+      {/* 4 steps in a 2×2 grid */}
+      {/* ① Build */}
+      <rect x="18" y="48" width="350" height="124" rx="14" fill="white" stroke="#7c3aed" strokeWidth="3"/>
+      <rect x="18" y="48" width="350" height="40" rx="14" fill="#7c3aed"/>
+      <rect x="18" y="74" width="350" height="14" fill="#7c3aed"/>
+      <text x="193" y="76" textAnchor="middle" fontSize="16" fontWeight="bold" fill="white">① 🛍️ BUILD</text>
+      <text x="193" y="108" textAnchor="middle" fontSize="13" fill="#374151">Tape strings to a plastic bag square.</text>
+      <text x="193" y="128" textAnchor="middle" fontSize="13" fill="#374151">Tape the strings to your cup.</text>
+      <text x="193" y="148" textAnchor="middle" fontSize="12" fontStyle="italic" fill="#7c3aed">Take your time — tight tape = better parachute!</text>
+
+      {/* ② Test */}
+      <rect x="392" y="48" width="350" height="124" rx="14" fill="white" stroke="#16a34a" strokeWidth="3"/>
+      <rect x="392" y="48" width="350" height="40" rx="14" fill="#16a34a"/>
+      <rect x="392" y="74" width="350" height="14" fill="#16a34a"/>
+      <text x="567" y="76" textAnchor="middle" fontSize="16" fontWeight="bold" fill="white">② 🌿 TEST</text>
+      <text x="567" y="108" textAnchor="middle" fontSize="13" fill="#374151">Drop your parachute from high up.</text>
+      <text x="567" y="128" textAnchor="middle" fontSize="13" fill="#374151">Count how many tan bark chips it carries!</text>
+      <text x="567" y="148" textAnchor="middle" fontSize="12" fontStyle="italic" fill="#16a34a">Add chips one by one — how many before it drops fast?</text>
+
+      {/* ③ Improve */}
+      <rect x="18" y="186" width="350" height="124" rx="14" fill="white" stroke="#f59e0b" strokeWidth="3"/>
+      <rect x="18" y="186" width="350" height="40" rx="14" fill="#f59e0b"/>
+      <rect x="18" y="212" width="350" height="14" fill="#f59e0b"/>
+      <text x="193" y="214" textAnchor="middle" fontSize="16" fontWeight="bold" fill="white">③ 🔬 IMPROVE</text>
+      <text x="193" y="246" textAnchor="middle" fontSize="13" fill="#374151">Change ONE thing only:</text>
+      <text x="193" y="266" textAnchor="middle" fontSize="12" fill="#374151">bigger bag · shorter strings · hole in middle?</text>
+      <text x="193" y="286" textAnchor="middle" fontSize="12" fontStyle="italic" fill="#92400e">One change at a time = real science! 🔬</text>
+
+      {/* ④ Record */}
+      <rect x="392" y="186" width="350" height="124" rx="14" fill="white" stroke="#ef4444" strokeWidth="3"/>
+      <rect x="392" y="186" width="350" height="40" rx="14" fill="#ef4444"/>
+      <rect x="392" y="212" width="350" height="14" fill="#ef4444"/>
+      <text x="567" y="214" textAnchor="middle" fontSize="16" fontWeight="bold" fill="white">④ 📊 RECORD</text>
+      <text x="567" y="246" textAnchor="middle" fontSize="13" fill="#374151">Enter your best score on the class chart!</text>
+      <text x="567" y="266" textAnchor="middle" fontSize="13" fill="#374151">🏆 Who carries the most tan barks?</text>
+      <text x="567" y="286" textAnchor="middle" fontSize="12" fontStyle="italic" fill="#dc2626">Soft landing counts — no crashes! 😄</text>
+    </svg>
+  )
+}
+
 // Map "gradeBand-weekNumber" + slideIndex → SVG component
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g1-2-1': {
@@ -1873,6 +2107,13 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
     4: SvgFanRealWorld,
     5: SvgFanDiscovery,
     6: SvgFanReview,
+  },
+  // G1-2 Week 5 — Plastic Bag Parachute (4 slides)
+  'g1-2-5': {
+    0: SvgWhatFallsFaster,
+    1: SvgAirResistanceCushion,
+    2: SvgWhyParachuteWorks,
+    3: SvgParachuteChallenge,
   },
 }
 
