@@ -550,6 +550,21 @@ export function CodingSandbox({
           gradeBand={gradeBand ?? undefined}
         />
 
+        {/* Project controls — always visible so kids don't need to find green flag inside TurboWarp */}
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-900 shrink-0">
+          <button
+            onClick={() => { (iframeRef.current?.contentWindow as any)?.vm?.greenFlag() }}
+            className="bg-green-500 hover:bg-green-400 text-white font-black text-sm px-4 py-1.5 rounded-lg flex items-center gap-1.5 active:scale-95 transition-all"
+            title="Start project"
+          >🚩 Run</button>
+          <button
+            onClick={() => { (iframeRef.current?.contentWindow as any)?.vm?.stopAll() }}
+            className="bg-red-500 hover:bg-red-400 text-white font-black text-sm px-4 py-1.5 rounded-lg flex items-center gap-1.5 active:scale-95 transition-all"
+            title="Stop project"
+          >🔴 Stop</button>
+          <span className="text-gray-400 text-xs ml-1">Build your code in the editor below ↓</span>
+        </div>
+
         {/* Main area: iframe + optional KeeBot side panel, side by side */}
         <div className="flex-1 flex flex-row overflow-hidden">
           <div className="relative flex-1 flex flex-col">
@@ -717,7 +732,7 @@ function StepPanel({
               G1-2 — great job, you&apos;re done! G3-4 — keep going! 🚀
             </p>
           )}
-          <div className="h-32 overflow-y-auto">
+          <div className="h-24 overflow-y-auto">
             <p className="text-sm text-gray-700 leading-snug whitespace-pre-line">{step}</p>
           </div>
         </div>
