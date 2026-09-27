@@ -1949,52 +1949,58 @@ function SvgWhyParachuteWorks() {
   return (
     <svg viewBox="0 0 760 340" className="w-full h-full">
       <rect width="760" height="340" fill="#fff7ed" rx="16"/>
-      <text x="380" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#1e293b">Why Your Parachute Works 🛍️</text>
-      <text x="380" y="50" textAnchor="middle" fontSize="13" fill="#92400e">Two forces fight — when they balance, it falls gently!</text>
+      <text x="380" y="26" textAnchor="middle" fontSize="19" fontWeight="bold" fill="#1e293b">Why Your Parachute Works 🛍️</text>
+      <text x="380" y="46" textAnchor="middle" fontSize="12" fill="#92400e">Two forces fight — when they balance, it falls gently!</text>
 
-      {/* ── BIG parachute diagram in centre ── */}
-      {/* Canopy — large rounded square */}
-      <rect x="270" y="58" width="220" height="110" rx="16" fill="#bbf7d0" stroke="#16a34a" strokeWidth="3"/>
-      <text x="380" y="92" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#15803d">PLASTIC BAG</text>
-      <text x="380" y="112" textAnchor="middle" fontSize="12" fill="#15803d">CANOPY</text>
-      {/* 5 strings from corners + middle bottom to cup */}
-      <line x1="278" y1="168" x2="330" y2="220" stroke="#92400e" strokeWidth="2"/>
-      <line x1="340" y1="168" x2="355" y2="220" stroke="#92400e" strokeWidth="2"/>
-      <line x1="380" y1="168" x2="380" y2="220" stroke="#92400e" strokeWidth="2"/>
-      <line x1="420" y1="168" x2="405" y2="220" stroke="#92400e" strokeWidth="2"/>
-      <line x1="482" y1="168" x2="430" y2="220" stroke="#92400e" strokeWidth="2"/>
+      {/* ── LEFT panel: AIR RESISTANCE ── */}
+      <rect x="14" y="58" width="188" height="220" rx="14" fill="#eff6ff" stroke="#2563eb" strokeWidth="3"/>
+      <rect x="14" y="58" width="188" height="36" rx="14" fill="#2563eb"/>
+      <rect x="14" y="80" width="188" height="14" fill="#2563eb"/>
+      <text x="108" y="82" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">AIR RESISTANCE</text>
+      {/* Big upward arrow */}
+      <line x1="108" y1="220" x2="108" y2="128" stroke="#2563eb" strokeWidth="10" strokeLinecap="round"/>
+      <polygon points="90,132 126,132 108,106" fill="#2563eb"/>
+      <text x="108" y="244" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#2563eb">pushes UP</text>
+      <text x="108" y="264" textAnchor="middle" fontSize="11" fill="#374151">air piles up under</text>
+      <text x="108" y="280" textAnchor="middle" fontSize="11" fill="#374151">the big bag canopy</text>
+
+      {/* ── CENTRE: Parachute diagram ── */}
+      {/* Canopy */}
+      <rect x="250" y="58" width="260" height="110" rx="16" fill="#bbf7d0" stroke="#16a34a" strokeWidth="3"/>
+      <text x="380" y="100" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#15803d">🛍️ PLASTIC BAG</text>
+      <text x="380" y="120" textAnchor="middle" fontSize="12" fill="#15803d">canopy catches air</text>
+      {/* 4 strings */}
+      <line x1="262" y1="168" x2="332" y2="215" stroke="#92400e" strokeWidth="2.5"/>
+      <line x1="320" y1="168" x2="352" y2="215" stroke="#92400e" strokeWidth="2.5"/>
+      <line x1="440" y1="168" x2="408" y2="215" stroke="#92400e" strokeWidth="2.5"/>
+      <line x1="498" y1="168" x2="428" y2="215" stroke="#92400e" strokeWidth="2.5"/>
       {/* Cup */}
-      <polygon points="330,220 430,220 418,265 342,265" fill="#d4956a" stroke="#92400e" strokeWidth="3"/>
-      <line x1="330" y1="220" x2="430" y2="220" stroke="#92400e" strokeWidth="3"/>
-      {/* Tan bark chips in cup */}
-      <ellipse cx="358" cy="248" rx="8" ry="5" fill="#92400e"/>
-      <ellipse cx="375" cy="255" rx="7" ry="4" fill="#78350f"/>
-      <ellipse cx="393" cy="248" rx="8" ry="5" fill="#92400e"/>
-      <ellipse cx="410" cy="255" rx="6" ry="4" fill="#78350f"/>
+      <polygon points="332,215 428,215 416,260 344,260" fill="#d4956a" stroke="#92400e" strokeWidth="3"/>
+      <line x1="332" y1="215" x2="428" y2="215" stroke="#92400e" strokeWidth="3"/>
+      {/* Tan bark chips */}
+      <ellipse cx="356" cy="242" rx="8" ry="5" fill="#92400e"/>
+      <ellipse cx="372" cy="250" rx="7" ry="4" fill="#78350f"/>
+      <ellipse cx="390" cy="243" rx="8" ry="5" fill="#92400e"/>
+      <ellipse cx="406" cy="250" rx="6" ry="4" fill="#78350f"/>
+      {/* "falls SLOWLY" label */}
+      <rect x="310" y="270" width="140" height="26" rx="8" fill="#16a34a"/>
+      <text x="380" y="287" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">falls SLOWLY 🐢</text>
 
-      {/* ── AIR RESISTANCE arrows (LARGE, upward) ── */}
-      <text x="60" y="100" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#2563eb">AIR</text>
-      <text x="60" y="118" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#2563eb">RESISTANCE</text>
-      <text x="60" y="136" textAnchor="middle" fontSize="12" fill="#2563eb">pushes UP</text>
-      <line x1="100" y1="168" x2="230" y2="100" stroke="#2563eb" strokeWidth="3"/>
-      <polygon points="222,96 240,98 230,114" fill="#2563eb"/>
-      <line x1="60" y1="140" x2="60" y2="72" stroke="#2563eb" strokeWidth="6"/>
-      <polygon points="52,74 68,74 60,58" fill="#2563eb"/>
+      {/* ── RIGHT panel: GRAVITY ── */}
+      <rect x="558" y="58" width="188" height="220" rx="14" fill="#fef2f2" stroke="#ef4444" strokeWidth="3"/>
+      <rect x="558" y="58" width="188" height="36" rx="14" fill="#ef4444"/>
+      <rect x="558" y="80" width="188" height="14" fill="#ef4444"/>
+      <text x="652" y="82" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">GRAVITY</text>
+      {/* Big downward arrow */}
+      <line x1="652" y1="106" x2="652" y2="210" stroke="#ef4444" strokeWidth="10" strokeLinecap="round"/>
+      <polygon points="634,206 670,206 652,232" fill="#ef4444"/>
+      <text x="652" y="250" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#ef4444">pulls DOWN</text>
+      <text x="652" y="268" textAnchor="middle" fontSize="11" fill="#374151">weight of cup +</text>
+      <text x="652" y="284" textAnchor="middle" fontSize="11" fill="#374151">tan bark chips</text>
 
-      {/* ── GRAVITY arrows (downward, on cup) ── */}
-      <text x="680" y="248" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#ef4444">GRAVITY</text>
-      <text x="680" y="266" textAnchor="middle" fontSize="12" fill="#ef4444">pulls DOWN</text>
-      <line x1="640" y1="240" x2="500" y2="266" stroke="#ef4444" strokeWidth="3"/>
-      <polygon points="500,258 508,274 494,272" fill="#ef4444"/>
-      <line x1="680" y1="270" x2="680" y2="310" stroke="#ef4444" strokeWidth="6"/>
-      <polygon points="672,308 688,308 680,325" fill="#ef4444"/>
-
-      {/* ── BALANCE callout ── */}
-      <rect x="80" y="294" width="260" height="36" rx="10" fill="#2563eb"/>
-      <text x="210" y="312" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">↑ Air resistance pushing UP</text>
-      <text x="380" y="312" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#fbbf24">=</text>
-      <rect x="420" y="294" width="260" height="36" rx="10" fill="#ef4444"/>
-      <text x="550" y="312" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">↓ Gravity pulling DOWN</text>
+      {/* ── Bottom balance callout ── */}
+      <rect x="14" y="306" width="732" height="28" rx="10" fill="#1e293b"/>
+      <text x="380" y="325" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">↑ Air pushes UP = ↓ Gravity pulls DOWN → BALANCED = slow, gentle landing!</text>
     </svg>
   )
 }
