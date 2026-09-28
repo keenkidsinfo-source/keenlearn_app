@@ -68,7 +68,7 @@ function SvgScratchUI() {
 
       {/* Labels */}
       <rect x="596" y="248" width="152" height="64" rx="10" fill="#0f172a"/>
-      <text x="672" y="265" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#fbbf24">✅ Today's flow:</text>
+      <text x="672" y="265" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#fbbf24">✅ Today&apos;s flow:</text>
       <text x="672" y="281" textAnchor="middle" fontSize="10" fill="#e2e8f0">1. Pick sprite from library</text>
       <text x="672" y="295" textAnchor="middle" fontSize="10" fill="#e2e8f0">2. Drag blocks to Code Area</text>
       <text x="672" y="309" textAnchor="middle" fontSize="10" fill="#e2e8f0">3. Click 🚩 to run!</text>
@@ -805,7 +805,7 @@ function SvgConditionalLogic() {
       <rect x="450" y="48" width="290" height="190" rx="14" fill="white" stroke="#5cb1d6" strokeWidth="3"/>
       <text x="595" y="72" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#0284c7">What this means:</text>
       <text x="595" y="96" textAnchor="middle" fontSize="12" fill="#374151">Every frame Scratch asks:</text>
-      <text x="595" y="116" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#1e293b">"Is Pikachu touching me?"</text>
+      <text x="595" y="116" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#1e293b">&quot;Is Pikachu touching me?&quot;</text>
       <rect x="460" y="128" width="270" height="30" rx="8" fill="#22c55e"/>
       <text x="595" y="148" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">YES → Score+1, HP-10, teleport</text>
       <rect x="460" y="164" width="270" height="30" rx="8" fill="#e2e8f0"/>
@@ -878,7 +878,7 @@ function SvgDuelScene() {
       <text x="610" y="63" textAnchor="middle" fontSize="9" fontWeight="bold" fill="white">40 / 100</text>
 
       <rect x="20" y="310" width="720" height="16" rx="6" fill="#fbbf24"/>
-      <text x="380" y="323" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#78350f">Voldemort uses "point towards Harry" + "move" → AI chases you automatically!</text>
+      <text x="380" y="323" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#78350f">Voldemort uses &quot;point towards Harry&quot; + &quot;move&quot; → AI chases you automatically!</text>
     </svg>
   )
 }
@@ -977,7 +977,7 @@ function SvgCloningBullets() {
       <text x="675" y="170" textAnchor="middle" fontSize="9" fontWeight="bold" fill="white">change y by 20</text>
 
       <rect x="20" y="310" width="720" height="16" rx="6" fill="#1e293b"/>
-      <text x="380" y="323" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#fbbf24">Every clone runs its own "when I start as a clone" code independently — rapid fire! 🚀</text>
+      <text x="380" y="323" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#fbbf24">Every clone runs its own &quot;when I start as a clone&quot; code independently — rapid fire! 🚀</text>
     </svg>
   )
 }
