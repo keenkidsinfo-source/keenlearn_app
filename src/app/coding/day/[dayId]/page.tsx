@@ -79,7 +79,8 @@ export default async function CodingDayPage({ params, searchParams }: Props) {
   // that takes priority — don't override it with the previous week's project.
   let starterUrl: string | null = meta?.starterUrl ?? null
   // Skip prev-week fallback when student clicked "Start fresh" — they want a blank project
-  if (!project && language === 'scratch' && !starterUrl && !fresh) {
+  // Also skip when metadata explicitly opts out (e.g. W5 is a brand-new game, not a continuation)
+  if (!project && language === 'scratch' && !starterUrl && !fresh && !meta?.noStarterFallback) {
     const [thisCurriculum] = await db
       .select({ weekNumber: curriculum.weekNumber, gradeBand: curriculum.gradeBand })
       .from(curriculum)
