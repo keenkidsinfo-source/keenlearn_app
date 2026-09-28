@@ -25,7 +25,7 @@ export interface CodingTheoryDeck {
 }
 
 // ── G1-2 Week 1: Welcome to Scratch! ──────────────────────────────────────────
-const scratchIntroG12: TheoryDeck = {
+const scratchIntroG12: CodingTheoryDeck = {
   gradeBand: 'g1-2', weekNumber: 1, title: 'Welcome to Scratch!', color: '#7c3aed',
   slides: [
     {
@@ -70,7 +70,7 @@ const scratchIntroG12: TheoryDeck = {
 }
 
 // ── G1-2 Week 2: Loops! ────────────────────────────────────────────────────────
-const loopsG12: TheoryDeck = {
+const loopsG12: CodingTheoryDeck = {
   gradeBand: 'g1-2', weekNumber: 2, title: 'Loops — Repeat & Forever!', color: '#2563eb',
   slides: [
     {
@@ -115,7 +115,7 @@ const loopsG12: TheoryDeck = {
 }
 
 // ── G1-2 Week 3: Pokémon Catcher! ─────────────────────────────────────────────
-const pokemonG12: TheoryDeck = {
+const pokemonG12: CodingTheoryDeck = {
   gradeBand: 'g1-2', weekNumber: 3, title: 'Pokémon Catcher!', color: '#dc2626',
   slides: [
     {
@@ -160,7 +160,7 @@ const pokemonG12: TheoryDeck = {
 }
 
 // ── G1-2 Week 4: Harry vs Voldemort! ──────────────────────────────────────────
-const harryG12: TheoryDeck = {
+const harryG12: CodingTheoryDeck = {
   gradeBand: 'g1-2', weekNumber: 4, title: 'Harry vs Voldemort!', color: '#d97706',
   slides: [
     {
@@ -205,7 +205,7 @@ const harryG12: TheoryDeck = {
 }
 
 // ── G1-2 Week 5: Space Shooter! (simple — no clones) ─────────────────────────
-const spaceShooterG12: TheoryDeck = {
+const spaceShooterG12: CodingTheoryDeck = {
   gradeBand: 'g1-2', weekNumber: 5, title: 'Space Shooter!', color: '#4f46e5',
   slides: [
     {
@@ -250,7 +250,7 @@ const spaceShooterG12: TheoryDeck = {
 }
 
 // ── G3-4 Week 1: Moving Car! ───────────────────────────────────────────────────
-const movingCarG34: TheoryDeck = {
+const movingCarG34: CodingTheoryDeck = {
   gradeBand: 'g3-4', weekNumber: 1, title: 'Moving Car — Scratch Deep Dive!', color: '#0891b2',
   slides: [
     {
@@ -295,7 +295,7 @@ const movingCarG34: TheoryDeck = {
 }
 
 // ── G3-4 Week 2: Parallel Code ─────────────────────────────────────────────────
-const parallelCodeG34: TheoryDeck = {
+const parallelCodeG34: CodingTheoryDeck = {
   gradeBand: 'g3-4', weekNumber: 2, title: 'Parallel Code + Animation!', color: '#7c3aed',
   slides: [
     {
@@ -340,7 +340,7 @@ const parallelCodeG34: TheoryDeck = {
 }
 
 // ── G3-4 Week 3: Pokémon Battle! ──────────────────────────────────────────────
-const pokemonBattleG34: TheoryDeck = {
+const pokemonBattleG34: CodingTheoryDeck = {
   gradeBand: 'g3-4', weekNumber: 3, title: 'Pokémon Battle Game!', color: '#b91c1c',
   slides: [
     {
@@ -385,7 +385,7 @@ const pokemonBattleG34: TheoryDeck = {
 }
 
 // ── G3-4 Week 4: The Dueling Championship! ────────────────────────────────────
-const duelG34: TheoryDeck = {
+const duelG34: CodingTheoryDeck = {
   gradeBand: 'g3-4', weekNumber: 4, title: 'The Dueling Championship!', color: '#6d28d9',
   slides: [
     {
@@ -430,7 +430,7 @@ const duelG34: TheoryDeck = {
 }
 
 // ── G3-4 Week 5: Space Shooter! ───────────────────────────────────────────────
-const spaceShooterG34: TheoryDeck = {
+const spaceShooterG34: CodingTheoryDeck = {
   gradeBand: 'g3-4', weekNumber: 5, title: 'Space Shooter — Clones!', color: '#1d4ed8',
   slides: [
     {
