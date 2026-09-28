@@ -1220,6 +1220,12 @@ export function CodingTheoryViewer({ deck, codingDayId }: Props) {
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           <button
+            onClick={() => router.push('/coding/reference')}
+            className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all"
+          >
+            🗂️ Blocks
+          </button>
+          <button
             onClick={() => router.push(`/coding/day/${codingDayId}`)}
             className="text-xs font-bold bg-white/20 hover:bg-white/30 text-white px-2 py-0.5 rounded-full transition-all"
           >
