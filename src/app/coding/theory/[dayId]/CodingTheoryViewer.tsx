@@ -546,7 +546,7 @@ function SvgArrowCodeStacks() {
 
           {/* Mini car showing direction */}
           <rect x={x+40} y="190" width="90" height="50" rx="8" fill="#1e40af"/>
-          <circle cx={x+55} cy={y=236} r="9" fill="#374151" stroke="#94a3b8" strokeWidth="2"/>
+          <circle cx={x+55} cy={236} r="9" fill="#374151" stroke="#94a3b8" strokeWidth="2"/>
           <circle cx={x+115} cy={236} r="9" fill="#374151" stroke="#94a3b8" strokeWidth="2"/>
           <rect x={x+52} y="198" width="56" height="28" rx="5" fill="#3b82f6"/>
           <text x={x+85} y="218" textAnchor="middle" fontSize="18">{
