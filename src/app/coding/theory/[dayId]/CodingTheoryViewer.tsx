@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import type { TheoryDeck } from '@/lib/coding-theory-slides'
+import type { CodingTheoryDeck } from '@/lib/coding-theory-slides'
 
-interface Props { deck: TheoryDeck; codingDayId: string }
+interface Props { deck: CodingTheoryDeck; codingDayId: string }
 
 // ── Scratch block colors (authentic) ──────────────────────────────────────────
 const BLOCK = {

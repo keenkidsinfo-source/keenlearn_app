@@ -2,9 +2,27 @@
  * coding-theory-slides.ts
  * Teacher theory slides shown before each coding session.
  * Focus: explain specific Scratch block commands per week and introduce the game concept.
+ *
+ * NOTE: uses its own types — different shape from the build-day TheorySlide/TheoryDeck.
  */
-import type { TheorySlide, TheoryDeck } from './theory-slides'
-export type { TheorySlide, TheoryDeck }
+
+export interface CodingTheorySlide {
+  title: string
+  subtitle?: string
+  body: string[]
+  vocab?: { term: string; def: string }[]
+  tryThis?: string
+  challenge?: string
+  speakerNotes?: string
+}
+
+export interface CodingTheoryDeck {
+  gradeBand: string
+  weekNumber: number
+  title: string
+  color: string
+  slides: CodingTheorySlide[]
+}
 
 // ── G1-2 Week 1: Welcome to Scratch! ──────────────────────────────────────────
 const scratchIntroG12: TheoryDeck = {
@@ -457,7 +475,7 @@ const spaceShooterG34: TheoryDeck = {
 }
 
 // ── Lookup table ───────────────────────────────────────────────────────────────
-const codingDecks: TheoryDeck[] = [
+const codingDecks: CodingTheoryDeck[] = [
   scratchIntroG12, loopsG12, pokemonG12, harryG12, spaceShooterG12,
   movingCarG34, parallelCodeG34, pokemonBattleG34, duelG34, spaceShooterG34,
 ]
@@ -465,7 +483,7 @@ const codingDecks: TheoryDeck[] = [
 export function getCodingTheoryDeck(
   gradeBand: string,
   weekNumber: number,
-): TheoryDeck | undefined {
+): CodingTheoryDeck | undefined {
   return codingDecks.find(
     d => d.gradeBand === gradeBand && d.weekNumber === weekNumber,
   )
