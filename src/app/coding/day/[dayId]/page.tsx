@@ -15,6 +15,8 @@ interface Props {
 export default async function CodingDayPage({ params, searchParams }: Props) {
   const session = await getSession()
   if (!session) redirect('/login')
+  // Coding editor is for students only — teachers use the theory slides
+  if (session.role === 'teacher' || session.role === 'admin') redirect('/teacher')
 
   const { dayId } = await params
   const { fresh } = await searchParams
