@@ -43,19 +43,24 @@ const sharedSteps = [
 
   `⬅️➡️ Move left and right + add Score!
 
-① Still on Rocketship — drag to a NEW empty spot:
-   EVENTS  ▸ "when [left arrow] key pressed"
-   MOTION  ▸ "change x by -15"
-
-② Another new empty spot:
-   EVENTS  ▸ "when [right arrow] key pressed"
-   MOTION  ▸ "change x by 15"
-
-③ VARIABLES → "Make a Variable" → type "Score" → OK
+① VARIABLES → "Make a Variable" → type "Score" → OK
    Find the "when 🚩 clicked" stack → snap at the bottom:
    VARIABLES  ▸ "set Score to 0"
 
-✅ Arrow keys move the rocket. Score shows 0 on screen!`,
+② Same stack — snap below "set Score to 0":
+   CONTROL ▸ "forever"
+   INSIDE the forever, add TWO "if < > then" blocks:
+
+   First if:
+     — hexagon: SENSING "key [left arrow] pressed?"
+     INSIDE: MOTION ▸ "change x by -15"
+
+   Second if (snap below the first, still inside forever):
+     — hexagon: SENSING "key [right arrow] pressed?"
+     INSIDE: MOTION ▸ "change x by 15"
+
+✅ Hold left/right arrow — rocket moves smoothly! Score shows 0!
+⚠️ This is different from "when key pressed" — SENSING checks every frame!`,
 
   `☄️ Make a falling asteroid!
 
