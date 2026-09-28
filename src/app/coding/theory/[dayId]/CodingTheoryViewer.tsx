@@ -111,7 +111,111 @@ function SvgBlocksSnap() {
   )
 }
 
+
+function SvgBlockCategoriesW1() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#f8f4ff" rx="14"/>
+      <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Scratch Blocks Have Colors! 🎨</text>
+
+      {/* TODAY&apos;s active blocks — row 1 */}
+      <text x="20" y="52" fontSize="11" fontWeight="bold" fill="#15803d">&#11088; Today&apos;s block colors:</text>
+
+      {/* Events */}
+      <rect x="16" y="60" width="232" height="108" rx="14" fill="#ffab19"/>
+      <text x="132" y="85" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#78350f">EVENTS 🟡</text>
+      <text x="132" y="106" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">when 🚩 clicked</text>
+      <rect x="32" y="114" width="200" height="26" rx="8" fill="#d97706" opacity="0.85"/>
+      <text x="132" y="131" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">when [key] pressed</text>
+      <text x="132" y="158" textAnchor="middle" fontSize="11" fill="#fef3c7">makes code START!</text>
+
+      {/* Motion */}
+      <rect x="264" y="60" width="232" height="108" rx="14" fill="#4c97ff"/>
+      <text x="380" y="85" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#1e3a8a">MOTION 🔵</text>
+      <text x="380" y="106" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">go to x: 0  y: -130</text>
+      <rect x="280" y="114" width="200" height="26" rx="8" fill="#1d4ed8" opacity="0.85"/>
+      <text x="380" y="131" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">change x by  15</text>
+      <text x="380" y="158" textAnchor="middle" fontSize="11" fill="#bfdbfe">moves sprites!</text>
+
+      {/* Looks */}
+      <rect x="512" y="60" width="232" height="108" rx="14" fill="#9966ff"/>
+      <text x="628" y="85" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#4c1d95">LOOKS 🟣</text>
+      <text x="628" y="106" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">set size to  50 %</text>
+      <rect x="528" y="114" width="200" height="26" rx="8" fill="#7c3aed" opacity="0.85"/>
+      <text x="628" y="131" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">show  /  hide</text>
+      <text x="628" y="158" textAnchor="middle" fontSize="11" fill="#e9d5ff">changes your look!</text>
+
+      {/* Divider */}
+      <line x1="16" y1="182" x2="744" y2="182" stroke="#e2e8f0" strokeWidth="2" strokeDasharray="8,4"/>
+      <text x="380" y="198" textAnchor="middle" fontSize="11" fill="#94a3b8">More colors coming in future weeks ↓</text>
+
+      {/* Future blocks */}
+      <rect x="80" y="208" width="185" height="74" rx="12" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="2"/>
+      <text x="172" y="232" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#94a3b8">🟠 CONTROL</text>
+      <text x="172" y="254" textAnchor="middle" fontSize="11" fill="#94a3b8">repeat / forever</text>
+      <text x="172" y="272" textAnchor="middle" fontSize="10" fill="#cbd5e1">Week 2</text>
+
+      <rect x="290" y="208" width="185" height="74" rx="12" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="2"/>
+      <text x="382" y="232" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#94a3b8">🔵 SENSING</text>
+      <text x="382" y="254" textAnchor="middle" fontSize="11" fill="#94a3b8">touching? / key pressed?</text>
+      <text x="382" y="272" textAnchor="middle" fontSize="10" fill="#cbd5e1">Week 3</text>
+
+      <rect x="500" y="208" width="185" height="74" rx="12" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="2"/>
+      <text x="592" y="232" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#94a3b8">🟠 VARIABLES</text>
+      <text x="592" y="254" textAnchor="middle" fontSize="11" fill="#94a3b8">Score / Timer / Lives</text>
+      <text x="592" y="272" textAnchor="middle" fontSize="10" fill="#cbd5e1">Week 3</text>
+    </svg>
+  )
+}
+
 // ── G1-2 · Week 2 ─────────────────────────────────────────────────────────────
+
+function SvgControlIntroW2() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#fff7ed" rx="14"/>
+      <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">New Block Color: CONTROL! 🟠</text>
+
+      {/* Already know panel */}
+      <rect x="14" y="44" width="240" height="250" rx="14" fill="#f1f5f9" stroke="#e2e8f0" strokeWidth="2"/>
+      <text x="134" y="68" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#64748b">Already know ✓</text>
+      <rect x="28" y="80" width="212" height="40" rx="10" fill="#ffab19"/>
+      <text x="134" y="106" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🟡 EVENTS</text>
+      <rect x="28" y="130" width="212" height="40" rx="10" fill="#4c97ff"/>
+      <text x="134" y="156" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🔵 MOTION</text>
+      <rect x="28" y="180" width="212" height="40" rx="10" fill="#9966ff"/>
+      <text x="134" y="206" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🟣 LOOKS</text>
+      <text x="134" y="268" textAnchor="middle" fontSize="11" fill="#94a3b8">3 block colors from Week 1</text>
+
+      {/* Plus */}
+      <text x="260" y="178" textAnchor="middle" fontSize="32" fontWeight="bold" fill="#f97316">+</text>
+
+      {/* New Control panel */}
+      <rect x="272" y="44" width="472" height="250" rx="14" fill="#fff7ed" stroke="#f97316" strokeWidth="3"/>
+      <rect x="280" y="52" width="456" height="40" rx="10" fill="#ffab19"/>
+      <text x="508" y="78" textAnchor="middle" fontSize="16" fontWeight="bold" fill="white">🟠 CONTROL BLOCKS  (new!)</text>
+
+      {/* repeat block */}
+      <rect x="290" y="106" width="200" height="120" rx="12" fill="#ff8c1a"/>
+      <text x="390" y="128" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">repeat (10)</text>
+      <rect x="310" y="138" width="160" height="32" rx="8" fill="#4c97ff"/>
+      <text x="390" y="158" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">move 10 steps</text>
+      <rect x="290" y="172" width="200" height="14" rx="7" fill="#ff8c1a"/>
+      <text x="390" y="218" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#78350f">&#10003; Stops after 10!</text>
+
+      {/* forever block */}
+      <rect x="510" y="106" width="220" height="120" rx="12" fill="#ff6680"/>
+      <text x="620" y="128" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">forever ♾️</text>
+      <rect x="530" y="138" width="180" height="32" rx="8" fill="#4c97ff"/>
+      <text x="620" y="158" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">move 5 steps</text>
+      <text x="620" y="218" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#7f1d1d">&#9888;&#65039; Never stops!</text>
+
+      <rect x="280" y="242" width="456" height="38" rx="10" fill="#1e293b"/>
+      <text x="508" y="266" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Control blocks WRAP around other blocks 🤗</text>
+    </svg>
+  )
+}
+
 function SvgRepeatVsForever() {
   return (
     <svg viewBox="0 0 760 330" className="w-full h-full">
@@ -203,6 +307,52 @@ function SvgBounce() {
 }
 
 // ── G1-2 · Week 3 ─────────────────────────────────────────────────────────────
+
+function SvgSensingVarIntroW3() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#f0fdf4" rx="14"/>
+      <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">New Blocks: Sensing + Variables! 🔵🟠</text>
+
+      {/* Sensing panel */}
+      <rect x="14" y="44" width="358" height="222" rx="14" fill="#e0f2fe" stroke="#0284c7" strokeWidth="2"/>
+      <rect x="14" y="44" width="358" height="44" rx="14" fill="#5cb1d6"/>
+      <rect x="14" y="72" width="358" height="16" fill="#5cb1d6"/>
+      <text x="193" y="72" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🔵 SENSING  (light blue)</text>
+      <text x="193" y="100" textAnchor="middle" fontSize="12" fill="#0369a1">Detects things around the sprite</text>
+
+      {/* Hexagon touching block */}
+      <polygon points="30,140 60,118 130,118 160,140 130,162 60,162" fill="#5cb1d6" stroke="#0284c7" strokeWidth="2"/>
+      <text x="95" y="143" textAnchor="middle" fontSize="9" fontWeight="bold" fill="white">touching</text>
+      <text x="95" y="155" textAnchor="middle" fontSize="9" fontWeight="bold" fill="white">[Caterpie]?</text>
+      <text x="193" y="143" textAnchor="middle" fontSize="11" fill="#0369a1">Hexagon shape =</text>
+      <text x="193" y="159" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#0369a1">YES or NO answer!</text>
+
+      <rect x="28" y="176" width="330" height="28" rx="8" fill="#5cb1d6"/>
+      <text x="193" y="194" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">touching [Caterpie]?</text>
+      <rect x="28" y="212" width="330" height="28" rx="8" fill="#5cb1d6"/>
+      <text x="193" y="230" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">key [space] pressed?</text>
+
+      {/* Variables panel */}
+      <rect x="388" y="44" width="358" height="222" rx="14" fill="#fff7ed" stroke="#f97316" strokeWidth="2"/>
+      <rect x="388" y="44" width="358" height="44" rx="14" fill="#ff8c1a"/>
+      <rect x="388" y="72" width="358" height="16" fill="#ff8c1a"/>
+      <text x="567" y="72" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🟠 VARIABLES  (dark orange)</text>
+      <text x="567" y="100" textAnchor="middle" fontSize="12" fill="#9a3412">Remembers a number for the whole game</text>
+
+      <text x="567" y="132" textAnchor="middle" fontSize="36" fontWeight="bold" fill="#ff8c1a">Score: 0</text>
+      <rect x="402" y="148" width="330" height="28" rx="8" fill="#ff8c1a"/>
+      <text x="567" y="166" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">set Score to  0</text>
+      <rect x="402" y="184" width="330" height="28" rx="8" fill="#ff8c1a"/>
+      <text x="567" y="202" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">change Score by  1</text>
+      <text x="567" y="236" textAnchor="middle" fontSize="11" fill="#9a3412">Shows live on the STAGE! 🌟</text>
+
+      <rect x="14" y="278" width="732" height="38" rx="10" fill="#1e293b"/>
+      <text x="380" y="302" textAnchor="middle" fontSize="13" fontWeight="bold" fill="#fbbf24">Sensing asks “YES or NO?” • Variables remember a NUMBER • Together = real game! 🎮</text>
+    </svg>
+  )
+}
+
 function SvgTouchingConcept() {
   return (
     <svg viewBox="0 0 760 330" className="w-full h-full">
@@ -316,6 +466,58 @@ function SvgPokemonCatch() {
 }
 
 // ── G1-2 · Week 4 ─────────────────────────────────────────────────────────────
+
+function SvgLooksShowHideW4() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#fdf4ff" rx="14"/>
+      <text x="380" y="26" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Looks: show and hide! 🟣</text>
+
+      {/* Two big Looks blocks */}
+      <rect x="14" y="44" width="340" height="68" rx="14" fill="#9966ff"/>
+      <text x="184" y="72" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#4c1d95">🟣 LOOKS  (purple)</text>
+      <text x="184" y="96" textAnchor="middle" fontSize="20" fontWeight="bold" fill="white">hide</text>
+      <text x="380" y="78" textAnchor="middle" fontSize="28" fill="#7c3aed">↔️</text>
+      <rect x="406" y="44" width="340" height="68" rx="14" fill="#9966ff"/>
+      <text x="576" y="72" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#4c1d95">🟣 LOOKS  (purple)</text>
+      <text x="576" y="96" textAnchor="middle" fontSize="20" fontWeight="bold" fill="white">show</text>
+
+      {/* Sprite states */}
+      <rect x="14" y="128" width="160" height="130" rx="12" fill="#f0fdf4" stroke="#22c55e" strokeWidth="2"/>
+      <text x="94" y="152" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">VISIBLE ✅</text>
+      <text x="94" y="200" textAnchor="middle" fontSize="56">🚀</text>
+      <text x="94" y="248" textAnchor="middle" fontSize="10" fill="#15803d">sprite is here!</text>
+
+      <text x="198" y="200" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#7c3aed">→ hide →</text>
+
+      <rect x="224" y="128" width="160" height="130" rx="12" fill="#fef2f2" stroke="#ef4444" strokeWidth="2"/>
+      <text x="304" y="152" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#dc2626">HIDDEN ❌</text>
+      <text x="304" y="196" textAnchor="middle" fontSize="44" opacity="0.15">🚀</text>
+      <text x="304" y="230" textAnchor="middle" fontSize="24">❓</text>
+      <text x="304" y="248" textAnchor="middle" fontSize="10" fill="#dc2626">still there! code runs!</text>
+
+      <text x="408" y="200" textAnchor="middle" fontSize="16" fontWeight="bold" fill="#7c3aed">→ show →</text>
+
+      <rect x="434" y="128" width="160" height="130" rx="12" fill="#f0fdf4" stroke="#22c55e" strokeWidth="2"/>
+      <text x="514" y="152" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#15803d">VISIBLE ✅</text>
+      <text x="514" y="200" textAnchor="middle" fontSize="56">🚀</text>
+      <text x="514" y="248" textAnchor="middle" fontSize="10" fill="#15803d">back again!</text>
+
+      {/* Shooting pattern */}
+      <rect x="610" y="128" width="136" height="130" rx="12" fill="#1e293b"/>
+      <text x="678" y="150" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#fbbf24">Shooting pattern:</text>
+      <text x="678" y="170" textAnchor="middle" fontSize="10" fill="#e2e8f0">hide at start</text>
+      <text x="678" y="187" textAnchor="middle" fontSize="10" fill="#e2e8f0">↓ space pressed</text>
+      <text x="678" y="204" textAnchor="middle" fontSize="10" fill="#e2e8f0">go to [Harry]</text>
+      <text x="678" y="221" textAnchor="middle" fontSize="10" fill="#e2e8f0">show + fly</text>
+      <text x="678" y="238" textAnchor="middle" fontSize="10" fill="#e2e8f0">↓ hide again</text>
+
+      <rect x="14" y="276" width="732" height="40" rx="10" fill="#7c3aed"/>
+      <text x="380" y="302" textAnchor="middle" fontSize="13" fontWeight="bold" fill="white">ALL projectiles use this pattern: hide → go to player → show → move → hide! 🔫</text>
+    </svg>
+  )
+}
+
 function SvgHarryFire() {
   return (
     <svg viewBox="0 0 760 330" className="w-full h-full">
@@ -417,6 +619,120 @@ function SvgCountdownTimer() {
 }
 
 // ── G1-2 · Week 5 ─────────────────────────────────────────────────────────────
+
+function SvgBlocksOverviewW5() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#0f172a" rx="14"/>
+      {/* Stars */}
+      {[[40,30],[120,20],[280,35],[450,18],[600,28],[720,40],[80,80],[340,65],[660,75],[200,50],[730,60]].map(([x,y],i)=>(
+        <circle key={i} cx={x} cy={y} r={i%3===0?2:1.5} fill="white" opacity={0.4+0.3*(i%2)}/>
+      ))}
+      <text x="380" y="32" textAnchor="middle" fontSize="17" fontWeight="bold" fill="white">All Block Colors We Know! 🗂️  Week 5 of 5 🎉</text>
+
+      {/* Block strip 1: Events */}
+      <rect x="14" y="50" width="730" height="46" rx="12" fill="#ffab19"/>
+      <text x="90" y="78" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🟡 EVENTS</text>
+      <text x="430" y="78" textAnchor="middle" fontSize="12" fill="#fef3c7">when 🚩 clicked  •  when [key] pressed  •  starts all code!</text>
+
+      {/* Block strip 2: Motion */}
+      <rect x="14" y="104" width="730" height="46" rx="12" fill="#4c97ff"/>
+      <text x="90" y="132" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🔵 MOTION</text>
+      <text x="430" y="132" textAnchor="middle" fontSize="12" fill="#bfdbfe">go to x: y:  •  change x/y by  •  glide N secs  •  moves sprites!</text>
+
+      {/* Block strip 3: Looks */}
+      <rect x="14" y="158" width="730" height="46" rx="12" fill="#9966ff"/>
+      <text x="90" y="186" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🟣 LOOKS</text>
+      <text x="430" y="186" textAnchor="middle" fontSize="12" fill="#e9d5ff">show  •  hide  •  set size to  •  next costume  •  changes appearance!</text>
+
+      {/* Block strip 4: Control */}
+      <rect x="14" y="212" width="360" height="46" rx="12" fill="#ff8c1a"/>
+      <text x="90" y="240" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">🟠 CONTROL</text>
+      <text x="257" y="240" textAnchor="middle" fontSize="12" fill="#fef3c7">repeat  •  forever  •  if-then</text>
+
+      {/* Block strip 5: Sensing */}
+      <rect x="384" y="212" width="182" height="46" rx="12" fill="#5cb1d6"/>
+      <text x="475" y="234" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">🔵 SENSING</text>
+      <text x="475" y="250" textAnchor="middle" fontSize="11" fill="white">touching?</text>
+
+      {/* Block strip 6: Variables */}
+      <rect x="576" y="212" width="168" height="46" rx="12" fill="#ff8c1a" opacity="0.85"/>
+      <text x="660" y="234" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">🟠 VARIABLES</text>
+      <text x="660" y="250" textAnchor="middle" fontSize="11" fill="white">Score / Timer</text>
+
+      <rect x="14" y="272" width="730" height="44" rx="12" fill="#1d4ed8"/>
+      <text x="380" y="298" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">5 block colors → everything you need to build ANY Scratch game! 🚀</text>
+    </svg>
+  )
+}
+
+
+function SvgBulletFireW5() {
+  return (
+    <svg viewBox="0 0 760 330" className="w-full h-full">
+      <rect width="760" height="330" fill="#0f172a" rx="14"/>
+      {[[50,20],[180,35],[350,15],[520,30],[690,22],[100,90],[420,80],[700,95]].map(([x,y],i)=>(
+        <circle key={i} cx={x} cy={y} r={1.5} fill="white" opacity={0.5}/>
+      ))}
+      <text x="380" y="26" textAnchor="middle" fontSize="16" fontWeight="bold" fill="white">Bullet Fire Pattern 🚀</text>
+
+      {/* Step sequence - left side code blocks */}
+      <text x="20" y="56" fontSize="11" fontWeight="bold" fill="#94a3b8">Code on the BULLET sprite:</text>
+
+      {/* Block 1 */}
+      <rect x="14" y="66" width="280" height="32" rx="8" fill="#ffab19"/>
+      <text x="154" y="87" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">when 🚩 clicked</text>
+      <rect x="14" y="98" width="280" height="32" rx="8" fill="#9966ff"/>
+      <text x="154" y="119" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">hide</text>
+
+      <text x="154" y="152" textAnchor="middle" fontSize="24" fill="#94a3b8">⋮</text>
+
+      <rect x="14" y="164" width="280" height="32" rx="8" fill="#ffab19"/>
+      <text x="154" y="185" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">when [space] pressed</text>
+      <rect x="14" y="196" width="280" height="32" rx="8" fill="#4c97ff"/>
+      <text x="154" y="217" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">go to [Rocketship]</text>
+      <rect x="14" y="228" width="280" height="32" rx="8" fill="#9966ff"/>
+      <text x="154" y="249" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">show</text>
+      <rect x="14" y="260" width="280" height="32" rx="8" fill="#ff8c1a"/>
+      <text x="154" y="281" textAnchor="middle" fontSize="12" fontWeight="bold" fill="white">repeat until y &gt; 170</text>
+      <rect x="40" y="292" width="254" height="24" rx="6" fill="#4c97ff"/>
+      <text x="154" y="308" textAnchor="middle" fontSize="11" fontWeight="bold" fill="white">change y by  15</text>
+
+      {/* Stage visual - right side */}
+      <rect x="310" y="46" width="436" height="270" rx="12" fill="#1e293b" stroke="#334155" strokeWidth="2"/>
+      <text x="528" y="70" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#94a3b8">Stage 🎬</text>
+
+      {/* Asteroid at top */}
+      <circle cx="430" cy="110" r="22" fill="#78716c" stroke="#57534e" strokeWidth="2"/>
+      <circle cx="422" cy="104" r="6" fill="#57534e"/>
+
+      {/* Bullet flying up */}
+      <rect x="522" y="130" width="12" height="40" rx="4" fill="#e2e8f0"/>
+      <line x1="528" y1="130" x2="528" y2="80" stroke="#e2e8f0" strokeWidth="2" strokeDasharray="6,4" opacity="0.6"/>
+      <polygon points="522,85 534,85 528,72" fill="#e2e8f0" opacity="0.8"/>
+
+      {/* Rocket at bottom */}
+      <polygon points="500,268 556,268 528,236" fill="#94a3b8"/>
+      <rect x="500" y="268" width="56" height="40" rx="8" fill="#475569"/>
+      <circle cx="528" cy="278" r="8" fill="#7dd3fc" stroke="#0284c7" strokeWidth="1.5"/>
+      <polygon points="500,290 488,308 500,300" fill="#334155"/>
+      <polygon points="556,290 568,308 556,300" fill="#334155"/>
+      <ellipse cx="528" cy="310" rx="12" ry="16" fill="#f97316" opacity="0.8"/>
+
+      {/* Arrows and labels */}
+      <text x="604" y="100" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#fbbf24">① Start: HIDE bullet</text>
+      <text x="638" y="168" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#22c55e">② Space: go to rocket → SHOW</text>
+      <text x="638" y="220" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#3b82f6">③ Fly UP: change y by 15</text>
+      <text x="618" y="252" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#ef4444">④ Past top: HIDE again</text>
+
+      {/* Score display */}
+      <rect x="316" y="54" width="100" height="36" rx="8" fill="#22c55e"/>
+      <text x="366" y="68" textAnchor="middle" fontSize="10" fontWeight="bold" fill="white">Score</text>
+      <text x="366" y="84" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">3 ⭐</text>
+    </svg>
+  )
+}
+
 function SvgForeverCatch() {
   return (
     <svg viewBox="0 0 760 330" className="w-full h-full">
@@ -1052,11 +1368,11 @@ function SvgSpaceShooterGame() {
 
 // ── VISUALS map ──────────────────────────────────────────────────────────────
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
-  'g1-2-1': { 0: SvgScratchUI,         1: SvgBlocksSnap },
-  'g1-2-2': { 0: SvgRepeatVsForever,   1: SvgBounce },
-  'g1-2-3': { 0: SvgTouchingConcept,   1: SvgPokemonCatch },
-  'g1-2-4': { 0: SvgHarryFire,         1: SvgCountdownTimer },
-  'g1-2-5': { 0: SvgForeverCatch,      1: SvgSpaceCatch },
+  'g1-2-1': { 0: SvgScratchUI, 1: SvgBlockCategoriesW1, 2: SvgBlocksSnap },
+  'g1-2-2': { 0: SvgControlIntroW2, 1: SvgRepeatVsForever, 2: SvgBounce },
+  'g1-2-3': { 0: SvgSensingVarIntroW3, 1: SvgTouchingConcept, 2: SvgPokemonCatch },
+  'g1-2-4': { 0: SvgLooksShowHideW4, 1: SvgHarryFire, 2: SvgCountdownTimer },
+  'g1-2-5': { 0: SvgBlocksOverviewW5, 1: SvgBulletFireW5, 2: SvgSpaceShooterGame },
   'g3-4-1': { 0: SvgArrowCodeStacks,   2: SvgCarRoad },
   'g3-4-2': { 0: SvgParallelStacks,    1: SvgCostumeCycle },
   'g3-4-3': { 0: SvgThreeVariables,    1: SvgConditionalLogic },
