@@ -664,6 +664,14 @@ function StepPanel({
   g12StopAfter?: number // 1-based: first G3-4-only step is g12StopAfter+1
 }) {
   const [toast, setToast] = useState<string | null>(null)
+  const stepScrollRef = useRef<HTMLDivElement>(null)
+
+  // Scroll step text back to top whenever the step changes
+  useEffect(() => {
+    if (stepScrollRef.current) {
+      stepScrollRef.current.scrollTop = 0
+    }
+  }, [currentStep])
 
   if (!steps || steps.length === 0) return null
   const total   = steps.length
@@ -717,7 +725,7 @@ function StepPanel({
               G1-2 — great job, you&apos;re done! G3-4 — keep going! 🚀
             </p>
           )}
-          <div className="h-24 overflow-y-auto">
+          <div ref={stepScrollRef} className="h-24 overflow-y-auto">
             <p className="text-sm text-gray-700 leading-snug whitespace-pre-line">{step}</p>
           </div>
         </div>

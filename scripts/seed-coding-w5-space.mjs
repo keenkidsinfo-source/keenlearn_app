@@ -34,74 +34,95 @@ const g12Steps = [
 ① Right-click the Cat sprite on the stage → Delete
 ② Click the sprite icon (bottom-right) → Choose a Sprite → search "Rocketship" → click it
 ③ Click the backdrop icon → Choose a Backdrop → search "Stars" → click it
-④ Click Rocketship in the sprite list → drag to the code area:
-   EVENTS "when 🚩 clicked"
-   MOTION "go to x: 0 y: -130"
-   LOOKS "set size to 50 %"
+④ Click Rocketship in the sprite list → drag to code area:
+   EVENTS  ▸ "when 🚩 clicked"
+   MOTION  ▸ "go to x: 0  y: -130"
+   LOOKS   ▸ "set size to 50 %"
 
 ✅ Green flag → rocket at the bottom of a starry sky!`,
 
   `⬅️➡️ Move left and right + add Score!
 
 ① Still on Rocketship — drag to a NEW empty spot:
-   EVENTS "when [left arrow v] key pressed"
-   MOTION "change x by -15"
+   EVENTS  ▸ "when [left arrow] key pressed"
+   MOTION  ▸ "change x by -15"
 
 ② Another new empty spot:
-   EVENTS "when [right arrow v] key pressed"
-   MOTION "change x by 15"
+   EVENTS  ▸ "when [right arrow] key pressed"
+   MOTION  ▸ "change x by 15"
 
 ③ VARIABLES → "Make a Variable" → type "Score" → OK
-   Find "when 🚩 clicked" stack → snap on at the bottom:
-   VARIABLES "set Score to 0"
+   Find the "when 🚩 clicked" stack → snap at the bottom:
+   VARIABLES  ▸ "set Score to 0"
 
-✅ Arrow keys move the rocket, Score shows 0!`,
+✅ Arrow keys move the rocket. Score shows 0 on screen!`,
 
   `☄️ Make a falling asteroid!
 
 ① Click the sprite icon → Choose a Sprite → search "Rocks" → click it
-② Click Rocks in the sprite list → drag to the code area:
-   EVENTS "when 🚩 clicked"
-   LOOKS "set size to 50 %"
-   CONTROL "forever"
-③ INSIDE the forever:
-   MOTION "go to x: (pick random -180 to 180) y: 180"
-   CONTROL "repeat until" → OPERATORS "[ ] < [ ]"
-   Drag MOTION "y position" into the LEFT gap → type -150 in the RIGHT gap
-   INSIDE the repeat: MOTION "change y by -5"
+② Click Rocks in the sprite list. Drag to code area:
+   EVENTS  ▸ "when 🚩 clicked"
+   LOOKS   ▸ "set size to 50 %"
+   CONTROL ▸ "forever"   ← this is the big mouth block
 
-✅ Green flag → asteroid falls from the top and resets!`,
+③ INSIDE the forever mouth, add:
+   MOTION  ▸ "go to x: ( ) y: 180"
+     — in the x gap, OPERATORS ▸ "pick random -180 to 180"
+       (drag it in — don't type a number!)
+
+④ Still INSIDE forever, snap below:
+   CONTROL ▸ "repeat until < >"
+     — inside the hexagon: OPERATORS ▸ "[ ] < [ ]"
+       drag MOTION "y position" into the LEFT box
+       type -150 in the RIGHT box
+       ⚠️ Use < (less than), not > (greater than)!
+
+⑤ INSIDE the repeat-until mouth:
+   MOTION  ▸ "change y by -5"
+   ⚠️ That's y — NOT x. y moves the sprite up and down!
+
+✅ Green flag → asteroid spawns at the top and falls to the bottom, then resets!`,
 
   `🔫 Paint a bullet and fire it!
 
-① Click the PAINT icon (next to the sprite icon, bottom-right) → draw a short vertical line
-② Click the name under the sprite → type "Bullet" → press Enter
-③ Click Bullet in the sprite list → drag to code area:
-   EVENTS "when 🚩 clicked"
-   LOOKS "hide"
+① Click the PAINT icon (brush, bottom-right near sprite icon)
+   Draw a short tall line — that's your bullet
+② Click "Sprite1" name → rename it "Bullet" → Enter
+③ Click Bullet in the sprite list. Drag to code area:
+   EVENTS  ▸ "when 🚩 clicked"
+   LOOKS   ▸ "hide"
+   (bullet starts invisible every game)
 
-④ NEW empty spot on Bullet:
-   EVENTS "when [space v] key pressed"
-   MOTION "go to [Rocketship v]"
-   LOOKS "show"
-   CONTROL "repeat until" → OPERATORS "[ ] > [ ]"
-   Drag MOTION "y position" into LEFT gap → type 170 in RIGHT gap
-   INSIDE the repeat: MOTION "change y by 15"
-   After the repeat (snap below it): LOOKS "hide"
+④ NEW empty spot — drag a second stack:
+   EVENTS  ▸ "when [space] key pressed"
+   MOTION  ▸ "go to [Rocketship]"
+   LOOKS   ▸ "show"
+   CONTROL ▸ "repeat until < >"
+     — inside hexagon: OPERATORS "[ ] > [ ]"
+       drag MOTION "y position" into LEFT box → type 170 RIGHT
+   INSIDE the repeat mouth:
+   MOTION  ▸ "change y by 15"   ← goes UP (positive y = up)
 
-✅ Press Space — bullet shoots up from the rocket!`,
+⑤ AFTER the repeat block (snap it BELOW, outside the mouth):
+   LOOKS   ▸ "hide"
+   ⚠️ The "hide" goes BELOW and OUTSIDE the repeat — not inside!
 
-  `🎯 Bullet hits asteroid — score goes up!
+✅ Press Space → bullet shoots up from the rocket and disappears at the top!`,
 
-① Click Bullet in the sprite list → find your "when space pressed" stack
-② INSIDE the repeat until loop (after "change y by 15"), add:
-   CONTROL "if < > then"
-   Inside the hexagon gap: SENSING "touching [Rocks v]?"
-   Inside the if-then:
-     VARIABLES "change Score by 1"
-     LOOKS "hide"
+  `🎯 Bullet hits asteroid — Score goes up!
 
-✅ Aim carefully — blast the asteroid and Score goes up!
+① Click Bullet in the sprite list
+② Find your "when [space] key pressed" stack
+③ INSIDE the repeat-until loop, after "change y by 15", add:
+   CONTROL ▸ "if < > then"
+     — inside the hexagon: SENSING "touching [ ]?"
+       click the dropdown → choose "Rocks"
+       ⚠️ Pick "Rocks" — NOT Rocketship or anything else!
+   INSIDE the if-then mouth:
+     VARIABLES ▸ "change Score by 1"
+     LOOKS     ▸ "hide"
+
+✅ Press Space — aim at the asteroid. Each hit adds 1 to Score!
 Can you get 5 hits? 🚀`,
 ]
 
