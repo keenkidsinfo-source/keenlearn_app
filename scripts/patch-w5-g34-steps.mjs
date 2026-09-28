@@ -1,11 +1,11 @@
 /**
- * seed-coding-w5-space.mjs
- * Updates Week 5 coding to Space Shooter (replaces Kart Racer)
+ * patch-w5-g34-steps.mjs
+ * Re-seeds G3-4 W5 Space Shooter with the corrected step structure:
+ *   Steps 1-5: same as G1-2 (taught together in class)
+ *   Steps 6-10: G3-4 advanced upgrades (Lives, clones, speed, Personal Best)
+ *   g12StopAfter: 5 — banner shows "G1-2 done, G3-4 keep going!" after step 5
  *
- * G1-2 (5 steps): Rocket, movement, asteroid, bullet, scoring — basic game done
- * G3-4 (10 steps): Same 5 shared steps, then 5 upgrades — Lives, clones, speed ramp, Personal Best
- *
- * Run: node scripts/seed-coding-w5-space.mjs
+ * Run: node scripts/patch-w5-g34-steps.mjs
  */
 
 import { readFileSync } from 'fs'
@@ -27,14 +27,14 @@ try {
 
 const sql = postgres(process.env.DATABASE_URL)
 
-// ── G1-2 steps (5) — simple Space Shooter, no clones ───────────────────────
-const g12Steps = [
+// ── G1-2 shared steps (1-5) ──────────────────────────────────────────────────
+const sharedSteps = [
   `🚀 Set up your rocket!
 
 ① Right-click the Cat sprite on the stage → Delete
 ② Click the sprite icon (bottom-right) → Choose a Sprite → search "Rocketship" → click it
 ③ Click the backdrop icon → Choose a Backdrop → search "Stars" → click it
-④ Click Rocketship in the sprite list → drag to code area:
+④ Click Rocketship in the sprite list. Drag to code area:
    EVENTS  ▸ "when 🚩 clicked"
    MOTION  ▸ "go to x: 0  y: -130"
    LOOKS   ▸ "set size to 50 %"
@@ -126,14 +126,8 @@ const g12Steps = [
 Can you get 5 hits? 🚀`,
 ]
 
-// ── G3-4 steps — starts with the same 5 steps as G1-2 (taught together),
-//   then 5 advanced upgrade steps G3-4 does while G1-2 is finished.
-//   g12StopAfter = g12Steps.length marks where G1-2 stops.
-const g34Steps = [
-  // ── Shared steps 1-5 (identical to g12Steps) ────────────────────────────
-  ...g12Steps,
-
-  // ── G3-4 advanced steps 6-10 ────────────────────────────────────────────
+// ── G3-4 advanced upgrade steps (6-10) ───────────────────────────────────────
+const advancedSteps = [
   `⬆️ G3-4 UPGRADE: Add Lives + Game Over!
 
 ① Click Rocketship in the sprite list
@@ -180,7 +174,7 @@ const g34Steps = [
        INSIDE: VARIABLES "change Lives by -1"
        INSIDE: CONTROL "delete this clone"
      CONTROL ▸ "if < > then"
-       — hexagon: OPERATORS "y position < -170"
+       — hexagon: OPERATORS "[ ] < [ ]" → "y position" LEFT, -170 RIGHT
        INSIDE: CONTROL "delete this clone"
 
 ✅ Multiple asteroids fall at once — and they reduce Lives on hit!`,
@@ -188,15 +182,14 @@ const g34Steps = [
   `🔫 G3-4 UPGRADE: Clone the bullet for rapid fire!
 
 ① Click Bullet in the sprite list
-② DELETE your existing "when [space] pressed" stack
-③ Keep the "when 🚩 clicked → hide" stack — leave that
+② DELETE your "when [space] pressed" stack
+   Keep the "when 🚩 clicked → hide" stack
 
-④ NEW empty spot:
+③ NEW empty spot:
    EVENTS  ▸ "when [space] key pressed"
    CONTROL ▸ "create clone of [myself]"
-   (That's it — the clone does all the work!)
 
-⑤ NEW empty spot:
+④ NEW empty spot:
    CONTROL ▸ "when I start as a clone"
    MOTION  ▸ "go to [Rocketship]"
    LOOKS   ▸ "show"
@@ -208,7 +201,7 @@ const g34Steps = [
        INSIDE: VARIABLES "change Score by 1"
        INSIDE: CONTROL "delete this clone"
      CONTROL ▸ "if < > then"
-       — hexagon: OPERATORS "y position > 175"
+       — hexagon: OPERATORS "[ ] > [ ]" → "y position" LEFT, 175 RIGHT
        INSIDE: CONTROL "delete this clone"
 
 ✅ Press SPACE fast — rapid fire! Each hit scores. Bullets clean up automatically.`,
@@ -217,19 +210,13 @@ const g34Steps = [
 
 ① Click Rocks in the sprite list
 ② VARIABLES → "Make a Variable" → "Speed" → OK
-   Check "For this sprite only" so each clone has its own speed
 
 ③ Find your "when I start as a clone" stack
-   Find "change y by -5" → replace -5 with VARIABLES "Speed" (put a "-" before it)
-   — Use OPERATORS "[ ] - [ ]" → type 0 in LEFT → VARIABLES "Speed" in RIGHT
-   — Or just type: OPERATORS negative 0 minus Speed
+   Find "change y by -5" → replace -5 with:
+   OPERATORS ▸ "[ ] - [ ]" → 0 in LEFT, VARIABLES "Speed" in RIGHT
+   (This calculates 0 − Speed which gives a negative number)
 
-Actually the simplest way:
-   Replace "change y by -5" with:
-   MOTION ▸ "change y by (0 - Speed)"
-   — OPERATORS ▸ "[ ] - [ ]", 0 on left, VARIABLES "Speed" on right
-
-④ Find "when I start as a clone" → at the very top (before forever), add:
+④ At the top of "when I start as a clone" (before the forever), add:
    VARIABLES ▸ "set Speed to 5"
 
 ⑤ NEW empty spot on Rocks:
@@ -238,7 +225,7 @@ Actually the simplest way:
    INSIDE: CONTROL "wait 10 secs"
    INSIDE: VARIABLES "change Speed by 1"
 
-✅ Every 10 seconds asteroids fall 1 pixel faster. How long can you survive?`,
+✅ Every 10 seconds asteroids fall faster. How long can you survive?`,
 
   `🏆 G3-4 UPGRADE: Personal Best tracker!
 
@@ -257,80 +244,40 @@ Actually the simplest way:
 Can you beat your own high score? 🚀`,
 ]
 
-// ── Find and update G1-2 Week 5 coding content item ─────────────────────────
-const [g12Item] = await sql`
-  SELECT ci.id
+const g34Steps = [...sharedSteps, ...advancedSteps]
+
+// ── Update G3-4 W5 content item ───────────────────────────────────────────────
+const [item] = await sql`
+  SELECT ci.id, ci.metadata
   FROM content_items ci
-  JOIN curriculum_content cc ON cc.content_item_id = ci.id
-  JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
-  JOIN curriculum c ON c.id = cd.curriculum_id
-  WHERE ci.subject = 'coding' AND ci.grade_band = 'g1-2' AND c.week_number = 5
+  INNER JOIN curriculum_content cc ON cc.content_item_id = ci.id
+  INNER JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
+  INNER JOIN curriculum c ON c.id = cd.curriculum_id
+  WHERE c.grade_band = 'g3-4'
+    AND c.week_number = 5
+    AND cd.subject = 'coding'
   LIMIT 1
 `
 
-if (!g12Item) { console.error('❌ G1-2 W5 coding item not found — run seed-w5.mjs first'); process.exit(1) }
-
-// Update curriculum_days theme (use subquery — PostgreSQL UPDATE...FROM doesn't support JOIN)
-await sql`
-  UPDATE curriculum_days
-  SET theme = 'Space Shooter!'
-  WHERE id IN (
-    SELECT curriculum_day_id FROM curriculum_content
-    WHERE content_item_id = ${g12Item.id}
-  )
-`
-
-const g12Meta = {
-  language: 'scratch',
-  challenge: 'Space Shooter!',
-  tagline: 'Paint a bullet, press Space to fire, and blast the asteroids!',
-  steps: g12Steps,
+if (!item) {
+  console.error('❌ G3-4 W5 coding item not found — run seed-w5.mjs first')
+  await sql.end()
+  process.exit(1)
 }
+
+const meta = typeof item.metadata === 'string'
+  ? JSON.parse(item.metadata)
+  : (item.metadata ?? {})
+
+meta.steps = g34Steps
+meta.g12StopAfter = sharedSteps.length   // banner after step 5
+meta.noStarterFallback = true            // don't load Harry Potter as starter
 
 await sql`
   UPDATE content_items
-  SET metadata = ${g12Meta}, title = 'Space Shooter', step_count = ${g12Steps.length}
-  WHERE id = ${g12Item.id}
-`
-console.log(`✅ G1-2 Space Shooter: ${g12Steps.length} steps seeded`)
-
-// ── Find and update G3-4 Week 5 coding content item ─────────────────────────
-const [g34Item] = await sql`
-  SELECT ci.id
-  FROM content_items ci
-  JOIN curriculum_content cc ON cc.content_item_id = ci.id
-  JOIN curriculum_days cd ON cd.id = cc.curriculum_day_id
-  JOIN curriculum c ON c.id = cd.curriculum_id
-  WHERE ci.subject = 'coding' AND ci.grade_band = 'g3-4' AND c.week_number = 5
-  LIMIT 1
+  SET metadata = ${JSON.stringify(meta)}, step_count = ${g34Steps.length}
+  WHERE id = ${item.id}
 `
 
-if (!g34Item) { console.error('❌ G3-4 W5 coding item not found — run seed-w5.mjs first'); process.exit(1) }
-
-// Update curriculum_days theme
-await sql`
-  UPDATE curriculum_days
-  SET theme = 'Space Shooter!'
-  WHERE id IN (
-    SELECT curriculum_day_id FROM curriculum_content
-    WHERE content_item_id = ${g34Item.id}
-  )
-`
-
-const g34Meta = {
-  language: 'scratch',
-  challenge: 'Space Shooter!',
-  tagline: 'Dodge, aim, and blast — survive as long as you can and beat your Personal Best!',
-  g12StopAfter: g12Steps.length,  // G1-2 finishes after step 5; G3-4 continues with upgrades
-  steps: g34Steps,
-}
-
-await sql`
-  UPDATE content_items
-  SET metadata = ${g34Meta}, title = 'Space Shooter', step_count = ${g34Steps.length}
-  WHERE id = ${g34Item.id}
-`
-console.log(`✅ G3-4 Space Shooter: ${g34Steps.length} steps seeded`)
-
+console.log(`✅ G3-4 W5 updated: ${g34Steps.length} steps (${sharedSteps.length} shared + ${advancedSteps.length} advanced), g12StopAfter=${sharedSteps.length}`)
 await sql.end()
-console.log('\n✅ Done — Space Shooter replaces Kart Racer for Week 5')
