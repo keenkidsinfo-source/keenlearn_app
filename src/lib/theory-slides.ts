@@ -25,7 +25,8 @@ export interface TheoryDeck {
   gradeBand: 'g1-2' | 'g3-4'
   weekNumber: number
   title: string
-  subject: string
+  subject?: string
+  color?: string   // hex accent color used by coding theory viewer
   slides: TheorySlide[]
 }
 
