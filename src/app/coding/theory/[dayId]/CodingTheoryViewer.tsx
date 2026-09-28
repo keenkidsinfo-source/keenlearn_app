@@ -1253,7 +1253,7 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g3-4-2': { 0: SvgParallelStacks,    1: SvgCostumeCycle },
   'g3-4-3': { 0: SvgThreeVariables,    1: SvgConditionalLogic },
   'g3-4-4': { 0: SvgDuelScene,         1: SvgBroadcast },
-  'g3-4-5': { 0: SvgCloningBullets, 1: SvgSpaceShooterGame, 3: SvgG34ChallengesW5 },
+  'g3-4-5': { 0: SvgSpaceShooterGameW5, 1: SvgAllBlocksW5, 2: SvgBulletPatternW5, 3: SvgTwoSpritesW5, 5: SvgCloningBullets, 6: SvgG34ChallengesW5 },
 }
 
 // ── Main component ────────────────────────────────────────────────────────────

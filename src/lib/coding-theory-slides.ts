@@ -456,6 +456,70 @@ const duelG34: CodingTheoryDeck = {
 const spaceShooterG34: CodingTheoryDeck = {
   gradeBand: 'g3-4', weekNumber: 5, title: 'Space Shooter — Clones!', color: '#1d4ed8',
   slides: [
+    // ── Slides 1-5: same as G1-2 (class does these together) ─────────────────
+    {
+      title: "Today's Game — Space Shooter! 🚀",
+      subtitle: 'Move with ← → arrows. Press SPACE to fire the bullet!',
+      body: [
+        'You control a Rocket at the bottom of the screen.',
+        'Asteroids fall from the top — shoot them before they pass!',
+        'Press SPACE → bullet flies up → hits the asteroid → Score goes up!',
+        'One bullet at a time — wait for it to finish before firing again.',
+      ],
+      speakerNotes: 'Show the finished game first. Let kids watch it run. Then say: "Today we learn HOW this works — piece by piece."',
+    },
+    {
+      title: 'All the Blocks We Know! 🗂️',
+      subtitle: "Week 5 uses ALL 5 categories — here's when to use each one",
+      body: [
+        '🟡 EVENTS (yellow) — Always the FIRST block in every stack. Without it the green flag does nothing! ("when 🚩 clicked", "when [space] pressed")',
+        '🔵 MOTION (blue) — Move sprites left, right, up, or down. x = left/right. y = up/down. ("change x by 15", "change y by -5", "go to [Rocket]")',
+        '🟠 CONTROL (orange) — Keep things running (forever) or repeat until something happens. Wrap other blocks INSIDE the mouth! ("forever", "repeat until y < -150", "if-then")',
+        '🟣 LOOKS (purple) — Control what the player can see. The bullet trick: hide at start → show when fired → hide again! ("hide", "show")',
+        '🔵 SENSING (light blue) — Asks a YES/NO question. The answer fits inside the hexagon gap of if-then or repeat-until. ("touching [Rocks]?" → YES = bullet hit asteroid!)',
+      ],
+      speakerNotes: 'Point to each color row and ask: which week first used this? W1=Events+Motion, W2=Control loops, W3=Sensing+Variables, W4=Looks show/hide. Space Shooter is the first game that uses ALL five at once!',
+    },
+    {
+      title: 'The Bullet Fire Pattern 🔫',
+      subtitle: 'hide → wait for SPACE → jump to rocket → show → fly → hide',
+      body: [
+        '① "when 🚩 clicked → hide" — bullet starts invisible. We never see it at the wrong spot!',
+        '② "when [space] pressed → go to [Rocket] → show" — bullet jumps to the rocket FIRST, then appears.',
+        '③ "repeat until y > 170: change y by 15" — bullet flies UP until it exits the top of the screen.',
+        '④ "hide" after the repeat — bullet disappears. Ready for the next SPACE press!',
+      ],
+      vocab: [
+        { term: 'repeat until', def: 'Keep looping UNTIL the condition becomes true — then stop automatically' },
+        { term: 'y > 170', def: 'y is the up-down position. 170 is near the top edge of the Scratch stage' },
+      ],
+      speakerNotes: 'Key misconception: kids try to "show" before "go to". Demo the wrong order — bullet flashes in the old position. Show correct order: go to Rocket FIRST, then show.',
+    },
+    {
+      title: 'Two Sprites, Two Jobs ⬆️⬇️',
+      subtitle: 'Asteroid goes DOWN. Bullet goes UP. At the same time!',
+      body: [
+        'Positive y (+) = moving UP toward the top of the screen.',
+        'Negative y (-) = moving DOWN toward the bottom of the screen.',
+        'ASTEROID code: "forever → change y by -5" — keeps falling DOWN.',
+        'BULLET code: "repeat until y > 170 → change y by 15" — shoots UP when fired.',
+        'Each sprite has its OWN code stack — always click the right sprite in the list!',
+      ],
+      speakerNotes: 'Draw a vertical line on the board. Label top + and bottom -. Asteroid has change y -5 (arrow down). Bullet has change y +15 (arrow up). Both run at the same time, independently.',
+    },
+    {
+      title: "Let's Build! Space Shooter 🚀",
+      subtitle: 'G1-2 stops here — G3-4 keep going for upgrades! 🔥',
+      body: [
+        '① ROCKET: "when 🚩 clicked → go to x:0 y:-130 → set size 50% → set Score 0 → forever → if key left pressed? change x -15 → if key right pressed? change x 15".',
+        '② ASTEROID: "when 🚩 clicked → show → set size 50% → forever → go to x:(random) y:180 → repeat until y<-150: change y -5".',
+        '③ BULLET: "when 🚩 clicked → hide". "when [space] → go to [Rocket] → show → repeat until y>170: change y 15 → if touching Rocks? change Score 1 → hide → hide".',
+        '④ G1-2 done here! G3-4: next we upgrade to CLONES — multiple asteroids, rapid fire, Lives, and Personal Best!',
+      ],
+      tryThis: 'Change "change y by 15" on the bullet to 5 — how does a slower bullet feel to play?',
+      speakerNotes: 'G1-2 students are done after this step. G3-4 students continue with the upgrade steps. Use the "G1-2 done!" banner in the app to split the groups.',
+    },
+    // ── Slides 6-7: G3-4 advanced content ────────────────────────────────────
     {
       title: 'CONTROL — Clones: One Sprite, Unlimited Copies 🧬',
       subtitle: '"create clone" — most powerful Control block in Scratch',
@@ -465,46 +529,23 @@ const spaceShooterG34: CodingTheoryDeck = {
         'PATTERN: original → "hide" at start → Space key → "create clone" → clone → "show" + move → "delete this clone".',
         '"delete this clone" — ESSENTIAL! Without it, clones pile up and Scratch slows to a crawl.',
       ],
-      speakerNotes: 'Most common mistake: code on original instead of "when I start as a clone". Original controls WHEN clones are made. Clone controls WHAT they do. Show two separate stacks side by side clearly.',
+      speakerNotes: 'G3-4 only from here. Most common mistake: code on original instead of "when I start as a clone". Original controls WHEN clones are made. Clone controls WHAT they do.',
       vocab: [
         { term: 'create clone of [myself]', def: 'Creates an independent copy — each clone runs "when I start as a clone" code' },
         { term: 'delete this clone', def: 'Removes this specific clone — always clean up after use or Scratch crashes!' },
       ],
     },
     {
-      title: 'SENSING — Collision Detection with Clones 🔵',
-      subtitle: 'Both the bullet AND the asteroid check for each other',
-      body: [
-        'BULLET clone: "forever" → "change y by 20" → "if touching [Asteroid]?" → "change Score by 1" + "delete this clone".',
-        'ASTEROID clone: "forever" → "change y by -4" → "if touching [Bullet]?" → "delete this clone".',
-        '"if y position > 180 → delete this clone" — clean up bullets that fly off screen without hitting.',
-        '"if touching [Rocket]?" on asteroid → "change Lives by -1" + "delete this clone" — lose a life!',
-      ],
-      speakerNotes: 'Without "delete this clone" on bullets: they pass through asteroids. Demo this so students discover WHY cleanup matters. Ask: what if you deleted asteroid but not bullet? What would player see?',
-    },
-    {
-      title: "Today's Game — Space Shooter! 🚀",
-      subtitle: 'Clones + collision detection + lives + Personal Best',
-      body: [
-        '① Rocket: arrow keys move. "when [space] pressed" → "create clone of [Bullet]".',
-        '② Bullet clone: "go to [Rocket]" → show → forever → "change y by 20" → hit check → delete.',
-        '③ Asteroid clone: random top spawn → forever → "change y by -4" → collision checks → delete.',
-        '④ Personal Best: "if Score > PersonalBest → set PersonalBest to Score → say [New Record! 🏆]".',
-      ],
-      tryThis: 'Remove "delete this clone" from the bullet. Fire several shots. What happens?',
-      challenge: 'ENGINEERING: Add Speed variable. Every 10 secs → "change Speed by 1". Asteroids use "change y by (0 - Speed)" — difficulty ramps up automatically!',
-    },
-    {
       title: 'G3-4 Advanced Challenges 🔥',
-      subtitle: 'Pick one and engineer your way to a better game!',
+      subtitle: 'Upgrade your game — pick one and engineer it!',
       body: [
-        '⚡ LIVES: Make a Lives variable. If asteroid touches Rocket: "change Lives by -1" + delete clone. When Lives = 0: stop all.',
-        '📈 SPEED RAMP: Speed variable starting at 4. Every 10 seconds "change Speed by 1". Asteroid y: "change y by (0 - Speed)" — gets harder!',
-        '🏆 PERSONAL BEST: After any score change: "if Score > PersonalBest then set PersonalBest to Score + say [New Record! 🏆]".',
-        '🌊 WAVES: WaveCount variable. Every 5 hits → "change WaveCount by 1" + broadcast [next wave] → spawn asteroids faster.',
-        '👾 BOSS: Add a Boss sprite. BossHP = 3. Each bullet hit: BossHP -1. When BossHP = 0: you win! Boss shoots back every 3 secs.',
+        '⚡ LIVES: Make a Lives variable. Asteroid touches Rocket: "change Lives by -1" + delete clone. When Lives = 0: stop all.',
+        '🌊 CLONES: Delete all Rocks code → "when 🚩 clicked → hide → forever → create clone → wait random 0.5-1.5". Each clone falls independently!',
+        '🔫 RAPID FIRE: Space key → "create clone of [Bullet]". Clone shows, flies, scores, deletes. Hold space = rapid fire!',
+        '📈 SPEED RAMP: Speed variable. "change y by (0 - Speed)". Every 10 secs "change Speed by 1" — gets harder!',
+        '🏆 PERSONAL BEST: "if Score > PersonalBest → set PersonalBest to Score → say [New Record! 🏆]".',
       ],
-      speakerNotes: 'Let students choose their own challenge. These are open-ended engineering problems — there is no single correct solution. Encourage them to talk through their approach before coding.',
+      speakerNotes: 'Let students choose their own challenge. These are open-ended engineering problems — no single correct solution. Encourage them to talk through their approach before coding.',
     },
   ],
 }
