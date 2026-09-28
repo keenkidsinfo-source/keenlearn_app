@@ -433,7 +433,7 @@ export function CodingSandbox({
 
   if (language === 'scratch') {
     return (
-      <div className="flex flex-col h-screen bg-purple-50">
+      <div className="flex flex-col h-screen overflow-hidden bg-purple-50">
         <header className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3 shrink-0">
           <button onClick={async () => { await saveScratch(); router.back() }} className="text-purple-200 text-2xl">←</button>
           <div className="flex-1 min-w-0">
@@ -551,13 +551,13 @@ export function CodingSandbox({
         />
 
         {/* Main area: iframe + optional KeeBot side panel, side by side */}
-        <div className="flex-1 flex flex-row overflow-hidden">
-          <div className="relative flex-1 flex flex-col">
+        <div className="flex-1 flex flex-row overflow-hidden min-h-0">
+          <div className="relative flex-1 flex flex-col min-h-0">
             {iframeSrc ? (
               <iframe
                 ref={iframeRef}
                 src={iframeSrc}
-                className="flex-1 w-full border-0"
+                className="flex-1 w-full border-0 min-h-0"
                 allow="microphone; camera"
                 title="Scratch Editor"
               />
@@ -594,7 +594,7 @@ export function CodingSandbox({
   }
 
   return (
-    <div className="flex flex-col h-screen bg-purple-50">
+    <div className="flex flex-col h-screen overflow-hidden bg-purple-50">
       <header className="bg-purple-600 text-white px-4 py-3 flex items-center gap-3 shrink-0">
         <button onClick={async () => { await savePython(); router.back() }} className="text-purple-200 text-2xl">←</button>
         <div className="flex-1 min-w-0">
@@ -624,8 +624,8 @@ export function CodingSandbox({
         keeBotOpen={chatOpen}
       />
 
-      <div className="flex-1 flex flex-row overflow-hidden">
-        <div className="flex-1 overflow-hidden">
+      <div className="flex-1 flex flex-row overflow-hidden min-h-0">
+        <div className="flex-1 overflow-hidden min-h-0">
           <PythonEditor
             initialCode={savedCode ?? '# Write your Python code here\nprint("Hello, World!")'}
             onCodeChange={code => { pyCode.current = code }}
