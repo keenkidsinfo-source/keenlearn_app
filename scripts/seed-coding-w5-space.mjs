@@ -27,7 +27,7 @@ try {
 
 const sql = postgres(process.env.DATABASE_URL)
 
-// ── G1-2 steps (5) — catch the asteroid, no laser ──────────────────────────
+// ── G1-2 steps (5) — simple Space Shooter, no clones ───────────────────────
 const g12Steps = [
   `🚀 Set up your rocket!
 
@@ -41,7 +41,7 @@ const g12Steps = [
 
 ✅ Green flag → rocket at the bottom of a starry sky!`,
 
-  `⬅️➡️ Move left and right!
+  `⬅️➡️ Move left and right + add Score!
 
 ① Still on Rocketship — drag to a NEW empty spot:
    EVENTS "when [left arrow v] key pressed"
@@ -51,15 +51,11 @@ const g12Steps = [
    EVENTS "when [right arrow v] key pressed"
    MOTION "change x by 15"
 
-✅ Arrow keys move the rocket — try it!`,
-
-  `⭐ Add a Score counter!
-
-① Still on Rocketship → VARIABLES → "Make a Variable" → type "Score" → OK
-② Find your "when 🚩 clicked" stack → snap on at the bottom:
+③ VARIABLES → "Make a Variable" → type "Score" → OK
+   Find "when 🚩 clicked" stack → snap on at the bottom:
    VARIABLES "set Score to 0"
 
-✅ Score 0 appears in the corner — ready to count catches!`,
+✅ Arrow keys move the rocket, Score shows 0!`,
 
   `☄️ Make a falling asteroid!
 
@@ -74,21 +70,39 @@ const g12Steps = [
    Drag MOTION "y position" into the LEFT gap → type -150 in the RIGHT gap
    INSIDE the repeat: MOTION "change y by -5"
 
-✅ Green flag → asteroid falls from the top! (it disappears at the bottom — fix that next!)`,
+✅ Green flag → asteroid falls from the top and resets!`,
 
-  `🎯 Catch the asteroid — score goes up!
+  `🔫 Paint a bullet and fire it!
 
-① Still on Rocks — find your forever loop
-② INSIDE the repeat (right after "change y by -5"), add:
+① Click the PAINT icon (next to the sprite icon, bottom-right) → draw a short vertical line
+② Click the name under the sprite → type "Bullet" → press Enter
+③ Click Bullet in the sprite list → drag to code area:
+   EVENTS "when 🚩 clicked"
+   LOOKS "hide"
+
+④ NEW empty spot on Bullet:
+   EVENTS "when [space v] key pressed"
+   MOTION "go to [Rocketship v]"
+   LOOKS "show"
+   CONTROL "repeat until" → OPERATORS "[ ] > [ ]"
+   Drag MOTION "y position" into LEFT gap → type 170 in RIGHT gap
+   INSIDE the repeat: MOTION "change y by 15"
+   After the repeat (snap below it): LOOKS "hide"
+
+✅ Press Space — bullet shoots up from the rocket!`,
+
+  `🎯 Bullet hits asteroid — score goes up!
+
+① Click Bullet in the sprite list → find your "when space pressed" stack
+② INSIDE the repeat until loop (after "change y by 15"), add:
    CONTROL "if < > then"
-   Inside the pointy gap: SENSING "touching [Rocketship v]?"
-   Inside the if-then: VARIABLES "change Score by 1"
+   Inside the hexagon gap: SENSING "touching [Rocks v]?"
+   Inside the if-then:
+     VARIABLES "change Score by 1"
+     LOOKS "hide"
 
-That's it! When y < -150 OR the rocket catches it, the forever loop restarts
-and the asteroid jumps back to the top at a new random x position.
-
-✅ Move your rocket to catch falling asteroids — Score goes up each time!
-Can you get 5 in a row? 🚀`,
+✅ Aim carefully — blast the asteroid and Score goes up!
+Can you get 5 hits? 🚀`,
 ]
 
 // ── G3-4 steps (10) — advanced, with cloning ────────────────────────────────
@@ -273,17 +287,17 @@ await sql`
 
 const g12Meta = {
   language: 'scratch',
-  challenge: 'Space Catcher!',
-  tagline: 'Catch falling asteroids with your rocket — how many can you grab?',
+  challenge: 'Space Shooter!',
+  tagline: 'Paint a bullet, press Space to fire, and blast the asteroids!',
   steps: g12Steps,
 }
 
 await sql`
   UPDATE content_items
-  SET metadata = ${g12Meta}, title = 'Space Catcher', step_count = ${g12Steps.length}
+  SET metadata = ${g12Meta}, title = 'Space Shooter', step_count = ${g12Steps.length}
   WHERE id = ${g12Item.id}
 `
-console.log(`✅ G1-2 Space Catcher: ${g12Steps.length} steps seeded`)
+console.log(`✅ G1-2 Space Shooter: ${g12Steps.length} steps seeded`)
 
 // ── Find and update G3-4 Week 5 coding content item ─────────────────────────
 const [g34Item] = await sql`

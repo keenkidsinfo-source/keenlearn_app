@@ -186,47 +186,47 @@ const harryG12: TheoryDeck = {
   ],
 }
 
-// ── G1-2 Week 5: Space Catcher! ───────────────────────────────────────────────
-const spaceCatcherG12: TheoryDeck = {
-  gradeBand: 'g1-2', weekNumber: 5, title: 'Space Catcher!', color: '#4f46e5',
+// ── G1-2 Week 5: Space Shooter! (simple — no clones) ─────────────────────────
+const spaceShooterG12: TheoryDeck = {
+  gradeBand: 'g1-2', weekNumber: 5, title: 'Space Shooter!', color: '#4f46e5',
   slides: [
     {
-      title: 'CONTROL — "repeat until" — a loop with a stop condition ♾️',
-      subtitle: 'Different from "repeat 10" (fixed count) or "forever" (never stops)',
+      title: 'LOOKS + EVENTS — The Bullet Pattern 🔫',
+      subtitle: 'hide → wait for space → show → fly → hide again',
       body: [
-        '"repeat until <condition>" — keeps looping UNTIL the condition becomes YES, then exits the loop.',
-        'TODAY: "repeat until (y position < -150)" — asteroid falls until it goes off the bottom of the screen.',
-        'Inside: "change y by -5" — each loop step moves 5 pixels DOWN (negative y = down on stage).',
-        'After the repeat exits: the outer "forever" restarts everything from the top — new random position!',
+        '"when flag clicked → hide" — bullet is invisible at start. Same hide trick as W4 lightning!',
+        '"when [space] pressed" — new Event key! Space bar fires the bullet.',
+        '"go to [Rocketship]" — bullet jumps TO the rocket sprite before showing. Always starts at the gun!',
+        '"show" → "repeat until y > 170: change y by 15" → "hide" — flies up and disappears at the top.',
       ],
-      speakerNotes: 'Y axis: positive = up, negative = down. Stage: y=180 is top, y=-180 is bottom. "y < -150" means almost at bottom. Draw Y axis on board: label top, bottom, centre.',
+      speakerNotes: 'Ask: why go to Rocketship BEFORE show? (If we show first it appears in the wrong place.) Demo: show before go-to — bullet flashes at old position. Then show the correct order.',
       vocab: [
-        { term: 'y position', def: 'Up-down. y=180 = top of screen. y=-180 = bottom. Negative y moves DOWN.' },
-        { term: 'repeat until', def: 'Loops until condition is true, then stops — the condition acts as a "door"' },
+        { term: 'go to [Sprite]', def: 'Teleport to another sprite\'s current position — use before "show" for projectiles' },
+        { term: 'when [space] pressed', def: 'Fires once each time Space is pressed — each press = one shot' },
       ],
     },
     {
-      title: 'OPERATORS — "pick random" makes games unpredictable 🎲',
-      subtitle: 'Different number every time — that is what makes games fun!',
+      title: 'Two sprites moving at the same time ⬆️⬇️',
+      subtitle: 'Asteroid goes DOWN, bullet goes UP — independently!',
       body: [
-        '"go to x: (pick random -180 to 180) y: 180" — asteroid starts at TOP but random left-right each time.',
-        '"pick random -180 to 180" gives a different number every call. -180=far left, 0=centre, 180=far right.',
-        'Without random: always same column — boring! With random: always a surprise — you have to track it!',
-        '"pick random" is an OPERATORS block (green) — drag it into the x slot in "go to".',
+        'Asteroid: "forever → change y by -5" — falls DOWN. Negative y = moving toward bottom.',
+        'Bullet: "repeat until y > 170 → change y by 15" — shoots UP. Positive y = moving toward top.',
+        'Both sprites run their own code independently — just like the car and dancer in W2!',
+        'IMPORTANT: click the RIGHT sprite in the sprite list before coding. Wrong sprite = nothing works!',
       ],
-      speakerNotes: 'Click the "pick random -1 to 10" block several times in isolation — show different numbers. Ask: what would the game be like without random? (Boring — same spot every time.)',
+      speakerNotes: 'Draw vertical axis: top = y positive, bottom = y negative. Asteroid change y -5 = moves toward bottom. Bullet change y +15 = moves toward top. Both happening at same time on stage.',
     },
     {
-      title: "Today's Game — Space Catcher! 🚀",
-      subtitle: 'All the blocks together: forever + repeat until + if + random',
+      title: "Today's Game — Space Shooter! 🚀",
+      subtitle: 'Press SPACE to fire — hit the asteroid to score!',
       body: [
-        '① Asteroid (Rocks): "forever" → "go to x:random y:180" → "repeat until y < -150: change y by -5" → "if touching Rocketship: change Score by 1".',
-        '② ONE forever wraps everything — when repeat exits, forever restarts from the top. Loop inside a loop!',
-        '③ Rocket: "when [←] key pressed → change x by -15" and "when [→] key pressed → change x by 15".',
-        'Key insight: the ASTEROID sprite does all the work. Rocket just moves left and right.',
+        '① Rocket: arrow keys move left/right. Code on Rocketship.',
+        '② Asteroid: "forever → go to x:random y:180 → repeat until y < -150: change y by -5". Code on Rocks.',
+        '③ Bullet: "when flag clicked → hide". "when space pressed → go to Rocketship → show → repeat until y > 170: change y by 15 → hide". Code on Bullet sprite.',
+        '④ Scoring: inside Bullet\'s "repeat until", add: "if touching [Rocks]? → change Score by 1 → hide". Bullet checks the hit!',
       ],
-      tryThis: 'Change "change y by -5" to "-10". How does the speed feel now?',
-      challenge: 'CHALLENGE: Add a 30-second Timer that counts down — how many can you catch before time runs out?',
+      tryThis: 'Change "change y by 15" on bullet to "5" — how does a slower bullet feel?',
+      challenge: 'CHALLENGE: Add a 30-second Timer — how many hits before time runs out?',
     },
   ],
 }
@@ -458,7 +458,7 @@ const spaceShooterG34: TheoryDeck = {
 
 // ── Lookup table ───────────────────────────────────────────────────────────────
 const codingDecks: TheoryDeck[] = [
-  scratchIntroG12, loopsG12, pokemonG12, harryG12, spaceCatcherG12,
+  scratchIntroG12, loopsG12, pokemonG12, harryG12, spaceShooterG12,
   movingCarG34, parallelCodeG34, pokemonBattleG34, duelG34, spaceShooterG34,
 ]
 
