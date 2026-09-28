@@ -27,15 +27,14 @@ try {
 
 const sql = postgres(process.env.DATABASE_URL)
 
-// ── G1-2 steps (7) — simple shooter, no cloning ────────────────────────────
+// ── G1-2 steps (5) — catch the asteroid, no laser ──────────────────────────
 const g12Steps = [
   `🚀 Set up your rocket!
 
-① Click the Cat sprite → right-click → Delete
-② Click the sprite icon (bottom-right, face with +) → Choose a Sprite → search "Rocketship" → click it
-③ Click the name below the sprite → type "Rocket" → press Enter
-④ Click the backdrop icon → Choose a Backdrop → search "Stars" → click it
-⑤ Click Rocket in the sprite list → drag to the code area:
+① Right-click the Cat sprite on the stage → Delete
+② Click the sprite icon (bottom-right) → Choose a Sprite → search "Rocketship" → click it
+③ Click the backdrop icon → Choose a Backdrop → search "Stars" → click it
+④ Click Rocketship in the sprite list → drag to the code area:
    EVENTS "when 🚩 clicked"
    MOTION "go to x: 0 y: -130"
    LOOKS "set size to 50 %"
@@ -44,88 +43,52 @@ const g12Steps = [
 
   `⬅️➡️ Move left and right!
 
-① Still on Rocket — drag to a NEW empty spot in the code area:
+① Still on Rocketship — drag to a NEW empty spot:
    EVENTS "when [left arrow v] key pressed"
-   MOTION "change x by -10"
+   MOTION "change x by -15"
 
-② Drag to ANOTHER new empty spot:
+② Another new empty spot:
    EVENTS "when [right arrow v] key pressed"
-   MOTION "change x by 10"
+   MOTION "change x by 15"
 
-✅ Press the arrow keys — rocket slides across the bottom!`,
+✅ Arrow keys move the rocket — try it!`,
 
-  `⭐ Make a Score counter!
+  `⭐ Add a Score counter!
 
-① Still on Rocket → VARIABLES → "Make a Variable" → type "Score" → click OK
-② Find your "when 🚩 clicked" stack from Step 1 → snap on the bottom:
+① Still on Rocketship → VARIABLES → "Make a Variable" → type "Score" → OK
+② Find your "when 🚩 clicked" stack → snap on at the bottom:
    VARIABLES "set Score to 0"
 
-✅ A "Score 0" counter appears in the corner of the screen!`,
+✅ Score 0 appears in the corner — ready to count catches!`,
 
-  `☄️ Add an asteroid!
+  `☄️ Make a falling asteroid!
 
 ① Click the sprite icon → Choose a Sprite → search "Rocks" → click it
-② Click the name → type "Asteroid" → press Enter
-③ Click Asteroid in the sprite list → drag to the code area:
+② Click Rocks in the sprite list → drag to the code area:
    EVENTS "when 🚩 clicked"
-   LOOKS "set size to 40 %"
+   LOOKS "set size to 50 %"
    CONTROL "forever"
-④ Inside the forever:
-   MOTION "go to x: (pick random -200 to 200) y: 180"
-   CONTROL "glide 2 secs to x: (pick random -200 to 200) y: -180"
+③ INSIDE the forever:
+   MOTION "go to x: (pick random -180 to 180) y: 180"
+   CONTROL "repeat until" → OPERATORS "[ ] < [ ]"
+   Drag MOTION "y position" into the LEFT gap → type -150 in the RIGHT gap
+   INSIDE the repeat: MOTION "change y by -5"
 
-✅ Green flag → asteroid falls from the top and keeps going!`,
+✅ Green flag → asteroid falls from the top! (it disappears at the bottom — fix that next!)`,
 
-  `💥 Shoot a laser!
+  `🎯 Catch the asteroid — score goes up!
 
-① Click the sprite icon → Paint (paintbrush icon)
-② Use the Line tool — draw a short vertical line in the centre of the canvas
-③ Click the costume name field at the top-left → type "Laser" → press Enter
-④ Click Laser in the sprite list → drag to code area:
-   EVENTS "when 🚩 clicked"
-   LOOKS "hide"
-
-⑤ New empty spot:
-   EVENTS "when [space v] key pressed"
-   MOTION "go to [Rocket v]" ← click the dropdown, pick Rocket
-   LOOKS "show"
-   CONTROL "repeat until" OPERATORS "[ ] > 170" → drag MOTION "y position" into the gap
-   Inside the repeat: MOTION "change y by 15"
-   After the repeat: LOOKS "hide"
-
-✅ Press Space — laser shoots straight up from the rocket!`,
-
-  `🎯 Hit the asteroid — score goes up!
-
-① Still on Laser — find your "when space pressed" stack
-② Inside the repeat (after "change y by 15") add:
-   CONTROL "if < > then" ← the block with a pointy gap
-   Inside the gap: SENSING "touching [Asteroid v]?"
-   Inside the if-then: VARIABLES "change Score by 1"
-   Still inside: LOOKS "hide" ← this stops the laser
-
-③ Click Asteroid → find the forever loop → at the very TOP of the forever add:
+① Still on Rocks — find your forever loop
+② INSIDE the repeat (right after "change y by -5"), add:
    CONTROL "if < > then"
-   Inside the gap: SENSING "touching [Laser v]?"
-   Inside the if-then: MOTION "go to x: (pick random -200 to 200) y: 180"
-   (Asteroid jumps back to top when hit)
+   Inside the pointy gap: SENSING "touching [Rocketship v]?"
+   Inside the if-then: VARIABLES "change Score by 1"
 
-✅ Shoot the asteroid — Score goes up and it resets!`,
+That's it! When y < -150 OR the rocket catches it, the forever loop restarts
+and the asteroid jumps back to the top at a new random x position.
 
-  `⏱️ 30-second race!
-
-① Click Rocket → VARIABLES → "Make a Variable" → type "Timer" → OK
-② New empty spot:
-   EVENTS "when 🚩 clicked"
-   VARIABLES "set Timer to 30"
-   CONTROL "repeat 30"
-   Inside the repeat: CONTROL "wait 1 secs"
-   Inside the repeat: VARIABLES "change Timer by -1"
-③ After the repeat (outside it):
-   LOOKS "say [ ] for [ ] secs" → type "Time's up! 🚀" → 2 secs
-   CONTROL "stop [all v]"
-
-✅ Press the green flag — 30 seconds to blast as many asteroids as you can!`,
+✅ Move your rocket to catch falling asteroids — Score goes up each time!
+Can you get 5 in a row? 🚀`,
 ]
 
 // ── G3-4 steps (10) — advanced, with cloning ────────────────────────────────
@@ -310,17 +273,17 @@ await sql`
 
 const g12Meta = {
   language: 'scratch',
-  challenge: 'Space Shooter!',
-  tagline: 'Blast the asteroids with your rocket — how many can you hit in 30 seconds?',
+  challenge: 'Space Catcher!',
+  tagline: 'Catch falling asteroids with your rocket — how many can you grab?',
   steps: g12Steps,
 }
 
 await sql`
   UPDATE content_items
-  SET metadata = ${g12Meta}, title = 'Space Shooter', step_count = ${g12Steps.length}
+  SET metadata = ${g12Meta}, title = 'Space Catcher', step_count = ${g12Steps.length}
   WHERE id = ${g12Item.id}
 `
-console.log(`✅ G1-2 Space Shooter: ${g12Steps.length} steps seeded`)
+console.log(`✅ G1-2 Space Catcher: ${g12Steps.length} steps seeded`)
 
 // ── Find and update G3-4 Week 5 coding content item ─────────────────────────
 const [g34Item] = await sql`
