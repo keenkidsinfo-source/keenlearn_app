@@ -63,6 +63,7 @@ const sharedSteps = [
 ② Click Rocks in the sprite list. Drag to code area:
    EVENTS  ▸ "when 🚩 clicked"
    LOOKS   ▸ "set size to 50 %"
+   LOOKS   ▸ "show"
    CONTROL ▸ "forever"   ← this is the big mouth block
 
 ③ INSIDE the forever mouth, add:
