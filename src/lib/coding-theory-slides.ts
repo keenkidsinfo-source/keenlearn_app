@@ -209,46 +209,69 @@ const spaceShooterG12: CodingTheoryDeck = {
   gradeBand: 'g1-2', weekNumber: 5, title: 'Space Shooter!', color: '#4f46e5',
   slides: [
     {
-      title: 'LOOKS + EVENTS — The Bullet Pattern 🔫',
-      subtitle: 'hide → wait for space → show → fly → hide again',
-      body: [
-        '"when flag clicked → hide" — bullet is invisible at start. Same hide trick as W4 lightning!',
-        '"when [space] pressed" — new Event key! Space bar fires the bullet.',
-        '"go to [Rocketship]" — bullet jumps TO the rocket sprite before showing. Always starts at the gun!',
-        '"show" → "repeat until y > 170: change y by 15" → "hide" — flies up and disappears at the top.',
-      ],
-      speakerNotes: 'Ask: why go to Rocketship BEFORE show? (If we show first it appears in the wrong place.) Demo: show before go-to — bullet flashes at old position. Then show the correct order.',
-      vocab: [
-        { term: 'go to [Sprite]', def: 'Teleport to another sprite\'s current position — use before "show" for projectiles' },
-        { term: 'when [space] pressed', def: 'Fires once each time Space is pressed — each press = one shot' },
-      ],
-    },
-    {
-      title: 'Two sprites moving at the same time ⬆️⬇️',
-      subtitle: 'Asteroid goes DOWN, bullet goes UP — independently!',
-      body: [
-        'Asteroid: "forever → change y by -5" — falls DOWN. Negative y = moving toward bottom.',
-        'Bullet: "repeat until y > 170 → change y by 15" — shoots UP. Positive y = moving toward top.',
-        'Both sprites run their own code independently — just like the car and dancer in W2!',
-        'IMPORTANT: click the RIGHT sprite in the sprite list before coding. Wrong sprite = nothing works!',
-      ],
-      speakerNotes: 'Draw vertical axis: top = y positive, bottom = y negative. Asteroid change y -5 = moves toward bottom. Bullet change y +15 = moves toward top. Both happening at same time on stage.',
-    },
-    {
       title: "Today's Game — Space Shooter! 🚀",
-      subtitle: 'Press SPACE to fire — hit the asteroid to score!',
+      subtitle: 'Move with ← → arrows. Press SPACE to fire the bullet!',
       body: [
-        '① Rocket: arrow keys move left/right. Code on Rocketship.',
-        '② Asteroid: "forever → go to x:random y:180 → repeat until y < -150: change y by -5". Code on Rocks.',
-        '③ Bullet: "when flag clicked → hide". "when space pressed → go to Rocketship → show → repeat until y > 170: change y by 15 → hide". Code on Bullet sprite.',
-        '④ Scoring: inside Bullet\'s "repeat until", add: "if touching [Rocks]? → change Score by 1 → hide". Bullet checks the hit!',
+        'You control a Rocket at the bottom of the screen.',
+        'Asteroids fall from the top — shoot them before they pass!',
+        'Press SPACE → bullet flies up → hits the asteroid → Score goes up!',
+        'One bullet at a time — wait for it to finish before firing again.',
       ],
-      tryThis: 'Change "change y by 15" on bullet to "5" — how does a slower bullet feel?',
-      challenge: 'CHALLENGE: Add a 30-second Timer — how many hits before time runs out?',
+      speakerNotes: 'Show the finished game first. Let kids watch it run. Then say: "Today we learn HOW this works — piece by piece."',
+    },
+    {
+      title: 'All the Blocks We Know! 🗂️',
+      subtitle: 'Week 5 uses ALL the block categories we learned this month',
+      body: [
+        '🟡 EVENTS (yellow) — "when 🚩 clicked", "when [space] pressed"',
+        '🔵 MOTION (blue) — "go to [Rocket]", "change x by 15", "change y by 15"',
+        '🟠 CONTROL (orange) — "forever", "repeat until y > 170", "if-then"',
+        '🟣 LOOKS (purple) — "show" and "hide" — the invisible bullet trick from W4!',
+        '🔵 SENSING (light blue) — "touching [Asteroid]?" — detects the hit and scores!',
+      ],
+      speakerNotes: 'Point to each color and ask kids to recall which week they first used it. W1=Events+Motion, W2=Control loops, W3=Sensing+Variables, W4=Looks show/hide. W5 brings them all together!',
+    },
+    {
+      title: 'The Bullet Fire Pattern 🔫',
+      subtitle: 'hide → wait for SPACE → jump to rocket → show → fly → hide',
+      body: [
+        '① "when 🚩 clicked → hide" — bullet starts invisible. We never see it at the wrong spot!',
+        '② "when [space] pressed → go to [Rocket] → show" — bullet jumps to the rocket FIRST, then appears.',
+        '③ "repeat until y > 170: change y by 15" — bullet flies UP until it exits the top of the screen.',
+        '④ "hide" after the repeat — bullet disappears. Ready for the next SPACE press!',
+      ],
+      vocab: [
+        { term: 'repeat until', def: 'Keep looping UNTIL the condition becomes true — then stop automatically' },
+        { term: 'y > 170', def: 'y is the up-down position. 170 is near the top edge of the Scratch stage' },
+      ],
+      speakerNotes: 'Key misconception: kids try to "show" before "go to". Demo the wrong order — bullet flashes in the old position. Show correct order: go to Rocket FIRST, then show.',
+    },
+    {
+      title: 'Two Sprites, Two Jobs ⬆️⬇️',
+      subtitle: 'Asteroid goes DOWN. Bullet goes UP. At the same time!',
+      body: [
+        'Positive y (+) = moving UP toward the top of the screen.',
+        'Negative y (-) = moving DOWN toward the bottom of the screen.',
+        'ASTEROID code: "forever → change y by -5" — keeps falling DOWN.',
+        'BULLET code: "repeat until y > 170 → change y by 15" — shoots UP when fired.',
+        'Each sprite has its OWN code stack — always click the right sprite in the list!',
+      ],
+      speakerNotes: 'Draw a vertical line on the board. Label top + and bottom -. Asteroid has change y -5 (arrow down). Bullet has change y +15 (arrow up). Both run at the same time, independently.',
+    },
+    {
+      title: "Let's Build! Space Shooter 🚀",
+      subtitle: 'Click the RIGHT sprite before adding code!',
+      body: [
+        '① ROCKET sprite: "when [←] pressed → change x by -15". "when [→] pressed → change x by 15".',
+        '② ASTEROID sprite: "when 🚩 clicked → forever → go to x:(random) y:180 → repeat until y<-150: change y -5".',
+        '③ BULLET sprite: "when 🚩 clicked → hide". "when [space] pressed → go to [Rocket] → show → repeat until y>170: change y 15 → hide".',
+        '④ SCORING: inside Bullet's repeat, add "if touching [Asteroid]? → change Score 1 → hide".',
+      ],
+      tryThis: 'Change "change y by 15" on the bullet to 5 — how does a slower bullet feel to play?',
+      challenge: 'CHALLENGE: Add a 30-second Timer — how many asteroids can you hit before time runs out?',
     },
   ],
 }
-
 // ── G3-4 Week 1: Moving Car! ───────────────────────────────────────────────────
 const movingCarG34: CodingTheoryDeck = {
   gradeBand: 'g3-4', weekNumber: 1, title: 'Moving Car — Scratch Deep Dive!', color: '#0891b2',

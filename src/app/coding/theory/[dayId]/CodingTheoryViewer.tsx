@@ -519,6 +519,135 @@ function SvgSpaceCatch() {
   )
 }
 
+// ── G1-2 Week 5 SVGs ──────────────────────────────────────────────────────────
+function SvgSpaceShooterGameW5() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#0f0f2e" rx="14"/>
+      {/* Stars */}
+      {[{cx:80,cy:30},{cx:200,cy:55},{cx:460,cy:22},{cx:600,cy:48},{cx:700,cy:20},{cx:140,cy:80},{cx:340,cy:45},{cx:550,cy:75},{cx:680,cy:90},{cx:40,cy:110},{cx:720,cy:130}].map((s,i) => (
+        <circle key={i} cx={s.cx} cy={s.cy} r={Math.random()<0.5?2:1.5} fill="white" opacity="0.7"/>
+      ))}
+      {/* Score */}
+      <rect x="20" y="14" width="110" height="32" fill="#1e1e50" rx="8"/>
+      <text x="75" y="35" textAnchor="middle" fill="white" fontSize="15" fontWeight="bold">Score: 3</text>
+      {/* Title */}
+      <text x="380" y="34" textAnchor="middle" fill="white" fontSize="19" fontWeight="bold">🚀 Space Shooter</text>
+      {/* Asteroid */}
+      <circle cx="280" cy="118" r="32" fill="#6b3a1e" stroke="#a0522d" strokeWidth="2"/>
+      <text x="280" y="126" textAnchor="middle" fontSize="24">🪨</text>
+      <text x="280" y="163" textAnchor="middle" fill="#fca5a5" fontSize="13" fontWeight="bold">↓ falling down</text>
+      {/* Bullet trail */}
+      <line x1="382" y1="65" x2="382" y2="148" stroke="#facc15" strokeWidth="2" strokeDasharray="5,4"/>
+      <rect x="375" y="148" width="14" height="26" fill="#facc15" rx="6"/>
+      <text x="410" y="110" fill="#facc15" fontSize="13" fontWeight="bold">↑ bullet</text>
+      {/* Rocket */}
+      <text x="382" y="296" textAnchor="middle" fontSize="38">🚀</text>
+      {/* Controls */}
+      <rect x="110" y="296" width="100" height="28" fill="#2563eb" rx="6"/>
+      <text x="160" y="314" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">← → move</text>
+      <rect x="560" y="296" width="100" height="28" fill="#7c3aed" rx="6"/>
+      <text x="610" y="314" textAnchor="middle" fill="white" fontSize="12" fontWeight="bold">SPACE fire</text>
+      {/* Side labels */}
+      <text x="80" y="180" textAnchor="middle" fill="#94a3b8" fontSize="11">y = +170</text>
+      <text x="80" y="195" textAnchor="middle" fill="#94a3b8" fontSize="11">(top edge)</text>
+      <text x="80" y="270" textAnchor="middle" fill="#94a3b8" fontSize="11">y = -150</text>
+      <text x="80" y="285" textAnchor="middle" fill="#94a3b8" fontSize="11">(bottom edge)</text>
+    </svg>
+  )
+}
+
+function SvgAllBlocksW5() {
+  const cats = [
+    { y: 65,  color: '#ffab19', label: 'EVENTS',  ex: 'when 🚩 clicked  ·  when [space] pressed' },
+    { y: 120, color: '#4c97ff', label: 'MOTION',  ex: 'go to [Rocket]  ·  change x by 15  ·  change y by 15' },
+    { y: 175, color: '#ff8c1a', label: 'CONTROL', ex: 'forever  ·  repeat until  ·  if-then' },
+    { y: 230, color: '#9966ff', label: 'LOOKS',   ex: 'show  ·  hide' },
+    { y: 285, color: '#5cb1d6', label: 'SENSING', ex: 'touching [Asteroid]?  →  change Score by 1' },
+  ]
+  return (
+    <svg viewBox="0 0 760 345" className="w-full h-full">
+      <rect width="760" height="345" fill="#f8fafc" rx="14"/>
+      <text x="380" y="38" textAnchor="middle" fontSize="19" fontWeight="bold" fill="#1e293b">All 5 Block Categories — All used in Week 5! 🗂️</text>
+      {cats.map(c => (
+        <g key={c.label}>
+          <rect x="40" y={c.y} width="680" height="44" fill={c.color} rx="10"/>
+          <rect x="40" y={c.y} width="130" height="44" fill={c.color} rx="10"/>
+          <text x="106" y={c.y+27} textAnchor="middle" fill="white" fontSize="15" fontWeight="bold">{c.label}</text>
+          <text x="200" y={c.y+27} fill="white" fontSize="13">{c.ex}</text>
+        </g>
+      ))}
+    </svg>
+  )
+}
+
+function SvgBulletPatternW5() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#f8fafc" rx="14"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">The Bullet Fire Pattern 🔫</text>
+      {/* Column 1 — at start */}
+      <text x="155" y="58" textAnchor="middle" fontSize="13" fill="#64748b" fontWeight="bold">① When flag clicked:</text>
+      <rect x="40" y="66" width="230" height="38" fill="#ffab19" rx="9"/>
+      <text x="155" y="90" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">when 🚩 clicked</text>
+      <rect x="40" y="110" width="230" height="38" fill="#9966ff" rx="9"/>
+      <text x="155" y="134" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">🟣 hide</text>
+      <text x="155" y="168" textAnchor="middle" fontSize="12" fill="#64748b">(bullet invisible at start)</text>
+      {/* Arrow */}
+      <text x="357" y="145" textAnchor="middle" fill="#94a3b8" fontSize="32">→</text>
+      {/* Column 2 — when space */}
+      <text x="570" y="58" textAnchor="middle" fontSize="13" fill="#64748b" fontWeight="bold">② When SPACE pressed:</text>
+      <rect x="420" y="66" width="300" height="38" fill="#ffab19" rx="9"/>
+      <text x="570" y="90" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">when [space] pressed</text>
+      <rect x="420" y="110" width="300" height="38" fill="#4c97ff" rx="9"/>
+      <text x="570" y="134" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">🔵 go to [Rocket]</text>
+      <rect x="420" y="154" width="300" height="38" fill="#9966ff" rx="9"/>
+      <text x="570" y="178" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">🟣 show</text>
+      <rect x="420" y="198" width="300" height="38" fill="#ff8c1a" rx="9"/>
+      <text x="570" y="222" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">🟠 repeat until y &gt; 170</text>
+      <rect x="445" y="242" width="275" height="38" fill="#4c97ff" rx="9"/>
+      <text x="582" y="266" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">🔵   change y by 15</text>
+      <rect x="420" y="286" width="300" height="38" fill="#9966ff" rx="9"/>
+      <text x="570" y="310" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">🟣 hide</text>
+    </svg>
+  )
+}
+
+function SvgTwoSpritesW5() {
+  return (
+    <svg viewBox="0 0 760 340" className="w-full h-full">
+      <rect width="760" height="340" fill="#f0f9ff" rx="14"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="18" fontWeight="bold" fill="#1e293b">Two Sprites, Two Jobs ⬆️⬇️</text>
+      {/* Y-axis */}
+      <line x1="380" y1="50" x2="380" y2="305" stroke="#cbd5e1" strokeWidth="2"/>
+      <polygon points="380,44 374,62 386,62" fill="#cbd5e1"/>
+      <text x="380" y="40" textAnchor="middle" fill="#94a3b8" fontSize="11">+y = UP</text>
+      <text x="380" y="320" textAnchor="middle" fill="#94a3b8" fontSize="11">-y = DOWN</text>
+      <line x1="360" y1="175" x2="400" y2="175" stroke="#cbd5e1" strokeWidth="1" strokeDasharray="4,4"/>
+      <text x="395" y="172" fill="#94a3b8" fontSize="10">y = 0</text>
+      {/* Asteroid panel */}
+      <rect x="30" y="62" width="310" height="220" fill="#fff1f2" rx="12" stroke="#fca5a5" strokeWidth="2"/>
+      <text x="185" y="88" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#991b1b">ASTEROID (Rocks sprite)</text>
+      <text x="185" y="135" textAnchor="middle" fontSize="36">🪨</text>
+      <rect x="65" y="152" width="240" height="36" fill="#ff8c1a" rx="8"/>
+      <text x="185" y="174" textAnchor="middle" fill="white" fontSize="13" fontWeight="bold">forever → change y by -5</text>
+      <text x="185" y="215" textAnchor="middle" fontSize="36" fill="#ef4444">↓</text>
+      <text x="185" y="252" textAnchor="middle" fontSize="13" fill="#991b1b">Falls DOWN  (negative y)</text>
+      {/* Bullet panel */}
+      <rect x="420" y="62" width="310" height="220" fill="#eff6ff" rx="12" stroke="#93c5fd" strokeWidth="2"/>
+      <text x="575" y="88" textAnchor="middle" fontSize="14" fontWeight="bold" fill="#1d4ed8">BULLET sprite</text>
+      <text x="575" y="135" textAnchor="middle" fontSize="36">💛</text>
+      <rect x="455" y="152" width="240" height="36" fill="#ff8c1a" rx="8"/>
+      <text x="575" y="174" textAnchor="middle" fill="white" fontSize="13" fontWeight="bold">repeat until y&gt;170: +15</text>
+      <text x="575" y="215" textAnchor="middle" fontSize="36" fill="#3b82f6">↑</text>
+      <text x="575" y="252" textAnchor="middle" fontSize="13" fill="#1d4ed8">Shoots UP  (positive y)</text>
+      <text x="380" y="335" textAnchor="middle" fontSize="12" fill="#475569">Each sprite runs its own code — click the right sprite in the sprite list!</text>
+    </svg>
+  )
+}
+
+
+
 // ── G3-4 · Week 1 ─────────────────────────────────────────────────────────────
 function SvgArrowCodeStacks() {
   return (
@@ -1056,7 +1185,7 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g1-2-2': { 0: SvgRepeatVsForever,   1: SvgBounce },
   'g1-2-3': { 0: SvgTouchingConcept,   1: SvgPokemonCatch },
   'g1-2-4': { 0: SvgHarryFire,         1: SvgCountdownTimer },
-  'g1-2-5': { 0: SvgForeverCatch,      1: SvgSpaceCatch },
+  'g1-2-5': { 0: SvgSpaceShooterGameW5, 1: SvgAllBlocksW5, 2: SvgBulletPatternW5, 3: SvgTwoSpritesW5 },
   'g3-4-1': { 0: SvgArrowCodeStacks,   2: SvgCarRoad },
   'g3-4-2': { 0: SvgParallelStacks,    1: SvgCostumeCycle },
   'g3-4-3': { 0: SvgThreeVariables,    1: SvgConditionalLogic },
