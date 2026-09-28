@@ -265,7 +265,7 @@ const spaceShooterG12: CodingTheoryDeck = {
         '① ROCKET sprite: "when [←] pressed → change x by -15". "when [→] pressed → change x by 15".',
         '② ASTEROID sprite: "when 🚩 clicked → forever → go to x:(random) y:180 → repeat until y<-150: change y -5".',
         '③ BULLET sprite: "when 🚩 clicked → hide". "when [space] pressed → go to [Rocket] → show → repeat until y>170: change y 15 → hide".',
-        '④ SCORING: inside Bullet's repeat, add "if touching [Asteroid]? → change Score 1 → hide".',
+        '④ SCORING: inside Bullet\'s repeat, add "if touching [Asteroid]? → change Score 1 → hide".',
       ],
       tryThis: 'Change "change y by 15" on the bullet to 5 — how does a slower bullet feel to play?',
       challenge: 'CHALLENGE: Add a 30-second Timer — how many asteroids can you hit before time runs out?',
