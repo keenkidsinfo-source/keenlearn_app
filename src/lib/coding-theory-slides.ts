@@ -221,15 +221,15 @@ const spaceShooterG12: CodingTheoryDeck = {
     },
     {
       title: 'All the Blocks We Know! 🗂️',
-      subtitle: 'Week 5 uses ALL the block categories we learned this month',
+      subtitle: 'Week 5 uses ALL 5 categories — here\'s when to use each one',
       body: [
-        '🟡 EVENTS (yellow) — "when 🚩 clicked", "when [space] pressed"',
-        '🔵 MOTION (blue) — "go to [Rocket]", "change x by 15", "change y by 15"',
-        '🟠 CONTROL (orange) — "forever", "repeat until y > 170", "if-then"',
-        '🟣 LOOKS (purple) — "show" and "hide" — the invisible bullet trick from W4!',
-        '🔵 SENSING (light blue) — "touching [Asteroid]?" — detects the hit and scores!',
+        '🟡 EVENTS (yellow) — Always the FIRST block in every stack. Without it the green flag does nothing! ("when 🚩 clicked", "when [space] pressed")',
+        '🔵 MOTION (blue) — Move sprites left, right, up, or down. x = left/right. y = up/down. ("change x by 15", "change y by -5", "go to [Rocket]")',
+        '🟠 CONTROL (orange) — Keep things running (forever) or repeat until something happens (repeat until). Wrap other blocks INSIDE the mouth! ("forever", "repeat until y < -150", "if-then")',
+        '🟣 LOOKS (purple) — Control what the player can see. The bullet trick: hide at start → show when fired → hide again! ("hide", "show")',
+        '🔵 SENSING (light blue) — Asks a YES/NO question. The answer fits inside the hexagon gap of if-then or repeat-until. ("touching [Rocks]?" → YES = bullet hit asteroid!)',
       ],
-      speakerNotes: 'Point to each color and ask kids to recall which week they first used it. W1=Events+Motion, W2=Control loops, W3=Sensing+Variables, W4=Looks show/hide. W5 brings them all together!',
+      speakerNotes: 'Point to each color row and ask: which week first used this? W1=Events+Motion, W2=Control loops, W3=Sensing+Variables, W4=Looks show/hide. Space Shooter is the first game that uses ALL five at once!',
     },
     {
       title: 'The Bullet Fire Pattern 🔫',
@@ -492,7 +492,19 @@ const spaceShooterG34: CodingTheoryDeck = {
         '④ Personal Best: "if Score > PersonalBest → set PersonalBest to Score → say [New Record! 🏆]".',
       ],
       tryThis: 'Remove "delete this clone" from the bullet. Fire several shots. What happens?',
-      challenge: 'ENGINEERING: Add Speed variable. Every 10 secs → change Speed +1. Use "change y by (0-Speed)" for asteroids — difficulty increases over time!',
+      challenge: 'ENGINEERING: Add Speed variable. Every 10 secs → "change Speed by 1". Asteroids use "change y by (0 - Speed)" — difficulty ramps up automatically!',
+    },
+    {
+      title: 'G3-4 Advanced Challenges 🔥',
+      subtitle: 'Pick one and engineer your way to a better game!',
+      body: [
+        '⚡ LIVES: Make a Lives variable. If asteroid touches Rocket: "change Lives by -1" + delete clone. When Lives = 0: stop all.',
+        '📈 SPEED RAMP: Speed variable starting at 4. Every 10 seconds "change Speed by 1". Asteroid y: "change y by (0 - Speed)" — gets harder!',
+        '🏆 PERSONAL BEST: After any score change: "if Score > PersonalBest then set PersonalBest to Score + say [New Record! 🏆]".',
+        '🌊 WAVES: WaveCount variable. Every 5 hits → "change WaveCount by 1" + broadcast [next wave] → spawn asteroids faster.',
+        '👾 BOSS: Add a Boss sprite. BossHP = 3. Each bullet hit: BossHP -1. When BossHP = 0: you win! Boss shoots back every 3 secs.',
+      ],
+      speakerNotes: 'Let students choose their own challenge. These are open-ended engineering problems — there is no single correct solution. Encourage them to talk through their approach before coding.',
     },
   ],
 }

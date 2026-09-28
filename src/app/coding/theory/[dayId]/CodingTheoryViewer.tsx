@@ -559,24 +559,55 @@ function SvgSpaceShooterGameW5() {
 
 function SvgAllBlocksW5() {
   const cats = [
-    { y: 65,  color: '#ffab19', label: 'EVENTS',  ex: 'when 🚩 clicked  ·  when [space] pressed' },
-    { y: 120, color: '#4c97ff', label: 'MOTION',  ex: 'go to [Rocket]  ·  change x by 15  ·  change y by 15' },
-    { y: 175, color: '#ff8c1a', label: 'CONTROL', ex: 'forever  ·  repeat until  ·  if-then' },
-    { y: 230, color: '#9966ff', label: 'LOOKS',   ex: 'show  ·  hide' },
-    { y: 285, color: '#5cb1d6', label: 'SENSING', ex: 'touching [Asteroid]?  →  change Score by 1' },
+    {
+      color: '#ffab19', label: 'EVENTS', week: 'W1',
+      when: 'Always the FIRST block — nothing runs without it',
+      ex:   'when 🚩 clicked  ·  when [space] pressed',
+    },
+    {
+      color: '#4c97ff', label: 'MOTION', week: 'W1',
+      when: 'Move sprites left/right (x) or up/down (y). Positive = right/up. Negative = left/down.',
+      ex:   'change x by 15  ·  change y by -5  ·  go to [Rocket]',
+    },
+    {
+      color: '#ff8c1a', label: 'CONTROL', week: 'W2',
+      when: 'Keep things running (forever) or loop until a condition (repeat until). Wrap blocks INSIDE the mouth!',
+      ex:   'forever  ·  repeat until y < -150  ·  if-then',
+    },
+    {
+      color: '#9966ff', label: 'LOOKS', week: 'W4',
+      when: 'Control what the player sees. Bullet trick: hide at start → show on SPACE → hide when done.',
+      ex:   'hide  ·  show',
+    },
+    {
+      color: '#5cb1d6', label: 'SENSING', week: 'W3',
+      when: 'Asks a YES/NO question. Goes inside the hexagon gap of if-then or repeat-until.',
+      ex:   'touching [Rocks]?  →  YES = bullet hit asteroid → Score +1',
+    },
   ]
+  const ROW_H = 60
+  const TOP   = 50
   return (
-    <svg viewBox="0 0 760 345" className="w-full h-full">
-      <rect width="760" height="345" fill="#f8fafc" rx="14"/>
-      <text x="380" y="38" textAnchor="middle" fontSize="19" fontWeight="bold" fill="#1e293b">All 5 Block Categories — All used in Week 5! 🗂️</text>
-      {cats.map(c => (
-        <g key={c.label}>
-          <rect x="40" y={c.y} width="680" height="44" fill={c.color} rx="10"/>
-          <rect x="40" y={c.y} width="130" height="44" fill={c.color} rx="10"/>
-          <text x="106" y={c.y+27} textAnchor="middle" fill="white" fontSize="15" fontWeight="bold">{c.label}</text>
-          <text x="200" y={c.y+27} fill="white" fontSize="13">{c.ex}</text>
-        </g>
-      ))}
+    <svg viewBox="0 0 760 360" className="w-full h-full">
+      <rect width="760" height="360" fill="#f8fafc" rx="14"/>
+      <text x="380" y="32" textAnchor="middle" fontSize="17" fontWeight="bold" fill="#1e293b">All 5 Block Categories — Space Shooter uses them ALL! 🗂️</text>
+      {cats.map((c, i) => {
+        const y = TOP + i * ROW_H
+        return (
+          <g key={c.label}>
+            {/* row background */}
+            <rect x="24" y={y} width="712" height={ROW_H - 6} fill={c.color} rx="10" opacity="0.12"/>
+            {/* colored badge */}
+            <rect x="24" y={y} width="118" height={ROW_H - 6} fill={c.color} rx="10"/>
+            <text x="83" y={y + 24} textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">{c.label}</text>
+            <text x="83" y={y + 40} textAnchor="middle" fill="white" fontSize="10" opacity="0.9">{c.week}</text>
+            {/* when to use */}
+            <text x="156" y={y + 22} fill="#1e293b" fontSize="12" fontWeight="bold">{c.when}</text>
+            {/* example blocks */}
+            <text x="156" y={y + 40} fill="#475569" fontSize="11">{c.ex}</text>
+          </g>
+        )
+      })}
     </svg>
   )
 }
@@ -1179,6 +1210,38 @@ function SvgSpaceShooterGame() {
   )
 }
 
+function SvgG34ChallengesW5() {
+  const challenges = [
+    { emoji: '⚡', label: 'LIVES',       color: '#ef4444', text: 'If asteroid touches Rocket → Lives -1 → delete clone. Lives = 0 → stop all.' },
+    { emoji: '📈', label: 'SPEED RAMP',  color: '#f97316', text: 'Speed variable. Every 10 secs: Speed +1. Asteroid: change y by (0 − Speed). Gets harder!' },
+    { emoji: '🏆', label: 'PERSONAL BEST', color: '#eab308', text: 'After each hit: if Score > PersonalBest → set PersonalBest to Score → say [New Record!]' },
+    { emoji: '🌊', label: 'WAVES',       color: '#06b6d4', text: 'Every 5 hits: WaveCount +1 → broadcast [next wave] → asteroids spawn faster each wave.' },
+    { emoji: '👾', label: 'BOSS',        color: '#8b5cf6', text: 'Boss sprite with BossHP = 3. Each bullet hit: BossHP -1. BossHP = 0 → you win! Boss shoots back!' },
+  ]
+  return (
+    <svg viewBox="0 0 760 360" className="w-full h-full">
+      <rect width="760" height="360" fill="#0f172a" rx="14"/>
+      <text x="380" y="30" textAnchor="middle" fontSize="17" fontWeight="bold" fill="white">G3-4 Advanced Challenges 🔥 — Pick One!</text>
+      {challenges.map((c, i) => {
+        const y = 48 + i * 60
+        return (
+          <g key={c.label}>
+            <rect x="20" y={y} width="720" height="52" rx="10" fill={c.color} opacity="0.18"/>
+            <rect x="20" y={y} width="52" height="52" rx="10" fill={c.color}/>
+            <text x="46" y={y + 33} textAnchor="middle" fontSize="22">{c.emoji}</text>
+            <rect x="78" y={y + 6} width="110" height="22" rx="6" fill={c.color}/>
+            <text x="133" y={y + 22} textAnchor="middle" fill="white" fontSize="11" fontWeight="bold">{c.label}</text>
+            <text x="200" y={y + 22} fill="white" fontSize="12" fontWeight="bold">{c.text.split('.')[0] + '.'}</text>
+            <text x="200" y={y + 40} fill="#cbd5e1" fontSize="11">{c.text.split('.').slice(1).join('.').trim()}</text>
+          </g>
+        )
+      })}
+      <rect x="20" y="348" width="720" height="10" rx="5" fill="#7c3aed" opacity="0.6"/>
+      <text x="380" y="356" textAnchor="middle" fontSize="9" fill="#7c3aed" fontWeight="bold">Engineer your solution — no single correct answer!</text>
+    </svg>
+  )
+}
+
 // ── VISUALS map ──────────────────────────────────────────────────────────────
 const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g1-2-1': { 0: SvgScratchUI,         1: SvgBlocksSnap },
@@ -1190,7 +1253,7 @@ const VISUALS: Record<string, Record<number, () => JSX.Element>> = {
   'g3-4-2': { 0: SvgParallelStacks,    1: SvgCostumeCycle },
   'g3-4-3': { 0: SvgThreeVariables,    1: SvgConditionalLogic },
   'g3-4-4': { 0: SvgDuelScene,         1: SvgBroadcast },
-  'g3-4-5': { 0: SvgCloningBullets,    1: SvgSpaceShooterGame },
+  'g3-4-5': { 0: SvgCloningBullets, 1: SvgSpaceShooterGame, 3: SvgG34ChallengesW5 },
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
