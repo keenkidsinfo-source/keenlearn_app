@@ -347,7 +347,7 @@ const g34Meta = {
   language: 'scratch',
   challenge: 'Space Shooter!',
   tagline: 'Dodge, aim, and blast — survive as long as you can and beat your Personal Best!',
-  g12StopAfter: g12Steps.length,
+  // g12StopAfter intentionally omitted — G3-4 has its own separate 10-step list
   steps: g34Steps,
 }
 
