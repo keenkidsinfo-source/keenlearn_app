@@ -65,25 +65,26 @@ const g12Steps = [
   `☄️ Make a falling asteroid!
 
 ① Click the sprite icon → Choose a Sprite → search "Rocks" → click it
-② Click Rocks in the sprite list. Drag to code area:
+② Right-click "Rocks" in the sprite list → Rename → type "Asteroid" → Enter
+③ Click Asteroid in the sprite list. Drag to code area:
    EVENTS  ▸ "when 🚩 clicked"
    LOOKS   ▸ "set size to 50 %"
    LOOKS   ▸ "show"
    CONTROL ▸ "forever"   ← this is the big mouth block
 
-③ INSIDE the forever mouth, add:
+④ INSIDE the forever mouth, add:
    MOTION  ▸ "go to x: ( ) y: 180"
      — in the x gap, OPERATORS ▸ "pick random -180 to 180"
        (drag it in — don't type a number!)
 
-④ Still INSIDE forever, snap below:
+⑤ Still INSIDE forever, snap below:
    CONTROL ▸ "repeat until < >"
      — inside the hexagon: OPERATORS ▸ "[ ] < [ ]"
        drag MOTION "y position" into the LEFT box
        type -150 in the RIGHT box
        ⚠️ Use < (less than), not > (greater than)!
 
-⑤ INSIDE the repeat-until mouth:
+⑥ INSIDE the repeat-until mouth:
    MOTION  ▸ "change y by -5"
    ⚠️ That's y — NOT x. y moves the sprite up and down!
 
@@ -122,8 +123,8 @@ const g12Steps = [
 ③ INSIDE the repeat-until loop, after "change y by 15", add:
    CONTROL ▸ "if < > then"
      — inside the hexagon: SENSING "touching [ ]?"
-       click the dropdown → choose "Rocks"
-       ⚠️ Pick "Rocks" — NOT Rocketship or anything else!
+       click the dropdown → choose "Asteroid"
+       ⚠️ Pick "Asteroid" — NOT Rocketship or anything else!
    INSIDE the if-then mouth:
      VARIABLES ▸ "change Score by 1"
      LOOKS     ▸ "hide"
@@ -162,8 +163,8 @@ const g34Steps = [
 
   `☄️ G3-4 UPGRADE: Clone the asteroid for multiple at once!
 
-① Click Rocks in the sprite list
-② DELETE all your existing Rocks code (right-click each stack → Delete)
+① Click Asteroid in the sprite list
+② DELETE all your existing Asteroid code (right-click each stack → Delete)
 ③ Start fresh — drag NEW code to the code area:
    EVENTS  ▸ "when 🚩 clicked"
    LOOKS   ▸ "hide"
@@ -186,7 +187,7 @@ const g34Steps = [
        INSIDE: VARIABLES "change Lives by -1"
        INSIDE: CONTROL "delete this clone"
      CONTROL ▸ "if < > then"
-       — hexagon: OPERATORS "y position < -170"
+       — hexagon: OPERATORS "[ ] < [ ]" → "y position" LEFT, -170 RIGHT
        INSIDE: CONTROL "delete this clone"
 
 ✅ Multiple asteroids fall at once — and they reduce Lives on hit!`,
@@ -210,7 +211,7 @@ const g34Steps = [
    INSIDE the forever:
      MOTION  ▸ "change y by 20"
      CONTROL ▸ "if < > then"
-       — hexagon: SENSING "touching [Rocks]?"
+       — hexagon: SENSING "touching [Asteroid]?"
        INSIDE: VARIABLES "change Score by 1"
        INSIDE: CONTROL "delete this clone"
      CONTROL ▸ "if < > then"
@@ -221,7 +222,7 @@ const g34Steps = [
 
   `⚡ G3-4 UPGRADE: Speed ramp — gets harder over time!
 
-① Click Rocks in the sprite list
+① Click Asteroid in the sprite list
 ② VARIABLES → "Make a Variable" → "Speed" → OK
    Check "For this sprite only" so each clone has its own speed
 
@@ -238,7 +239,7 @@ Actually the simplest way:
 ④ Find "when I start as a clone" → at the very top (before forever), add:
    VARIABLES ▸ "set Speed to 5"
 
-⑤ NEW empty spot on Rocks:
+⑤ NEW empty spot on Asteroid:
    EVENTS  ▸ "when 🚩 clicked"
    CONTROL ▸ "forever"
    INSIDE: CONTROL "wait 10 secs"
