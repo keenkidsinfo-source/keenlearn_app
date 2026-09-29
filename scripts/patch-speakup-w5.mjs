@@ -56,7 +56,7 @@ const g12W5 = {
       'Challenge: students write their own hook for today\'s prompt on a sticky note.',
     ],
   },
-  prompt: 'What is one rule at school you would change, and why?',
+  prompt: 'Pick a school rule you would change — and make the case for why.',
   timeLimit: 75,
   structure: [
     '🎣 YOUR HOOK (question, wow fact, or tiny story)',
