@@ -265,6 +265,7 @@ export function ScienceLabClient({
   const isFireLab      = lab.title.toLowerCase().includes('fire') || lab.title.toLowerCase().includes('extinguisher')
   const isWaterBalloon = lab.title.toLowerCase().includes('balloon')
   const isWaterBottle  = !isWaterBalloon && (lab.title.toLowerCase().includes('water') || lab.title.toLowerCase().includes('bottle'))
+  const isRefraction   = lab.title.toLowerCase().includes('refraction') || lab.title.toLowerCase().includes('mystery')
   // any other lab falls through to magnet defaults
 
   // Load saved state from localStorage
@@ -388,6 +389,25 @@ export function ScienceLabClient({
     causePlaceholder   = isG12 ? 'e.g. I think the screen kept the water from falling out…' : 'e.g. I think air pressure pushing up through the mesh holds the water in against gravity…'
     learnedPlaceholder = isG12 ? 'e.g. I learned that air can hold water up!' : 'e.g. I learned that air pressure pushes in all directions and surface tension seals tiny holes…'
     predictionCorrectIsDown = true
+  } else if (isRefraction) {
+    labAnimation       = null
+    setupCaption       = 'Watch carefully as the teacher places each object behind the water container. Things are not what they seem!'
+    predictionQ        = isG12
+      ? 'Can water make a straight pencil look bent, or make an arrow change direction?'
+      : 'When light travels from air into water, what do you predict will happen to the objects behind the container?'
+    voteUp             = { emoji: '✅', label: 'Yes — objects will look different!' }
+    voteSide           = { emoji: '🤔', label: "I'm not sure…" }
+    voteDown           = { emoji: '❌', label: 'No — they will look the same' }
+    observePlaceholder = isG12
+      ? 'e.g. The arrow looked like it flipped around! The pencil looked broken at the water line…'
+      : 'e.g. The arrow appeared to reverse direction through the water. The pencil looked bent at the boundary between air and water…'
+    causePlaceholder   = isG12
+      ? 'e.g. I think the water made the light change direction…'
+      : 'e.g. I think light travels at a different speed through water than through air, so its path bends at the boundary…'
+    learnedPlaceholder = isG12
+      ? 'e.g. I learned that water can bend light and make things look different!'
+      : 'e.g. I learned that refraction is the bending of light when it passes from one material into another, and it can make objects appear shifted, bent, or distorted…'
+    predictionCorrectIsDown = false
   } else if (lab.title.toLowerCase().includes('food') || lab.title.toLowerCase().includes('detective') || lab.title.toLowerCase().includes('dairy') || lab.title.toLowerCase().includes('cream')) {
     labAnimation       = null
     setupCaption       = 'Watch your teacher mix cookie cream and real dairy cream with water. Observe carefully!'

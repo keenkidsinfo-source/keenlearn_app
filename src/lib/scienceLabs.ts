@@ -592,6 +592,119 @@ export const scienceLabs: ScienceLab[] = [
       '⚠️ Check for food allergies before conducting this experiment. Do NOT allow students to eat samples after mixing with water. Use clean utensils when preparing dairy cream. Dairy cream should not sit unrefrigerated for long. Dispose of all mixtures after the activity. Students should wash hands after handling food materials.',
     referenceVideo: '',
   },
+
+  // ── Week 5 — The Amazing Refraction Mystery ───────────────────────────────
+  {
+    id: 'w5-refraction-mystery',
+    date: '2026-10-02',
+    weekNumber: 5,
+    emoji: '🔬',
+    title: 'The Amazing Refraction Mystery',
+    conceptShort: 'Light · Refraction · Transparent Materials',
+    wowFactor: 'An arrow appears to reverse direction, a pencil looks broken, a comb looks distorted — all just by looking through water!',
+    kidExplanation:
+      'The arrow didn\'t really turn around. The pencil didn\'t really break. The fish didn\'t really change. What changed was the path of the LIGHT! When light travels from air into water, it bends. This is called REFRACTION. Our eyes receive that bent light, and our brain thinks the object is in a different position or shape — but it\'s not. The object stayed exactly the same. The light just took a different path to reach your eyes.',
+    vocab: [
+      { word: 'Light', definition: 'Energy that allows us to see objects around us', color: 'orange' },
+      { word: 'Refraction', definition: 'The bending of light when it travels from one material into another', color: 'blue' },
+      { word: 'Transparent', definition: 'A material that allows light to pass through — like water, clear glass, or clear plastic', color: 'green' },
+      { word: 'Distortion', definition: 'When something appears different from its real shape or position', color: 'purple' },
+      { word: 'Observe', definition: 'To carefully watch and collect information about what you see', color: 'red' },
+    ],
+    realWorld: [
+      '🐟 Fish in water look like they are in a different position because of refraction — this affects fishing!',
+      '🌈 Rainbows form because light refracts and separates into colors as it passes through water droplets.',
+      '👓 Eyeglasses use curved lenses to bend light and help people see clearly.',
+      '📷 Camera lenses use refraction to focus light and capture sharp images.',
+      '🔭 Telescopes and microscopes use lenses to bend light and magnify objects.',
+      '🥤 Objects in a glass of water always look distorted or shifted — now you know why!',
+    ],
+    materials: [
+      'Clear glass or transparent plastic container',
+      'Water',
+      'White paper (for arrow and fish drawings)',
+      'Bold marker (for arrow)',
+      'Colored pencils or markers (for fish)',
+      'Pencil',
+      'Comb',
+      'Clear Ziploc bag (sealed with fish drawing inside)',
+      'Paper towels',
+    ],
+    setupNotes: [
+      'Draw a bold arrow on white paper pointing clearly RIGHT →.',
+      'Draw a multicolor fish on white paper with a clear black outline.',
+      'Place the fish inside a clear Ziploc bag — seal it completely so water cannot reach the paper.',
+      'Fill clear containers with water before class.',
+      'Try each experiment yourself first — the effect depends on container shape, water amount, and viewing angle.',
+      'The arrow reversal effect is strongest when the arrow is 5–10 cm behind the container.',
+      'Encourage students to describe what they actually see, not what they think they should see.',
+    ],
+    sessionPlan: [
+      {
+        time: '0–5 min',
+        phase: 'Hook & Predictions',
+        instructions: [
+          'Hold up a pencil: "Is this pencil straight?" Students agree.',
+          'Ask: "What if I put part of it in water? Can water make it look bent?"',
+          'Show the arrow: "Can water make this arrow look like it changed direction?"',
+          'Show the fish: "What will happen to this fish inside water?"',
+          'Collect predictions for all four objects — don\'t reveal answers yet.',
+          'Say: "Today we test what happens when LIGHT travels through water!"',
+        ],
+      },
+      {
+        time: '5–12 min',
+        phase: 'Predictions written',
+        instructions: [
+          'Students write predictions for arrow, pencil, comb, and fish.',
+          'Share predictions as a class — record on the board.',
+        ],
+      },
+      {
+        time: '12–40 min',
+        phase: 'Four Experiments',
+        instructions: [
+          'Exp 1 — Arrow: place behind empty container, then fill with water. Move arrow until effect appears. "Did we turn it?" No!',
+          'Exp 2 — Pencil: place diagonally into water. Students look at the air/water boundary. "Did it bend?" No!',
+          'Exp 3 — Comb: place behind or inside the water container. Observe from different angles — spacing may look different.',
+          'Exp 4 — Fish: show dry, then in bag, then bag in water. Ask: "What looks different now?"',
+          'After each: ask what they observe. Do NOT tell them what they must see.',
+        ],
+      },
+      {
+        time: '40–45 min',
+        phase: 'Science Explanation',
+        instructions: [
+          'Write on board: 💨 AIR → 💧 WATER → 👀 EYES',
+          'Explain: light travels at different speeds through different materials — when it moves from air to water, it bends.',
+          'Write: REFRACTION — the bending of light when it passes from one material to another.',
+          'G1–2: "Water can make things look ___." / "Light can ___ when it goes through water." (BEND!)',
+          'G3–4: "Why can an object look different when we see it through water?" (use: light, water, bend, refraction)',
+        ],
+      },
+      {
+        time: '45–50 min',
+        phase: 'Draw & Write / Share Out',
+        instructions: [
+          'Students divide paper into 4 sections — one per experiment.',
+          'Draw what they saw before and through water for each object.',
+          'Share one observation they found most surprising.',
+          'Close: "Water bends LIGHT — and that changes what our eyes see. That\'s REFRACTION!"',
+        ],
+      },
+    ],
+    discussionQuestions: [
+      { question: 'Did the arrow actually change direction?', answer: 'No — the light changed direction, which made the arrow appear reversed.' },
+      { question: 'What do all four experiments have in common?', answer: 'They all show refraction — light bending as it passes from air into water.' },
+      { question: 'Why does a fish in a pond appear to be in a different position than it really is?', answer: 'Light from the fish bends as it travels from water into air, making the fish appear shifted.' },
+      { question: 'What is refraction?', answer: 'The bending of light when it travels from one material into another.' },
+      { question: 'Why is it important that scientists describe what they actually see instead of what they expect to see?', answer: 'Because real observations — even surprising ones — are more valuable than confirming what we already believed.' },
+    ],
+    scienceBehindIt:
+      'Light travels at approximately 300,000 km/s through air but slows to about 225,000 km/s through water. When light crosses the boundary between two materials at an angle, it changes direction — a phenomenon called refraction, described by Snell\'s Law. The degree of bending depends on the angle of incidence and the refractive indices of both materials. Because the bent light rays diverge differently than straight rays, our visual system (which assumes light travels in straight lines) places the apparent position of the object in the wrong location. A convex water container acts like a converging lens and can actually flip the arrow\'s apparent direction when the object is beyond the focal point.',
+    safetyNotes: 'No significant hazards. Ensure containers are stable and water spills are cleaned up promptly to prevent slipping.',
+    referenceVideo: '',
+  },
 ]
 
 /**

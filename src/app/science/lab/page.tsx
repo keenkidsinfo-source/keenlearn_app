@@ -70,6 +70,11 @@ export default async function ScienceLabPage() {
     } catch { /* non-fatal — lab still works, observations just won't persist */ }
   }
 
+  // G1-2 does science on paper — redirect them to the step-by-step instruction view
+  if (session.gradeBand === 'g1-2' && contentItemId) {
+    redirect(`/science/day/${contentItemId}`)
+  }
+
   return (
     <div className="flex h-screen overflow-hidden">
       <StudentSidebar nav={nav} gradeBand={(session.gradeBand as 'g1-2' | 'g3-4') ?? null} name={session.name} />
